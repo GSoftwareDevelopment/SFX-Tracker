@@ -124,7 +124,6 @@ begin
 	VBar(0,1,width_menuBar,0);
 	screen[223]:=$06;
 	screen[32]:=$07;
-//	screen[36]:=byte('/'~);
 
 	fillchar(@TAB_notes,256,255);
 	fillchar(@TAB_fnSFX,256,254);

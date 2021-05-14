@@ -282,7 +282,6 @@ end;
 
 procedure optionsList(optTabs:pointer; optWidth:byte; opts:shortint; var currentOpt:shortint);
 begin
-//	move(@screen[20],@tmpbuf,200);
 	opts:=opts-1;
 	menuBar(optTabs,optWidth,color_choice);
 	updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
@@ -294,14 +293,12 @@ begin
 			case key of
 				key_ESC: begin
 					currentOpt:=-1;
-//					move(@tmpbuf,@screen[20],200);
 					break;
 				end;
 				key_Up: if (currentOpt>0) then currentOpt:=currentOpt-1 else currentOpt:=opts;
 				key_Down: if (currentOpt<opts) then currentOpt:=currentOpt+1 else currentOpt:=0;
 				key_RETURN: begin
 					kbcode:=255;
-//					move(@tmpbuf,@screen[20],200);
 					break;
 				end;
 			end;
@@ -367,43 +364,15 @@ begin
 			case key of
 				key_CTRL_Up:begin
 					moveCursor(-height,height,listSize,listPos,listShift);
-(*					if (listPos=0) then
-					begin
-						if (listShift-height>0) then
-							listShift:=listShift-height
-						else
-							listShift:=0;
-					end
-					else
-						listPos:=0;*)
 				end;
 				key_CTRL_Down:begin
 					moveCursor(+height,height,listSize,listPos,listShift);
-(*					if (listPos=height-1) then
-					begin
-						if (listShift+height<(listSize-height)) then
-							listShift:=listShift+height
-						else
-							listShift:=listSize-height;
-					end
-					else
-						listPos:=height-1;*)
 				end;
 
 				key_Up:
 					moveCursor(-1,height,listSize,listPos,listShift);
-(*					if (listPos>0) then
-						listPos:=listPos-1
-					else
-						if (listShift>0) then
-							listShift:=listShift-1;*)
 				key_Down:
 					moveCursor(+1,height,listSize,listPos,listShift);
-(*					if (listPos<height-1) then
-						listPos:=listPos+1
-					else
-						if (listShift<listSize-height) then
-							listShift:=listShift+1;*)
 				key_ESC: begin
 					result:=defaultPos;
 					break;

@@ -45,7 +45,7 @@ menu_tabs
 					dta 180,d'+/,',255
 					dta 200,d'OPT',255
 					dta 220,d'#',255
-					dta  0
+					dta 255
 
 menu_tabs_option
 					dta 144,d'CLONE',255
@@ -63,9 +63,9 @@ menu_tab_edit
 					dta 255
 
 menu_GSD
-					dta 21,d'THEME',255
-					dta 28,d'ABOUT',255
-					dta 35,d'000%',255
+					dta 20,d'THEME',255
+					dta 26,d'ABOUT',255
+					dta 36,d'000%',255
 					dta 255
 
 menu_IO

@@ -67,12 +67,10 @@ begin
 	initGraph(DLIST_ADDR,VIDEO_ADDR,BUFFER_ADDR);
 
 	fillchar(@screen[40],20,$80);
-//	putNText(5,11,resptr[str_GSD_footer],0);
 	KRPDEL:=20;
 	KEYREP:=3;
 	CHBAS:=$BC;
 	move(@palette,@PFCOLS,5);
-//	PFCOLS[0]:=$0f; pfcols[2]:=$84;
 
 	fillchar(@SFXPtr,maxSFXs*2,$ff);
 	fillchar(@TABPtr,maxTABs*2,$ff);

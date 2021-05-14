@@ -74,8 +74,6 @@ begin
 							prepareSFXsList();
 							nSFX:=listChoice(1,2,SFXNameLength,9,currentSFX,listBuf,maxSFXs,true);
 							move(@tmpbuf,@screen[20],200);
-//							colorHLine(0,1,20,0);
-//							nSFX:=instrListChoice;
 							if (nSFX<>currentSFX) then
 							begin
 								getSFXData(nSFX);
