@@ -1,0 +1,90 @@
+//
+	maxSFXs	= 100;
+	maxTABs	= 100;
+
+// data ids
+	base_menus						= 0;
+	base_strings					= 8;
+	menu_top							= base_menus+0;
+   menu_sfx							= base_menus+1;
+   menu_sfx_options				= base_menus+2;
+   menu_tabs						= base_menus+3;
+	menu_tabs_options				= base_menus+4;
+	menu_tab_edit					= base_menus+5;
+	menu_GSD							= base_menus+6;
+	menu_IO							= base_menus+7;
+
+	str_SFX_notDefined			= base_strings+0;
+	str_TAB_note_names			= base_strings+1;
+	str_TAB_types					= base_strings+2;
+
+//
+width_menuTop		= 0;
+width_menuBar		= 4;
+width_menuGSD		= 6;
+width_menuOptions	= 16;
+width_menuTabFunc	= 12;
+
+//
+winXStart			= 4;
+winYStart			= 2;
+
+//
+SFX_maxLength		= 128;
+TAB_maxLength		= 128;
+
+SFXNameLength		= 15;
+TABNameLength		= 8;
+
+SFX_winWidth		= 16;
+TAB_winWidth		= 9;
+
+
+SFXNameX			= 4;
+SFXNameY			= 1;
+SFXNumberX		= 1;
+SFXNumberY		= 1;
+SFXCurPosX			= 13;
+SFXCurPosY			= 10;
+SFXLenX			= 17;
+SFXLenY			= 10;
+
+//
+//
+
+//   C  C# D D# E  F   F# G G# A A# B | C  C# D D# E  F   F# G G# A A# B   C  C# D D# E |
+//   1                                | 2                                | 3            |
+// |   |  | |  |  |   |  | |  | |  |  |   |2 | |3 |  |   |5 | |6 | |7 |  |   |9 | |0 |  |
+// |   |S | |D |  |   |G | |H | |J |  |   |L | |; |  |   |  | |  | |  |  |   |  | |  |  |
+// |    |    |    |    |    |    |    | Q  | W  | E  | R  | T  | Y  | U  | I  | O  | P  |
+// | Z  | X  | C  | V  | B  | N  | M  | ,  | .  | /  |    |    |    |    |    |    |    |
+
+keys_notes:array[0..33] of byte = (
+//Z  S  X  D  C  V  G  B  H  N  J  M
+ 23,62,22,58,18,16,61,21,57,35, 1,37,
+//,  L  .  ;  /
+ 32, 0,34, 2,38,
+//Q  2  W  3  E  R  5  T  6  Y  7  U
+ 47,30,46,26,42,40,29,45,27,43,51,11,
+//I  9  O  0  P
+ 13,48, 8,50,10
+);
+
+key2Note:array[0..33] of byte = (
+//Z  S  X  D  C  V  G  B  H  N  J  M
+$00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,
+//,  L  .  ;  /
+$10,$11,$12,$13,$14,
+//Q  2  W  3  E  R  5  T  6  Y  7  U
+$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1a,$1b,
+//I  9  O  0  P
+$20,$21,$22,$23,$24
+);
+
+note_val:array[0..63] of byte = (
+// pure tones from RMT
+	$F3,$E6,$D9,$CC,$C1,$B5,$AD,$A2,$99,$90,$88,$80,$79,$72,$6C,$66,
+	$60,$5B,$55,$51,$4C,$48,$44,$40,$3C,$39,$35,$32,$2F,$2D,$2A,$28,
+	$25,$23,$21,$1F,$1D,$1C,$1A,$18,$17,$16,$14,$13,$12,$11,$10,$0F,
+	$0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00,$00
+);

@@ -1,0 +1,103 @@
+data_pointers_list
+	dta a(menu_top)				;0
+   dta a(menu_sfx)				;1
+   dta a(menu_sfx_options)		;2
+   dta a(menu_tabs)				;3
+	dta a(menu_tabs_option)		;4
+	dta a(menu_tab_edit)			;5
+	dta a(menu_GSD)				;6
+	dta a(menu_IO)					;7
+
+	dta a(str_SFX_notDefined)	;8
+	dta a(str_TAB_note_names)  ;9
+	dta a(str_TAB_types)			;10
+
+menus
+menu_top
+					dta   1,d'"$',255		; text start ofset; text data; terminated value 255
+					dta   4,d'IO',255
+					dta   7,d'SFX',255
+					dta  11,d'TAB',255
+					dta  15,d'SONG',255
+					dta 255					; end of definition
+
+menu_sfx
+					dta  20,d'#',255
+					dta  40,d'>>>',255
+					dta 120,d'VOL',255
+					dta 140,d'DST',255
+					dta 160,d'MOD',255
+					dta 180,d'VAL',255
+					dta 200,d'OPT',255
+					dta 255
+
+menu_sfx_options
+					dta 124,d'KEY NOTE',255
+					dta 144,d'CLONE',255
+					dta 164,d'INSERT',255
+					dta 184,d'DELETE',255
+					dta 204,d'SAVE',255
+					dta 255
+
+menu_tabs
+					dta  20,d'#',255
+					dta  40,d'>>>',255
+					dta 180,d'+/,',255
+					dta 200,d'OPT',255
+					dta 220,d'#',255
+					dta  0
+
+menu_tabs_option
+					dta 144,d'CLONE',255
+					dta 164,d'INSERT',255
+					dta 184,d'DELETE',255
+					dta 204,d'SAVE',255
+					dta 255
+menu_tab_edit
+					dta  46,7,d'END TAB',255
+					dta  66,7,d'JUMP TO',255
+					dta  86,7,d'REPEAT',255
+					dta 106,7,d'NOTE VALUE',255
+					dta 126,7,d'NOP',255
+					dta 146,7,d'< BACK',255
+					dta 255
+
+menu_GSD
+					dta 21,d'THEME',255
+					dta 28,d'ABOUT',255
+					dta 35,d'000%',255
+					dta 255
+
+menu_IO
+					dta 21,'DIR',255
+					dta 25,'LOAD',255
+					dta 30,'SAVE',255
+					dta 35,'NEW',255
+					dta 255
+
+strings
+str_SFX_notDefined
+					dta d'  - FREE SFX -  ',255
+
+str_TAB_note_names
+//                   0         1         2         3         4         5         6         7
+//                   012345678901234567890123456789012345678901234567890123456789012345678901234567890
+					dta d'C-C#D-D#E-F-F#G-G#A-A#H-JT>R[>[[[ENDTAB[[[ [[';
+
+str_TAB_types
+					dta d'FREE TAB',255	; FREE TAB
+					dta d'DRUMS',255		; DRUMS
+					dta d'BASS',255		; BASS
+					dta d'LINE',255		; LINE MELODY
+					dta d'MELODY',255		; MELODY
+					dta d'ACCOMP',255		; ACCOMPANIMENT
+					dta d'MIXED',255		; MIXED
+
+
+; SUMMARY LOG
+
+ .print "DATA SIZE: ", *-data_pointers_list
+ .print "TABLE OF POINTERS SIZE: ",menus - data_pointers_list
+ .print "MENUS : ", menus, "..", strings-1
+ .print "STRINNGS : ", strings, "..", *-1
+

@@ -1,0 +1,26 @@
+procedure GSDOptions();
+var
+	opt:shortint;
+
+begin
+	move(@screen[20],@tmpbuf,200);
+	fillchar(@screen[20],20,$00);
+	menuBar(resptr[menu_GSD],menu_Top,0);
+	opt:=0;
+	updateBar(resptr[menu_GSD],width_menuTop,opt,0,color_selected);
+	screen2video();
+	repeat
+		if (kbcode<>255) then
+		begin
+			key:=TKeys(kbcode); kbcode:=255;
+			case key of
+				key_ESC: break;
+				key_Left: if (opt>0) then opt:=opt-1;
+				key_Right: if (opt<2) then opt:=opt+1;
+			end;
+			updateBar(resptr[menu_GSD],width_menuTop,opt,0,color_selected);
+			screen2video();
+		end;
+	until false;
+	move(@tmpbuf,@screen[20],200);
+end;
