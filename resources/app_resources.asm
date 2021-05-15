@@ -1,4 +1,5 @@
 data_pointers_list
+;menus
 	dta a(menu_top)				;0
    dta a(menu_sfx)				;1
    dta a(menu_sfx_options)		;2
@@ -6,11 +7,16 @@ data_pointers_list
 	dta a(menu_tabs_option)		;4
 	dta a(menu_tab_edit)			;5
 	dta a(menu_GSD)				;6
-	dta a(menu_IO)					;7
+	dta a(menu_ThemeEdit)		;7
+	dta a(menu_IO)					;8
 
-	dta a(str_SFX_notDefined)	;8
-	dta a(str_TAB_note_names)  ;9
-	dta a(str_TAB_types)			;10
+;strings
+	dta a(str_SFX_notDefined)	;9
+	dta a(str_TAB_note_names)  ;10
+	dta a(str_TAB_types)			;11
+
+; tables
+	dta a(color_themes)			;12
 
 menus
 menu_top
@@ -68,6 +74,16 @@ menu_GSD
 					dta 36,d'000%',255
 					dta 255
 
+menu_ThemeEdit
+					dta  40,d'MENU AREA',255
+					dta  60,d'ITEM',255
+					dta  80,d'BACKGROUND',255
+					dta 100,d'SELECTED',255
+					dta 120,d'BORDER',255
+					dta 180,d'SAVE',255
+					dta 200,d'< BACK',255
+					dta 255
+
 menu_IO
 					dta 21,'DIR',255
 					dta 25,'LOAD',255
@@ -92,12 +108,25 @@ str_TAB_types
 					dta d'MELODY',255		; MELODY
 					dta d'ACCOMP',255		; ACCOMPANIMENT
 					dta d'MIXED',255		; MIXED
+					dta 255
 
+tables
+color_themes
+					dta $0a,$e6,$68,$34,$00,d'LIGHT',255
+					dta $00,$02,$04,$30,$08,d'DARK',255
+					dta $00,$00,$00,$00,$00,d'CUSTOM 1',255
+					dta $00,$00,$00,$00,$00,d'CUSTOM 2',255
+					dta $00,$00,$00,$00,$00,d'CUSTOM 3',255
+					dta $00,$00,$00,$00,$00,d'CUSTOM 4',255
+					dta $00,$00,$00,$00,$00,d'CUSTOM 5',255
+					dta $00,$00,$00,$00,$00,d'CUSTOM 6',255
+					dta $00,$00,$00,$00,$00,d'CUSTOM 7',255
+					dta 255
 
 ; SUMMARY LOG
 
  .print "DATA SIZE: ", *-data_pointers_list
  .print "TABLE OF POINTERS SIZE: ",menus - data_pointers_list
  .print "MENUS : ", menus, "..", strings-1
- .print "STRINNGS : ", strings, "..", *-1
-
+ .print "STRINNGS : ", strings, "..", tables-1
+ .print "TABLES : ", tables, '..', *-1

@@ -9,6 +9,7 @@ var
 	screen:array[0..0] of byte;
 	video:array[0..0] of byte;
 	DLIST:word absolute 560;
+	VCOUNT:byte absolute $d40b;
 
 procedure initGraph(dlAddr,videoAddr,bufferAddr:word);
 function getTime():longint;
@@ -21,7 +22,10 @@ procedure box(x,y,width,height,cCol:byte);
 procedure putText(x,y:byte; var s:string; color:byte);
 procedure putNText(x,y:byte; strptr:pointer; color:byte);
 procedure putValue(x,y:byte; value:longint; zeros,color:byte);
+procedure putHexValue(x,y,value:byte; color:byte);
 procedure screen2video();
+
+procedure wait4screen();
 
 implementation
 procedure initGraph;
@@ -164,9 +168,35 @@ begin
 	screen[ptr]:=color+a;
 End;
 
+procedure putHexValue;
+var
+	scrOfs,v:byte;
+
+begin
+	color:=colMask[color];
+	scrOfs:=vadr[y]+x;
+	v:=value shr 4;
+	if (v<10) then
+		screen[scrOfs]:=$10+v
+	else
+		screen[scrOfs]:=$17+v;
+	scrOfs:=scrOfs+1;
+
+	v:=value and $0f;
+	if (v<10) then
+		screen[scrOfs]:=$10+v
+	else
+		screen[scrOfs]:=$17+v;
+end;
+
 procedure screen2video;
 begin
 	move(@screen,@video,240);
+end;
+
+procedure wait4screen;
+begin
+	repeat until VCOUNT=0;
 end;
 
 end.

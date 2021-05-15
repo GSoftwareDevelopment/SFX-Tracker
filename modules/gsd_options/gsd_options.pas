@@ -1,6 +1,7 @@
-{$i modules/gsd_options/theme_selector.pas}
-{$i modules/gsd_options/about.pas}
-{$i modules/gsd_options/memory_stats.pas}
+{$i modules/gsd_options/dli_interrupt.inc}
+{$i modules/gsd_options/theme_selector.inc}
+{$i modules/gsd_options/about.inc}
+{$i modules/gsd_options/memory_stats.inc}
 
 procedure GSDOptions();
 var

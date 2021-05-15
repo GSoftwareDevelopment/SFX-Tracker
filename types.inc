@@ -5,6 +5,7 @@ type
 		key_RETURN = 12,
 		key_Up = 14,
 		key_Down = 15,
+		key_E = 19,
 		key_ESC = 28,
 		key_SPACE = 33,
 		key_TAB = 44,

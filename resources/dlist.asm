@@ -43,8 +43,11 @@ dl_start
     dta DL_MODE_20x12T5 + DL_LMS, A(VIDEO_ADDR)
     dta DL_BLANK2
     dta DL_MODE_20x12T5
-    dta DL_BLANK2
-    :9 dta DL_MODE_20x12T5
+
+    dta DL_BLANK2 + DL_DLI
+    :8 dta DL_MODE_20x12T5 + DL_DLI
+    dta DL_MODE_20x12T5
+
     dta DL_BLANK2
     dta DL_MODE_20x12T5
     DTA DL_BLANK2

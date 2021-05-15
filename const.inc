@@ -4,7 +4,9 @@
 
 // data ids
 	base_menus						= 0;
-	base_strings					= 8;
+	base_strings					= 9;
+	base_color_themes				= 12;
+
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
    menu_sfx_options				= base_menus+2;
@@ -12,16 +14,19 @@
 	menu_tabs_options				= base_menus+4;
 	menu_tab_edit					= base_menus+5;
 	menu_GSD							= base_menus+6;
-	menu_IO							= base_menus+7;
+	menu_ThemeEdit					= base_menus+7;
+	menu_IO							= base_menus+8;
 
 	str_SFX_notDefined			= base_strings+0;
 	str_TAB_note_names			= base_strings+1;
 	str_TAB_types					= base_strings+2;
 
+	color_themes					= base_color_themes+0;
+
 //
 width_menuTop		= 0;
 width_menuBar		= 4;
-width_menuGSD		= 6;
+width_themeEdit	= 11;
 width_menuOptions	= 16;
 width_menuTabFunc	= 12;
 

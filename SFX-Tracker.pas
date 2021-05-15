@@ -6,22 +6,6 @@ uses heap,gr2,ui,pmgraph;
 const
 {$i memory.inc}
 {$i const.inc}
-
-	palette:array[0..4] of byte = (
-		$0a,	// color 0
-		$e6,	// color 1
-		$68,	// color 2
-		$34,	// color 3
-		$00	// color 4
-(*
-		$00,
-		$02,
-		$04,
-		$30,
-		$08
-*)
-	);
-
 {$r resources.rc}
 {$i types.inc}
 { $i interrupts.inc}
@@ -30,7 +14,6 @@ var
 	CHBAS:byte absolute 756;
 	KRPDEL:byte absolute $2d9;
 	KEYREP:byte absolute $2da;
-	PFCOLS:array[0..4] of byte absolute 708;
 
 	listBuf:array[0..0] of byte absolute BUFFER_ADDR;
 	tmpbuf:array[0..255] of byte absolute BUFFER_ADDR+BUFFER_SIZE-256;
@@ -65,19 +48,19 @@ var
 procedure init();
 begin
 	HEAP_Init();
+	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
+	initThemes(resptr[color_themes]);
+
 	fillchar(@screen[40],20,$80);
 	KRPDEL:=20;
 	KEYREP:=3;
 	CHBAS:=$BC;
-	move(@palette,@PFCOLS,5);
 
 	fillchar(@listBuf,1600,0);
 	fillchar(@SFXPtr,maxSFXs*2,$ff);
 	fillchar(@TABPtr,maxTABs*2,$ff);
 	fillchar(@songData,256,$ff);
-
-	PMGInit(PMG_BASE);
 
 	menuBar(resptr[menu_top],width_menuTop,0);
 	currentMenu:=0;
