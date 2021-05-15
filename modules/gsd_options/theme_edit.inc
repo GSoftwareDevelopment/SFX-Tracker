@@ -14,7 +14,7 @@ var
 	nibbel:byte;
 	i,value:byte;
 
-	procedure setValue(v:byte);
+	procedure setValue(value:byte);
 	begin
 		if nibbel=0 then
 		begin
@@ -48,16 +48,13 @@ begin
 			end;
 
 			i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
-			if (i<>255) then begin
+			if (i<>255) then
+			begin
 				setValue(i);
+				nibbel:=1-nibbel;
 			end
+			else
 				setValue(value);
-
-			case key of
-				key_Up,key_Down:
-				begin
-				end;
-			end;
 
 			updateTheme(themeColors);
 			colorHLine(width_themeEdit+6+nibbel,2+nCol,1,3);
