@@ -1,7 +1,7 @@
 {$DEFINE ROMOFF}
 
 {$librarypath './units/'}
-uses heap,gr2,ui;
+uses heap,gr2,ui,pmgraph;
 
 const
 {$i memory.inc}
@@ -32,13 +32,14 @@ var
 	KEYREP:byte absolute $2da;
 	PFCOLS:array[0..4] of byte absolute 708;
 
-	resptr:array[0..0] of pointer absolute DATA_DEFS_ADDR;
-	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR;
+	listBuf:array[0..0] of byte absolute BUFFER_ADDR;
+	tmpbuf:array[0..255] of byte absolute BUFFER_ADDR+BUFFER_SIZE-256;
 
-	SFXPtr:array[0..maxSFXs-1] of word absolute INSTR_POINTERS_ADDR;
-	TABPtr:array[0..maxTABs-1] of word absolute PTRN_POINTERS_ADDR;
+	resptr:array[0..0] of pointer absolute RESOURCES_ADDR;
+
+	SFXPtr:array[0..maxSFXs-1] of word absolute SFX_POINTERS_ADDR;
+	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR;
 	songData:array[0..255] of byte absolute SONG_ADDR;
-	tmpbuf:array[0..255] of byte;
 
 	cursorPos:smallInt;
 	cursorShift:smallInt;
@@ -64,17 +65,20 @@ var
 procedure init();
 begin
 	HEAP_Init();
-	initGraph(DLIST_ADDR,VIDEO_ADDR,BUFFER_ADDR);
-
+	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
 	fillchar(@screen[40],20,$80);
 	KRPDEL:=20;
 	KEYREP:=3;
 	CHBAS:=$BC;
 	move(@palette,@PFCOLS,5);
 
+	fillchar(@listBuf,1600,0);
 	fillchar(@SFXPtr,maxSFXs*2,$ff);
 	fillchar(@TABPtr,maxTABs*2,$ff);
 	fillchar(@songData,256,$ff);
+
+	PMGInit(PMG_BASE);
+
 	menuBar(resptr[menu_top],width_menuTop,0);
 	currentMenu:=0;
 	updateBar(resptr[menu_top],width_menuTop,currentMenu,0,color_selected);

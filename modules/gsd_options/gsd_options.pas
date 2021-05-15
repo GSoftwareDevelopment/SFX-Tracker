@@ -1,3 +1,7 @@
+{$i modules/gsd_options/theme_selector.pas}
+{$i modules/gsd_options/about.pas}
+{$i modules/gsd_options/memory_stats.pas}
+
 procedure GSDOptions();
 var
 	opt:shortint;
@@ -25,6 +29,11 @@ begin
 				key_ESC: break;
 				key_Left: if (opt>0) then opt:=opt-1;
 				key_Right: if (opt<2) then opt:=opt+1;
+				key_RETURN: case opt of
+					0: theme_selector();
+					1: about();
+					2: memory_stats();
+				end;
 			end;
 			updateBar(resptr[menu_GSD],width_menuTop,opt,0,color_selected);
 			screen2video();

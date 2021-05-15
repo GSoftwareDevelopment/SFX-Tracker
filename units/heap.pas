@@ -3,8 +3,7 @@ Unit HEAP;
 interface
 const
 	HEAP_ENTRIES			= 256;
-
-
+(*
 {$IFNDEF ROMOFF}
 	HEAP_BOTTOM_ADDRESS  = $B400;
 	HEAP_MEMORY_SIZE		= $2800;
@@ -14,13 +13,14 @@ const
 	HEAP_SIZES_ADDR		= HEAP_DATA_ADDR + HEAP_ENTRIES * 2;
 	HEAP_MEMORY_ADDR		= HEAP_DATA_ADDR + HEAP_ENTRIES * 4;
 {$ELSE}
-
+*)
 	HEAP_MEMORY_SIZE		= $27F9; //2800;
 	HEAP_OFFSETS_ADDR		= $C400;
 	HEAP_SIZES_ADDR		= HEAP_OFFSETS_ADDR + HEAP_ENTRIES*2;
 	HEAP_MEMORY_ADDR		= $D800;
+(*
 {$ENDIF}
-
+*)
 var
 	HEAP_TOP:word; // memory occupied by heap
 	_mem:array[0..0] of byte absolute HEAP_MEMORY_ADDR;

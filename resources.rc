@@ -1,5 +1,6 @@
-DATA_DEFS_ADDR rcasm 'resources/app_resources.asm'
-LOGO_ADDR rcdata 'resources/sfx_logo.scr'
+RESOURCES_ADDR rcasm 'resources/app_resources.asm'
+
 KEYBOARD_ADDR rcdata 'resources/keyboard.obj'
+LOGO_ADDR rcdata 'resources/sfx_logo.scr'
 DLIST_ADDR rcasm 'resources/dlist.asm'
 CHARSET_ADDR rcdata 'resources/SFX-Tracker.fnt'
