@@ -5,7 +5,7 @@
 // data ids
 	base_menus						= 0;
 	base_strings					= 9;
-	base_color_themes				= 13;
+	base_color_themes				= 15;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -21,6 +21,8 @@
 	str_TAB_note_names			= base_strings+1;
 	str_TAB_types					= base_strings+2;
 	str_Credits						= base_strings+3;
+	str_IO_Prompt					= base_strings+4;
+	str_IO_Error					= base_strings+5;
 
 	color_themes					= base_color_themes+0;
 

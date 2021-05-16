@@ -32,15 +32,25 @@ const
 	color_background	= 2;
 	color_selected		= 3;
 
-	chars_alphaNum:string[38] = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ. '~;
-	keys_alphaNum:array[0..37] of byte = (
+	chars_alphaNum:string[38] = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ. !#%*-/:<>?'~;
+	keys_alphaNum:array[0..47] of byte = (
 		50,31,30,26,24,29,27,51,53,48,	// 0-9
 		63,21,18,58,42,56,61,57,13,1,5,0,37,35,8,10,47,40,62,45,11,16,46,22,43,23,	// A-Z
 		34,	// . (dot)
-		33		// space
+		33,		// space
+		95,	// exclamation mark (!)
+		90,	// hash (#)
+		93,	// percent (%)
+		7,		// star (*)
+		14,	// hypen (-)
+		38,	// slash (/)
+		66,	// colon (:)
+		54,	// less sign (<)
+		55,	// more sign (>)
+		102	// question mark (?)
 	);
 
-	keysRange_all			= 38;
+	keysRange_all			= 48;
 	keysRange_hexNum		= 16;
 	keysRange_decNum		= 10;
 
@@ -51,6 +61,7 @@ var
 function keyScan(key2Scan:byte; var keyDefs:array[0..0] of byte; keysRange:byte):byte;
 procedure moveCursor(ofs:shortint; winSize,overSize:smallint; var curPos,curShift:smallint);
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
+function inputLongText(x,y,width,maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputValue(x,y,width:byte; var v:integer; min,max:integer; colEdit,colOut:byte):boolean;
 procedure VBar(x,y,width,col:byte);
 procedure updateBar(bar:pointer; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
@@ -103,18 +114,41 @@ begin
 end;
 
 function inputText:boolean;
+begin
+	result:=inputLongText(x,y,width,width,s,colEdit,colOut);
+end;
+
+function inputLongText:boolean;
 var
-	i,curX,ch,ofs:byte;
+	buf:array[0..255] of byte;
+	i,len:byte;
+	curX,shiftX:smallint;
+	ch,ofs:byte;
 	tm:longint;
-	firstKey,curState:boolean;
+	curState:boolean;
+
+	procedure updateTextLine();
+	begin
+		move(@buf[shiftX],@screen[ofs],width);
+		colorHLine(x,y,width,colEdit);
+	end;
 
 begin
-	curX:=length(s)+1; tm:=getTime; curState:=false; firstKey:=true;
-	if (curX>width) then curX:=width;
-	colorHLine(x,y,width,colEdit);
-	putText(x,y,s,colEdit);
-	ofs:=vadr[y]+x-1; // -1 becouse curX is counting from 1!
-	colEdit:=colMask[colEdit];
+	len:=length(s);
+	fillchar(@buf,256,0);
+	move(@s[1],@buf,len);
+	tm:=getTime; curState:=false;
+	if (len>width) then
+	begin
+		curX:=width-1; shiftX:=length(s)-len;
+	end
+	else
+	begin
+		curX:=len; shiftX:=0;
+	end;
+
+	ofs:=vadr[y]+x;
+	updateTextLine();
 	screen2video();
 	repeat
 		if (getTime-tm>=10) then
@@ -123,7 +157,7 @@ begin
 			if (curState) then
 				ch:=$3c
 			else
-				ch:=byte(s[curX]);
+				ch:=buf[shiftX+curX];
 			screen[ofs+curX]:=colEdit+ch;
 			screen2video();
 			tm:=getTime;
@@ -135,15 +169,22 @@ begin
 			case key of
 				key_ESC: begin result:=false; break; end;
 				key_RETURN: begin result:=true; break; end;
-				key_Left:
-					if (curX>1) then curX:=curX-1;
-				key_Right:
-					if (curX<width) then curX:=curX+1;
+				key_CTRL_Left:
+					moveCursor(-1,width,len,curX,shiftX);
+				key_CTRL_Right:
+					moveCursor(+1,width,len,curX,shiftX);
 				key_BackSpc:
+				if shiftX+curX>0 then
 				begin
-					s[curX]:=#0;
-					screen[ofs+curX]:=$00 or colEdit;
-					if (curX>1) then curX:=curX-1;
+					if (curX>0) then
+						moveCursor(-1,width,len,curX,shiftX)
+					else
+						moveCursor(-(width div 2),width,len,curX,shiftX);
+					move(@buf[shiftX+curX+1],@buf[shiftX+curX],len);
+					len:=len-1;
+				end
+				else
+				begin
 				end;
 			end;
 
@@ -151,25 +192,20 @@ begin
 			if (i<>255) then
 			begin
 				ch:=byte(chars_alphaNum[i+1]);
-				if (firstKey) then
-				begin
-					curX:=1;
-					fillchar(@s,width+1,0);
-					fillchar(screen[ofs+1],width,colEdit);
-					firstKey:=false;
-				end;
-				s[curX]:=char(ch);
-				screen[ofs+curX]:=ch or colEdit;
-				if (curX<width) then
-					curX:=curX+1;
+				if shiftX+curX<len then move(buf[shiftX+curX],buf[shiftX+curX+1],len-shiftX-curX);
+				buf[shiftX+curX]:=ch;
+				if len<maxLen then len:=len+1;
+				moveCursor(+1,width,len,curX,shiftX);
 			end;
+
+			updateTextLine();
 			screen2video();
 			kbcode:=255; tm:=0; curState:=false;
 		end;
 	until false;
-	i:=width;
-	while (i>0) and (s[i]=#0) do i:=i-1;
-	s[0]:=char(i);
+	s[0]:=char(len);
+	if len>0 then move(@buf,@s[1],len);
+	move(@buf,@screen[ofs],width);
 	colorHLine(x,y,width,colOut);
 	kbcode:=255;
 end;

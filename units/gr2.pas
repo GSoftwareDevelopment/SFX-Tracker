@@ -123,7 +123,7 @@ begin
 	i:=0; color:=colMask[color];
 	while ns[i]<>255 do
 	begin
-		screen[scrofs]:=ns[i];
+		screen[scrofs]:=ns[i] or color;
 		scrofs:=scrofs+1; i:=i+1;
 	end;
 end;

@@ -5,7 +5,7 @@ var
 	opt:shortint;
 
 begin
-	move(@screen[20],@tmpbuf,200);
+	move(@screen,@tmpbuf,240);
 	fillchar(@screen[20],20,$00);
 	menuBar(resptr[menu_IO],menu_Top,0);
 	opt:=0;
@@ -28,5 +28,5 @@ begin
 			screen2video();
 		end;
 	until false;
-	move(@tmpbuf,@screen[20],200);
+	move(@tmpbuf,@screen,240);
 end;

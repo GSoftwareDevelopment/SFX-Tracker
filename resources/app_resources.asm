@@ -15,9 +15,11 @@ data_pointers_list
 	dta a(str_TAB_note_names)  ;10
 	dta a(str_TAB_types)			;11
 	dta a(str_Credits)			;12
+	dta a(str_IO_Prompt)			;13
+	dta a(str_IO_Error)			;14
 
 ; tables
-	dta a(color_themes)			;13
+	dta a(color_themes)			;15
 
 menus
 menu_top
@@ -119,6 +121,10 @@ str_Credits
 					dta 201,d'BIT.LY/SFX-TRACKER',255
 					dta 255
 
+str_IO_Prompt
+					dta d'ENTER PATH:',255;
+str_IO_Error
+					dta d'I/O ERROR#',255;
 tables
 color_themes
 					dta $0a,$e6,$68,$34,$00,d'LIGHT',255
