@@ -86,10 +86,10 @@ menu_ThemeEdit
 					dta 255
 
 menu_IO
-					dta 21,'DIR',255
-					dta 25,'LOAD',255
-					dta 30,'SAVE',255
-					dta 35,'NEW',255
+					dta 21,d'DIR',255
+					dta 25,d'LOAD',255
+					dta 30,d'SAVE',255
+					dta 35,d'NEW',255
 					dta 255
 
 strings

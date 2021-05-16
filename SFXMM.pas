@@ -1,7 +1,7 @@
 {$DEFINE ROMOFF}
 
 {$librarypath './units/'}
-uses heap,gr2,ui,pmgraph;
+uses sysutils, heap, gr2, ui, pmgraph;
 
 const
 {$i memory.inc}
@@ -51,8 +51,9 @@ begin
 	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
 	initThemes(resptr[color_themes]);
-
+	fillchar(@screen[0],40,$00);
 	fillchar(@screen[40],20,$80);
+	fillchar(@screen[220],20,$00);
 	KRPDEL:=20;
 	KEYREP:=3;
 	CHBAS:=$BC;
