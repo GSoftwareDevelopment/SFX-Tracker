@@ -14,9 +14,10 @@ data_pointers_list
 	dta a(str_SFX_notDefined)	;9
 	dta a(str_TAB_note_names)  ;10
 	dta a(str_TAB_types)			;11
+	dta a(str_Credits)			;12
 
 ; tables
-	dta a(color_themes)			;12
+	dta a(color_themes)			;13
 
 menus
 menu_top
@@ -69,8 +70,8 @@ menu_tab_edit
 					dta 255
 
 menu_GSD
-					dta 20,d'THEME',255
-					dta 26,d'ABOUT',255
+					dta 20,d'CREDITS',255
+					dta 28,d'THEME',255
 					dta 36,d'000%',255
 					dta 255
 
@@ -108,6 +109,14 @@ str_TAB_types
 					dta d'MELODY',255		; MELODY
 					dta d'ACCOMP',255		; ACCOMPANIMENT
 					dta d'MIXED',255		; MIXED
+					dta 255
+
+str_Credits
+					dta 85,d'THIS PLACE',255
+					dta 103,d'IS WAITING FOR',255
+					dta 128,d'YOU!',255
+					dta 180,d'SUPPORT THIS PROJECT',255
+					dta 201,d'BIT.LY/SFX-TRACKER',255
 					dta 255
 
 tables

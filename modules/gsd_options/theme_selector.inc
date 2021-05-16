@@ -45,8 +45,14 @@ end;
 {$i modules/gsd_options/theme_edit.inc}
 
 procedure setTheme(nTheme:shortint);
+var i:byte;
+	themeColors:array[0..4] of byte;
+	sum:smallint;
+
 begin
-	getTheme(nTheme,PFCOLS)
+	getTheme(nTheme,themeColors);
+	sum:=0; for i:=0 to 4 do sum:=sum+themeColors[i];
+	if (sum>0) then move(@themeColors,PFCOLS,5);
 end;
 
 procedure prepareThemeList();

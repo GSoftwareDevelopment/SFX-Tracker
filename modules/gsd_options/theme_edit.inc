@@ -26,12 +26,13 @@ var
 
 begin
 	nibbel:=0;
-	colorHLine(width_themeEdit+6,2+nCol,1,3);
+	colorHLine(width_themeEdit,2+nCol,width_colorEdit,3);
+	colorHLine(width_themeEdit+6,2+nCol,1,0);
 	screen2video();
 	repeat
 		if (kbcode<>255) then
 		begin
-			colorHLine(width_themeEdit+6,2+nCol,2,0);
+			colorHLine(width_themeEdit,2+nCol,width_colorEdit,0);
 			key:=TKeys(kbcode);
 			if nibbel=0 then
 				value:=themeColors[nCol] shr 4
@@ -41,8 +42,14 @@ begin
 			case key of
 				key_ESC: begin kbcode:=255; break; end;
 				key_RETURN, key_TAB, key_SHIFT_TAB: break;
-				key_Up: if value<15 then value:=value+1 else value:=0;
-				key_Down: if value>0 then value:=value-1 else value:=15;
+				key_Up: begin
+					if value<15 then value:=value+1 else value:=0;
+					setValue(value);
+				end;
+				key_Down: begin
+					if value>0 then value:=value-1 else value:=15;
+					setValue(value);
+				end;
 				key_Left: nibbel:=0;
 				key_Right: nibbel:=1;
 			end;
@@ -52,17 +59,15 @@ begin
 			begin
 				setValue(i);
 				nibbel:=1-nibbel;
-			end
-			else
-				setValue(value);
+			end;
 
 			updateTheme(themeColors);
-			colorHLine(width_themeEdit+6+nibbel,2+nCol,1,3);
+			colorHLine(width_themeEdit,2+nCol,width_colorEdit,3);
+			colorHLine(width_themeEdit+6+nibbel,2+nCol,1,0);
 			screen2video();
 			kbcode:=255;
 		end;
 	until false;
-	colorHLine(width_themeEdit+6,2+nCol,2,0);
 end;
 
 procedure editTheme(nTheme:shortint);
@@ -108,12 +113,16 @@ begin
 
 			if (opt>=0) and (opt<5) and (kbcode<>255) then
 			begin
-				if (kbcode=key_SHIFT_TAB) then
-					opt:=opt-1
+				if (kbcode=key_RETURN) and (opt=4) then
+				begin
+					opt:=5; kbcode:=255;
+				end
 				else
-					opt:=opt+1;
-				if opt>4 then opt:=0;
-				if opt<0 then opt:=4;
+				begin
+					if (kbcode=key_SHIFT_TAB) then opt:=opt-1 else opt:=opt+1;
+					if opt>4 then opt:=0;
+					if opt<0 then opt:=4;
+				end;
 			end;
 			updateBar(resptr[menu_themeEdit],width_themeEdit,opt,1,3);
 			screen2video();

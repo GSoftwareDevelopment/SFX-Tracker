@@ -1,11 +1,10 @@
 {$i modules/gsd_options/dli_interrupt.inc}
+{$i modules/gsd_options/credits.inc}
 {$i modules/gsd_options/theme_selector.inc}
-{$i modules/gsd_options/about.inc}
 {$i modules/gsd_options/memory_stats.inc}
 
-procedure GSDOptions();
+procedure updateFreeMem();
 var
-	opt:shortint;
 	s,o:string[3];
 	free:word;
 	submenu:array[0..0] of byte;
@@ -15,7 +14,15 @@ begin
 	free:=trunc((HEAP_FreeMem/HEAP_MEMORY_SIZE)*100);
 	str(free,s); o:=concat(StringOfChar('0',3-length(s)),s);
 	conv2Internal(o);
-	move(@o[1],@submenu[15],3);
+	move(@o[1],@submenu[17],3);
+end;
+
+procedure GSDOptions();
+var
+	opt:shortint;
+
+begin
+	updateFreeMem();
 	move(@screen[20],@tmpbuf,200);
 	fillchar(@screen[20],20,$00);
 	menuBar(resptr[menu_GSD],menu_Top,0);
@@ -31,8 +38,8 @@ begin
 				key_Left: if (opt>0) then opt:=opt-1;
 				key_Right: if (opt<2) then opt:=opt+1;
 				key_RETURN: case opt of
-					0: theme_selector();
-					1: about();
+					0: credits();
+					1: theme_selector();
 					2: memory_stats();
 				end;
 			end;

@@ -1,3 +1,0 @@
-procedure about();
-begin
-end;
