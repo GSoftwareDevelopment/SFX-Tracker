@@ -82,7 +82,7 @@ begin
 			if f.attr and faArchive=faArchive then
 				listBuf[listOfs+19]:=byte('A')-32;
 
-			fillchar(@f.Name,nameLen,0);
+			fillchar(@f.Name,nameLen+1,0);
 			listOfs:=listOfs+20;
 			filesCount:=filesCount+1;
 
@@ -96,7 +96,7 @@ end;
 procedure IODirectory();
 var
 	f:TSearchRec;
-	selFile,filesCount,IOErr,len:byte;
+	selFile,filesCount,IOErr:byte;
 	FilePath:string[255];
 	wild:string[3];
 
