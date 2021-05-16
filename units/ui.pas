@@ -352,14 +352,14 @@ begin
 	end;
 	updateList();
 
-	colorHLine(x-1,y+listPos,width+4*byte(showCount)+1,3);
+	colorHLine(x,y+listPos,width+3*byte(showCount),3);
 	kbcode:=255;
 	screen2video();
 
 	repeat
 		if (kbcode)<>255 then
 		begin
-			colorHLine(x-1,y+listPos,width+4*byte(showCount)+1,1);
+			colorHLine(x,y+listPos,width+3*byte(showCount),1);
 			key:=TKeys(kbcode);
 			case key of
 				key_CTRL_Up:begin
@@ -383,7 +383,7 @@ begin
 				end;
 			end;
 			updateList();
-			colorHLine(x-1,y+listPos,width+4*byte(showCount)+1,3);
+			colorHLine(x,y+listPos,width+3*byte(showCount),3);
 			screen2video();
 			kbcode:=255;
 		end;
