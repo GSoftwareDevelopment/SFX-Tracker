@@ -13,7 +13,7 @@
 - SFX number: $00
 - number of bytes per name (constant SFXNameLength)
 - name: SFXNameLength bytes
-- SFX length: SFXLen variable
+- total length of the SFX (word): variable SFXLen*2
 - SFX data: SFXLen*2 bytes
 
 ### KEY-NOTE definition section:
@@ -27,7 +27,7 @@
 - TAB number: $00
 - number of bytes per name (constant TABNameLength)
 - name: TABNameLength bytes
-- TAB length: variable TABLen
+- total length of the TAB: variable TABLen*2
 - TAB data: TABLen*2 bytes
 
 ### SONG definition section:
@@ -37,4 +37,4 @@
 - velocity: tact, beat, line per bear
 
 
-Translated with www.DeepL.com/Translator (free version)
+Translated with www.DeepL.com/Translator (free version)s

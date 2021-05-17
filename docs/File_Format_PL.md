@@ -13,7 +13,7 @@
 - numer SFXa: $00
 - ilość bajtów przypadających na nazwę (stała SFXNameLength)
 - nazwa: SFXNameLength bajtów
-- długość SFXa: zmienna SFXLen
+- całkowita długość SFXa (word): zmienna SFXLen*2
 - dane SFXa: SFXLen*2 bajtów
 
 ### Sekcja definicji KEY-NOTE:
@@ -27,7 +27,7 @@
 - numer TABa: $00
 - ilość bajtów przypadających na nazwę (stała TABNameLength)
 - nazwa: TABNameLength bajtów
-- długość TABa: zmienna TABLen
+- całkowita długość TABa: zmienna TABLen*2
 - dane TABa: TABLen*2 bajtów
 
 ### Sekcja definicji SONG:

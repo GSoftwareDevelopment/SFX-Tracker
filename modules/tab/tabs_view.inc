@@ -3,8 +3,8 @@ begin
 	putValue(1,1,currentTAB,2,1);
 	fillchar(@screen[24],8,0);
 	putText(4,1,TABName,1);
+	colorHLine(0,1,13,1);
 	putValue(17,1,TABLen,3,0);
-	colorHLine(0,1,12,1);
 end;
 
 procedure updateTABSFX();

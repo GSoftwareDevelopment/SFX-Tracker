@@ -24,7 +24,7 @@ var
 	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR;
 	SONGData:array[0..255] of byte absolute SONG_ADDR;
 	SONGName:string[SONGNameLength] = 'NONAME';
-	currentFile:string[FILEPATHMaxLength] = 'D:'~; // indicate a current opened SFXMM file with full path and device
+	currentFile:string[FILEPATHMaxLength] = 'H:TEST.SMM'~; // indicate a current opened SFXMM file with full path and device
 
 	cursorPos:smallInt;
 	cursorShift:smallInt;
