@@ -22,3 +22,5 @@ type
 		key_SHIFT_Up = 206,
 		key_SHIFT_Down = 207
 );
+
+	TTag = array[0..4] of byte;

@@ -3,12 +3,12 @@
 {$librarypath './units/'}
 uses sysutils, strings, heap, gr2, ui, pmgraph;
 
+{$i types.inc}
+
 const
 {$i memory.inc}
 {$i const.inc}
 {$r resources.rc}
-{$i types.inc}
-{ $i interrupts.inc}
 
 var
 	CHBAS:byte absolute 756;
@@ -22,7 +22,8 @@ var
 
 	SFXPtr:array[0..maxSFXs-1] of word absolute SFX_POINTERS_ADDR;
 	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR;
-	songData:array[0..255] of byte absolute SONG_ADDR;
+	SONGData:array[0..255] of byte absolute SONG_ADDR;
+	SONGName:string[SONGNameLength];
 
 	cursorPos:smallInt;
 	cursorShift:smallInt;

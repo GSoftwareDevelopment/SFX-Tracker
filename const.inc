@@ -1,32 +1,17 @@
-//
-	maxSFXs	= 100;
-	maxTABs	= 100;
+// SFX Music Maker basic setup
+SFXMM_VERSION 		= $10;
 
-// data ids
-	base_menus						= 0;
-	base_strings					= 9;
-	base_color_themes				= 15;
+maxSFXs				= 100;
+maxTABs				= 100;
 
-	menu_top							= base_menus+0;
-   menu_sfx							= base_menus+1;
-   menu_sfx_options				= base_menus+2;
-   menu_tabs						= base_menus+3;
-	menu_tabs_options				= base_menus+4;
-	menu_tab_edit					= base_menus+5;
-	menu_GSD							= base_menus+6;
-	menu_ThemeEdit					= base_menus+7;
-	menu_IO							= base_menus+8;
+SFX_maxLength		= 128;
+TAB_maxLength		= 128;
 
-	str_SFX_notDefined			= base_strings+0;
-	str_TAB_note_names			= base_strings+1;
-	str_TAB_types					= base_strings+2;
-	str_Credits						= base_strings+3;
-	str_IO_Prompt					= base_strings+4;
-	str_IO_Error					= base_strings+5;
+SFXNameLength		= 15;
+TABNameLength		= 8;
+SONGNameLength		= 32;
 
-	color_themes					= base_color_themes+0;
-
-//
+// Interface constants
 width_menuTop		= 0;
 width_menuBar		= 4;
 width_themeEdit	= 11;
@@ -38,16 +23,9 @@ width_menuTabFunc	= 12;
 winXStart			= 4;
 winYStart			= 2;
 
-//
-SFX_maxLength		= 128;
-TAB_maxLength		= 128;
-
-SFXNameLength		= 15;
-TABNameLength		= 8;
 
 SFX_winWidth		= 16;
 TAB_winWidth		= 9;
-
 
 SFXNameX			= 4;
 SFXNameY			= 1;
@@ -90,6 +68,7 @@ $10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1a,$1b,
 $20,$21,$22,$23,$24
 );
 
+//
 note_val:array[0..63] of byte = (
 // pure tones from RMT
 	$F3,$E6,$D9,$CC,$C1,$B5,$AD,$A2,$99,$90,$88,$80,$79,$72,$6C,$66,
@@ -98,3 +77,33 @@ note_val:array[0..63] of byte = (
 	$0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00,$00
 );
 
+// File TAGs sections
+	section_main:TTag = ('S', 'F', 'X', 'M', 'M');
+	section_SFX :TTag = ($00, $00, 'S', 'F', 'X');
+	section_KEY :TTag = ($00, $00, 'K', 'E', 'Y');
+	section_TAB :TTag = ($00, $00, 'T', 'A', 'B');
+	section_SONG:TTag = ($00, 'S', 'O', 'N', 'G');
+
+// resources ids
+	base_menus						= 0;
+	base_strings					= 9;
+	base_color_themes				= 15;
+
+	menu_top							= base_menus+0;
+   menu_sfx							= base_menus+1;
+   menu_sfx_options				= base_menus+2;
+   menu_tabs						= base_menus+3;
+	menu_tabs_options				= base_menus+4;
+	menu_tab_edit					= base_menus+5;
+	menu_GSD							= base_menus+6;
+	menu_ThemeEdit					= base_menus+7;
+	menu_IO							= base_menus+8;
+
+	str_SFX_notDefined			= base_strings+0;
+	str_TAB_note_names			= base_strings+1;
+	str_TAB_types					= base_strings+2;
+	str_Credits						= base_strings+3;
+	str_IO_Prompt					= base_strings+4;
+	str_IO_Error					= base_strings+5;
+
+	color_themes					= base_color_themes+0;
