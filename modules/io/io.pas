@@ -1,4 +1,5 @@
 {$i modules/io/io_dir.inc}
+{$i modules/io/io_save.inc}
 
 procedure IOScreen();
 var
@@ -22,6 +23,7 @@ begin
 				key_RETURN:
 					case opt of
 						0: IODirectory();
+						2: IOSave();
 					end;
 			end;
 			updateBar(resptr[menu_IO],width_menuTop,opt,0,color_selected);

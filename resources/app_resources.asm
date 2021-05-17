@@ -122,9 +122,9 @@ str_Credits
 					dta 255
 
 str_IO_Prompt
-					dta d'ENTER PATH:',255;
+					dta d'ENTER SEARCH PATH',255;
 str_IO_Error
-					dta d'I/O ERROR#',255;
+					dta d'I/O ERROR #',255;
 tables
 color_themes
 					dta $0a,$e6,$68,$34,$00,d'LIGHT',255

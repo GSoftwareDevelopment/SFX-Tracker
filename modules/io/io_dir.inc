@@ -39,10 +39,10 @@ begin
 			nameLen:=length(f.Name);
 			for i:=1 to nameLen do
 				if byte(f.Name[i])>63 then f.Name[i]:=char(byte(f.Name[i])-32);
-			move(@f.Name[1],@listBuf[listOfs],15);
+			move(@f.Name[1],@listBuf[listOfs+1],15);
 			fillchar(@listBuf[listOfs+16],4,$0d); // hypen
 			if f.attr and faDirectory=faDirectory then
-				listBuf[listOfs+15]:=$1e; // &gt;
+				listBuf[listOfs]:=byte('<')-32;
 			if f.attr and faReadOnly=faReadOnly then
 				listBuf[listOfs+16]:=byte('R')-32;
 			if f.attr and faSysFile=faSysFile then
@@ -63,36 +63,36 @@ begin
 	result:=filesCount;
 end;
 
-procedure IODirectory();
+function IODirectory():string;
 var
 	f:TSearchRec;
 	selFile,filesCount,IOErr:byte;
-	FilePath:string[255];
+	searchPath:string[255] = 'D:'~;
 	wild:string[1];
 
 begin
 	box(0,2,20,9,$40);
 	putNText(0,10,resptr[str_IO_Prompt],1);
-	if inputLongText(0,11,20,128,FilePath,0,0) then
+	if inputLongText(0,11,20,128,searchPath,0,0) then
 	begin
-		fillchar(@FilePath[1+length(FilePath)],255-length(FilePath),0);
-		conv2ASCII(FilePath); wild:='*';
-		if (indexOf(FilePath,wild)=-1) then
-			FilePath:=concat(FilePath,'*.*');
-		conv2Internal(FilePath);
-		if length(FilePath)<20 then
-			move(@FilePath[1],@screen[220],length(FilePath))
+		fillchar(@searchPath[1+length(searchPath)],255-length(searchPath),0);
+		conv2ASCII(searchPath); wild:='*';
+		if (indexOf(searchPath,wild,1)=-1) then
+			searchPath:=concat(searchPath,'*.*');
+		conv2Internal(searchPath);
+		if length(searchPath)<20 then
+			move(@searchPath[1],@screen[220],length(searchPath))
 		else
-			move(@FilePath[1],@screen[220],20);
-		conv2ASCII(FilePath);
+			move(@searchPath[1],@screen[220],20);
+		conv2ASCII(searchPath);
 		box(0,2,20,9,$40);
-		filesCount:=IOReadDir(FilePath,IOErr);
+		filesCount:=IOReadDir(searchPath,IOErr);
 		if IOErr=136 then
 		begin
 			selFile:=0;
 			listChoice(0,2,20,9,selFile,listBuf,filesCount,false);
 		end;
 	end;
-	conv2Internal(FilePath); IOErr:=0;
+	conv2Internal(searchPath);
 	if (IOErr<>0) and (IOErr<>136) then IOError();
 end;

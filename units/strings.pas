@@ -2,31 +2,58 @@ unit Strings;
 
 interface
 
-function indexOf(var s:string; var search:string):smallint;
+function indexOf(var s:string; var search:string; start:smallint):smallint;
 function splice(var s:string; start:smallint; len:smallint):string;
 
 implementation
 
+(* Search for a string `search` in string `s`
+ * `start` parameter - the initial search location in `s` string, or if negative, search from the end of `s` string
+ *)
+
 function indexOf:smallint;
-var i,j:byte;
+var j:byte;
 	sLen,searchLen:byte;
 
 begin
 	sLen:=length(s); searchLen:=length(search);
 	result:=-1;
 	if (sLen=0) or (searchLen=0) then exit;
-	i:=1; j:=1;
-	while (i<=slen) and (j<=searchLen) do
+	if (start=0) then start:=1;
+	if (start>0) then
 	begin
-		if (s[i]=search[j]) then
+		j:=1;
+		while (start<=slen) and (j<=searchLen) do
 		begin
-			if (j=1) then result:=i;
-			j:=j+1;
-			if (j>searchLen) then exit;
-		end
-		else
-			j:=1;
-		i:=i+1;
+			if (s[start]=search[j]) then
+			begin
+				if (j=1) then result:=start;
+				j:=j+1;
+				if (j>searchLen) then exit;
+			end
+			else
+				j:=1;
+			start:=start+1;
+		end;
+	end
+	else
+	begin
+		start:=sLen-start+1; j:=searchLen;
+		while (start>0) and (j>0) do
+		begin
+			if (s[start]=search[j]) then
+			begin
+				j:=j-1;
+				if (j=0) then
+				begin
+					result:=start;
+					exit;
+				end;
+			end
+			else
+				j:=searchLen;
+			start:=start-1;
+		end;
 	end;
 end;
 
