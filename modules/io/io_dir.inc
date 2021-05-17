@@ -1,33 +1,3 @@
-function splice(var s:string; start:smallint; len:smallint):string;
-var i,slen:byte;
-	ostr:string;
-
-(* jest błąd, jeżeli length(s)=1 i len>1 *)
-
-begin								// start=-1 len=3;
-	slen:=length(s);			// slen=1;
-	if (start<1) then			// -1<1=true
-		start:=1					// start=1
-	else
-		if (start>slen) then start:=slen+1;
-	if (len>slen) then len:=slen;	// 3>1=true; len=1
-	if (len+start-1>=slen) then len:=slen-start+1;	// 1+1-1>=1?(2-1)>=1?-1>=1=false;
-	if len<=0 then // (1<=0)=false
-	begin
-		result:='';
-		exit;
-	end;
-	i:=0;
-	ostr[0]:=char(len);
-	while len>0 do
-	begin
-		ostr[1+i]:=s[start+i];
-		i:=i+1;
-		len:=len-1;
-	end;
-	result:=ostr;
-end;
-
 procedure IOError();
 var
 	flashTM:longint;
@@ -98,16 +68,16 @@ var
 	f:TSearchRec;
 	selFile,filesCount,IOErr:byte;
 	FilePath:string[255];
-	wild:string[3];
+	wild:string[1];
 
 begin
 	box(0,2,20,9,$40);
 	putNText(0,10,resptr[str_IO_Prompt],1);
 	if inputLongText(0,11,20,128,FilePath,0,0) then
 	begin
-		conv2ASCII(FilePath);
-		wild:=splice(FilePath,1+length(FilePath)-3,3);
-		if (wild<>'*.*') then
+		fillchar(@FilePath[1+length(FilePath)],255-length(FilePath),0);
+		conv2ASCII(FilePath); wild:='*';
+		if (indexOf(FilePath,wild)=-1) then
 			FilePath:=concat(FilePath,'*.*');
 		conv2Internal(FilePath);
 		if length(FilePath)<20 then

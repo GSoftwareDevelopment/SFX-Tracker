@@ -1,7 +1,7 @@
 {$DEFINE ROMOFF}
 
 {$librarypath './units/'}
-uses sysutils, heap, gr2, ui, pmgraph;
+uses sysutils, strings, heap, gr2, ui, pmgraph;
 
 const
 {$i memory.inc}
