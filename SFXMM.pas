@@ -1,4 +1,4 @@
-{$DEFINE ROMOFF}
+	{$DEFINE ROMOFF}
 
 {$librarypath './units/'}
 uses sysutils, strings, heap, gr2, ui, pmgraph;
