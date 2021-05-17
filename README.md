@@ -9,10 +9,12 @@ A program created using the MAD Pascal and MAD Assembler cross-compiler for the 
 Would you like to be a part of this project?
 Support it:
 
-- submit ideas
-- report bugs or corrections to the code
+- [donate on Patreon](https://www.patreon.com/GSoftDev/membership)
+- [submit ideas](https://github.com/GSoftwareDevelopment/SFX-Tracker/issues/new?assignees=&labels=&template=feature_request.md&title=)
+- [report bugs or corrections to the code] - (https://github.com/GSoftwareDevelopment/SFX-Tracker/issues/new?assignees=&labels=&template=bug_report.md&title=)
 - improve the code
 - create a color theme
+- you can also [Discuss about this project](https://github.com/GSoftwareDevelopment/SFX-Tracker/discussions)
 
 Take action, don't sit idle. Show that you can and you want to be useful. Everyone knows something.
 
