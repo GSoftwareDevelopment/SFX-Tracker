@@ -2,6 +2,8 @@
 
 Music Maker for ATARI 8-bit computers.
 
+A program created using the MAD Pascal and MAD Assembler cross-compiler for the 6502 processor platform.
+
 # CREDITS
 
 Would you like to be a part of this project?
