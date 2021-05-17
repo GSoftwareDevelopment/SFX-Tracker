@@ -1,6 +1,8 @@
 // SFX Music Maker basic setup
 SFXMM_VERSION 		= $10;
 
+FILEPATHMaxLength	= 255;
+
 maxSFXs				= 100;
 maxTABs				= 100;
 
@@ -18,6 +20,8 @@ width_themeEdit	= 11;
 width_colorEdit	= 9;
 width_menuOptions	= 16;
 width_menuTabFunc	= 12;
+width_fileList		= 20;
+width_filePath		= 20;
 
 //
 winXStart			= 4;
