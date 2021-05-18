@@ -21,10 +21,10 @@ begin
 	screen2video();
 end;
 
-function IOReadDir(path:String; var IOErr:byte):byte;
+function IOReadDir(path:String):byte;
 const
 	attrMask:array[0..3] of byte = (faReadOnly,faSysFile,faHidden,faArchive);
-	attrChar:array[0..3] of byte = ('R'~,'S'~,'H'~,'A'~);
+	attrChar:array[0..3] of byte = (50,51,40,33); // RSHA
 
 var
 	f:TSearchRec;
@@ -35,8 +35,8 @@ begin
 	fillchar(@listBuf,1024,0);
 	listOfs:=0; filesCount:=0;
 	fillchar(@f.Name,16,0);
-	IOErr:=FindFirst(path, faAnyFile, f);
-	if IOErr=0 then
+	FindFirst(path, faAnyFile, f);
+	if IOResult=1 then
 	begin
 		repeat
 			conv2Internal(f.Name); nameLen:=length(f.Name);
@@ -61,10 +61,11 @@ begin
 			listOfs:=listOfs+width_fileList;
 			filesCount:=filesCount+1;
 
-			IOErr:=findNext(f);
-		until IOErr<>0;
-		FindClose(f);
+			findNext(f);
+		until IOResult<>1;
 	end;
+	if (IOResult<>136) then IOError();
+	FindClose(f);
 	result:=filesCount;
 end;
 
@@ -91,13 +92,16 @@ begin
 			move(@searchPath[1],@screen[220],width_filePath);
 		conv2ASCII(searchPath);
 		box(0,2,width_fileList,9,$40);
-		filesCount:=IOReadDir(searchPath,IOErr);
-		if IOErr=136 then
+		filesCount:=IOReadDir(searchPath);
+		if filesCount>0 then
 		begin
 			selFile:=0;
 			listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
+		end
+		else
+		begin
+			putNText(6,6,resptr[str_IO_noFiles],1);
 		end;
 	end;
 	conv2Internal(searchPath);
-	if (IOErr<>0) and (IOErr<>136) then IOError();
 end;

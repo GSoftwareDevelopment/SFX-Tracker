@@ -93,24 +93,35 @@ var _pos:smallint;
 
 begin
 	_pos:=curPos+ofs;
-	if (_pos>-1) and (_pos<winSize) then
-		curPos:=_pos
-	else
+	if (oversize<=winsize) then
 	begin
-		if (_pos<0) then
-			curPos:=0
-		else
-			curPos:=winSize-1;
-
-		_pos:=curShift+ofs;
-		if (_pos>-1) and (_pos<overSize-winSize) then
-			curShift:=_pos
+		if (_pos>-1) and (_pos<oversize) then
+			curPos:=_pos
 		else
 			if (_pos<0) then
-				curShift:=0
+				_pos:=0
 			else
-				curShift:=overSize-winSize;
-	end;
+				curPos:=oversize;
+	end
+	else
+		if (_pos>-1) and (_pos<winSize) then
+			curPos:=_pos
+		else
+		begin
+			if (_pos<0) then
+				curPos:=0
+			else
+				curPos:=winSize-1;
+
+			_pos:=curShift+ofs;
+			if (_pos>-1) and (_pos<overSize-winSize) then
+				curShift:=_pos
+			else
+				if (_pos<0) then
+					curShift:=0
+				else
+					curShift:=overSize-winSize-1;
+		end;
 end;
 
 function inputText:boolean;
@@ -182,9 +193,6 @@ begin
 						moveCursor(-(width div 2),width,len,curX,shiftX);
 					move(@buf[shiftX+curX+1],@buf[shiftX+curX],len);
 					len:=len-1;
-				end
-				else
-				begin
 				end;
 			end;
 

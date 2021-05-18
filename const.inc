@@ -9,7 +9,7 @@ maxTABs				= 100;
 SFX_maxLength		= 128;
 TAB_maxLength		= 128;
 
-SFXNameLength		= 15;
+SFXNameLength		= 14;
 TABNameLength		= 8;
 SONGNameLength		= 32;
 
@@ -82,16 +82,16 @@ note_val:array[0..63] of byte = (
 );
 
 // File TAGs sections
-	section_main:TTag = ('S', 'F', 'X', 'M', 'M');
-	section_SFX :TTag = ($00, $00, 'S', 'F', 'X');
-	section_KEY :TTag = ($00, $00, 'K', 'E', 'Y');
-	section_TAB :TTag = ($00, $00, 'T', 'A', 'B');
-	section_SONG:TTag = ($00, 'S', 'O', 'N', 'G');
+	section_main:TTag = (83, 78, 88, 77, 77);	// SFXMM
+	section_SFX :TTag = ( 0,  0, 83, 78, 88);	// __SFX
+	section_KEY :TTag = ( 0,  0, 75, 69, 89);	// __KEY
+	section_TAB :TTag = ( 0,  0, 84, 65, 66);	// __TAB
+	section_SONG:TTag = ( 0, 83, 79, 78, 71);	// _SONG
 
 // resources ids
 	base_menus						= 0;
 	base_strings					= 9;
-	base_color_themes				= 15;
+	base_tables						= 16;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -108,6 +108,7 @@ note_val:array[0..63] of byte = (
 	str_TAB_types					= base_strings+2;
 	str_Credits						= base_strings+3;
 	str_IO_Prompt					= base_strings+4;
-	str_IO_Error					= base_strings+5;
+	str_IO_noFiles					= base_strings+5;
+	str_IO_Error					= base_strings+6;
 
-	color_themes					= base_color_themes+0;
+	color_themes					= base_tables+0;

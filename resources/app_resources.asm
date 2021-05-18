@@ -16,10 +16,11 @@ data_pointers_list
 	dta a(str_TAB_types)			;11
 	dta a(str_Credits)			;12
 	dta a(str_IO_Prompt)			;13
-	dta a(str_IO_Error)			;14
+	dta a(str_IO_noFiles)		;14
+	dta a(str_IO_Error)			;15
 
 ; tables
-	dta a(color_themes)			;15
+	dta a(color_themes)			;16
 
 menus
 menu_top
@@ -96,7 +97,7 @@ menu_IO
 
 strings
 str_SFX_notDefined
-					dta d'  - FREE SFX -  ',255
+					dta d' - FREE SFX - ',255
 
 str_TAB_note_names
 //                   0         1         2         3         4         5         6         7
@@ -123,6 +124,8 @@ str_Credits
 
 str_IO_Prompt
 					dta d'ENTER SEARCH PATH',255;
+str_IO_noFiles
+					dta d'NO FILES',255
 str_IO_Error
 					dta d'I/O ERROR #',255;
 tables
