@@ -103,24 +103,24 @@ begin
 			else
 				curPos:=oversize;
 	end
-	else
-		if (_pos>-1) and (_pos<winSize) then
+	else													// curPos=19; curShift=0; ofs=1; winSize=20; _pos=20;
+		if (_pos>-1) and (_pos<winSize) then	// 20>-1=true; 20<20=false; true and false=false
 			curPos:=_pos
 		else
 		begin
-			if (_pos<0) then
+			if (_pos<0) then							// 20<0=false
 				curPos:=0
 			else
-				curPos:=winSize-1;
+				curPos:=winSize-1;					// curPos=20-1=19
 
-			_pos:=curShift+ofs;
-			if (_pos>-1) and (_pos<overSize-winSize) then
-				curShift:=_pos
+			_pos:=curShift+ofs;						// _pos=0+1=1
+			if (_pos>-1) and (_pos<overSize-winSize) then	// 1>-1=true; 1<250-20=1<230=true; true and true=true
+				curShift:=_pos											// curShift=1
 			else
 				if (_pos<0) then
 					curShift:=0
 				else
-					curShift:=overSize-winSize-1;
+					curShift:=overSize-winSize;
 		end;
 end;
 
@@ -134,19 +134,20 @@ var
 	buf:array[0..255] of byte;
 	i,len:byte;
 	curX,shiftX:smallint;
-	ch,ofs:byte;
+	ch,ofs,scrOfs:byte;
 	tm:longint;
 	curState:boolean;
 
 	procedure updateTextLine();
 	begin
-		move(@buf[shiftX],@screen[ofs],width);
+		move(@buf[shiftX],@screen[scrOfs],width);
 		colorHLine(x,y,width,colEdit);
 	end;
 
 begin
 	len:=length(s);
 	fillchar(@buf,256,0);
+	conv2internal(s);
 	move(@s[1],@buf,len);
 	tm:=getTime; curState:=false;
 	if (len>width) then
@@ -158,25 +159,22 @@ begin
 		curX:=len; shiftX:=0;
 	end;
 
-	ofs:=vadr[y]+x;
+	scrOfs:=vadr[y]+x;
 	updateTextLine();
 	screen2video();
 	repeat
 		if (getTime-tm>=10) then
 		begin
 			curState:=not curState;
-			if (curState) then
-				ch:=$3c
-			else
-				ch:=buf[shiftX+curX];
-			screen[ofs+curX]:=colEdit+ch;
+			screen[scrOfs+curX]:=screen[scrOfs+curX] xor $80;
 			screen2video();
 			tm:=getTime;
 		end;
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode);
-			screen[ofs+curX]:=byte(s[curX]) or colEdit;
+			ofs:=shiftX+curX;
+			screen[scrOfs+curX]:=buf[ofs] or colEdit;
 			case key of
 				key_ESC: begin result:=false; break; end;
 				key_RETURN: begin result:=true; break; end;
@@ -185,25 +183,34 @@ begin
 				key_CTRL_Right:
 					moveCursor(+1,width,len,curX,shiftX);
 				key_BackSpc:
-				if shiftX+curX>0 then
-				begin
-					if (curX>0) then
-						moveCursor(-1,width,len,curX,shiftX)
-					else
-						moveCursor(-(width div 2),width,len,curX,shiftX);
-					move(@buf[shiftX+curX+1],@buf[shiftX+curX],len);
-					len:=len-1;
-				end;
+					if (ofs>0) then
+					begin
+						ofs:=ofs-1;
+						move(@buf[ofs+1],@buf[ofs],len-ofs);
+						buf[len]:=0;
+						if (curX=0) and (shiftX>0) then
+						begin
+							i:=shiftX;
+							if (i>width div 2) then i:=width div 2;
+							moveCursor(-i,width,maxLen,curX,shiftX);
+							moveCursor(+i,width,maxLen,curX,shiftX);
+						end;
+						moveCursor(-1,width,maxLen,curX,shiftX);
+						len:=len-1;
+					end
 			end;
 
-			i:=keyScan(key,keys_alphaNum,keysRange_all);
-			if (i<>255) then
+			if (ofs<maxLen) then
 			begin
-				ch:=byte(chars_alphaNum[i+1]);
-				if shiftX+curX<len then move(buf[shiftX+curX],buf[shiftX+curX+1],len-shiftX-curX);
-				buf[shiftX+curX]:=ch;
-				if len<maxLen then len:=len+1;
-				moveCursor(+1,width,len,curX,shiftX);
+				i:=keyScan(key,keys_alphaNum,keysRange_all);
+				if (i<>255) then
+				begin
+					move(buf[ofs],buf[ofs+1],len-ofs);
+					ch:=byte(chars_alphaNum[i+1]);
+					buf[ofs]:=ch;
+					if len<maxLen then len:=len+1;
+					moveCursor(+1,width,maxLen,curX,shiftX);
+				end;
 			end;
 
 			updateTextLine();
@@ -211,9 +218,15 @@ begin
 			kbcode:=255; tm:=0; curState:=false;
 		end;
 	until false;
-	s[0]:=char(len);
-	if len>0 then move(@buf,@s[1],len);
-	move(@buf,@screen[ofs],width);
+	if result then
+	begin
+		s[0]:=char(len);
+		if len>0 then move(@buf,@s[1],len);
+		move(@buf,@screen[scrOfs],width);
+	end
+	else
+		move(@s[1],@screen[scrOfs],width);
+	conv2ASCII(s);
 	colorHLine(x,y,width,colOut);
 	kbcode:=255;
 end;

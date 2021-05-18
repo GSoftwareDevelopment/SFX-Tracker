@@ -1,3 +1,6 @@
+var
+	IOBuf:array[0..$13f] of byte absolute IO_BUFFER_ADDR; // 64 bytes for header; 256 bytes for raw data
+
 function storeHDataInFile(var f:file; var sectionTAG:TTag; id:byte; dataHPtr:word; nameLength:byte):boolean;
 var
 	ofs,
@@ -7,22 +10,22 @@ var
 begin
 	ofs:=0;
 	// prepare SFX section data
-	move(@sectionTag,@listBuf,5); inc(ofs,5);
-	listBuf[ofs]:=id; inc(ofs);
+	move(@sectionTag,@IOBuf,5); inc(ofs,5);
+	IOBuf[ofs]:=id; inc(ofs);
 	dataAddr:=HEAP_GetAddr(dataHPtr);
 	if (nameLength>0) then
 	begin
-		listBuf[ofs]:=nameLength; inc(ofs);
-		move(@_mem[dataAddr],@listBuf[ofs],nameLength); inc(ofs,nameLength);
+		IOBuf[ofs]:=nameLength; inc(ofs);
+		move(@_mem[dataAddr],@IOBuf[ofs],nameLength); inc(ofs,nameLength);
 	end;
 	dataSize:=HEAP_GetSize(dataHPtr)-nameLength;
 	if dataSize>0 then
 	begin
-		listBuf[ofs]:=lo(dataSize); inc(ofs);
-		listBuf[ofs]:=hi(dataSize); inc(ofs);
+		IOBuf[ofs]:=lo(dataSize); inc(ofs);
+		IOBuf[ofs]:=hi(dataSize); inc(ofs);
 		dataAddr:=HEAP_GetAddr(dataHPtr)+nameLength;
-		move(@_mem[dataAddr],@listBuf[ofs],dataSize); inc(ofs,dataSize);
-		BlockWrite(f,listBuf,ofs);
+		move(@_mem[dataAddr],@IOBuf[ofs],dataSize); inc(ofs,dataSize);
+		BlockWrite(f,IOBuf,ofs);
 	end;
 	result:=IOResult=1;
 end;
@@ -33,11 +36,11 @@ var
 
 begin
 	// prepare main section data
-	move(@section_main,@listBuf,5);
-	listBuf[5]:=SFXMM_VERSION;
-	listBuf[6]:=SONGNameLength;
-	move(@SONGName[1],@listBuf[7],SONGNameLength);
-	BlockWrite(f,listBuf,5+1+1+SONGNameLength);
+	move(@section_main,@IOBuf,5);
+	IOBuf[5]:=SFXMM_VERSION;
+	IOBuf[6]:=SONGNameLength;
+	move(@SONGTitle[1],@IOBuf[7],SONGNameLength);
+	BlockWrite(f,IOBuf,5+1+1+SONGNameLength);
 
 	// store SFXs data
 	if IOResult<>1 then begin result:=false; exit; end;
@@ -59,7 +62,6 @@ var
 begin
 	if inputLongText(0,11,20,FILEPATHMaxLength,currentFile,0,0) then
 	begin
-		conv2ASCII(currentFile);
 		{$I-}
 		Assign(f,currentFile);
 		Rewrite(f,1);
@@ -69,6 +71,5 @@ begin
 			IOError();
 		close(f);
 		{$I+}
-		conv2Internal(currentFile);
 	end
 end;

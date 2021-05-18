@@ -97,7 +97,7 @@ menu_IO
 
 strings
 str_SFX_notDefined
-					dta d' - FREE SFX - ',255
+					dta ' - FREE SFX - ',255
 
 str_TAB_note_names
 //                   0         1         2         3         4         5         6         7
@@ -105,13 +105,13 @@ str_TAB_note_names
 					dta d'C-C#D-D#E-F-F#G-G#A-A#H-JT>R[>[[[ENDTAB[[[ [[';
 
 str_TAB_types
-					dta d'FREE TAB',255	; FREE TAB
-					dta d'DRUMS',255		; DRUMS
-					dta d'BASS',255		; BASS
-					dta d'LINE',255		; LINE MELODY
-					dta d'MELODY',255		; MELODY
-					dta d'ACCOMP',255		; ACCOMPANIMENT
-					dta d'MIXED',255		; MIXED
+					dta 'FREE TAB',255	; FREE TAB
+					dta 'DRUMS',255		; DRUMS
+					dta 'BASS',255		; BASS
+					dta 'LINE',255		; LINE MELODY
+					dta 'MELODY',255		; MELODY
+					dta 'ACCOMP',255		; ACCOMPANIMENT
+					dta 'MIXED',255		; MIXED
 					dta 255
 
 str_Credits

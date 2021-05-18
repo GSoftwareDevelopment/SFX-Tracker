@@ -15,16 +15,16 @@ var
 	KRPDEL:byte absolute $2d9;
 	KEYREP:byte absolute $2da;
 
-	listBuf:array[0..0] of byte absolute BUFFER_ADDR;
-	tmpbuf:array[0..255] of byte absolute BUFFER_ADDR+BUFFER_SIZE-256;
+	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR;	// universal list buffer for general UI->listChoice() function
+	tmpbuf:array[0..255] of byte absolute LIST_BUFFER_ADDR+LIST_BUFFER_SIZE-256; // last 256 bytes for temporary screen buffer, for better UI experience (store previous screen)
 
 	resptr:array[0..0] of pointer absolute RESOURCES_ADDR;
 
 	SFXPtr:array[0..maxSFXs-1] of word absolute SFX_POINTERS_ADDR;
 	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR;
 	SONGData:array[0..255] of byte absolute SONG_ADDR;
-	SONGName:string[SONGNameLength] = 'NONAME';
-	currentFile:string[FILEPATHMaxLength] = 'H:TEST.SMM'~; // indicate a current opened SFXMM file with full path and device
+	SONGTitle:string[SONGNameLength];
+	currentFile:string[FILEPATHMaxLength]; // indicate a current opened SFXMM file with full path and device
 
 	cursorPos:smallInt;
 	cursorShift:smallInt;
@@ -78,6 +78,8 @@ begin
 	song_beat:=4;
 	song_lpb:=4;
 
+	SONGTitle:=DefaultSongTitle;
+	currentFile:=DefaultFileName;
 end;
 
 begin

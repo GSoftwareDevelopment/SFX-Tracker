@@ -75,10 +75,6 @@ begin
 			else
 			begin
 				ch:=byte('-'~);
-				(* here is a bug - is reported on GitHub Repo #39
-				screen[ofs]:=ch; ofs:=ofs+20;
-				screen[ofs]:=ch;
-				*)
 				screen[ofs]:=ch;
 				screen[ofs+20]:=ch;
 			end;
@@ -100,7 +96,7 @@ begin
 	putValue(SFXNumberX,SFXNumberY,currentSFX,2,1);
 
 	fillchar(@screen[SFXNameX+vadr[SFXNumberY]],16,$40);
-	putText(SFXNameX,SFXNameY,SFXName,color_choice);
+	putASCIIText(SFXNameX,SFXNameY,SFXName,color_choice);
 
 	fillchar(@screen[204],16,0);
 	putValue(SFXCurPosX,SFXCurPosY,cursorShift+cursorPos,3,0);

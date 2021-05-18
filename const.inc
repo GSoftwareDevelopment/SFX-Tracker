@@ -13,6 +13,10 @@ SFXNameLength		= 14;
 TABNameLength		= 8;
 SONGNameLength		= 32;
 
+defaultSongTitle	= 'NONAME';
+defaultPath			= 'H:';
+defaultFileName	= 'H:SONG.SMM';
+
 // Interface constants
 width_menuTop		= 0;
 width_menuBar		= 4;
@@ -82,8 +86,8 @@ note_val:array[0..63] of byte = (
 );
 
 // File TAGs sections
-	section_main:TTag = (83, 78, 88, 77, 77);	// SFXMM
-	section_SFX :TTag = ( 0,  0, 83, 78, 88);	// __SFX
+	section_main:TTag = (83, 70, 88, 77, 77);	// SFXMM
+	section_SFX :TTag = ( 0,  0, 83, 70, 88);	// __SFX
 	section_KEY :TTag = ( 0,  0, 75, 69, 89);	// __KEY
 	section_TAB :TTag = ( 0,  0, 84, 65, 66);	// __TAB
 	section_SONG:TTag = ( 0, 83, 79, 78, 71);	// _SONG

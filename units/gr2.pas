@@ -15,12 +15,14 @@ procedure initGraph(dlAddr,videoAddr,bufferAddr:word);
 function getTime():longint;
 procedure conv2ASCII(var s:string);
 procedure conv2Internal(var s:string);
+procedure conv2internalP2P(src,dest:pointer; len:byte);
 
 procedure colorHLine(x,y,width,color:byte);
 procedure colorVLine(x,y,height,color:byte);
 procedure box(x,y,width,height,cCol:byte);
 procedure putText(x,y:byte; var s:string; color:byte);
 procedure putNText(x,y:byte; strptr:pointer; color:byte);
+procedure putASCIIText(x,y:byte; var s:string; color:byte);
 procedure putValue(x,y:byte; value:longint; zeros,color:byte);
 procedure putHexValue(x,y,value:byte; color:byte);
 procedure screen2video();
@@ -98,6 +100,16 @@ begin
 	end;
 end;
 
+procedure conv2internalP2P;
+var i:byte;
+	_src,_dest:array[0..0] of byte;
+
+begin
+	_src:=src; _dest:=dest;
+	for i:=0 to len-1 do
+		if _src[i]<32 then _dest[i]:=0 else _dest[i]:=_src[i]-32;
+end;
+
 procedure putText;
 var
 	scrofs,i:byte;
@@ -108,6 +120,20 @@ begin
 	while i<=length(s) do
 	begin
 		screen[scrofs]:=byte(s[i]) or color;
+		scrofs:=scrofs+1; i:=i+1;
+	end;
+end;
+
+procedure putASCIIText;
+var
+	scrofs,i:byte;
+
+begin
+	scrofs:=vadr[y]+x;
+	i:=1; color:=colMask[color];
+	while i<=length(s) do
+	begin
+		screen[scrofs]:=(byte(s[i])-32) or color;
 		scrofs:=scrofs+1; i:=i+1;
 	end;
 end;

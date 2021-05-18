@@ -73,7 +73,7 @@ function IODirectory():string;
 var
 	f:TSearchRec;
 	selFile,filesCount,IOErr:byte;
-	searchPath:string[FILEPATHMaxLength] = 'D:'~;
+	searchPath:string[FILEPATHMaxLength] = 'H:';
 	wild:string[1];
 
 begin
@@ -82,15 +82,17 @@ begin
 	if inputLongText(0,11,width_filePath,FILEPATHMaxLength,searchPath,0,0) then
 	begin
 		fillchar(@searchPath[1+length(searchPath)],FILEPATHMaxLength-length(searchPath),0);
-		conv2ASCII(searchPath); wild:='*';
+		wild:='*';
 		if (indexOf(searchPath,wild,1)=-1) then
 			searchPath:=concat(searchPath,'*.*');
+
 		conv2Internal(searchPath);
 		if length(searchPath)<width_filePath then
 			move(@searchPath[1],@screen[220],length(searchPath))
 		else
 			move(@searchPath[1],@screen[220],width_filePath);
 		conv2ASCII(searchPath);
+
 		box(0,2,width_fileList,9,$40);
 		filesCount:=IOReadDir(searchPath);
 		if filesCount>0 then
@@ -99,9 +101,6 @@ begin
 			listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
 		end
 		else
-		begin
 			putNText(6,6,resptr[str_IO_noFiles],1);
-		end;
 	end;
-	conv2Internal(searchPath);
 end;

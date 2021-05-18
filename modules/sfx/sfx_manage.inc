@@ -111,16 +111,17 @@ var i:byte;
 
 begin
 	ofs:=0;
+	fillchar(@listBuf,maxSFXs*SFXNameLength,0);
 	for i:=0 to maxSFXs-1 do
 	begin
 		hptr:=SFXPtr[i];
 		if (hptr<>$ffff) then
 		begin
 			adr:=HEAP_GetAddr(hptr);
-			move(@_mem[adr],@listBuf[ofs],SFXNameLength);
+			conv2internalP2P(@_mem[adr],@listBuf[ofs],SFXNameLength);
 		end
 		else
-			move(resptr[str_SFX_notDefined],@listBuf[ofs],SFXNameLength);
+			conv2internalP2P(resptr[str_SFX_notDefined],@listBuf[ofs],SFXNameLength);
 		ofs:=ofs+SFXNameLength;
 	end;
 end;
