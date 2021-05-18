@@ -18,7 +18,8 @@ Support it:
 - [report bugs or corrections to the code](https://github.com/GSoftwareDevelopment/SFX-Tracker/issues/new?assignees=&labels=&template=bug_report.md&title=)
 - improve the code
 - create a color theme
-- you can also [Discuss about this project](https://github.com/GSoftwareDevelopment/SFX-Tracker/discussions)
+- you can also [Discuss](https://github.com/GSoftwareDevelopment/SFX-Tracker/discussions) about this project
+- or just [comment](https://www.patreon.com/posts/sfx-music-maker-51353518) you like it :)
 
 Take action, don't sit idle. Show that you can and you want to be useful. Everyone knows something.
 
