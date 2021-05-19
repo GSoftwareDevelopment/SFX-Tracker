@@ -1,4 +1,4 @@
-	{$DEFINE ROMOFF}
+{$DEFINE ROMOFF}
 
 {$librarypath './units/'}
 uses sysutils, strings, heap, gr2, ui, pmgraph;
@@ -42,7 +42,7 @@ var
 
 //
 
-{$i modules/gsd_options/gsd_options.pas}
+{$i modules/gsd/gsd.pas}
 {$i modules/io/io.pas}
 {$i modules/sfx/sfx.pas}
 {$i modules/tab/tabs.pas}
@@ -55,7 +55,7 @@ begin
 	initThemes(resptr[color_themes]);
 	fillchar(@screen[0],40,$00);
 	fillchar(@screen[40],20,$80);
-	fillchar(@screen[220],20,$00);
+//	fillchar(@screen[220],20,$00);
 	KRPDEL:=20;
 	KEYREP:=3;
 	CHBAS:=$BC;
@@ -91,10 +91,10 @@ begin
 			case key of
 				key_RETURN:
 					case currentMenu of
-						0: GSDOptions();
-						1: IOScreen();
-						2: SFXScreen();
-						3: TABScreen();
+						0: GSDModule();
+						1: IOModule();
+						2: SFXModule();
+						3: TABModule();
 					end;
 				key_Left: if (currentMenu>0) then currentMenu:=currentMenu-1;
 				key_Right: if (currentMenu<4) then currentMenu:=currentMenu+1;

@@ -1,14 +1,12 @@
+{$i modules/io/io_view.inc}
 {$i modules/io/io_dir.inc}
 {$i modules/io/io_save.inc}
 
-procedure IOScreen();
+procedure IOLoop();
 var
 	opt:shortint;
 
 begin
-	move(@screen,@tmpbuf,240);
-	fillchar(@screen[20],20,$00);
-	menuBar(resptr[menu_IO],menu_Top,0);
 	opt:=0;
 	updateBar(resptr[menu_IO],width_menuTop,opt,0,color_selected);
 	screen2video();
@@ -31,4 +29,10 @@ begin
 		end;
 	until false;
 	move(@tmpbuf,@screen,240);
+end;
+
+procedure IOModule();
+begin
+	IOScreen();
+	IOLoop();
 end;

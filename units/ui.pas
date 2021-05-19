@@ -32,8 +32,8 @@ const
 	color_background	= 2;
 	color_selected		= 3;
 
-	chars_alphaNum:string[38] = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ. !#%*-/:<>?'~;
-	keys_alphaNum:array[0..47] of byte = (
+	chars_alphaNum:string[49] = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ. !#%*-/:<>?_'~;
+	keys_alphaNum:array[0..48] of byte = (
 		50,31,30,26,24,29,27,51,53,48,	// 0-9
 		63,21,18,58,42,56,61,57,13,1,5,0,37,35,8,10,47,40,62,45,11,16,46,22,43,23,	// A-Z
 		34,	// . (dot)
@@ -47,10 +47,11 @@ const
 		66,	// colon (:)
 		54,	// less sign (<)
 		55,	// more sign (>)
-		102	// question mark (?)
+		102,	// question mark (?)
+		78		// underscore mark (_)
 	);
 
-	keysRange_all			= 48;
+	keysRange_all			= 49;
 	keysRange_hexNum		= 16;
 	keysRange_decNum		= 10;
 

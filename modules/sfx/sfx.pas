@@ -85,7 +85,7 @@ begin
 						1: section:=2;
 						6: begin
 								opt:=4;
-								optionsList(resptr[menu_sfx_options],width_menuOptions,5,opt);
+								optionsList(resptr[menu_sfx_options],width_menuOptions,SFXMenuOptions,opt);
 								case opt of
 									4: begin
 											SFXDetermineLength();
@@ -129,13 +129,8 @@ begin
 	updateBar(resptr[menu_sfx],4,-1,0,0);
 end;
 
-
-procedure SFXScreen();
+procedure SFXModule();
 begin
-	section:=0; cursorPos:=0; cursorShift:=0;
-	fillchar(@screen[20],180,$00);
-	VBar(0,1,width_menuBar,0);
-	colorHLine(SFXNumberX-1,SFXNumberY,4,1);
-	menuBar(resptr[menu_sfx],width_menuBar,1);
+	SFXScreen();
 	SFXLoop();
 end;

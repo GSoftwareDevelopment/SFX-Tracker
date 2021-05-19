@@ -42,11 +42,13 @@ menu_sfx
 					dta 255
 
 menu_sfx_options
-					dta 124,d'KEY NOTE',255
-					dta 144,d'CLONE',255
-					dta 164,d'INSERT',255
-					dta 184,d'DELETE',255
-					dta 204,d'SAVE',255
+					dta 84,d'KEY NOTE',255
+					dta 104,d'CLONE',255
+					dta 124,d'INSERT',255
+					dta 144,d'DELETE',255
+					dta 164,d'STORE SET',255
+					dta 184,d'BACK',255
+					dta 204,d'IO>SAVE SET',255
 					dta 255
 
 menu_tabs
@@ -58,10 +60,12 @@ menu_tabs
 					dta 255
 
 menu_tabs_option
-					dta 144,d'CLONE',255
-					dta 164,d'INSERT',255
-					dta 184,d'DELETE',255
-					dta 204,d'SAVE',255
+					dta 104,d'CLONE',255
+					dta 124,d'INSERT',255
+					dta 144,d'DELETE',255
+					dta 164,d'STORE SET',255
+					dta 184,d'BACK',255
+					dta 204,d'IO>SAVE SET',255
 					dta 255
 menu_tab_edit
 					dta  46,7,d'END TAB',255
@@ -69,7 +73,7 @@ menu_tab_edit
 					dta  86,7,d'REPEAT',255
 					dta 106,7,d'NOTE VALUE',255
 					dta 126,7,d'NOP',255
-					dta 146,7,d'< BACK',255
+					dta 146,7,d'BACK',255
 					dta 255
 
 menu_GSD
@@ -85,7 +89,7 @@ menu_ThemeEdit
 					dta 100,d'SELECTED',255
 					dta 120,d'BORDER',255
 					dta 180,d'SAVE',255
-					dta 200,d'< BACK',255
+					dta 200,d'BACK',255
 					dta 255
 
 menu_IO
@@ -102,17 +106,10 @@ str_SFX_notDefined
 str_TAB_note_names
 //                   0         1         2         3         4         5         6         7
 //                   012345678901234567890123456789012345678901234567890123456789012345678901234567890
-					dta d'C-C#D-D#E-F-F#G-G#A-A#H-JT>R[>[[[ENDTAB[[[ [[';
+					dta d'C-C#D-D#E-F-F#G-G#A-A#H-JT>R_>___ENDTAB___ __';
 
 str_TAB_types
-					dta 'FREE TAB',255	; FREE TAB
-					dta 'DRUMS',255		; DRUMS
-					dta 'BASS',255		; BASS
-					dta 'LINE',255		; LINE MELODY
-					dta 'MELODY',255		; MELODY
-					dta 'ACCOMP',255		; ACCOMPANIMENT
-					dta 'MIXED',255		; MIXED
-					dta 255
+					dta 'FREE TAB',255
 
 str_Credits
 					dta 85,d'THIS PLACE',255
@@ -123,7 +120,7 @@ str_Credits
 					dta 255
 
 str_IO_Prompt
-					dta d'ENTER SEARCH PATH',255;
+					dta d'DEVICE:PATH',255;
 str_IO_noFiles
 					dta d'NO FILES',255
 str_IO_Error

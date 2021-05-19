@@ -17,17 +17,15 @@ begin
 			v:=SFX_vol_dist[pos] and $0f;
 		// volume bar
 			ch:=$00;
-			if (v>12) then ch:=$3c+v-13;
+			if (v>12) then ch:=$3e-v+13;
 			screen[scrOfs]:=ch;
 			if (v>8) then
-				if (v>12) then ch:=$3f else ch:=$3c+v-9;
+				if (v>12) then ch:=$3b else ch:=$3e-v+9;
 			screen[scrOfs+20]:=ch;
 			if (v>4) then
-				if (v>8) then ch:=$3f else ch:=$3c+v-5;
+				if (v>8) then ch:=$3b else ch:=$3e-v+5;
 			screen[scrOfs+40]:=ch;
-			if (v>0) then
-				if (v>4) then ch:=$3f else ch:=$3b+v;
-			if (v=0) then ch:=$3b;
+			if (v>4) then ch:=$3b else ch:=$3f-v;
 			screen[scrOfs+60]:=ch;
 		// volume value
 			if (v>0) then
@@ -102,4 +100,13 @@ begin
 	putValue(SFXCurPosX,SFXCurPosY,cursorShift+cursorPos,3,0);
 	screen[SFXCurPosX+3+vadr[SFXCurPosY]]:=byte('/'~);
 	putValue(SFXLenX,SFXLenY,sfxLen,3,0);
+end;
+
+procedure SFXScreen();
+begin
+	section:=0; cursorPos:=0; cursorShift:=0;
+	fillchar(@screen[20],220,$00);
+	VBar(0,1,width_menuBar,0);
+	colorHLine(SFXNumberX-1,SFXNumberY,4,1);
+	menuBar(resptr[menu_sfx],width_menuBar,1);
 end;

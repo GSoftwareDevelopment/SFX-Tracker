@@ -199,3 +199,16 @@ begin
 	until false;
 	kbcode:=255;
 end;
+
+procedure TABScreen();
+begin
+	fillchar(@screen[20],220,$00);
+	VBar(0,1,width_menuBar,0);
+	screen[223]:=$06;
+	screen[33]:=$07;
+
+	fillchar(@TAB_notes,256,255);
+	fillchar(@TAB_fnSFX,256,254);
+
+	menuBar(resptr[menu_tabs],width_menuBar,1);
+end;

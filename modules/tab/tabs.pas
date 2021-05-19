@@ -76,7 +76,7 @@ begin
 						1: TABEditLoop();
 						3: begin
 								opt:=3;
-								optionsList(resptr[menu_tabs_options],width_menuOptions,4,opt);
+								optionsList(resptr[menu_tabs_options],width_menuOptions,TABMenuOptions,opt);
 								case opt of
 									3: begin
 											TABDetermineLength();
@@ -118,17 +118,8 @@ begin
 	updateBar(resptr[menu_tabs],width_menuBar,-1,0,0);
 end;
 
-procedure TABScreen();
+procedure TABModule();
 begin
-	fillchar(@screen[20],200,$00);
-	VBar(0,1,width_menuBar,0);
-	screen[223]:=$06;
-	screen[33]:=$07;
-
-	fillchar(@TAB_notes,256,255);
-	fillchar(@TAB_fnSFX,256,254);
-
-	menuBar(resptr[menu_tabs],width_menuBar,1);
-
+	TABScreen();
 	TABLoop();
 end;
