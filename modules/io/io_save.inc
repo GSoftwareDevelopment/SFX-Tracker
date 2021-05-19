@@ -1,5 +1,5 @@
 var
-	IOBuf:array[0..$13f] of byte absolute IO_BUFFER_ADDR; // 64 bytes for header; 256 bytes for raw data
+	IOBuf:array[0..IO_BUFFER_SIZE-1] of byte absolute IO_BUFFER_ADDR;
 
 function storeHDataInFile(var f:file; var sectionTAG:TTag; id:byte; dataHPtr:word; nameLength:byte):boolean;
 var

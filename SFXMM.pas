@@ -15,7 +15,7 @@ var
 	KRPDEL:byte absolute $2d9;
 	KEYREP:byte absolute $2da;
 
-	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR;	// universal list buffer for general UI->listChoice() function
+	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR;
 	tmpbuf:array[0..255] of byte absolute LIST_BUFFER_ADDR+LIST_BUFFER_SIZE-256; // last 256 bytes for temporary store previous screen, for better UI experience
 
 	resptr:array[0..0] of pointer absolute RESOURCES_ADDR;
@@ -55,7 +55,6 @@ begin
 	initThemes(resptr[color_themes]);
 	fillchar(@screen[0],40,$00);
 	fillchar(@screen[40],20,$80);
-//	fillchar(@screen[220],20,$00);
 	KRPDEL:=20;
 	KEYREP:=3;
 	CHBAS:=$BC;
