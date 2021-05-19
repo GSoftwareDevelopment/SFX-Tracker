@@ -15,7 +15,7 @@ begin
 	addr:=HEAP_GetAddr(SFXPtr[currentSFX]);
 
 	if (addr<$ffff) then
-		conv2internalP2P(@_mem[addr],@screen[scrOfs],SFXNameLength);
+		conv2internalP2P(@_mem[addr],@screen[scrOfs],SFXNameLength)
 	else
 		conv2internalP2P(resptr[str_SFX_notDefined],@screen[scrOfs],SFXNameLength);
 

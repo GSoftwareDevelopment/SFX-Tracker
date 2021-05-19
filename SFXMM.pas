@@ -16,7 +16,7 @@ var
 	KEYREP:byte absolute $2da;
 
 	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR;	// universal list buffer for general UI->listChoice() function
-	tmpbuf:array[0..255] of byte absolute LIST_BUFFER_ADDR+LIST_BUFFER_SIZE-256; // last 256 bytes for temporary screen buffer, for better UI experience (store previous screen)
+	tmpbuf:array[0..255] of byte absolute LIST_BUFFER_ADDR+LIST_BUFFER_SIZE-256; // last 256 bytes for temporary store previous screen, for better UI experience
 
 	resptr:array[0..0] of pointer absolute RESOURCES_ADDR;
 
