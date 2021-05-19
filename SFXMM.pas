@@ -32,20 +32,22 @@ var
 	song_tact,song_beat,song_lpb:byte;
 
 	currentMenu:byte;
-	section:shortint;
+	section:byte;
 
-	currentSFX:shortint;
-	currentOct:shortint;
-	currentTAB:shortint;
+	currentSFX:byte;
+	currentOct:byte;
+	currentTAB:byte;
 
+	modified:boolean = false;
 	key:TKeys;
 
 //
 
 {$i modules/gsd/gsd.pas}
 {$i modules/io/io.pas}
+{$i modules/modified.inc}
 {$i modules/sfx/sfx.pas}
-{$i modules/tab/tabs.pas}
+{$i modules/tab/tab.pas}
 
 procedure init();
 begin
@@ -87,17 +89,14 @@ begin
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
-			case key of
-				key_RETURN:
-					case currentMenu of
-						0: GSDModule();
-						1: IOModule();
-						2: SFXModule();
-						3: TABModule();
-					end;
-				key_Left: if (currentMenu>0) then currentMenu:=currentMenu-1;
-				key_Right: if (currentMenu<4) then currentMenu:=currentMenu+1;
-			end;
+			controlSelectionKeys(key,key_Left,key_Right,currentMenu,0,4);
+			if key=key_RETURN then
+				case currentMenu of
+					0: GSDModule();
+					1: IOModule();
+					2: SFXModule();
+					3: TABModule();
+				end;
 			updateBar(resptr[menu_top],width_menuTop,currentMenu,0,color_selected);
 		end;
 		screen2video();

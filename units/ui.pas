@@ -60,6 +60,7 @@ var
 	key:TKeys;
 
 function keyScan(key2Scan:byte; var keyDefs:array[0..0] of byte; keysRange:byte):byte;
+function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:smallint):boolean;
 procedure moveCursor(ofs:shortint; winSize,overSize:smallint; var curPos,curShift:smallint);
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputLongText(x,y,width,maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
@@ -87,6 +88,21 @@ begin
 			break;
 		end;
 	end;
+end;
+
+function controlSelectionKeys:boolean;
+begin
+	if keyIn=decKey then
+	begin
+		if value>min then value:=value-1 else value:=max;
+		exit(true);
+	end;
+	if keyIn=incKey then
+	begin
+		if value<max then value:=value+1 else value:=min;
+		exit(true);
+	end;
+	result:=false;
 end;
 
 procedure moveCursor;
@@ -242,10 +258,8 @@ begin
 	result:=false;
 	repeat
 		str(v,s); o:=concat(StringOfChar('0',width-length(s)),s);
-		conv2Internal(o);
 		ok:=inputText(x,y,width,o,colEdit,colOut);
 		if not ok then exit;
-		conv2ASCII(o);
 		val(o,v,err);
 		if (v<min) or (v>max) then err:=255;
 	until err=0;
@@ -348,13 +362,12 @@ begin
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode);
+			controlSelectionKeys(key,key_Up,key_Down,currentOpt,0,opts);
 			case key of
 				key_ESC: begin
 					currentOpt:=-1;
 					break;
 				end;
-				key_Up: if (currentOpt>0) then currentOpt:=currentOpt-1 else currentOpt:=opts;
-				key_Down: if (currentOpt<opts) then currentOpt:=currentOpt+1 else currentOpt:=0;
 				key_RETURN: begin
 					kbcode:=255;
 					break;

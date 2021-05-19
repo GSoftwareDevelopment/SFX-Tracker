@@ -100,7 +100,7 @@ end;
 
 procedure theme_selector();
 var
-	nTheme:shortint;
+	nTheme:byte;
 
 begin
 	initThemeSelector();
@@ -113,11 +113,10 @@ begin
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
 			colorHLine(6,2+nTheme,14,1);
+			controlSelectionKeys(key,key_Up,key_Down,nTheme,0,8);
 			case key of
 				key_ESC: break;
 				key_RETURN: setTheme(nTheme);
-				key_Up: if nTheme>0 then nTheme:=nTheme-1;
-				key_Down: if nTheme<8 then nTheme:=nTheme+1;
 				key_SPACE: begin
 					editTheme(nTheme);
 					exitThemeSelector();
@@ -130,7 +129,7 @@ begin
 	until false;
 
 	exitThemeSelector();
-	move(@tmpbuf[20],@screen[40],180);
+	move(@tmpbuf[20],@screen[20],180);
 end;
 
 procedure initThemes(themesPtr:pointer);

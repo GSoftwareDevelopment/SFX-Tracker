@@ -42,23 +42,20 @@ begin
 			case key of
 				key_ESC: begin kbcode:=255; break; end;
 				key_RETURN, key_TAB, key_SHIFT_TAB: break;
-				key_Up: begin
-					if value<15 then value:=value+1 else value:=0;
-					setValue(value);
-				end;
-				key_Down: begin
-					if value>0 then value:=value-1 else value:=15;
-					setValue(value);
-				end;
 				key_Left: nibbel:=0;
 				key_Right: nibbel:=1;
 			end;
 
-			i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
-			if (i<>255) then
+			if controlSelectionKeys(key,key_Up,key_Down,value,0,15) then
+				setValue(value)
+			else
 			begin
-				setValue(i);
-				nibbel:=1-nibbel;
+				i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
+				if (i<>255) then
+				begin
+					setValue(i);
+					nibbel:=1-nibbel;
+				end;
 			end;
 
 			updateTheme(themeColors);
@@ -72,7 +69,7 @@ end;
 
 procedure editTheme(nTheme:shortint);
 var i:byte;
-	opt:shortint;
+	opt:byte;
 	themeColors:array[0..4] of byte;
 
 begin
@@ -96,17 +93,16 @@ begin
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
+			controlSelectionKeys(key,key_Up,key_Down,opt,0,6);
 			case key of
 				key_ESC: break;
-				key_Up: if opt>0 then opt:=opt-1 else opt:=6;
-				key_Down: if opt<6 then opt:=opt+1 else opt:=0;
 				key_RETURN, key_TAB, key_SHIFT_TAB:
 					case opt of
 						0..4: editColor(opt,themeColors);
 						5: begin
-							storeTheme(nTheme,themeColors);
-							break;
-						end;
+								storeTheme(nTheme,themeColors);
+								break;
+							end;
 						6: break;
 					end;
 			end;

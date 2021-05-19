@@ -19,18 +19,13 @@ begin
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode);
+			if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,section,3,6) then
+			begin
+				section:=section or $10;
+				break;
+			end;
 			case key of
 				key_RETURN,key_ESC: begin
-					break;
-				end;
-				key_TAB: begin
-					if (section<5) then section:=section+1 else section:=2;
-					section:=section or $10;
-					break;
-				end;
-				key_SHIFT_TAB: begin
-					if (section>2) then section:=section-1 else section:=5;
-					section:=section or $10;
 					break;
 				end;
 				key_CTRL_Left: begin
@@ -62,27 +57,20 @@ begin
 			at:=cursorShift+cursorPos;
 			v:=tab[at];
 			if (nibble=1) then v:=v shr 4 else v:=v and $0f;
-
-			case key of
-				key_UP: begin modified:=true; if (v<15) then v:=v+1 else v:=0; end;
-				key_DOWN: begin modified:=true; if (v>0) then v:=v-1 else v:=15; end;
-			end;
-
-			i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
-			if (i<>255) then begin
-				storeValue(i);
-				if (cursorPos+1<SFX_winWidth) then
-					cursorPos:=cursorPos+1
-				else
-					if (cursorShift+1<SFX_maxLength-SFX_winWidth) then
-					begin
-						cursorShift:=cursorShift+1;
-					end;
+			if controlSelectionKeys(key,key_Up,Key_Down,v,0,15) then
+			begin
+				storeValue(v);
 				modified:=true;
 			end
 			else
-				storeValue(v);
-
+			begin
+				i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
+				if (i<>255) then begin
+					storeValue(i);
+					moveCursor(1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
+					modified:=true;
+				end;
+			end;
 			updateSFXView();
 
 			colorVLine(winXStart+cursorPos,winYStart,8,3);

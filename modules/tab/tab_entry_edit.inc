@@ -12,6 +12,7 @@ procedure setEndTab();
 begin
 	TAB_notes[cursorShift+cursorPos]:=255;
 	TAB_fnSFX[cursorShift+cursorPos]:=255;
+	modified:=true;
 end;
 
 procedure setJumpTo();
@@ -20,6 +21,7 @@ begin
 	begin
 		TAB_notes[cursorShift+cursorPos]:=0;
 		TAB_fnSFX[cursorShift+cursorPos]:=228;
+		modified:=true;
 	end;
 end;
 
@@ -34,6 +36,7 @@ begin
 		jumpPos:=byte(v);
 		TAB_notes[cursorShift+cursorPos]:=jumpPos;
 		TAB_fnSFX[cursorShift+cursorPos]:=228;
+		modified:=true;
   	end;
 end;
 
@@ -45,6 +48,7 @@ begin
 	begin
 		TAB_notes[cursorShift+cursorPos]:=0;
 		TAB_fnSFX[cursorShift+cursorPos]:=229;
+		modified:=true;
 	end;
 end;
 
@@ -64,6 +68,7 @@ begin
 			repeatPos:=byte(v);
 			TAB_notes[cursorShift+cursorPos]:=repeatPos;
 			TAB_fnSFX[cursorShift+cursorPos]:=228+times;
+			modified:=true;
   		end;
   	end;
 end;
@@ -76,6 +81,7 @@ begin
 	begin
 		TAB_notes[cursorShift+cursorPos]:=0;
 		TAB_fnSFX[cursorShift+cursorPos]:=currentSFX or $80;
+		modified:=true;
 	end;
 end;
 
@@ -93,8 +99,39 @@ begin
 		begin;
 			TAB_notes[cursorShift+cursorPos]:=value;
 			TAB_fnSFX[cursorShift+cursorPos]:=byte(v) or $80;
+			modified:=true;
   		end;
   	end;
+end;
+
+//
+
+procedure setSFXChange();
+begin
+	// TODO: seach up from cursor position, first SFX set, and use it to set funtion
+	TAB_fnSFX[cursorShift+cursorPos]:=0;
+end;
+
+procedure editSFXChange(nSFX:byte);
+var
+	v:integer;
+
+begin
+	v:=nSFX and $7f;
+	if inputValue(winXStart+9,2+cursorPos,2,v,0,99,0,color_selected) then
+	begin;
+		TAB_fnSFX[cursorShift+cursorPos]:=byte(v);
+		modified:=true;
+	end;
+end;
+
+//
+
+procedure setNote(note,sfx:byte);
+begin
+	TAB_notes[cursorShift+cursorPos]:=note;
+	TAB_fnSFX[cursorShift+cursorPos]:=sfx;
+	modified:=true;
 end;
 
 //
@@ -103,7 +140,12 @@ procedure setBlank();
 begin
 	TAB_notes[cursorShift+cursorPos]:=$ff;
 	TAB_fnSFX[cursorShift+cursorPos]:=$fe;
+	modified:=true;
 end;
+
+//
+//
+//
 
 procedure entryEdit();
 var _note,_fnsfx,_pos:byte;
@@ -117,16 +159,18 @@ begin
 		128..227: opt:=3;	// note value
 		228: opt:=1;		// jump to
 		229..238: opt:=2;	// repeat
-		254: opt:=4; 		// blank
+		254: opt:=5; 		// blank
 		255: opt:=0; 		// end-tab
 	end;
-	optionsList(resptr[menu_tab_edit],width_menuTABFunc,6,opt);
+	if (_note=0) and (_fnsfx<228) then opt:=4;
+	optionsList(resptr[menu_tab_edit],width_menuTABFunc,7,opt);
 	case opt of
 		0: setEndTab();
 		1: setJumpTo();
 		2: setRepeat();
 		3: setNoteValue();
-		4: setBlank();
+		4: setSFXChange();
+		5: setBlank();
 	end;
 	box(4,2,16,9,0);
 	updateTAB(true);
@@ -137,78 +181,6 @@ begin
 		1: editJumpTo(_note);
 		2: editRepeat(_fnsfx,_note);
 		3: editNoteValue(_note);
+		4: editSFXChange(_fnsfx and $7f);
 	end;
-end;
-//
-
-procedure TABEditLoop();
-var
-	i,v:byte;
-
-begin
-	colorHLine(winXStart,2+cursorPos,20-winXStart,3);
-	screen2video(); kbcode:=255;
-	repeat
-		if (kbcode)<>255 then
-		begin
-			key:=TKeys(kbcode);
-			colorHLine(winXStart,2+cursorPos,20-winXStart,0);
-			case key of
-				key_ESC: break;
-				key_TAB,key_SHIFT_TAB: begin
-					section:=section or $10; // set flag in section and...
-					exit; // ... immediatly exit from procedure
-				end;
-
-				key_CTRL_Up: if (cursorPos=0) then
-					moveCursor(-9,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift)
-				else
-					cursorPos:=0;
-				key_CTRL_Down: if (cursorPos=TAB_winWidth-1) then
-					moveCursor(9,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift)
-				else
-					cursorPos:=TAB_winWidth-1;
-
-				// cursor single step
-				key_Up: moveCursor(-1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
-				key_Down: moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
-				key_SPACE: begin
-					setBlank();
-					moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
-				end;
-				key_RETURN: entryEdit();
-			end;
-
-			i:=keyScan(key,keys_notes,34);
-			if (i<>255) then
-			begin
-				v:=key2Note[i];
-				TAB_notes[cursorShift+cursorPos]:=currentOct+v;
-				TAB_fnSFX[cursorShift+cursorPos]:=currentSFX;
-				moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
-			end;
-
-			//
-			TABDetermineLength();
-			updateTAB(true);
-			colorHLine(winXStart,2+cursorPos,20-winXStart,3);
-			updateTABInfo();
-			screen2video();
-			kbcode:=255;
-		end;
-	until false;
-	kbcode:=255;
-end;
-
-procedure TABScreen();
-begin
-	fillchar(@screen[20],220,$00);
-	VBar(0,1,width_menuBar,0);
-	screen[223]:=$06;
-	screen[33]:=$07;
-
-	fillchar(@TAB_notes,256,255);
-	fillchar(@TAB_fnSFX,256,254);
-
-	menuBar(resptr[menu_tabs],width_menuBar,1);
 end;

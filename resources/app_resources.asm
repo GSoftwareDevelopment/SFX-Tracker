@@ -34,6 +34,7 @@ menu_top
 menu_sfx
 					dta  20,d'#',255
 					dta  40,d'>>>',255
+					dta 100,d'PLY',255
 					dta 120,d'VOL',255
 					dta 140,d'DST',255
 					dta 160,d'MOD',255
@@ -47,14 +48,14 @@ menu_sfx_options
 					dta 124,d'INSERT',255
 					dta 144,d'DELETE',255
 					dta 164,d'STORE SET',255
-					dta 184,d'BACK',255
+					dta 184,d'< BACK',255
 					dta 204,d'IO>SAVE SET',255
 					dta 255
 
 menu_tabs
 					dta  20,d'#',255
 					dta  40,d'>>>',255
-					dta 180,d'+/,',255
+					dta 180,d'PLY',255
 					dta 200,d'OPT',255
 					dta 220,d'#',255
 					dta 255
@@ -64,7 +65,7 @@ menu_tabs_option
 					dta 124,d'INSERT',255
 					dta 144,d'DELETE',255
 					dta 164,d'STORE SET',255
-					dta 184,d'BACK',255
+					dta 184,d'< BACK',255
 					dta 204,d'IO>SAVE SET',255
 					dta 255
 menu_tab_edit
@@ -72,14 +73,15 @@ menu_tab_edit
 					dta  66,7,d'JUMP TO',255
 					dta  86,7,d'REPEAT',255
 					dta 106,7,d'NOTE VALUE',255
-					dta 126,7,d'NOP',255
-					dta 146,7,d'BACK',255
+					dta 126,7,d'SFX CHANGE',255
+					dta 146,7,d'NOP',255
+					dta 166,7,d'< BACK',255
 					dta 255
 
 menu_GSD
-					dta 20,d'CREDITS',255
-					dta 28,d'THEME',255
-					dta 36,d'000%',255
+					dta 1,d'<',255
+					dta 3,d'CREDITS',255
+					dta 11,d'THEME',255
 					dta 255
 
 menu_ThemeEdit
@@ -89,14 +91,14 @@ menu_ThemeEdit
 					dta 100,d'SELECTED',255
 					dta 120,d'BORDER',255
 					dta 180,d'SAVE',255
-					dta 200,d'BACK',255
+					dta 200,d'< BACK',255
 					dta 255
 
 menu_IO
-					dta 21,d'DIR',255
-					dta 25,d'LOAD',255
-					dta 30,d'SAVE',255
-					dta 35,d'NEW',255
+					dta  1,d'<',255
+					dta  3,d'DIR',255
+					dta 7,d'LOAD',255
+					dta 12,d'SAVE',255
 					dta 255
 
 strings
@@ -106,7 +108,7 @@ str_SFX_notDefined
 str_TAB_note_names
 //                   0         1         2         3         4         5         6         7
 //                   012345678901234567890123456789012345678901234567890123456789012345678901234567890
-					dta d'C-C#D-D#E-F-F#G-G#A-A#H-JT>R_>___ENDTAB___ __';
+					dta d'C-C#D-D#E-F-F#G-G#A-A#H-JT>R_>___ENDTAB___ _____<';
 
 str_TAB_types
 					dta 'FREE TAB',255

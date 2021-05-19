@@ -14,8 +14,7 @@ end;
 
 procedure GSDScreen();
 begin
-	updateFreeMem();
-	move(@screen[20],@tmpbuf,200);
-	fillchar(@screen[20],20,$00);
+	move(@screen,@tmpbuf,240);
+	fillchar(@screen,20,$00);
 	menuBar(resptr[menu_GSD],menu_Top,0);
 end;

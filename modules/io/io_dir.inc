@@ -44,7 +44,9 @@ begin
 			for i:=1 to nameLen do if byte(f.Name[i])>63 then f.Name[i]:=char(byte(f.Name[i])-32);
 			// add folder icon to list buffer if, entry have directory attribute set
 			if f.attr and faDirectory=faDirectory then
-				listBuf[listOfs]:=byte('<')-32;
+			begin
+				listBuf[listOfs]:=$1e; // more (>)
+			end;
 			// copy name to list buffer
 			move(@f.Name[1],@listBuf[listOfs+1],width_filePath-(sizeOf(attrChar)+1));
 

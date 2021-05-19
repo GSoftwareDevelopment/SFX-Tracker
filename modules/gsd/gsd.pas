@@ -7,31 +7,31 @@
 
 procedure GSDLoop();
 var
-	opt:shortint;
+	opt:byte;
 
 begin
-	opt:=0;
+	opt:=1;
 	updateBar(resptr[menu_GSD],width_menuTop,opt,0,color_selected);
 	screen2video();
 	repeat
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
+			controlSelectionKeys(key,key_Left,key_Right,opt,0,2);
 			case key of
 				key_ESC: break;
-				key_Left: if (opt>0) then opt:=opt-1;
-				key_Right: if (opt<2) then opt:=opt+1;
 				key_RETURN: case opt of
-					0: credits();
-					1: theme_selector();
-					2: memory_stats();
+					0: break;
+					1: credits();
+					2: theme_selector();
+					3: memory_stats();
 				end;
 			end;
 			updateBar(resptr[menu_GSD],width_menuTop,opt,0,color_selected);
 			screen2video();
 		end;
 	until false;
-	move(@tmpbuf,@screen[20],200);
+	move(@tmpbuf,@screen,240);
 end;
 
 procedure GSDModule();

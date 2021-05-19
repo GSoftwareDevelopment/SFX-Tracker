@@ -48,14 +48,19 @@ begin
 				0..99: begin // sfx note
 					noteOfs:=(_note and $f) shl 1; noteOct:=_note shr 4;
 
-					// NOTE#
-					screen[scrOfs+4]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
-					screen[scrOfs+5]:=note_names[noteOfs];
-					if (noteOct<=9) then
-						screen[scrOfs+6]:=$10+noteOct
+					if _note>0 then
+					begin
+						// NOTE#
+						screen[scrOfs+4]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
+						screen[scrOfs+5]:=note_names[noteOfs];
+						if (noteOct<=9) then
+							screen[scrOfs+6]:=$10+noteOct
+						else
+							screen[scrOfs+6]:=$0d; // hypen sign
+						screen[scrOfs+7]:=0;
+					end
 					else
-						screen[scrOfs+6]:=$0d; // hypen sign
-					screen[scrOfs+7]:=0;
+						move(note_names[45],@screen[scrOfs+4],4);
 
 					// SFX#
 					putValue(winXStart+9,i,_fnsfx,2,0);

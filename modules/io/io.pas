@@ -4,24 +4,24 @@
 
 procedure IOLoop();
 var
-	opt:shortint;
+	opt:byte;
 
 begin
-	opt:=0;
+	opt:=1;
 	updateBar(resptr[menu_IO],width_menuTop,opt,0,color_selected);
 	screen2video();
 	repeat
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
+			controlSelectionKeys(key,key_Left,key_Right,opt,0,3);
 			case key of
 				key_ESC: break;
-				key_Left: if (opt>0) then opt:=opt-1;
-				key_Right: if (opt<3) then opt:=opt+1;
 				key_RETURN:
 					case opt of
-						0: IODirectory();
-						2: IOSave();
+						0: break;
+						1: IODirectory();
+						3: IOSave();
 					end;
 			end;
 			updateBar(resptr[menu_IO],width_menuTop,opt,0,color_selected);

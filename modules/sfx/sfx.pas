@@ -12,13 +12,11 @@ var
 {$i modules/sfx/sfx_view.inc}
 {$i modules/sfx/sfx_manage.inc}
 {$i modules/sfx/sfx_edit.inc}
-
+{$i modules/sfx/sfx_options.inc}
 
 procedure SFXLoop();
 var
 	nSFX,opt:shortint;
-	modified,modState:boolean;
-	modTm:longint;
 
 begin
 	kbcode:=255; section:=0;
@@ -28,43 +26,22 @@ begin
 
 	updateBar(resptr[menu_sfx],width_menuBar,section,color_choice,color_selected);
 	screen2video();
-	modified:=false; modState:=false;
+	modified:=false;
 	repeat
-		if (getTime-modTm>25) then
-		begin
-			if (modified) then
-			begin
-				modState:=not modState;
-				if modState then
-					screen[39]:=$49
-				else
-					screen[39]:=$41;
-			end
-			else
-				screen[393]:=$40;
-			screen2video();
-			modTm:=getTime;
-		end;
+		updateModified();
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
+			controlSelectionKeys(key,key_Up,key_Down,section,0,7);
 			case key of
-				key_TAB,key_Down: begin
-					section:=section+1; if section>6 then section:=0;
-				end;
-				key_SHIFT_TAB,key_Up: begin
-					section:=section-1; if section<0 then section:=6;
-				end;
-				key_Left,key_Right: if (section=0) then
-				begin
-					case key of
-						key_Right: if (currentSFX<maxSFXs-1) then currentSFX:=currentSFX+1;
-						key_Left: if (currentSFX>0) then currentSFX:=currentSFX-1;
+				key_Left,key_Right:
+					if (section=0) then
+					begin
+						controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1);
+						getSFXData(currentSFX);
+						updateSFXView();
+						modified:=false;
 					end;
-					getSFXData(currentSFX);
-					updateSFXView();
-					modified:=false;
-				end;
 				key_ESC: break;
 				key_RETURN: begin
 					case section of
@@ -82,24 +59,8 @@ begin
 								modified:=false;
 							end;
 						end;
-						1: section:=2;
-						6: begin
-								opt:=4;
-								optionsList(resptr[menu_sfx_options],width_menuOptions,SFXMenuOptions,opt);
-								case opt of
-									4: begin
-											SFXDetermineLength();
-											if (sfxLen>0) then
-											begin
-												if (inputText(SFXNameX,SFXNumberY,SFXNameLength,SFXName,0,color_choice)) then
-												begin
-													storeSFXData(currentSFX);
-													modified:=false;
-												end;
-											end;
-									end;
-								end;
-							end;
+						1: section:=3;
+						7: SFX_Options(5-byte(modified));
 					end;
 
 					if (section>=2) and (section<=5) then
@@ -109,10 +70,10 @@ begin
 							section:=section and $f;
 							updateBar(resptr[menu_sfx],width_menuBar,section,color_choice,color_selected);
 							case section of
-								2: SFXEditLoop(SFX_vol_dist,0,modified);
-								3: SFXEditLoop(SFX_vol_dist,1,modified);
-								4: SFXEditLoop(SFX_modulate,1,modified);
-								5: SFXEditLoop(SFX_modulate,0,modified);
+								3: SFXEditLoop(SFX_vol_dist,0,modified);
+								4: SFXEditLoop(SFX_vol_dist,1,modified);
+								5: SFXEditLoop(SFX_modulate,1,modified);
+								6: SFXEditLoop(SFX_modulate,0,modified);
 							end;
 						until section and $10=0;
 						colorVLine(winXStart+cursorPos,winYStart,8,0);
