@@ -15,8 +15,8 @@ var
 	KRPDEL:byte absolute $2d9;
 	KEYREP:byte absolute $2da;
 
-	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR;
-	tmpbuf:array[0..255] of byte absolute LIST_BUFFER_ADDR+LIST_BUFFER_SIZE-256; // last 256 bytes for temporary store previous screen, for better UI experience
+	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR; // universal list buffer array
+	tmpbuf:array[0..255] of byte absolute TEMP_BUFFER_ADDR; // store previous screen, for better UI experience
 
 	resptr:array[0..0] of pointer absolute RESOURCES_ADDR;
 
