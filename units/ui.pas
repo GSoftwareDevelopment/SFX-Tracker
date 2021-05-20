@@ -447,7 +447,7 @@ begin
 				key_Down:
 					moveCursor(+1,height,listSize,listPos,listShift);
 				key_ESC: begin
-					result:=defaultPos;
+					result:=-1; // defaultPos;
 					break;
 				end;
 				key_RETURN: begin

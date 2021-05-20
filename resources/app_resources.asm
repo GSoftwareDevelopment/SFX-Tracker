@@ -18,11 +18,13 @@ data_pointers_list
 	dta a(str_Credits)			;13
 	dta a(str_IO_Prompt)			;14
 	dta a(str_IO_noFiles)		;15
-	dta a(str_IO_Error)			;16
-	dta a(str_IO_Quit)			;17
+	dta a(str_IO_nextPage)		;16
+	dta a(str_IO_prevPage)		;17
+	dta a(str_IO_Error)			;18
+	dta a(str_IO_Quit)			;19
 
 ; tables
-	dta a(color_themes)			;18
+	dta a(color_themes)			;20
 
 menus
 menu_top
@@ -134,6 +136,10 @@ str_IO_Prompt
 					dta d'DEVICE:PATH',255
 str_IO_noFiles
 					dta d'NO FILES',255
+str_IO_nextPage
+					dta d'PAGE >>>',255
+str_IO_prevPage
+					dta d'<<< PAGE',255
 str_IO_Error
 					dta d'I/O ERROR #',255
 str_IO_Quit

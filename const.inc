@@ -8,6 +8,7 @@ maxTABs				= 100;
 
 SFX_maxLength		= 128;
 TAB_maxLength		= 128;
+IO_pageLimit		= 100;
 
 SFXNameLength		= 14;
 TABNameLength		= 8;
@@ -95,7 +96,7 @@ note_val:array[0..63] of byte = (
 // resources ids
 	base_menus						= 0;
 	base_strings					= 10;
-	base_tables						= 18;
+	base_tables						= 20;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -116,7 +117,9 @@ note_val:array[0..63] of byte = (
 	str_Credits						= base_strings+3;
 	str_IO_Prompt					= base_strings+4;
 	str_IO_noFiles					= base_strings+5;
-	str_IO_Error					= base_strings+6;
-	str_IO_Quit						= base_strings+7;
+	str_IO_nextPage				= base_strings+6;
+	str_IO_prevPage				= base_strings+7;
+	str_IO_Error					= base_strings+8;
+	str_IO_Quit						= base_strings+9;
 
 	color_themes					= base_tables+0;

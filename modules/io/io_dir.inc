@@ -21,7 +21,7 @@ begin
 	screen2video();
 end;
 
-function IOReadDir(path:String):byte;
+function IOReadDir(path:string; startRead:smallint):byte;
 const
 	attrMask:array[0..3] of byte = (faReadOnly,faSysFile,faHidden,faArchive);
 	attrChar:array[0..3] of byte = (50,51,40,33); // RSHA
@@ -36,19 +36,35 @@ begin
 	listOfs:=0; filesCount:=0;
 	fillchar(@f.Name,16,0);
 	FindFirst(path, faAnyFile, f);
+	filesCount:=0; listOfs:=0;
 	if IOResult=1 then
 	begin
-		repeat
-			conv2Internal(f.Name); nameLen:=length(f.Name);
-			// convert all characters in name to uppercase
-			for i:=1 to nameLen do if byte(f.Name[i])>63 then f.Name[i]:=char(byte(f.Name[i])-32);
+		if (startRead>0) then
+		begin
+			move(resptr[str_IO_prevPage],@listBuf[listOfs],8); // hardcoded length of string!!!
+			filesCount:=filesCount+1; listOfs:=listOfs+width_fileList;
+			while (startRead>0) and (IOResult=1) do
+			begin
+				findNext(f); startRead:=startRead-1;
+			end;
+		end;
+
+		while (IOResult=1) and (filesCount<IO_pageLimit) do
+		begin
+			fillchar(@listBuf[listOfs],width_fileList,0); // clear list entry
+
+			nameLen:=length(f.Name);
+			// convert all characters in name to internal code and, if nessesert to uppercase
+			for i:=1 to nameLen do
+				if byte(f.Name[i])>95 then
+					f.Name[i]:=char(byte(f.Name[i])-64)
+				else
+					f.Name[i]:=char(byte(f.Name[i])-32);
 			// add folder icon to list buffer if, entry have directory attribute set
 			if f.attr and faDirectory=faDirectory then
-			begin
 				listBuf[listOfs]:=$1e; // more (>)
-			end;
 			// copy name to list buffer
-			move(@f.Name[1],@listBuf[listOfs+1],width_filePath-(sizeOf(attrChar)+1));
+			move(@f.Name[1],@listBuf[listOfs+1],nameLen);
 
 			// create attribute field in list buffer
 			attrOfs:=listOfs+width_filePath-sizeOf(attrChar);
@@ -64,9 +80,19 @@ begin
 			filesCount:=filesCount+1;
 
 			findNext(f);
-		until IOResult<>1;
+		end;
+		if (IOResult=1) then
+		begin
+			if (filesCount=IO_pageLimit) then
+			begin
+				move(resptr[str_IO_nextPage],@listBuf[listOfs],8); // hardcoded length of string!!!
+				filesCount:=filesCount+1;
+			end
+		end
+		else
+			if filesCount>0 then filesCount:=filesCount-1;
 	end;
-	if (IOResult<>136) then IOError();
+	if (filesCount<=IO_pageLimit) and (IOResult<>136) then IOError();
 	FindClose(f);
 	result:=filesCount;
 end;
@@ -74,9 +100,12 @@ end;
 function IODirectory():string;
 var
 	f:TSearchRec;
-	selFile,filesCount,IOErr:byte;
+	selFile,
+	filesCount:byte;
 	searchPath:string[FILEPATHMaxLength] = 'H:';
-	wild:string[1];
+	wild:string[1] = '*';
+	listStart:smallint;
+	listPage:byte;
 
 begin
 	box(0,2,20,9,$40);
@@ -84,25 +113,37 @@ begin
 	if inputLongText(0,11,width_filePath,FILEPATHMaxLength,searchPath,0,0) then
 	begin
 		fillchar(@searchPath[1+length(searchPath)],FILEPATHMaxLength-length(searchPath),0);
-		wild:='*';
 		if (indexOf(searchPath,wild,1)=-1) then
 			searchPath:=concat(searchPath,'*.*');
 
-		conv2Internal(searchPath);
 		if length(searchPath)<width_filePath then
-			move(@searchPath[1],@screen[220],length(searchPath))
+			conv2internalP2P(@searchPath[1],@screen[220],length(searchPath))
 		else
-			move(@searchPath[1],@screen[220],width_filePath);
-		conv2ASCII(searchPath);
+			conv2internalP2P(@searchPath[1],@screen[220],width_filePath);
 
-		box(0,2,width_fileList,9,$40);
-		filesCount:=IOReadDir(searchPath);
-		if filesCount>0 then
-		begin
-			selFile:=0;
-			listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
-		end
-		else
-			putNText(6,6,resptr[str_IO_noFiles],1);
+		listStart:=0; listPage:=0;
+		repeat
+			box(0,2,width_fileList,9,$40);
+			filesCount:=IOReadDir(searchPath,listStart);
+			putValue(0,1,filesCount,3,0);
+			if filesCount>0 then
+			begin
+				selFile:=0;
+				selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
+				putValue(4,1,selFile,3,0);
+				if (filesCount>IO_pageLimit) and (selFile=IO_pageLimit) then
+					listStart:=listStart+IO_pageLimit
+				else
+					if (listStart>0) and (selFile=0) then
+						listStart:=listStart-IO_pageLimit
+					else
+						break;
+			end
+			else
+			begin
+				putNText(6,6,resptr[str_IO_noFiles],1);
+				break;
+			end;
+		until false;
 	end;
 end;
