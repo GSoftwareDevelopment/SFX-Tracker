@@ -51,7 +51,7 @@ begin
 							prepareSFXsList();
 							nSFX:=listChoice(1,2,SFXNameLength,9,currentSFX,listBuf,maxSFXs,true);
 							move(@tmpbuf,@screen[20],200);
-							if (nSFX<>currentSFX) then
+							if (nSFX<>-1) and (nSFX<>currentSFX) then
 							begin
 								getSFXData(nSFX);
 								SFXDetermineLength();

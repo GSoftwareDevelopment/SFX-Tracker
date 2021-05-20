@@ -12,7 +12,7 @@ var
 
 procedure TABLoop();
 var
-	opt,nTab:shortint;
+	opt,nTAB:shortint;
 
 begin
 	section:=0; cursorPos:=0; cursorShift:=0; modified:=false;
@@ -56,11 +56,11 @@ begin
 								move(@screen[20],@tmpbuf,200);
 								box(0,2,20,9,$40);
 								prepareTABsList();
-								nTab:=listChoice(4,2,TABNameLength,9,currentTAB,listBuf,maxTABs,true);
+								nTAB:=listChoice(4,2,TABNameLength,9,currentTAB,listBuf,maxTABs,true);
 								move(@tmpbuf,@screen[20],200);
-								if (nTab<>currentTAB) then
+								if (nTAB<>-1) and (nTAB<>currentTAB) then
 								begin
-									getTABData(nTab);
+									getTABData(nTAB);
 									TABDetermineLength();
 									updateTAB(true);
 									updateTABInfo();
