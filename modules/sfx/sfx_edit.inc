@@ -1,4 +1,4 @@
-function SFXEditLoop(var tab:array[0..0] of byte; nibble:byte; var modified:boolean):shortint;
+function SFXEditLoop(var tab:byteArray; nibble:byte; var modified:boolean):shortint;
 var i,v:byte;
 	at:byte;
 

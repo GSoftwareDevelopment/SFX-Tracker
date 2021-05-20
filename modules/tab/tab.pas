@@ -37,7 +37,7 @@ begin
 				key_Left,key_Right: begin
 					case section of
 						0: begin
-								controlSelectionKeys(key,key_Left,key_Right,currentTAB,0,maxTABs);
+								controlSelectionKeys(key,key_Left,key_Right,currentTAB,0,maxTABs-1);
 								modified:=false;
 								getTABData(currentTAB);
 								TABDetermineLength();
@@ -45,7 +45,7 @@ begin
 								updateTAB(true);
 							end;
 						4: begin
-							controlSelectionKeys(key,key_Left,key_Right,currentSFX,0,maxSFXs);
+							controlSelectionKeys(key,key_Left,key_Right,currentSFX,0,maxSFXs-1);
 							updateTABSFX();
 							end;
 					end;

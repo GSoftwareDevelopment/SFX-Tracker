@@ -1,4 +1,4 @@
-procedure updateTheme(var themeColors:array[0..4] of byte);
+procedure updateTheme(var themeColors:byteArray);
 var i:byte;
 
 begin
@@ -9,7 +9,7 @@ begin
 	end;
 end;
 
-procedure editColor(nCol:shortint; var themeColors:array[0..4] of byte);
+procedure editColor(nCol:shortint; var themeColors:byteArray);
 var
 	nibbel:byte;
 	i,value:byte;

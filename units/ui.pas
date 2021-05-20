@@ -3,6 +3,8 @@ unit UI;
 interface
 
 type
+	byteArray = array[0..0] of byte;
+
 	TKeys = (
 		key_Left = 6,
 		key_Right = 7,
@@ -59,7 +61,7 @@ var
 	KBCODE:byte absolute 764;
 	key:TKeys;
 
-function keyScan(key2Scan:byte; var keyDefs:array[0..0] of byte; keysRange:byte):byte;
+function keyScan(key2Scan:byte; var keyDefs:byteArray; keysRange:byte):byte;
 function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:smallint):boolean;
 procedure moveCursor(ofs:shortint; winSize,overSize:smallint; var curPos,curShift:smallint);
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
@@ -259,7 +261,9 @@ var
 begin
 	result:=false;
 	repeat
-		str(v,s); o:=concat(StringOfChar('0',width-length(s)),s);
+		str(v,s); err:=length(s);
+		o[0]:=#3; fillchar(o[1],3,$50);
+		move(@s[1],@o[4-err],err);
 		ok:=inputText(x,y,width,o,colEdit,colOut);
 		if not ok then exit;
 		val(o,v,err);

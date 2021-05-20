@@ -132,9 +132,11 @@ str_Credits
 					dta 25,d'THANKS TO:',255
 					dta 48,d'PIN',255
 					dta 61,d'FOR HARDWARE TESTS',255
-					dta 102,d'PIN',8,d'MONO',8,d'JHUSAK',255
-					dta 123,d'SOFTWARE TEST',255
-					dta 142,d'ATARI KNOWLEDGE',255
+					dta 105,d'PIN MONO',255
+					dta 126,d'JHUSAK',255
+					dta 143,d'FOR KNOWLEDGE',255
+					dta 165,d'SUPPORTING',255
+
 					dta 200,d'SUPPORT THIS PROJECT',255
 					dta 221,d'BIT.LY/SFX-TRACKER',255
 					dta 255

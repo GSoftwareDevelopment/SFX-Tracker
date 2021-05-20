@@ -1,4 +1,4 @@
-procedure getTheme(nTheme:shortint; var colors:array[0..4] of byte);
+procedure getTheme(nTheme:shortint; var colors:byteArray);
 var
 	themeOfs:byte;
 
@@ -16,7 +16,7 @@ begin
 	move(@colorThemes[themeOfs],@colors,5);
 end;
 
-procedure storeTheme(nTheme:shortint; var themeColors:array[0..4] of byte);
+procedure storeTheme(nTheme:shortint; var themeColors:byteArray);
 var
 	themeOfs:byte;
 

@@ -79,8 +79,12 @@ begin
 	song_beat:=4;
 	song_lpb:=4;
 
-	SONGTitle:=DefaultSongTitle;
-	currentFile:=DefaultFileName;
+	fillchar(@SONGTitle,SongNameLength,0);
+	move(@defaultSongTitle,@SONGTitle,length(defaultSongTitle)+1);
+//	SONGTitle:=DefaultSongTitle;
+	fillchar(@currentFile,FILEPATHMaxLength,0);
+	move(@defaultFileName,@currentFile,length(defaultFileName)+1);
+//	currentFile:=DefaultFileName;
 end;
 
 begin
