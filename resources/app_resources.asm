@@ -9,18 +9,20 @@ data_pointers_list
 	dta a(menu_GSD)				;6
 	dta a(menu_ThemeEdit)		;7
 	dta a(menu_IO)					;8
+	dta a(menu_YesNo);			;9
 
 ;strings
-	dta a(str_SFX_notDefined)	;9
-	dta a(str_TAB_note_names)  ;10
-	dta a(str_TAB_types)			;11
-	dta a(str_Credits)			;12
-	dta a(str_IO_Prompt)			;13
-	dta a(str_IO_noFiles)		;14
-	dta a(str_IO_Error)			;15
+	dta a(str_SFX_notDefined)	;10
+	dta a(str_TAB_note_names)  ;11
+	dta a(str_TAB_types)			;12
+	dta a(str_Credits)			;13
+	dta a(str_IO_Prompt)			;14
+	dta a(str_IO_noFiles)		;15
+	dta a(str_IO_Error)			;16
+	dta a(str_IO_Quit)			;17
 
 ; tables
-	dta a(color_themes)			;16
+	dta a(color_themes)			;18
 
 menus
 menu_top
@@ -79,9 +81,10 @@ menu_tab_edit
 					dta 255
 
 menu_GSD
-					dta 1,d'<',255
-					dta 3,d'CREDITS',255
-					dta 11,d'THEME',255
+					dta 0,d'<',255
+					dta 2,d'CREDITS',255
+					dta 10,d'THEME',255
+					dta 16,d'FREE',255
 					dta 255
 
 menu_ThemeEdit
@@ -95,10 +98,16 @@ menu_ThemeEdit
 					dta 255
 
 menu_IO
-					dta  1,d'<',255
-					dta  3,d'DIR',255
-					dta 7,d'LOAD',255
-					dta 12,d'SAVE',255
+					dta  0,d'<',255
+					dta  2,d'DIR',255
+					dta 6,d'LOAD',255
+					dta 11,d'SAVE',255
+					dta 16,d'QUIT',255
+					dta 255
+
+menu_YesNo
+					dta 62,07,d'YES',255
+					dta 82,07,d'NO',255
 					dta 255
 
 strings
@@ -122,11 +131,13 @@ str_Credits
 					dta 255
 
 str_IO_Prompt
-					dta d'DEVICE:PATH',255;
+					dta d'DEVICE:PATH',255
 str_IO_noFiles
 					dta d'NO FILES',255
 str_IO_Error
-					dta d'I/O ERROR #',255;
+					dta d'I/O ERROR #',255
+str_IO_Quit
+					dta 07,d'ARE YOU LEAVE?',06,255
 tables
 color_themes
 					dta $0a,$e6,$68,$34,$00,d'LIGHT',255

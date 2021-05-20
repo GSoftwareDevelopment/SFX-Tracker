@@ -17,7 +17,7 @@ begin
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
-			controlSelectionKeys(key,key_Left,key_Right,opt,0,2);
+			controlSelectionKeys(key,key_Left,key_Right,opt,0,3);
 			case key of
 				key_ESC: break;
 				key_RETURN: case opt of

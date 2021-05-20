@@ -94,8 +94,8 @@ note_val:array[0..63] of byte = (
 
 // resources ids
 	base_menus						= 0;
-	base_strings					= 9;
-	base_tables						= 16;
+	base_strings					= 10;
+	base_tables						= 18;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -108,6 +108,7 @@ note_val:array[0..63] of byte = (
 	menu_GSD							= base_menus+6;
 	menu_ThemeEdit					= base_menus+7;
 	menu_IO							= base_menus+8;
+	menu_YesNo						= base_menus+9;
 
 	str_SFX_notDefined			= base_strings+0;
 	str_TAB_note_names			= base_strings+1;
@@ -116,5 +117,6 @@ note_val:array[0..63] of byte = (
 	str_IO_Prompt					= base_strings+4;
 	str_IO_noFiles					= base_strings+5;
 	str_IO_Error					= base_strings+6;
+	str_IO_Quit						= base_strings+7;
 
 	color_themes					= base_tables+0;

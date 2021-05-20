@@ -70,6 +70,8 @@ procedure updateBar(bar:pointer; width:byte; currentSel:shortint; canChoiceColor
 procedure menuBar(bar:Pointer; width,bgColor:byte);
 procedure optionsList(optTabs:pointer; optWidth:byte; opts:shortint; var currentOpt:shortint);
 function listChoice(x,y,width,height,defaultPos:byte; listPtr:pointer; listSize:byte; showCount:boolean):shortint;
+function messageBox(msgX,msgY:byte; msgPtr:pointer; msgColor:byte;
+							menuPtr:pointer; menuWidth,menuOpts:byte; defaultOpt:shortint):byte;
 
 implementation
 uses gr2;
@@ -460,6 +462,13 @@ begin
 		end;
 	until false;
 	kbcode:=255;
+end;
+
+function messageBox:byte;
+begin
+	putNText(msgX,msgY,msgPtr,msgColor);
+	optionsList(menuPtr,menuWidth,menuOpts,defaultOpt);
+	result:=defaultOpt;
 end;
 
 end.
