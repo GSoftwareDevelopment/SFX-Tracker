@@ -63,7 +63,7 @@ begin
 	box(0,2,20,9,$40);
 	prepareThemeList();
 
-	fillchar(@playersData,$500,0);
+	fillchar(@playersData,$400,0);
 	for y:=0 to 8 do
 	begin
 		POfs:=$100+50+y*16;
@@ -129,7 +129,7 @@ begin
 	until false;
 
 	exitThemeSelector();
-	move(@tmpbuf[20],@screen[20],180);
+	move(@tmpbuf[20],@screen[20],200);
 end;
 
 procedure initThemes(themesPtr:pointer);

@@ -29,7 +29,7 @@ begin
 	SDMCTL:=%00111010;	// Antic on; PM Regular height; Players On; Missiles off; Regular playfield size;
 	GRACTL:=3; 				// turn on P/M graphics
 	GPRIOR:=%00010001;	//
-	playersData:=pointer((pmg_base_page+3)*$100);
+	playersData:=pointer((pmg_base_page+4)*$100);
 //	fillchar(@playersData,$400,0);
 end;
 

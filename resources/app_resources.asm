@@ -20,11 +20,15 @@ data_pointers_list
 	dta a(str_IO_noFiles)		;15
 	dta a(str_IO_nextPage)		;16
 	dta a(str_IO_prevPage)		;17
-	dta a(str_IO_Error)			;18
-	dta a(str_IO_Quit)			;19
+	dta a(str_IO_error)			;18
+	dta a(str_IO_reading)		;19
+	dta a(str_IO_writing)		;20
+	dta a(str_IO_skipping)		;21
+
+	dta a(str_IO_Quit)			;22
 
 ; tables
-	dta a(color_themes)			;20
+	dta a(color_themes)			;23
 
 menus
 menu_top
@@ -125,11 +129,14 @@ str_TAB_types
 					dta 'FREE TAB',255
 
 str_Credits
-					dta 85,d'THIS PLACE',255
-					dta 103,d'IS WAITING FOR',255
-					dta 128,d'YOU!',255
-					dta 180,d'SUPPORT THIS PROJECT',255
-					dta 201,d'BIT.LY/SFX-TRACKER',255
+					dta 25,d'THANKS TO:',255
+					dta 48,d'PIN',255
+					dta 61,d'FOR HARDWARE TESTS',255
+					dta 102,d'PIN',8,d'MONO',8,d'JHUSAK',255
+					dta 123,d'SOFTWARE TEST',255
+					dta 142,d'ATARI KNOWLEDGE',255
+					dta 200,d'SUPPORT THIS PROJECT',255
+					dta 221,d'BIT.LY/SFX-TRACKER',255
 					dta 255
 
 str_IO_Prompt
@@ -140,8 +147,14 @@ str_IO_nextPage
 					dta d'PAGE >>>',255
 str_IO_prevPage
 					dta d'<<< PAGE',255
-str_IO_Error
+str_IO_error
 					dta d'I/O ERROR #',255
+str_IO_reading
+					dta d'READING...',255
+str_IO_writing
+					dta d'WRITING...',255
+str_IO_skipping
+					dta d'SKIPPING...',255
 str_IO_Quit
 					dta 07,d'ARE YOU LEAVE?',06,255
 tables

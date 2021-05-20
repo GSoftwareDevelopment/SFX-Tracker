@@ -43,12 +43,15 @@ begin
 		begin
 			move(resptr[str_IO_prevPage],@listBuf[listOfs],8); // hardcoded length of string!!!
 			filesCount:=filesCount+1; listOfs:=listOfs+width_fileList;
+			putNText(0,1,resptr[str_IO_Skipping],0);
+			screen2video();
 			while (startRead>0) and (IOResult=1) do
 			begin
 				findNext(f); startRead:=startRead-1;
 			end;
 		end;
-
+		putNText(0,1,resptr[str_IO_Reading],0);
+		screen2video();
 		while (IOResult=1) and (filesCount<IO_pageLimit) do
 		begin
 			fillchar(@listBuf[listOfs],width_fileList,0); // clear list entry
@@ -81,6 +84,7 @@ begin
 
 			findNext(f);
 		end;
+		fillchar(@screen[20],20,0);
 		if (IOResult=1) then
 		begin
 			if (filesCount=IO_pageLimit) then
@@ -107,6 +111,11 @@ var
 	listStart:smallint;
 	listPage:byte;
 
+	procedure updateListPage();
+	begin
+		putValue(17,1,listPage+1,3,0);
+	end;
+
 begin
 	box(0,2,20,9,$40);
 	putNText(0,10,resptr[str_IO_Prompt],1);
@@ -125,17 +134,23 @@ begin
 		repeat
 			box(0,2,width_fileList,9,$40);
 			filesCount:=IOReadDir(searchPath,listStart);
-			putValue(0,1,filesCount,3,0);
 			if filesCount>0 then
 			begin
 				selFile:=0;
 				selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
-				putValue(4,1,selFile,3,0);
 				if (filesCount>IO_pageLimit) and (selFile=IO_pageLimit) then
-					listStart:=listStart+IO_pageLimit
+				begin
+					listStart:=listStart+IO_pageLimit;
+					listPage:=listPage+1;
+					updateListPage();
+				end
 				else
 					if (listStart>0) and (selFile=0) then
-						listStart:=listStart-IO_pageLimit
+					begin
+						listStart:=listStart-IO_pageLimit;
+						listPage:=listPage-1;
+					updateListPage();
+					end
 					else
 						break;
 			end

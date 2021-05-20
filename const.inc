@@ -96,7 +96,7 @@ note_val:array[0..63] of byte = (
 // resources ids
 	base_menus						= 0;
 	base_strings					= 10;
-	base_tables						= 20;
+	base_tables						= 23;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -120,6 +120,9 @@ note_val:array[0..63] of byte = (
 	str_IO_nextPage				= base_strings+6;
 	str_IO_prevPage				= base_strings+7;
 	str_IO_Error					= base_strings+8;
-	str_IO_Quit						= base_strings+9;
+	str_IO_Reading					= base_strings+9;
+	str_IO_Writing					= base_strings+10;
+	str_IO_Skipping				= base_strings+11;
+	str_IO_Quit						= base_strings+12;
 
 	color_themes					= base_tables+0;
