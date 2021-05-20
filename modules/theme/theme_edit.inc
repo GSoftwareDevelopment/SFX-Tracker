@@ -107,7 +107,7 @@ begin
 					end;
 			end;
 
-			if (opt>=0) and (opt<5) and (kbcode<>255) then
+			if (opt<5) and (kbcode<>255) then
 			begin
 				if (kbcode=key_RETURN) and (opt=4) then
 				begin
@@ -116,8 +116,8 @@ begin
 				else
 				begin
 					if (kbcode=key_SHIFT_TAB) then opt:=opt-1 else opt:=opt+1;
-					if opt>4 then opt:=0;
-					if opt<0 then opt:=4;
+					if opt=5 then opt:=0;
+					if opt=255 then opt:=4;
 				end;
 			end;
 			updateBar(resptr[menu_themeEdit],width_themeEdit,opt,1,3);

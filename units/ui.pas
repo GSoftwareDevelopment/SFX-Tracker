@@ -63,7 +63,7 @@ var
 
 function keyScan(key2Scan:byte; var keyDefs:byteArray; keysRange:byte):byte;
 function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:smallint):boolean;
-procedure moveCursor(ofs:shortint; winSize,overSize:smallint; var curPos,curShift:smallint);
+procedure moveCursor(ofs:smallint; winSize,overSize:smallint; var curPos,curShift:smallint);
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputLongText(x,y,width,maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputValue(x,y,width:byte; var v:integer; min,max:integer; colEdit,colOut:byte):boolean;
@@ -124,19 +124,19 @@ begin
 			else
 				curPos:=oversize;
 	end
-	else													// curPos=19; curShift=0; ofs=1; winSize=20; _pos=20;
-		if (_pos>-1) and (_pos<winSize) then	// 20>-1=true; 20<20=false; true and false=false
+	else
+		if (_pos>-1) and (_pos<winSize) then
 			curPos:=_pos
 		else
 		begin
-			if (_pos<0) then							// 20<0=false
+			if (_pos<0) then
 				curPos:=0
 			else
-				curPos:=winSize-1;					// curPos=20-1=19
+				curPos:=winSize-1;
 
-			_pos:=curShift+ofs;						// _pos=0+1=1
-			if (_pos>-1) and (_pos<overSize-winSize) then	// 1>-1=true; 1<250-20=1<230=true; true and true=true
-				curShift:=_pos											// curShift=1
+			_pos:=curShift+ofs;
+			if (_pos>-1) and (_pos<overSize-winSize) then
+				curShift:=_pos
 			else
 				if (_pos<0) then
 					curShift:=0
