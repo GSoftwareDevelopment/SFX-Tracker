@@ -4,7 +4,7 @@ var i:byte;
 begin
 	for i:=0 to 4 do
 	begin
-		poke(colTabAdr+i*5,themeColors[i]);
+		DLIcolTab[i*5]:=themeColors[i];
 		putHexValue(17,2+i,themeColors[i],0);
 	end;
 end;
@@ -74,8 +74,8 @@ var i:byte;
 
 begin
 	getTheme(nTheme,themeColors);
-	fillchar(@playersData,$500,0);
-	for i:=0 to 4 do fillchar(@playersData[$100+50+i*16],12,255);
+	PMGClear();
+	for i:=0 to 4 do fillchar(@playersData[50+i*16],12,255);
 
 	playersHPos[0]:=144;
 	playersSize[0]:=PSizeByFour;

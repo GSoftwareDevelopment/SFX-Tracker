@@ -10,14 +10,10 @@ begin
 	repeat
 		if (kbcode)<>255 then
 		begin
-			key:=TKeys(kbcode);
+			key:=TKeys(kbcode); kbcode:=255;
 			colorHLine(winXStart,2+cursorPos,20-winXStart,0);
 			case key of
-				key_ESC: break;
-				key_TAB,key_SHIFT_TAB: begin
-					section:=section or $10; // set flag in section and...
-					exit; // ... immediatly exit from procedure
-				end;
+				key_ESC,	key_TAB,key_SHIFT_TAB: break;
 
 				// cursor screen step
 				key_CTRL_Up: moveCursor(-9,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
@@ -25,6 +21,7 @@ begin
 				// cursor single step
 				key_Up: moveCursor(-1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 				key_Down: moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
+
 				key_SPACE: begin
 					setBlank();
 					moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
@@ -46,7 +43,6 @@ begin
 			colorHLine(winXStart,2+cursorPos,20-winXStart,3);
 			updateTABInfo();
 			screen2video();
-			kbcode:=255;
 		end;
 	until false;
 	kbcode:=255;

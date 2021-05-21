@@ -1,6 +1,8 @@
 unit PMGraph;
 
 interface
+type
+	byteArray = array[0..0] of byte;
 
 const
 	PSizeByOne	= 0;
@@ -8,12 +10,13 @@ const
 	PSizeByFour	= 3;
 
 var
-	playersData:array[0..0] of byte;
-	playersHPos:array[0..3] of byte absolute $d000;
-	playersColor:array[0..3] of byte absolute 704;
-	playersSize:array[0..3] of byte absolute $d008;
+	playersData:byteArray;
+	playersHPos:byteArray absolute $d000;
+	playersColor:byteArray absolute 704;
+	playersSize:byteArray absolute $d008;
 
 procedure PMGInit(pmg_base_page:byte);
+procedure PMGClear();
 
 implementation
 
@@ -30,7 +33,11 @@ begin
 	GRACTL:=3; 				// turn on P/M graphics
 	GPRIOR:=%00010001;	//
 	playersData:=pointer((pmg_base_page+4)*$100);
-//	fillchar(@playersData,$400,0);
+end;
+
+procedure PMGClear;
+begin
+	fillchar(@playersData,$400,0);
 end;
 
 end.

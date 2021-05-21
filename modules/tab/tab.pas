@@ -9,6 +9,7 @@ var
 {$i modules/tab/tab_manage.inc}
 {$i modules/tab/tab_edit.inc}
 {$i modules/tab/tab_options.inc}
+{$i modules/tab/tab_menubar.inc}
 
 procedure TABLoop();
 var
@@ -45,45 +46,12 @@ begin
 								updateTAB(true);
 							end;
 						4: begin
-							controlSelectionKeys(key,key_Left,key_Right,currentSFX,0,maxSFXs-1);
-							updateTABSFX();
-							end;
-					end;
-				end;
-				key_RETURN: begin
-					case section of
-						0: begin
-								move(@screen[20],@tmpbuf,200);
-								box(0,2,20,9,$40);
-								prepareTABsList();
-								nTAB:=listChoice(4,2,TABNameLength,9,currentTAB,listBuf,maxTABs,true);
-								move(@tmpbuf,@screen[20],200);
-								if (nTAB<>-1) and (nTAB<>currentTAB) then
-								begin
-									getTABData(nTAB);
-									TABDetermineLength();
-									updateTAB(true);
-									updateTABInfo();
-									modified:=false;
-								end;
-							end;
-						1: TABEditLoop();
-						3: TAB_Options(4-byte(modified));
-						4: begin
-								move(@screen[20],@tmpbuf,200);
-								box(0,2,20,9,$40);
-								prepareSFXsList();
-								currentSFX:=listChoice(1,2,SFXNameLength,9,currentSFX,listBuf,maxSFXs,true);
-								move(@tmpbuf,@screen[20],200);
+								controlSelectionKeys(key,key_Left,key_Right,currentSFX,0,maxSFXs-1);
 								updateTABSFX();
 							end;
 					end;
-					if (section and $10=$10) then // test flag for pressed TAB in TABEditLoop...
-					begin
-						section:=section and $0f; // ...cleaning flag
-						continue;
-					end;
 				end;
+				key_RETURN: TABMenuBar(section);
 			end;
 			updateBar(resptr[menu_tabs],width_menuBar,section,color_choice,color_selected);
 			screen2video();

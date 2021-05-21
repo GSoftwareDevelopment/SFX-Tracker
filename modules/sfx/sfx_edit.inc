@@ -25,9 +25,7 @@ begin
 				break;
 			end;
 			case key of
-				key_RETURN,key_ESC: begin
-					break;
-				end;
+				key_RETURN,key_ESC: break;
 				key_CTRL_Left: begin
 					colorVLine(winXStart+cursorPos,winYStart,8,0);
 					if (cursorPos=0) then

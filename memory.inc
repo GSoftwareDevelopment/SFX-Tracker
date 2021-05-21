@@ -9,6 +9,7 @@ TAB_POINTERS_ADDR		= $B200;	// heap pointers list for TAB definitions
 TEMP_BUFFER_ADDR		= $B300; // temporary buffer for store previous screen (for better UI experience)
 IO_BUFFER_ADDR			= $400;	// 768 bytes available
 IO_BUFFER_SIZE			= $13F;	// 64 bytes for header; 256 bytes for raw data
+DLI_COLOR_TABLE_ADDR = $600;
 
 PMG_BASE					= $B0;	// Player & Missile Graphics base page
 
