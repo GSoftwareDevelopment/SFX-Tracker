@@ -262,7 +262,7 @@ begin
 	result:=false;
 	repeat
 		str(v,s); err:=length(s);
-		o[0]:=#3; fillchar(o[1],3,$50);
+		o[0]:=#3; fillchar(o[1],3,$30);
 		move(@s[1],@o[4-err],err);
 		ok:=inputText(x,y,width,o,colEdit,colOut);
 		if not ok then exit;

@@ -1,15 +1,20 @@
-procedure updateTheme(var themeColors:byteArray);
+procedure updateTheme(var themeColors:ThemeArray);
 var i:byte;
+//	tCol:byte;
 
 begin
 	for i:=0 to 4 do
 	begin
+//		tCol:=themeColors[i];
 		DLIcolTab[i*5]:=themeColors[i];
 		putHexValue(17,2+i,themeColors[i],0);
+//		tCol:=themeColors[i];
+//		DLIcolTab[i*5]:=tCol;
+//		putHexValue(17,2+i,tCol,0);
 	end;
 end;
 
-procedure editColor(nCol:shortint; var themeColors:byteArray);
+procedure editColor(nCol:shortint; var themeColors:ThemeArray);
 var
 	nibbel:byte;
 	i,value:byte;
@@ -17,9 +22,7 @@ var
 	procedure setValue(value:byte);
 	begin
 		if nibbel=0 then
-		begin
-			themeColors[nCol]:=(value shl 4)+(themeColors[nCol] and $0f);
-		end
+			themeColors[nCol]:=(value shl 4)+(themeColors[nCol] and $0f)
 		else
 			themeColors[nCol]:=(themeColors[nCol] and $f0)+(value);
 	end;
@@ -68,27 +71,19 @@ begin
 end;
 
 procedure editTheme(nTheme:shortint);
-var i:byte;
+var
 	opt:byte;
-	themeColors:array[0..4] of byte;
+	themeColors:ThemeArray;
 
 begin
-	getTheme(nTheme,themeColors);
-	PMGClear();
-	for i:=0 to 4 do fillchar(@playersData[50+i*16],12,255);
-
-	playersHPos[0]:=144;
-	playersSize[0]:=PSizeByFour;
-
 	opt:=6;
-	box(0,2,20,9,0);
-	VBar(0,2,width_themeEdit,0);
-	menuBar(resptr[menu_themeEdit],width_themeEdit,1);
+	getTheme(nTheme,themeColors);
+	ThemeEditScreen();
+
 	updateBar(resptr[menu_themeEdit],width_themeEdit,opt,1,3);
 	updateTheme(themeColors);
 
 	screen2video();
-
 	repeat
 		if (kbcode<>255) then
 		begin

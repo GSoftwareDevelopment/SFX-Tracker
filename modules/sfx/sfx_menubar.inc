@@ -18,20 +18,32 @@ begin
 		result:=false;
 end;
 
-procedure SFXMenuBar(section:byte);
+procedure SFXChangeMenuBarOpt(section:byte);
+begin
+	if (section=0) then
+	begin
+		controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1);
+		getSFXData(currentSFX);
+		updateSFXView();
+		modified:=false;
+	end;
+end;
+
+procedure SFXSelectMenuBar(var section:byte);
 begin
 	case section of
 		0: if SFXList then modified:=false;
 		1: section:=3;
-		7: SFX_Options(5-byte(modified));
+		7: SFX_Options(SFXMenuOption_Back);
 	end;
 
-	if (section>=2) and (section<=5) then
+	if (section>=3) and (section<=6) then
 	begin
 		colorVLine(winXStart+cursorPos,winYStart,8,3);
 		repeat
 			section:=section and $f;
 			updateBar(resptr[menu_sfx],width_menuBar,section,color_choice,color_selected);
+			screen2video();
 			case section of
 				3: SFXEditLoop(SFX_vol_dist,0,modified);
 				4: SFXEditLoop(SFX_vol_dist,1,modified);
@@ -39,6 +51,15 @@ begin
 				6: SFXEditLoop(SFX_modulate,0,modified);
 			end;
 		until section and $10=0;
+
+		// store SFX set after edit leave, if its modified
+		if modified then
+		begin
+			SFXDetermineLength();
+			storeSFXData(currentSFX);
+			modified:=false;
+		end;
+
 		colorVLine(winXStart+cursorPos,winYStart,8,0);
 	end;
 

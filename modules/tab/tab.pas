@@ -12,9 +12,6 @@ var
 {$i modules/tab/tab_menubar.inc}
 
 procedure TABLoop();
-var
-	opt,nTAB:shortint;
-
 begin
 	section:=0; cursorPos:=0; cursorShift:=0; modified:=false;
 
@@ -35,23 +32,8 @@ begin
 			controlSelectionKeys(key,key_Up,key_Down,section,0,4);
 			case key of
 				key_ESC: break;
-				key_Left,key_Right: begin
-					case section of
-						0: begin
-								controlSelectionKeys(key,key_Left,key_Right,currentTAB,0,maxTABs-1);
-								modified:=false;
-								getTABData(currentTAB);
-								TABDetermineLength();
-								updateTABInfo();
-								updateTAB(true);
-							end;
-						4: begin
-								controlSelectionKeys(key,key_Left,key_Right,currentSFX,0,maxSFXs-1);
-								updateTABSFX();
-							end;
-					end;
-				end;
-				key_RETURN: TABMenuBar(section);
+				key_Left,key_Right: TABChangeMenuBarOpt(section);
+				key_RETURN: TABSelectMenuBar(section);
 			end;
 			updateBar(resptr[menu_tabs],width_menuBar,section,color_choice,color_selected);
 			screen2video();

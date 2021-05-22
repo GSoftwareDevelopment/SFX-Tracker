@@ -18,7 +18,25 @@ begin
 		result:=false;
 end;
 
-procedure TABMenuBar(section:byte);
+procedure TABChangeMenuBarOpt(section:byte);
+begin
+	case section of
+		0: begin
+				controlSelectionKeys(key,key_Left,key_Right,currentTAB,0,maxTABs-1);
+				modified:=false;
+				getTABData(currentTAB);
+				TABDetermineLength();
+				updateTABInfo();
+				updateTAB(true);
+			end;
+		4: begin
+				controlSelectionKeys(key,key_Left,key_Right,currentSFX,0,maxSFXs-1);
+				updateTABSFX();
+			end;
+	end;
+end;
+
+procedure TABSelectMenuBar(section:byte);
 begin
 	case section of
 		0: if TABList then
@@ -27,8 +45,16 @@ begin
 				updateTABInfo();
 				modified:=false;
 			end;
-		1: TABEditLoop();
-		3: TAB_Options(4-byte(modified));
+		1: begin
+				TABEditLoop();
+				if modified then
+				begin
+					TABDetermineLength();
+					storeTABData(currentTAB);
+					modified:=false;
+				end;
+			end;
+		3: TAB_Options(TABMenuOption_Back);
 		4: begin
 				SFXList();
 				updateTABSFX();

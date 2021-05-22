@@ -30,7 +30,7 @@ var
 	note_names:array[0..0] of byte;
 
 begin
-	note_names:=resptr[str_TAB_note_names];
+	note_names:=resptr[table_note_names];
 	scrOfs:=vadr[winYStart]+winXStart+1;
 	_nxt:=cursorShift;
 	_tact:=1+(cursorShift div (song_lpb*song_beat));

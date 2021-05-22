@@ -26,7 +26,7 @@ begin
 					setBlank();
 					moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 				end;
-				key_RETURN: entryEdit();
+				key_RETURN: if entryEdit then break;
 			end;
 
 			i:=keyScan(key,keys_notes,34);

@@ -32,16 +32,9 @@ begin
 			key:=TKeys(kbcode); kbcode:=255;
 			controlSelectionKeys(key,key_Up,key_Down,section,0,7);
 			case key of
-				key_Left,key_Right:
-					if (section=0) then
-					begin
-						controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1);
-						getSFXData(currentSFX);
-						updateSFXView();
-						modified:=false;
-					end;
+				key_Left,key_Right: SFXChangeMenuBarOpt(section);
 				key_ESC: break;
-				key_RETURN: SFXMenuBar(section);
+				key_RETURN: SFXSelectMenuBar(section);
 			end;
 			updateBar(resptr[menu_sfx],width_menuBar,section,color_choice,color_selected);
 			screen2video();

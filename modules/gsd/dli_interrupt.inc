@@ -7,8 +7,10 @@ const
 var
 	DLIThemeCnt:byte absolute DLICount;
 	DLIColTab:array[0..9*5-1] of byte absolute DLI_COLOR_TABLE_ADDR;
+	NMIEN:word absolute $d40e;
+	oldDLI:pointer;
 
-procedure theme_dli;assembler;interrupt;
+procedure DLI_theme;assembler;interrupt;
 asm {
 ; Register backup for DLI interrupt
 _regA 	= $fd;
@@ -46,4 +48,19 @@ storeRegY:
    ldy _regY		; restore old A & Y register
    lda _regA
 };
+end;
+
+procedure DLIInit();
+begin
+	NMIEN:=%01000000; // turn off DLI
+	DLIThemeCnt:=0; // reset DLI counter
+	getIntVec(iDLI, oldDLI);
+	SetIntVec(iDLI, @DLI_theme);
+	NMIEN:=%11000000; // turn on DLI
+end;
+
+procedure DLIDone();
+begin
+	NMIEN:=%01000000; // turn off DLI
+	setIntVec(iDLI, oldDLI);
 end;

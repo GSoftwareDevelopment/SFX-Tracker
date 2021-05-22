@@ -10,6 +10,7 @@ var
 	video:array[0..0] of byte;
 	DLIST:word absolute 560;
 	VCOUNT:byte absolute $d40b;
+	PFCols:array[0..4] of byte absolute 708;
 
 procedure initGraph(dlAddr,videoAddr,bufferAddr:word);
 function getTime():longint;

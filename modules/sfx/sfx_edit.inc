@@ -14,7 +14,6 @@ var i,v:byte;
 	end;
 
 begin
-	screen2video();
 	repeat
 		if (kbcode<>255) then
 		begin
@@ -55,7 +54,9 @@ begin
 			at:=cursorShift+cursorPos;
 			v:=tab[at];
 			if (nibble=1) then v:=v shr 4 else v:=v and $0f;
-			if controlSelectionKeys(key,key_Up,Key_Down,v,0,15) then
+
+			// value change
+			if controlSelectionKeys(key,key_Down,Key_Up,v,0,15) then
 			begin
 				storeValue(v);
 				modified:=true;
@@ -63,14 +64,15 @@ begin
 			else
 			begin
 				i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
-				if (i<>255) then begin
+				if (i<>255) then
+				begin
 					storeValue(i);
 					moveCursor(1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
 					modified:=true;
 				end;
 			end;
-			updateSFXView();
 
+			updateSFXView();
 			colorVLine(winXStart+cursorPos,winYStart,8,3);
 			screen2video();
 			kbcode:=255;

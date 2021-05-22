@@ -147,7 +147,7 @@ end;
 //
 //
 
-procedure entryEdit();
+function entryEdit():boolean;
 var _note,_fnsfx,_pos:byte;
 	opt:shortint;
 
@@ -163,7 +163,7 @@ begin
 		255: opt:=0; 		// end-tab
 	end;
 	if (_note=0) and (_fnsfx<228) then opt:=4;
-	optionsList(resptr[menu_tab_edit],width_menuTABFunc,7,opt);
+	optionsList(resptr[menu_tab_edit],width_menuTABFunc,TABEditOptions,opt);
 	case opt of
 		0: setEndTab();
 		1: setJumpTo();
@@ -174,7 +174,12 @@ begin
 	end;
 	box(4,2,16,9,0);
 	updateTAB(true);
-	colorHLine(winXStart,2+cursorPos,20-winXStart,color_selected);
+	if opt=TABEditOption_BackToEdit then
+	begin
+		colorHLine(winXStart,2+cursorPos,20-winXStart,color_selected);
+		exit(false);
+	end;
+	if opt=TABEditOption_BackToMenuBar then exit(true);
 	_note:=TAB_notes[_pos];
 	_fnsfx:=TAB_fnSFX[_pos];
 	case opt of
@@ -183,4 +188,5 @@ begin
 		3: editNoteValue(_note);
 		4: editSFXChange(_fnsfx and $7f);
 	end;
+	result:=false;
 end;

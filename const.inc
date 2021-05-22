@@ -14,9 +14,10 @@ SFXNameLength		= 14;
 TABNameLength		= 8;
 SONGNameLength		= 32;
 
-defaultSongTitle	= 'NONAME';
+defaultSongTitle	= 'SONG NAME';
 defaultPath			= 'H:';
 defaultFileName	= 'H:SONG.SMM';
+defaultThemeFile	= 'DEFAULT.THM';
 
 // Interface constants
 width_menuTop		= 0;
@@ -95,34 +96,45 @@ note_val:array[0..63] of byte = (
 
 // resources ids
 	base_menus						= 0;
-	base_strings					= 10;
+	base_strings					= 11;
 	base_tables						= 23;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
    menu_sfx_options				= base_menus+2;
-   SFXMenuOptions					= 7;
    menu_tabs						= base_menus+3;
 	menu_tabs_options				= base_menus+4;
-	TABMenuOptions					= 6;
 	menu_tab_edit					= base_menus+5;
 	menu_GSD							= base_menus+6;
-	menu_ThemeEdit					= base_menus+7;
-	menu_IO							= base_menus+8;
-	menu_YesNo						= base_menus+9;
+	menu_Themes						= base_menus+7;
+	menu_ThemeEdit					= base_menus+8;
+	menu_IO							= base_menus+9;
+	menu_YesNo						= base_menus+10;
 
 	str_SFX_notDefined			= base_strings+0;
-	str_TAB_note_names			= base_strings+1;
-	str_TAB_types					= base_strings+2;
-	str_Credits						= base_strings+3;
-	str_IO_Prompt					= base_strings+4;
-	str_IO_noFiles					= base_strings+5;
-	str_IO_nextPage				= base_strings+6;
-	str_IO_prevPage				= base_strings+7;
-	str_IO_Error					= base_strings+8;
-	str_IO_Reading					= base_strings+9;
-	str_IO_Writing					= base_strings+10;
-	str_IO_Skipping				= base_strings+11;
-	str_IO_Quit						= base_strings+12;
+	str_TAB_types					= base_strings+1;
+	str_Credits						= base_strings+2;
+	str_IO_Prompt					= base_strings+3;
+	str_IO_noFiles					= base_strings+4;
+	str_IO_nextPage				= base_strings+5;
+	str_IO_prevPage				= base_strings+6;
+	str_IO_Error					= base_strings+7;
+	str_IO_Reading					= base_strings+8;
+	str_IO_Writing					= base_strings+9;
+	str_IO_Skipping				= base_strings+10;
+	str_IO_Quit						= base_strings+11;
 
-	color_themes					= base_tables+0;
+	table_note_names				= base_tables+0;
+	color_themes					= base_tables+1;
+
+//
+
+   SFXMenuOptions					= 3;
+	SFXMenuOption_Back			= 2;
+
+	TABMenuOptions					= 2;
+	TABMenuOption_Back			= 1;
+
+	TABEditOptions					= 8;
+	TABEditOption_BackToEdit	= 6;
+	TABEditOption_BackToMenuBar= 7;
