@@ -4,6 +4,7 @@ interface
 
 function indexOf(var s:string; var search:string; start:smallint):smallint;
 function splice(var s:string; start:smallint; len:smallint):string;
+function joinPathName(var path,name:string):string;
 
 implementation
 
@@ -85,6 +86,25 @@ begin								// start=-1 len=3;
 		len:=len-1;
 	end;
 	result:=ostr;
+end;
+
+function joinPathName:string;
+var
+	_folder1:string[1]='/';
+	_folder2:string[1]='>';
+	_device:string[1]=':';
+	last:byte;
+
+begin
+	last:=indexOf(path,_folder1,-1);
+	if (last=-1) then
+		last:=indexOf(path,_folder2,-1);
+	if (last=-1) then
+		last:=indexOf(path,_device,-1);
+	if last=-1 then
+		result:=name
+	else
+		result:=concat(splice(path,1,last),name);
 end;
 
 end.

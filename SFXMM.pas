@@ -42,10 +42,11 @@ var
 	modified:boolean = false;
 	key:TKeys;
 
-//
+// global access function and procedures (must have :D)
+{$i modules/io/io_error.inc}
+{$i modules/io/io_prompt.inc}
 
-{$i modules/io/io_error.inc}	// must be compiled first!
-
+// modules
 {$i modules/gsd/gsd.pas}
 {$i modules/io/io.pas}
 {$i modules/modified.inc}

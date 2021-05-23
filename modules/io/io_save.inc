@@ -58,7 +58,8 @@ var
 	f:file;
 
 begin
-	if inputLongText(0,11,20,FILEPATHMaxLength,currentFile,0,0) then
+(*
+	if filenamePrompt() then
 	begin
 		{$I-}
 		Assign(f,currentFile);
@@ -68,4 +69,5 @@ begin
 		close(f);
 		{$I+}
 	end
+	*)
 end;

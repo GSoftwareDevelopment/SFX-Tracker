@@ -20,14 +20,14 @@ begin
 		begin
 			move(resptr[str_IO_prevPage],@listBuf[listOfs],8); // hardcoded length of string!!!
 			filesCount:=filesCount+1; listOfs:=listOfs+width_fileList;
-			putMultiText(resptr[str_IO_Skipping],0);
+			putMultiText(resptr[msg_IO_Skipping],0);
 			screen2video();
 			while (startRead>0) and (IOResult=1) do
 			begin
 				findNext(f); startRead:=startRead-1;
 			end;
 		end;
-		putMultiText(resptr[str_IO_Reading],0);
+		putMultiText(resptr[msg_IO_Reading],0);
 		screen2video();
 		while (IOResult=1) and (filesCount<IO_pageLimit) do
 		begin
@@ -78,15 +78,14 @@ begin
 	result:=filesCount;
 end;
 
-function IODirectory():string;
+function IODirLoop(var searchPath:string; var resultFName:string[16]):boolean;
 var
 	f:TSearchRec;
 	selFile,
 	filesCount:byte;
-	searchPath:string[FILEPATHMaxLength] = 'H:';
-	wild:string[1] = '*';
-	listStart:smallint;
+	listStart,len:smallint;
 	listPage:byte;
+	listOfs:word;
 
 	procedure updateListPage();
 	begin
@@ -95,47 +94,58 @@ var
 
 begin
 	box(0,2,20,9,$40);
-	putMultiText(resptr[str_IO_Prompt],1);
-	if inputLongText(0,11,width_filePath,FILEPATHMaxLength,searchPath,0,0) then
-	begin
-		fillchar(@searchPath[1+length(searchPath)],FILEPATHMaxLength-length(searchPath),0);
-		if (indexOf(searchPath,wild,1)=-1) then
-			searchPath:=concat(searchPath,'*.*');
 
-		if length(searchPath)<width_filePath then
-			conv2internalP2P(@searchPath[1],@screen[220],length(searchPath))
-		else
-			conv2internalP2P(@searchPath[1],@screen[220],width_filePath);
-
-		listStart:=0; listPage:=0;
-		repeat
-			box(0,2,width_fileList,9,$40);
-			filesCount:=IOReadDir(searchPath,listStart);
-			if filesCount>0 then
+	listStart:=0; listPage:=0;
+	repeat
+		box(0,2,width_fileList,9,$40);
+		filesCount:=IOReadDir(searchPath,listStart);
+		if filesCount>0 then
+		begin
+			selFile:=0;
+			selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
+			if (filesCount>IO_pageLimit) and (selFile=IO_pageLimit) then
 			begin
-				selFile:=0;
-				selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
-				if (filesCount>IO_pageLimit) and (selFile=IO_pageLimit) then
+				listStart:=listStart+IO_pageLimit;
+				listPage:=listPage+1;
+				updateListPage();
+			end
+			else
+				if (listStart>0) and (selFile=0) then
 				begin
-					listStart:=listStart+IO_pageLimit;
-					listPage:=listPage+1;
+					listStart:=listStart-IO_pageLimit;
+					listPage:=listPage-1;
 					updateListPage();
 				end
 				else
-					if (listStart>0) and (selFile=0) then
+				begin	// file choice
+					listOfs:=selFile*width_filePath;	// calculate list offset for selected entry
+					len:=0;
+					while (listBuf[listOfs]<>0) and (len<16) do
 					begin
-						listStart:=listStart-IO_pageLimit;
-						listPage:=listPage-1;
-					updateListPage();
-					end
-					else
-						break;
-			end
-			else
-			begin
-				putMultiText(resptr[str_IO_noFiles],1);
-				break;
-			end;
-		until false;
-	end;
+						len:=len+1;
+						resultFName[len]:=char(listBuf[listOfs]+32);
+					end;
+					resultFName[0]:=char(len);
+
+					result:=true;
+					break;
+				end;
+		end
+		else
+		begin
+			putMultiText(resptr[msg_IO_noFiles],1);
+			result:=false;
+			break;
+		end;
+	until false;
+end;
+
+function IODirectory(var resultFName:string[16]):boolean;
+var
+	searchPath:string[FILEPATHMaxLength] = 'H:';
+
+begin
+	box(0,2,20,9,$40);
+	filenamePrompt(resptr[msg_IO_Prompt],1,searchPath);
+	result:=IODirLoop(searchPath,resultFName);
 end;

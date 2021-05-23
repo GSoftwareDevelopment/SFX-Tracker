@@ -209,9 +209,7 @@ begin
 				key_BackSpc:
 					if (ofs>0) then
 					begin
-						ofs:=ofs-1;
-						move(@buf[ofs+1],@buf[ofs],len-ofs);
-						buf[len]:=0;
+						move(@buf[ofs],@buf[ofs-1],len-ofs);
 						if (curX=0) and (shiftX>0) then
 						begin
 							i:=shiftX;
@@ -220,7 +218,8 @@ begin
 							moveCursor(+i,width,maxLen,curX,shiftX);
 						end;
 						moveCursor(-1,width,maxLen,curX,shiftX);
-						len:=len-1;
+						len:=len-1;	buf[len]:=0;
+						ofs:=ofs-1;
 					end
 			end;
 

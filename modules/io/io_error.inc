@@ -5,7 +5,7 @@ var
 
 begin
 	fillchar(@screen[220],20,0);
-	putMultiText(resptr[str_IO_Error],3);
+	putMultiText(resptr[msg_IO_Error],3);
 	putValue(14,11,err,3,0);
 	screen2video();
 	kbcode:=255; flashState:=false; flashTM:=0;

@@ -6,6 +6,7 @@
 procedure IOLoop();
 var
 	opt:byte;
+	fname:string[16];
 
 begin
 	opt:=1;
@@ -21,7 +22,7 @@ begin
 				key_RETURN:
 					case opt of
 						0: break;
-						1: IODirectory();
+						1: IODirectory(fname);
 						3: IOSave();
 						4: IOQuit();
 					end;

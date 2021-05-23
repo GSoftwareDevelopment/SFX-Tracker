@@ -98,8 +98,8 @@ note_val:array[0..63] of byte = (
 // resources ids
 	base_menus						= 0;
 	base_strings					= 10;
-	base_messages					= 21;
-	base_tables						= 25;
+	base_messages					= 15;
+	base_tables						= 26;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -114,23 +114,23 @@ note_val:array[0..63] of byte = (
 
 	str_SFX_notDefined			= base_strings+0;
 	str_TAB_types					= base_strings+1;
-	str_Credits						= base_strings+2;
-	str_IO_Prompt					= base_strings+3;
-	str_IO_noFiles					= base_strings+4;
-	str_IO_nextPage				= base_strings+5;
-	str_IO_prevPage				= base_strings+6;
-	str_IO_Error					= base_strings+7;
-	str_IO_Reading					= base_strings+8;
-	str_IO_Writing					= base_strings+9;
-	str_IO_Skipping				= base_strings+10;
+	str_IO_nextPage				= base_strings+2;
+	str_IO_prevPage				= base_strings+3;
+	str_NoteNames					= base_strings+4;
 
-	msg_IO_Quit						= base_messages+0;
-	but_IO_Quit						= base_messages+1;
-	msg_Theme_Overwrite			= base_messages+2;
-	but_Theme_Overwrite			= base_messages+3;
+	msg_Credits						= base_messages+0;
+	msg_IO_Prompt					= base_messages+1;
+	msg_IO_noFiles					= base_messages+2;
+	msg_IO_Error					= base_messages+3;
+	msg_IO_Reading					= base_messages+4;
+	msg_IO_Writing					= base_messages+5;
+	msg_IO_Skipping				= base_messages+6;
+	msg_IO_Quit						= base_messages+7;
+	but_IO_Quit						= base_messages+8;
+	msg_Theme_Overwrite			= base_messages+9;
+	but_Theme_Overwrite			= base_messages+10;
 
-	table_note_names				= base_tables+0;
-	color_themes					= base_tables+1;
+	color_themes					= base_tables+0;
 
 //
 

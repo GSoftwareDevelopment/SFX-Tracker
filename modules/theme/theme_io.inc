@@ -4,7 +4,7 @@ var
 	ofs,writen:word;
 
 begin
-	putMultiText(resptr[str_IO_Writing],0);
+	putMultiText(resptr[msg_IO_Writing],0);
 	screen2video();
 	{$I-}
 	assign(f,fn);
@@ -31,7 +31,7 @@ var
 	fileVer:byte;
 
 begin
-	putMultiText(resptr[str_IO_Reading],0);
+	putMultiText(resptr[msg_IO_Reading],0);
 	screen2video();
 	if fileExists(fn) then
 	begin
