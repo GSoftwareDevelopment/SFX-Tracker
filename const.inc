@@ -1,5 +1,5 @@
 // SFX Music Maker basic setup
-SFXMM_VERSION 		= $10;
+SFXMM_VER1_0 		= $10;
 
 FILEPATHMaxLength	= 255;
 
@@ -15,9 +15,9 @@ TABNameLength		= 8;
 SONGNameLength		= 32;
 
 defaultSongTitle	= 'SONG NAME';
-defaultPath			= 'H:';
-defaultFileName	= 'H:SONG.SMM';
-defaultThemeFile	= 'DEFAULT.THM';
+defaultPath			= 'D:';
+defaultFileName	= 'D:SONG.SMM';
+defaultThemeFile	= 'D:DEFAULT.THM';
 
 // Interface constants
 width_menuTop		= 0;
@@ -88,16 +88,18 @@ note_val:array[0..63] of byte = (
 );
 
 // File TAGs sections
-	section_main:TTag = (83, 70, 88, 77, 77);	// SFXMM
-	section_SFX :TTag = ( 0,  0, 83, 70, 88);	// __SFX
-	section_KEY :TTag = ( 0,  0, 75, 69, 89);	// __KEY
-	section_TAB :TTag = ( 0,  0, 84, 65, 66);	// __TAB
-	section_SONG:TTag = ( 0, 83, 79, 78, 71);	// _SONG
+	section_main	:TTag = (83, 70, 88, 77, 77);	// SFXMM
+	section_SFX		:TTag = ( 0,  0, 83, 70, 88);	// __SFX
+	section_KEY		:TTag = ( 0,  0, 75, 69, 89);	// __KEY
+	section_TAB 	:TTag = ( 0,  0, 84, 65, 66);	// __TAB
+	section_SONG	:TTag = ( 0, 83, 79, 78, 71);	// _SONG
+	section_theme	:TTag = (84, 72, 69, 77, 69); // THEME
 
 // resources ids
 	base_menus						= 0;
-	base_strings					= 11;
-	base_tables						= 23;
+	base_strings					= 10;
+	base_messages					= 21;
+	base_tables						= 25;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -109,7 +111,6 @@ note_val:array[0..63] of byte = (
 	menu_Themes						= base_menus+7;
 	menu_ThemeEdit					= base_menus+8;
 	menu_IO							= base_menus+9;
-	menu_YesNo						= base_menus+10;
 
 	str_SFX_notDefined			= base_strings+0;
 	str_TAB_types					= base_strings+1;
@@ -122,7 +123,11 @@ note_val:array[0..63] of byte = (
 	str_IO_Reading					= base_strings+8;
 	str_IO_Writing					= base_strings+9;
 	str_IO_Skipping				= base_strings+10;
-	str_IO_Quit						= base_strings+11;
+
+	msg_IO_Quit						= base_messages+0;
+	but_IO_Quit						= base_messages+1;
+	msg_Theme_Overwrite			= base_messages+2;
+	but_Theme_Overwrite			= base_messages+3;
 
 	table_note_names				= base_tables+0;
 	color_themes					= base_tables+1;
@@ -138,3 +143,9 @@ note_val:array[0..63] of byte = (
 	TABEditOptions					= 8;
 	TABEditOption_BackToEdit	= 6;
 	TABEditOption_BackToMenuBar= 7;
+
+// Program Errors
+	error_notThemeFormat			= 1;
+
+	IO_OK								= 1;
+	IOError_fileNotFound			= 170;

@@ -2,10 +2,10 @@ var
 	themesDef:array[0..0] of byte;
 	currentTheme:byte;
 
-
 {$i modules/theme/theme_view.inc}
 {$i modules/theme/theme_manage.inc}
 {$i modules/theme/theme_edit.inc}
+{$i modules/theme/theme_options.inc}
 
 procedure theme_selector();
 var
@@ -29,7 +29,15 @@ begin
 			controlSelectionKeys(key,key_Up,key_Down,nTheme,0,8);
 			case key of
 				key_ESC: break;
-				key_RETURN: setTheme(nTheme);
+				key_RETURN:
+					if nTheme<6 then
+						setTheme(nTheme)
+					else
+					begin
+						exitThemeSelector();
+						ThemeMenuOption(nTheme-6);
+						initThemeSelector();
+					end;
 				key_SPACE: begin
 					editTheme(nTheme);
 					exitThemeSelector();

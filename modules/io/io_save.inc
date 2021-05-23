@@ -1,6 +1,3 @@
-var
-	IOBuf:array[0..IO_BUFFER_SIZE-1] of byte absolute IO_BUFFER_ADDR;
-
 function storeHDataInFile(var f:file; var sectionTAG:TTag; id:byte; dataHPtr:word; nameLength:byte):boolean;
 var
 	ofs,
@@ -37,21 +34,22 @@ var
 begin
 	// prepare main section data
 	move(@section_main,@IOBuf,5);
-	IOBuf[5]:=SFXMM_VERSION;
+	IOBuf[5]:=SFXMM_VER1_0;
 	IOBuf[6]:=SONGNameLength;
 	move(@SONGTitle[1],@IOBuf[7],SONGNameLength);
 	BlockWrite(f,IOBuf,5+1+1+SONGNameLength);
 
 	// store SFXs data
-	if IOResult<>1 then begin result:=false; exit; end;
+	if IOResult<>1 then exit(false);
 	for i:=0 to maxSFXs-1 do
 		if SFXPtr[i]<>$FFFF then
-			if not storeHDataInFile(f,section_SFX,i,SFXPtr[i],SFXNameLength) then begin result:=false; exit; end;
+			if not storeHDataInFile(f,section_SFX,i,SFXPtr[i],SFXNameLength) then exit(false);
 
 	// store TABs data
 	for i:=0 to maxTABs-1 do
 		if TABPtr[i]<>$FFFF then
-			if not storeHDataInFile(f,section_TAB,i,TABPtr[i],TABNameLength) then begin result:=false; exit; end;
+			if not storeHDataInFile(f,section_TAB,i,TABPtr[i],TABNameLength) then exit(false);
+
 	result:=true;
 end;
 
@@ -65,10 +63,8 @@ begin
 		{$I-}
 		Assign(f,currentFile);
 		Rewrite(f,1);
-		if IOResult=1 then
-			makeCompletteFile(f)
-		else
-			IOError();
+		if (IOResult=1) or (makeCompletteFile(f)) then
+			IOError(IOResult);
 		close(f);
 		{$I+}
 	end

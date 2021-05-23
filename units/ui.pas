@@ -67,13 +67,13 @@ procedure moveCursor(ofs:smallint; winSize,overSize:smallint; var curPos,curShif
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputLongText(x,y,width,maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputValue(x,y,width:byte; var v:integer; min,max:integer; colEdit,colOut:byte):boolean;
+procedure putMultiText(bar:pointer; bgColor:byte);
 procedure VBar(x,y,width,col:byte);
 procedure updateBar(bar:pointer; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
 procedure menuBar(bar:Pointer; width,bgColor:byte);
 procedure optionsList(optTabs:pointer; optWidth:byte; opts:shortint; var currentOpt:shortint);
 function listChoice(x,y,width,height,defaultPos:byte; listPtr:pointer; listSize:byte; showCount:boolean):shortint;
-function messageBox(msgX,msgY:byte; msgPtr:pointer; msgColor:byte;
-							menuPtr:pointer; menuWidth,menuOpts:byte; defaultOpt:shortint):byte;
+function messageBox(msgPtr:pointer; msgColor:byte;	menuPtr:pointer; menuWidth,menuOpts:byte; defaultOpt:shortint):byte;
 
 implementation
 uses gr2;
@@ -162,7 +162,10 @@ var
 	procedure updateTextLine();
 	begin
 		move(@buf[shiftX],@screen[scrOfs],width);
-		colorHLine(x,y,width,colEdit);
+		if width<20 then
+			colorHLine(x,y,width+1,colEdit)
+		else
+			colorHLine(x,y,width,colEdit)
 	end;
 
 begin
@@ -187,7 +190,7 @@ begin
 		if (getTime-tm>=10) then
 		begin
 			curState:=not curState;
-			screen[scrOfs+curX]:=screen[scrOfs+curX] xor $80;
+			screen[scrOfs+curX]:=screen[scrOfs+curX] xor $C0;
 			screen2video();
 			tm:=getTime;
 		end;
@@ -272,6 +275,33 @@ begin
 	result:=true;
 end;
 
+procedure putMultiText;
+var
+	v:byte;
+	dataOfs:byte;
+	scrOfs:word;
+	data:array[0..0] of byte;
+
+begin
+	data:=bar;
+	bgColor:=colMask[bgColor];
+	dataOfs:=0;
+	while (data[dataOfs]<>255) do
+	begin
+		scrOfs:=data[dataOfs]; dataOfs:=dataOfs+1; // get screen offset
+		repeat
+			v:=data[dataOfs];
+			if (v=255) then break; // entry end
+
+			screen[scrOfs]:=bgColor+v;
+			scrOfs:=scrOfs+1;
+			dataOfs:=dataOfs+1;
+		until false;
+
+		dataOfs:=dataOfs+1;
+	end;
+end;
+
 procedure VBar(x,y,width,col:byte);
 var i,ofs:byte;
 
@@ -325,7 +355,7 @@ end;
 
 procedure menuBar(bar:Pointer; width,bgColor:byte);
 var
-	i,j,v:byte;
+	j,v:byte;
 	dataOfs:byte;
 	scrOfs:word;
 	data:array[0..0] of byte;
@@ -333,7 +363,7 @@ var
 begin
 	data:=bar;
 	bgColor:=colMask[bgColor];
-	dataOfs:=0; i:=0; width:=width-1;
+	dataOfs:=0; width:=width-1;
 	while (data[dataOfs]<>255) do
 	begin
 		scrOfs:=data[dataOfs]; dataOfs:=dataOfs+1;
@@ -354,7 +384,7 @@ begin
 		if (width<>255) then
 			screen[scrOfs]:=bgColor+$06;
 
-		i:=i+1; dataOfs:=dataOfs+1;
+		dataOfs:=dataOfs+1;
 	end;
 end;
 
@@ -470,7 +500,7 @@ end;
 
 function messageBox:byte;
 begin
-	putNText(msgX,msgY,msgPtr,msgColor);
+	putMultiText(msgPtr,msgColor);
 	optionsList(menuPtr,menuWidth,menuOpts,defaultOpt);
 	result:=defaultOpt;
 end;

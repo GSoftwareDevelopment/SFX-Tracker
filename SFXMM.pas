@@ -17,6 +17,7 @@ var
 
 	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR; // universal list buffer array
 	tmpbuf:array[0..255] of byte absolute TEMP_BUFFER_ADDR; // store previous screen, for better UI experience
+	IOBuf:array[0..IO_BUFFER_SIZE-1] of byte absolute IO_BUFFER_ADDR;
 
 	resptr:array[0..0] of pointer absolute RESOURCES_ADDR;
 
@@ -24,7 +25,7 @@ var
 	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR;
 	SONGData:array[0..255] of byte absolute SONG_ADDR;
 	SONGTitle:string[SONGNameLength];
-	currentFile:string[FILEPATHMaxLength]; // indicate a current opened SFXMM file with full path and device
+	currentFile:String; // indicate a current opened SFXMM file with full path and device
 
 	cursorPos:smallInt;
 	cursorShift:smallInt;
@@ -43,6 +44,8 @@ var
 
 //
 
+{$i modules/io/io_error.inc}	// must be compiled first!
+
 {$i modules/gsd/gsd.pas}
 {$i modules/io/io.pas}
 {$i modules/modified.inc}
@@ -55,13 +58,14 @@ begin
 	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
 	initThemes(resptr[color_themes]);
+	IOLoadTheme(defaultThemeFile);
 	fillchar(@screen[0],40,$00);
 	fillchar(@screen[40],20,$80);
 	KRPDEL:=20;
 	KEYREP:=3;
 	CHBAS:=$BC;
 
-	fillchar(@listBuf,1600,0);
+	fillchar(@listBuf,LIST_BUFFER_SIZE,0);
 	fillchar(@SFXPtr,maxSFXs*2,$ff);
 	fillchar(@TABPtr,maxTABs*2,$ff);
 	fillchar(@songData,256,$ff);

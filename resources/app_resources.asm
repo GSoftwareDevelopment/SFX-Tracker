@@ -10,25 +10,29 @@ data_pointers_list
 	dta a(menu_Themes)			;7
 	dta a(menu_ThemeEdit)		;8
 	dta a(menu_IO)					;9
-	dta a(menu_YesNo);			;10
 
 ;strings
-	dta a(str_SFX_notDefined)	;11
-	dta a(str_TAB_types)			;12
-	dta a(str_Credits)			;13
-	dta a(str_IO_Prompt)			;14
-	dta a(str_IO_noFiles)		;15
-	dta a(str_IO_nextPage)		;16
-	dta a(str_IO_prevPage)		;17
-	dta a(str_IO_error)			;18
-	dta a(str_IO_reading)		;19
-	dta a(str_IO_writing)		;20
-	dta a(str_IO_skipping)		;21
-	dta a(str_IO_Quit)			;22
+	dta a(str_SFX_notDefined)	;10
+	dta a(str_TAB_types)			;11
+	dta a(str_Credits)			;12
+	dta a(str_IO_Prompt)			;13
+	dta a(str_IO_noFiles)		;14
+	dta a(str_IO_nextPage)		;15
+	dta a(str_IO_prevPage)		;16
+	dta a(str_IO_error)			;17
+	dta a(str_IO_reading)		;18
+	dta a(str_IO_writing)		;19
+	dta a(str_IO_skipping)		;20
+
+;message boxes
+	dta a(msg_IO_Quit)			;21
+	dta a(but_IO_Quit)			;22
+	dta a(msg_Theme_Overwrite)	;23
+	dta a(but_Theme_Overwrite)	;24
 
 ; tables
-	dta a(table_note_names)		;23
-	dta a(color_themes)			;24
+	dta a(table_note_names)		;25
+	dta a(color_themes)			;26
 
 menus
 
@@ -120,11 +124,6 @@ menu_IO
 					dta 16,d'QUIT',255				; quit to dos
 					dta 255
 
-menu_YesNo
-					dta 62,07,d'YES',255
-					dta 82,07,d'NO',255
-					dta 255
-
 strings
 str_SFX_notDefined
 					dta ' - FREE SFX - ',255		; "not defined" SFX string
@@ -146,32 +145,48 @@ str_Credits
 					dta 255
 
 str_IO_Prompt
-					dta d'DEVICE:PATH',255			; IO->DIR prompt message
+					dta 200,d'DEVICE:PATH',255,255			; IO->DIR prompt message
 str_IO_noFiles
-					dta d'NO FILES',255				; IO->DIR message for empty disk
+					dta 126,d'NO FILES',255,255				; IO->DIR message for empty disk
 str_IO_nextPage
 					dta d'PAGE >>>',255				; IO->DIR entry for next list page
 str_IO_prevPage
 					dta d'<<< PAGE',255				; IO->DIR entry for previous list page
 str_IO_error
-					dta d'I/O ERROR #',255			; IO error message with it number
+					dta 220,d'I/O ERROR #',255,255			; IO error message with it number
 str_IO_reading
-					dta d'READING...',255			; IO message for reading operation
+					dta 20,d'READING...',255,255			; IO message for reading operation
 str_IO_writing
-					dta d'WRITING...',255			; IO message for writing operation
+					dta 20,d'WRITING...',255,255			; IO message for writing operation
 str_IO_skipping
-					dta d'SKIPPING...',255			; IO message for skipping - ony IO->DIR when page is changing
-str_IO_Quit
-					dta 07,d'ARE YOU LEAVE?',06,255	; quit ask message
+					dta 20,d'SKIPPING...',255,255			; IO message for skipping - ony IO->DIR when page is changing
+
+messages
+msg_IO_Quit
+					dta 42,07,d'ARE YOU LEAVE?',06,255,255	; quit ask message
+but_IO_Quit
+					dta 62,07,d'YES',255
+					dta 82,07,d'NO',255
+					dta 255
+msg_Theme_Overwrite
+					dta 44,07,d'OVERWRITE?',06,255
+					dta 162,d'THIS ACTION WILL',255
+					dta 183,d'OVERWRITE FILE',255
+					dta 202,d'ON THE DISKETTE!',255
+					dta 255
+but_Theme_Overwrite
+					dta 64,07,d'YES',255
+					dta 84,07,d'NO',255
+					dta 255
 
 tables
 color_themes
-					dta $0a,$e6,$68,$34,$00,d'LIGHT',255		; predefined theme set
-					dta $00,$02,$04,$30,$08,d'DARK',255			; predefined theme set
-					dta $00,$00,$00,$00,$00,d'CUSTOM 1',255	; custom theme set
-					dta $00,$00,$00,$00,$00,d'CUSTOM 2',255
-					dta $00,$00,$00,$00,$00,d'CUSTOM 3',255
-					dta $00,$00,$00,$00,$00,d'CUSTOM 4',255
+					dta $0a,$e6,$68,$34,$00,d'LIGHT       ',255		; predefined theme set
+					dta $00,$00,$00,$30,$02,d'DARK        ',255
+					dta $a8,$a3,$ad,$a6,$00,d'FOCUS       ',255
+					dta $c2,$c4,$cd,$c6,$cb,d'CALM        ',255
+					dta $84,$84,$84,$0f,$00,d'BASIC BL    ',255
+					dta $00,$00,$00,$04,$0F,d'INVERS/VIDEO',255
 					dta 255
 
 table_note_names
@@ -185,4 +200,5 @@ table_note_names
  .print "TABLE OF POINTERS SIZE: ",menus - data_pointers_list
  .print "MENUS : ", menus, "..", strings-1
  .print "STRINNGS : ", strings, "..", tables-1
- .print "TABLES : ", tables, '..', *-1
+ .print "STRINNGS : ", tables, "..", messages-1
+ .print "TABLES : ", messages, '..', *-1

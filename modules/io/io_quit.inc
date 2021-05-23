@@ -1,7 +1,9 @@
 procedure IOQuit();
+var
+	answer:shortint;
+
 begin
-	if messageBox(2,2,resptr[str_IO_Quit],color_choice,resptr[menu_YesNo],16,2,1)=1 then
-		move(@tmpbuf[40],@screen[40],60)
-	else
-		halt(1);
+	answer:=messageBox(resptr[msg_IO_Quit],color_choice,resptr[but_IO_Quit],16,2,1);
+	if answer=0 then halt(1);
+	move(@tmpbuf[40],@screen[40],60)
 end;

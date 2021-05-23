@@ -1,26 +1,3 @@
-procedure IOError();
-var
-	flashTM:longint;
-	flashState:boolean;
-
-begin
-	fillchar(@screen[220],20,0);
-	putNText(3,11,resptr[str_IO_Error],0);
-	putValue(14,11,IOResult,3,0);
-	kbcode:=255; flashState:=false; flashTM:=0;
-	repeat
-		if (getTime-flashTM>=25) then
-		begin
-			flashState:=not flashState;
-			colorHLine(0,11,20,3*byte(flashState));
-			screen2video();
-			flashTM:=getTime;
-		end;
-	until kbcode<>255; kbcode:=255;
-	fillchar(@screen[220],20,0);
-	screen2video();
-end;
-
 function IOReadDir(path:string; startRead:smallint):byte;
 const
 	attrMask:array[0..3] of byte = (faReadOnly,faSysFile,faHidden,faArchive);
@@ -43,14 +20,14 @@ begin
 		begin
 			move(resptr[str_IO_prevPage],@listBuf[listOfs],8); // hardcoded length of string!!!
 			filesCount:=filesCount+1; listOfs:=listOfs+width_fileList;
-			putNText(0,1,resptr[str_IO_Skipping],0);
+			putMultiText(resptr[str_IO_Skipping],0);
 			screen2video();
 			while (startRead>0) and (IOResult=1) do
 			begin
 				findNext(f); startRead:=startRead-1;
 			end;
 		end;
-		putNText(0,1,resptr[str_IO_Reading],0);
+		putMultiText(resptr[str_IO_Reading],0);
 		screen2video();
 		while (IOResult=1) and (filesCount<IO_pageLimit) do
 		begin
@@ -96,7 +73,7 @@ begin
 		else
 			if filesCount>0 then filesCount:=filesCount-1;
 	end;
-	if (filesCount<=IO_pageLimit) and (IOResult<>136) then IOError();
+	if (filesCount<=IO_pageLimit) and (IOResult<>136) then IOError(IOResult);
 	FindClose(f);
 	result:=filesCount;
 end;
@@ -118,7 +95,7 @@ var
 
 begin
 	box(0,2,20,9,$40);
-	putNText(0,10,resptr[str_IO_Prompt],1);
+	putMultiText(resptr[str_IO_Prompt],1);
 	if inputLongText(0,11,width_filePath,FILEPATHMaxLength,searchPath,0,0) then
 	begin
 		fillchar(@searchPath[1+length(searchPath)],FILEPATHMaxLength-length(searchPath),0);
@@ -156,7 +133,7 @@ begin
 			end
 			else
 			begin
-				putNText(6,6,resptr[str_IO_noFiles],1);
+				putMultiText(resptr[str_IO_noFiles],1);
 				break;
 			end;
 		until false;

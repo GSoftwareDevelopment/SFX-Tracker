@@ -1,6 +1,6 @@
 RESOURCES_ADDR			= $AC00;	// programm resources from file resource/app_ressoures.asm
 
-// LIST_BUFFER_SIZE		= 2048;	// universal list buffer size
+LIST_BUFFER_SIZE		= 2048;	// universal list buffer size
 LIST_BUFFER_ADDR		= $C000; // universal list buffer for UI.listChoice()
 
 SONG_ADDR				= $B000;	// SONG table definition
