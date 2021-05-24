@@ -70,6 +70,21 @@ begin
 	until false;
 end;
 
+procedure ThemeEditScreen();
+var i:byte;
+
+begin
+	PMGClear();
+	for i:=0 to 4 do fillchar(@playersData[50+i*16],12,255);
+
+	playersHPos[0]:=144;
+	playersSize[0]:=PSizeByFour;
+
+	box(0,2,20,9,0);
+	VBar(0,2,width_themeEdit,0);
+	menuBar(resptr[menu_themeEdit],width_themeEdit,1);
+end;
+
 procedure editTheme(nTheme:shortint);
 var
 	opt:byte;

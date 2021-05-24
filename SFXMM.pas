@@ -19,18 +19,24 @@ var
 	tmpbuf:array[0..255] of byte absolute TEMP_BUFFER_ADDR; // store previous screen, for better UI experience
 	IOBuf:array[0..IO_BUFFER_SIZE-1] of byte absolute IO_BUFFER_ADDR;
 
-	resptr:array[0..0] of pointer absolute RESOURCES_ADDR;
+	resptr:array[0..0] of pointer absolute RESOURCES_ADDR; // pointers list to resources
 
-	SFXPtr:array[0..maxSFXs-1] of word absolute SFX_POINTERS_ADDR;
-	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR;
-	SONGData:array[0..255] of byte absolute SONG_ADDR;
+	themesNames:array[0..0] of byte absolute DLI_COLOR_TABLE_ADDR+45; // list of subject names; located just after the color definition for the DLI
+	currentTheme:byte;
+
+//
+	SFXPtr:array[0..maxSFXs-1] of word absolute SFX_POINTERS_ADDR; // heap pointers to SFX definitions
+	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR; // heap pointera to TAB definitions
+	SONGData:array[0..255] of byte absolute SONG_ADDR; // table for SONG data
 	SONGTitle:string[SONGNameLength];
-	currentFile:String; // indicate a current opened SFXMM file with full path and device
+	song_tact,song_beat,song_lpb:byte;
+
+//
+	currentFile:string; // indicate a current opened SFXMM file with full path and device
+	searchPath:string; // used only in IO->DIR
 
 	cursorPos:smallInt;
 	cursorShift:smallInt;
-
-	song_tact,song_beat,song_lpb:byte;
 
 	currentMenu:byte;
 	section:byte;
@@ -58,7 +64,7 @@ begin
 	HEAP_Init();
 	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
-	initThemes(resptr[color_themes]);
+	getTheme(0,PFCOLS); // set default theme color
 	IOLoadTheme(defaultThemeFile);
 	fillchar(@screen[0],40,$00);
 	fillchar(@screen[40],20,$80);
@@ -86,10 +92,13 @@ begin
 
 	fillchar(@SONGTitle,SongNameLength,0);
 	move(@defaultSongTitle,@SONGTitle,length(defaultSongTitle)+1);
-//	SONGTitle:=DefaultSongTitle;
+
 	fillchar(@currentFile,FILEPATHMaxLength,0);
 	move(@defaultFileName,@currentFile,length(defaultFileName)+1);
-//	currentFile:=DefaultFileName;
+
+	fillchar(@searchPath,FILEPATHMaxLength,0);
+	move(@defaultSearchPath,@searchPath,length(defaultSearchPath)+1);
+
 end;
 
 begin

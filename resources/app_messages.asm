@@ -12,8 +12,13 @@ msg_Credits
 					dta 221,d'BIT.LY/SFX-TRACKER',255
 					dta 255
 
-msg_IO_Prompt
-					dta 200,d'DEVICE:FILENAME',255,255			; IO->DIR prompt message
+msg_IO_DirPrompt
+					dta 200,d'DEVICE:PATH',255,255			; IO->DIR prompt message
+msg_IO_SavePrompt
+					//        01234567890123456789
+					dta 200,d'SAVE AS:',255,255
+msg_IO_LoadPrompt
+					dta 200,d'ENTER FILE NAME:',255,255
 msg_IO_noFiles
 					dta 126,d'NO FILES',255,255				; IO->DIR message for empty disk
 msg_IO_error

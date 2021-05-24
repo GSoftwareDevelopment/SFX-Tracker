@@ -42,7 +42,7 @@ begin
 					f.Name[i]:=char(byte(f.Name[i])-32);
 			// add folder icon to list buffer if, entry have directory attribute set
 			if f.attr and faDirectory=faDirectory then
-				listBuf[listOfs]:=$1e; // more (>)
+				listBuf[listOfs]:=$0c; // folder icon
 			// copy name to list buffer
 			move(@f.Name[1],@listBuf[listOfs+1],nameLen);
 
@@ -81,7 +81,7 @@ end;
 function IODirLoop(var searchPath:string; var resultFName:string[16]):boolean;
 var
 	f:TSearchRec;
-	selFile,
+	selFile:shortint;
 	filesCount:byte;
 	listStart,len:smallint;
 	listPage:byte;
@@ -103,27 +103,33 @@ begin
 		begin
 			selFile:=0;
 			selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
-			if (filesCount>IO_pageLimit) and (selFile=IO_pageLimit) then
+			if (selFile=-1) then
 			begin
+				result:=false; break; // exit(false);
+			end;
+			if (filesCount>IO_pageLimit) and (selFile=IO_pageLimit) then
+			begin // next page
 				listStart:=listStart+IO_pageLimit;
 				listPage:=listPage+1;
 				updateListPage();
 			end
 			else
 				if (listStart>0) and (selFile=0) then
-				begin
+				begin // previous page
 					listStart:=listStart-IO_pageLimit;
 					listPage:=listPage-1;
 					updateListPage();
 				end
 				else
 				begin	// file choice
-					listOfs:=selFile*width_filePath;	// calculate list offset for selected entry
+					listOfs:=selFile*width_filePath+1;	// calculate list offset for selected entry
 					len:=0;
+					// the below loop, extracts the file name from the list, converting it from screen codes to ASCII
 					while (listBuf[listOfs]<>0) and (len<16) do
 					begin
 						len:=len+1;
 						resultFName[len]:=char(listBuf[listOfs]+32);
+						listOfs:=listOfs+1;
 					end;
 					resultFName[0]:=char(len);
 
@@ -140,12 +146,13 @@ begin
 	until false;
 end;
 
-function IODirectory(var resultFName:string[16]):boolean;
+procedure IODirectory();
 var
-	searchPath:string[FILEPATHMaxLength] = 'H:';
+	FName:string[16];
 
 begin
 	box(0,2,20,9,$40);
-	filenamePrompt(resptr[msg_IO_Prompt],1,searchPath);
-	result:=IODirLoop(searchPath,resultFName);
+	if filenamePrompt(resptr[msg_IO_Prompt],1,searchPath)<>-1 then
+		if IODirLoop(searchPath,FName) then
+			currentFile:=joinPathName(searchPath,FName)
 end;

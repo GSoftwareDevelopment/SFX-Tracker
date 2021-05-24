@@ -85,13 +85,8 @@ var
 begin
 	result:=255;
 	for keyOfs:=0 to keysRange-1 do
-	begin
 		if (keyDefs[keyOfs]=key2Scan) then
-		begin
-			result:=keyOfs;
-			break;
-		end;
-	end;
+			exit(keyOfs);
 end;
 
 function controlSelectionKeys:boolean;
@@ -152,7 +147,7 @@ end;
 
 function inputLongText:boolean;
 var
-	buf:array[0..255] of byte;
+	buf:array[0..255] of byte absolute $400; // use IO buffer for temporary input strage
 	i,len:byte;
 	curX,shiftX:smallint;
 	ch,ofs,scrOfs:byte;
@@ -173,10 +168,9 @@ begin
 	fillchar(@buf,256,0);
 	conv2internal(s);
 	move(@s[1],@buf,len);
-	tm:=getTime; curState:=false;
 	if (len>width) then
 	begin
-		curX:=width-1; shiftX:=length(s)-len;
+		curX:=width-1; shiftX:=len-width;
 	end
 	else
 	begin
@@ -186,6 +180,7 @@ begin
 	scrOfs:=vadr[y]+x;
 	updateTextLine();
 	screen2video();
+	tm:=getTime; curState:=false;
 	repeat
 		if (getTime-tm>=10) then
 		begin

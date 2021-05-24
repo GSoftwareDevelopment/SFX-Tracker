@@ -58,16 +58,20 @@ var
 	f:file;
 
 begin
-(*
-	if filenamePrompt() then
+	box(0,2,20,10,$40);
+	if filenamePrompt(resptr[msg_IO_SavePrompt],1,currentFile)<>-1 then
 	begin
 		{$I-}
-		Assign(f,currentFile);
-		Rewrite(f,1);
-		if (IOResult=1) or (makeCompletteFile(f)) then
+		assign(f,currentFile);
+		rewrite(f,1);
+		if (IOResult=1) then
+		begin
+			if (not makeCompletteFile(f)) then
+				IOError(IOResult);
+		end
+		else
 			IOError(IOResult);
 		close(f);
 		{$I+}
-	end
-	*)
+	end;
 end;

@@ -1,10 +1,5 @@
-var
-	themesDef:array[0..0] of byte;
-	currentTheme:byte;
-
 {$i modules/theme/theme_view.inc}
 {$i modules/theme/theme_manage.inc}
-{$i modules/theme/theme_edit.inc}
 {$i modules/theme/theme_options.inc}
 
 procedure theme_selector();
@@ -31,18 +26,18 @@ begin
 				key_ESC: break;
 				key_RETURN:
 					if nTheme<6 then
-						setTheme(nTheme)
+						getTheme(nTheme,PFCOLS)
 					else
 					begin
 						exitThemeSelector();
 						ThemeMenuOption(nTheme-6);
-						initThemeSelector();
+						ThemesScreen();
 					end;
-				key_SPACE: begin
-					editTheme(nTheme);
-					exitThemeSelector();
-					initThemeSelector();
-				end;
+//				key_SPACE: begin
+//					editTheme(nTheme);
+//					exitThemeSelector();
+//					initThemeSelector();
+//				end;
 			end;
 			if nTheme<6 then
 				colorHLine(6,2+nTheme,14,3)
@@ -54,10 +49,4 @@ begin
 
 	exitThemeSelector();
 	move(@tmpbuf[20],@screen[20],200);
-end;
-
-procedure initThemes(themesPtr:pointer);
-begin
-	themesDef:=themesPtr;
-	setTheme(0);
 end;

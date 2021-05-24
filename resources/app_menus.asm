@@ -69,15 +69,16 @@ menu_Themes
 					dta 203,d'SAVE THEME SET',255						; like above, but save
 					dta 255
 
-menu_ThemeEdit
-					dta  40,d'MENU AREA',255		; color scheme definition
-					dta  60,d'ITEM',255				; color scheme definition
-					dta  80,d'BACKGROUND',255		; color scheme definition
-					dta 100,d'SELECTED',255			; color scheme definition
-					dta 120,d'BORDER',255			; color scheme definition
-					dta 180,d'STORE',255				; store modified/current color theme
-					dta 200,d'< BACK',255			; back to theme manager
-					dta 255
+
+; menu_ThemeEdit
+;					dta  40,d'MENU AREA',255		; color scheme definition
+;					dta  60,d'ITEM',255				; color scheme definition
+;					dta  80,d'BACKGROUND',255		; color scheme definition
+;					dta 100,d'SELECTED',255			; color scheme definition
+;					dta 120,d'BORDER',255			; color scheme definition
+;					dta 180,d'STORE',255				; store modified/current color theme
+;					dta 200,d'< BACK',255			; back to theme manager
+;					dta 255
 
 menu_IO
 					dta  0,d'<',255					; back to main menu

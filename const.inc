@@ -15,15 +15,15 @@ TABNameLength		= 8;
 SONGNameLength		= 32;
 
 defaultSongTitle	= 'SONG NAME';
-defaultPath			= 'D:';
+defaultSearchPath	= 'D:';
 defaultFileName	= 'D:SONG.SMM';
 defaultThemeFile	= 'D:DEFAULT.THM';
 
 // Interface constants
 width_menuTop		= 0;
 width_menuBar		= 4;
-width_themeEdit	= 11;
-width_colorEdit	= 9;
+// width_themeEdit	= 11;
+// width_colorEdit	= 9;
 width_menuOptions	= 16;
 width_menuTabFunc	= 12;
 width_fileList		= 20;
@@ -97,9 +97,9 @@ note_val:array[0..63] of byte = (
 
 // resources ids
 	base_menus						= 0;
-	base_strings					= 10;
-	base_messages					= 15;
-	base_tables						= 26;
+	base_strings					= 9;
+	base_messages					= 14;
+//	base_tables						= 27;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -109,8 +109,8 @@ note_val:array[0..63] of byte = (
 	menu_tab_edit					= base_menus+5;
 	menu_GSD							= base_menus+6;
 	menu_Themes						= base_menus+7;
-	menu_ThemeEdit					= base_menus+8;
-	menu_IO							= base_menus+9;
+//	menu_ThemeEdit					= base_menus+8;
+	menu_IO							= base_menus+8;
 
 	str_SFX_notDefined			= base_strings+0;
 	str_TAB_types					= base_strings+1;
@@ -120,17 +120,19 @@ note_val:array[0..63] of byte = (
 
 	msg_Credits						= base_messages+0;
 	msg_IO_Prompt					= base_messages+1;
-	msg_IO_noFiles					= base_messages+2;
-	msg_IO_Error					= base_messages+3;
-	msg_IO_Reading					= base_messages+4;
-	msg_IO_Writing					= base_messages+5;
-	msg_IO_Skipping				= base_messages+6;
-	msg_IO_Quit						= base_messages+7;
-	but_IO_Quit						= base_messages+8;
-	msg_Theme_Overwrite			= base_messages+9;
-	but_Theme_Overwrite			= base_messages+10;
+	msg_IO_SavePrompt				= base_messages+2;
+	msg_IO_LoadPrompt				= base_messages+3;
+	msg_IO_noFiles					= base_messages+4;
+	msg_IO_Error					= base_messages+5;
+	msg_IO_Reading					= base_messages+6;
+	msg_IO_Writing					= base_messages+7;
+	msg_IO_Skipping				= base_messages+8;
+	msg_IO_Quit						= base_messages+9;
+	but_IO_Quit						= base_messages+10;
+	msg_Theme_Overwrite			= base_messages+11;
+	but_Theme_Overwrite			= base_messages+12;
 
-	color_themes					= base_tables+0;
+//	color_themes					= base_tables+0;
 
 //
 

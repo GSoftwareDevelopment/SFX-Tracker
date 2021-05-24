@@ -1,3 +1,4 @@
+DLI_COLOR_TABLE_ADDR rcasm 'resources/themes.asm'
 RESOURCES_ADDR rcasm 'resources/app_resources.asm'
 
 KEYBOARD_ADDR rcdata 'resources/keyboard.obj'
