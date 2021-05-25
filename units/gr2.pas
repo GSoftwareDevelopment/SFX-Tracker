@@ -26,9 +26,8 @@ procedure putNText(x,y:byte; strptr:pointer; color:byte);
 procedure putASCIIText(x,y:byte; var s:string; color:byte);
 procedure putValue(x,y:byte; value:longint; zeros,color:byte);
 procedure putHexValue(x,y,value:byte; color:byte);
-procedure screen2video();
-
 procedure wait4screen();
+procedure screen2video();
 
 implementation
 procedure initGraph;
@@ -216,14 +215,15 @@ begin
 		screen[scrOfs]:=$17+v;
 end;
 
-procedure screen2video;
-begin
-	move(@screen,@video,240);
-end;
-
 procedure wait4screen;
 begin
 	repeat until VCOUNT=0;
+end;
+
+procedure screen2video;
+begin
+	repeat until VCOUNT=0;
+	move(@screen,@video,240);
 end;
 
 end.

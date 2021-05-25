@@ -1,3 +1,5 @@
+{$i modules/sfx/sfx_entry_edit.inc}
+
 function SFXEditLoop(var tab:byteArray; nibble:byte; var modified:boolean):shortint;
 var i,v:byte;
 	at:byte;
@@ -24,7 +26,8 @@ begin
 				break;
 			end;
 			case key of
-				key_RETURN,key_ESC: break;
+				key_ESC: break;
+				key_RETURN: if SFXEntryEdit then break;
 				key_CTRL_Left: begin
 					colorVLine(winXStart+cursorPos,winYStart,8,0);
 					if (cursorPos=0) then

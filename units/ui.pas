@@ -66,14 +66,14 @@ function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte
 procedure moveCursor(ofs:smallint; winSize,overSize:smallint; var curPos,curShift:smallint);
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputLongText(x,y,width,maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
-function inputValue(x,y,width:byte; var v:integer; min,max:integer; colEdit,colOut:byte):boolean;
+function inputValue(x,y,width:byte; var v:smallint; min,max:smallint; colEdit,colOut:byte):boolean;
 procedure putMultiText(bar:pointer; bgColor:byte);
 procedure VBar(x,y,width,col:byte);
 procedure updateBar(bar:pointer; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
-procedure menuBar(bar:Pointer; width,bgColor:byte);
-procedure optionsList(optTabs:pointer; optWidth:byte; opts:shortint; var currentOpt:shortint);
+procedure menuBar(bar:pointer; width,bgColor:byte);
+function optionsList(optTabs:pointer; optWidth:byte; opts:shortint; var currentOpt:shortint; pcKey,ncKey:byte):boolean;
 function listChoice(x,y,width,height,defaultPos:byte; listPtr:pointer; listSize:byte; showCount:boolean):shortint;
-function messageBox(msgPtr:pointer; msgColor:byte;	menuPtr:pointer; menuWidth,menuOpts:byte; defaultOpt:shortint):byte;
+function messageBox(msgPtr:pointer; msgColor:byte;	menuPtr:pointer; menuWidth,menuOpts:byte; defaultOpt:shortint; pcKey,ncKey:byte):byte;
 
 implementation
 uses gr2;
@@ -147,7 +147,7 @@ end;
 
 function inputLongText:boolean;
 var
-	buf:array[0..255] of byte absolute $400; // use IO buffer for temporary input strage
+	buf:byteArray absolute $400; // use IO buffer for temporary input strage
 	i,len:byte;
 	curX,shiftX:smallint;
 	ch,ofs,scrOfs:byte;
@@ -249,21 +249,19 @@ begin
 	kbcode:=255;
 end;
 
-function inputValue(x,y,width:byte; var v:integer; min,max:integer; colEdit,colOut:byte):boolean;
+function inputValue:boolean;
 var
-	s,o:string[3];
+	s:string[4];
 	err:byte;
 	ok:boolean;
 
 begin
 	result:=false;
 	repeat
-		str(v,s); err:=length(s);
-		o[0]:=#3; fillchar(o[1],3,$30);
-		move(@s[1],@o[4-err],err);
-		ok:=inputText(x,y,width,o,colEdit,colOut);
+		str(v,s);
+		ok:=inputText(x,y,width,s,colEdit,colOut);
 		if not ok then exit;
-		val(o,v,err);
+		val(s,v,err);
 		if (v<min) or (v>max) then err:=255;
 	until err=0;
 	result:=true;
@@ -310,12 +308,12 @@ begin
 	end;
 end;
 
-procedure updateBar(bar:pointer; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
+procedure updateBar;
 var
 	i,j,v:byte;
 	dataOfs,col:byte;
 	scrOfs:word;
-	data:array[0..0] of byte;
+	data:byteArray;
 
 begin
 	data:=bar;
@@ -347,12 +345,12 @@ begin
 	end;
 end;
 
-procedure menuBar(bar:Pointer; width,bgColor:byte);
+procedure menuBar;
 var
 	j,v:byte;
 	dataOfs:byte;
 	scrOfs:word;
-	data:array[0..0] of byte;
+	data:byteArray;
 
 begin
 	data:=bar;
@@ -382,7 +380,7 @@ begin
 	end;
 end;
 
-procedure optionsList(optTabs:pointer; optWidth:byte; opts:shortint; var currentOpt:shortint);
+function optionsList:boolean;
 begin
 	opts:=opts-1;
 	menuBar(optTabs,optWidth,color_choice);
@@ -392,15 +390,12 @@ begin
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode);
-			controlSelectionKeys(key,key_Up,key_Down,currentOpt,0,opts);
+			controlSelectionKeys(key,pckey,ncKey,currentOpt,0,opts);
 			case key of
-				key_ESC: begin
-					currentOpt:=-1;
-					break;
-				end;
+				key_ESC:	exit(false);
 				key_RETURN: begin
 					kbcode:=255;
-					break;
+					exit(true);
 				end;
 			end;
 			updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
@@ -495,7 +490,7 @@ end;
 function messageBox:byte;
 begin
 	putMultiText(msgPtr,msgColor);
-	optionsList(menuPtr,menuWidth,menuOpts,defaultOpt);
+	optionsList(menuPtr,menuWidth,menuOpts,defaultOpt,pcKey,ncKey);
 	result:=defaultOpt;
 end;
 

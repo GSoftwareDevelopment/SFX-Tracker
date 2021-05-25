@@ -25,6 +25,19 @@ var
 	currentTheme:byte;
 
 //
+	SFXModMode:array[0..maxSFXs-1] of byte absolute SFX_MODE_SET_ADDR; // indicates the type of modulation used in the SFX.
+(*
+	0 - HFD - High Freq. Div.     - relative modulation of the frequency divider in the range of +/- 127
+											- without the possibility of looping the SFX
+											- Full backwards compatibility with the original SFX engine
+	1 - MFD - Middle Freq. Div.   - relative modulation of the frequency divider in the range of +/- 63
+											- SFX looping possible
+	2 - LFD/NLM - Low Freq Div.	- note level modulation in relative range of +/- 32 half tones;
+											- relative modulation of freq. divider in the range of +/- 32
+											- SFX looping possible
+	3 - DSD - Direct Set Div.		- direct set of the frequency divider - without looping possible
+*)
+
 	SFXPtr:array[0..maxSFXs-1] of word absolute SFX_POINTERS_ADDR; // heap pointers to SFX definitions
 	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR; // heap pointera to TAB definitions
 	SONGData:array[0..255] of byte absolute SONG_ADDR; // table for SONG data
@@ -38,7 +51,7 @@ var
 	cursorPos:smallInt;
 	cursorShift:smallInt;
 
-	currentMenu:byte;
+	currentMenu:shortint;
 	section:byte;
 
 	currentSFX:byte;
@@ -66,7 +79,8 @@ begin
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
 	getTheme(0,PFCOLS); // set default theme color
 	IOLoadTheme(defaultThemeFile);
-	fillchar(@screen[0],40,$00);
+	fillchar(@screen[0],20,$40);
+	fillchar(@screen[20],20,$00);
 	fillchar(@screen[40],20,$80);
 	KRPDEL:=20;
 	KEYREP:=3;
@@ -77,10 +91,7 @@ begin
 	fillchar(@TABPtr,maxTABs*2,$ff);
 	fillchar(@songData,256,$ff);
 
-	menuBar(resptr[menu_top],width_menuTop,0);
 	currentMenu:=0;
-	updateBar(resptr[menu_top],width_menuTop,currentMenu,0,color_selected);
-	screen2video();
 
 // set defaults
 	currentSFX:=0;
@@ -104,19 +115,12 @@ end;
 begin
 	init();
 	repeat
-		if (kbcode<>255) then
-		begin
-			key:=TKeys(kbcode); kbcode:=255;
-			controlSelectionKeys(key,key_Left,key_Right,currentMenu,0,4);
-			if key=key_RETURN then
-				case currentMenu of
-					0: GSDModule();
-					1: IOModule();
-					2: SFXModule();
-					3: TABModule();
-				end;
-			updateBar(resptr[menu_top],width_menuTop,currentMenu,0,color_selected);
-		end;
-		screen2video();
+		if optionsList(resptr[menu_top],width_menuTop,5,currentMenu,key_Left,key_Right) then
+			case currentMenu of
+				0: GSDModule();
+				1: IOModule();
+				2: SFXModule();
+				3: TABModule();
+			end;
 	until false;
 end.

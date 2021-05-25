@@ -2,7 +2,7 @@
 
 procedure TABEditLoop();
 var
-	i,v:byte;
+	_pos,i,v:byte;
 
 begin
 	colorHLine(winXStart,2+cursorPos,20-winXStart,3);
@@ -12,6 +12,7 @@ begin
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
 			colorHLine(winXStart,2+cursorPos,20-winXStart,0);
+			_pos:=cursorShift+cursorPos;
 			case key of
 				key_ESC,	key_TAB,key_SHIFT_TAB: break;
 
@@ -23,17 +24,21 @@ begin
 				key_Down: moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 
 				key_SPACE: begin
-					setBlank();
+					TAB_notes[_pos]:=$ff;
+					TAB_fnSFX[_pos]:=$fe;
+					modified:=true;
 					moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 				end;
-				key_RETURN: if entryEdit then break;
+				key_RETURN: if TABEntryEdit then break;
 			end;
 
 			i:=keyScan(key,keys_notes,34);
 			if (i<>255) then
 			begin
 				v:=key2Note[i];
-				setNote(currentOct+v,currentSFX);
+				TAB_notes[_pos]:=v;
+				TAB_fnSFX[_pos]:=currentSFX;
+				modified:=true;
 				moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 			end;
 

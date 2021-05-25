@@ -1,6 +1,6 @@
 var
-	TAB_notes:array[0..TAB_maxLength-1] of byte;
-	TAB_fnSFX:array[0..TAB_maxLength-1] of byte;
+	TAB_notes:array[0..TAB_maxLength-1] of byte absolute EDIT_BUF1_ADDR;
+	TAB_fnSFX:array[0..TAB_maxLength-1] of byte absolute EDIT_BUF2_ADDR;
 
 	TABLen:byte;
 	TABName:string[TABNameLength];

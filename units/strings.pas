@@ -12,7 +12,7 @@ implementation
 (* Find a character `search` in string `s`
  * `start` parameter - the initial search location in `s` string, or if negative, search from the end of `s` string
  *)
-function findChar(var s:string; search:char; start:smallint):smallint;
+function findChar:smallint;
 var sLen:byte;
 
 begin
@@ -44,7 +44,7 @@ end;
 (* Search for a string `search` in string `s`
  * `start` parameter - the initial search location in `s` string, or if negative, search from the end of `s` string
  *)
-function indexOf(var s:string; var search:string; start:smallint):smallint;
+function indexOf:smallint;
 var j:byte;
 	sLen,searchLen:byte;
 
@@ -92,7 +92,6 @@ end;
 
 function splice:string;
 var i,slen:byte;
-	ostr:string;
 
 begin
 	slen:=length(s);
@@ -108,14 +107,13 @@ begin
 		exit;
 	end;
 	i:=0;
-	ostr[0]:=char(len);
+	result[0]:=char(len);
 	while len>0 do
 	begin
-		ostr[1+i]:=s[start+i];
+		result[1+i]:=s[start+i];
 		i:=i+1;
 		len:=len-1;
 	end;
-	result:=ostr;
 end;
 
 function joinPathName:string;

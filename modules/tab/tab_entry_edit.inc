@@ -8,148 +8,139 @@ const
 	__end			= $ffff; // 1111 1111|1111 1111
 *)
 
-procedure setEndTab();
-begin
-	TAB_notes[cursorShift+cursorPos]:=255;
-	TAB_fnSFX[cursorShift+cursorPos]:=255;
-	modified:=true;
-end;
-
-procedure setJumpTo();
-begin
-	if (TAB_fnSFX[cursorShift+cursorPos]<>228) then
-	begin
-		TAB_notes[cursorShift+cursorPos]:=0;
-		TAB_fnSFX[cursorShift+cursorPos]:=228;
-		modified:=true;
-	end;
-end;
-
-procedure editJumpTo(jumpPos:byte);
-var
-	v:integer;
-
-begin
-	v:=jumpPos;
-	if inputValue(winXStart+8,2+cursorPos,3,v,0,TAB_maxLength-1,0,color_selected) then
-	begin
-		jumpPos:=byte(v);
-		TAB_notes[cursorShift+cursorPos]:=jumpPos;
-		TAB_fnSFX[cursorShift+cursorPos]:=228;
-		modified:=true;
-  	end;
-end;
-
-//
-
-procedure setRepeat();
-begin
-	if (TAB_fnSFX[cursorShift+cursorPos]<229) or (TAB_fnSFX[cursorShift+cursorPos]>238) then
-	begin
-		TAB_notes[cursorShift+cursorPos]:=0;
-		TAB_fnSFX[cursorShift+cursorPos]:=229;
-		modified:=true;
-	end;
-end;
-
-procedure editRepeat(times,repeatPos:byte);
-var
-	v:integer;
-
-begin
-	times:=times-228;
-	v:=times;
-	if inputValue(winXStart+6,2+cursorPos,1,v,1,9,0,color_selected) then
-	begin
-		times:=byte(v);
-		v:=repeatPos;
-		if inputValue(winXStart+8,2+cursorPos,3,v,0,TAB_maxLength-1,0,color_selected) then
-		begin
-			repeatPos:=byte(v);
-			TAB_notes[cursorShift+cursorPos]:=repeatPos;
-			TAB_fnSFX[cursorShift+cursorPos]:=228+times;
-			modified:=true;
-  		end;
-  	end;
-end;
-
-//
-
-procedure setNoteValue();
-begin
-	if (TAB_fnSFX[cursorShift+cursorPos] and $80<>$80) then
-	begin
-		TAB_notes[cursorShift+cursorPos]:=0;
-		TAB_fnSFX[cursorShift+cursorPos]:=currentSFX or $80;
-		modified:=true;
-	end;
-end;
-
-procedure editNoteValue(value:byte);
-var
-	v:integer;
-
-begin
-	v:=value;
-	if inputValue(winXStart+5,2+cursorPos,3,v,0,255,0,color_selected) then
-	begin
-		value:=byte(v);
-		v:=currentSFX and $7f;
-		if inputValue(winXStart+9,2+cursorPos,2,v,0,99,0,color_selected) then
-		begin;
-			TAB_notes[cursorShift+cursorPos]:=value;
-			TAB_fnSFX[cursorShift+cursorPos]:=byte(v) or $80;
-			modified:=true;
-  		end;
-  	end;
-end;
-
-//
-
-procedure setSFXChange();
-begin
-	// TODO: seach up from cursor position, first SFX set, and use it to set funtion
-	TAB_fnSFX[cursorShift+cursorPos]:=0;
-end;
-
-procedure editSFXChange(nSFX:byte);
-var
-	v:integer;
-
-begin
-	v:=nSFX and $7f;
-	if inputValue(winXStart+9,2+cursorPos,2,v,0,99,0,color_selected) then
-	begin;
-		TAB_fnSFX[cursorShift+cursorPos]:=byte(v);
-		modified:=true;
-	end;
-end;
-
-//
-
-procedure setNote(note,sfx:byte);
-begin
-	TAB_notes[cursorShift+cursorPos]:=note;
-	TAB_fnSFX[cursorShift+cursorPos]:=sfx;
-	modified:=true;
-end;
-
-//
-
-procedure setBlank();
-begin
-	TAB_notes[cursorShift+cursorPos]:=$ff;
-	TAB_fnSFX[cursorShift+cursorPos]:=$fe;
-	modified:=true;
-end;
-
 //
 //
 //
 
-function entryEdit():boolean;
+function TABEntryEdit():boolean;
 var _note,_fnsfx,_pos:byte;
 	opt:shortint;
+
+	procedure setEndTab();
+	begin
+		TAB_notes[_pos]:=255;
+		TAB_fnSFX[_pos]:=255;
+		modified:=true;
+	end;
+
+	procedure setJumpTo();
+	begin
+		if (TAB_fnSFX[_pos]<>228) then
+		begin
+			TAB_notes[_pos]:=0;
+			TAB_fnSFX[_pos]:=228;
+			modified:=true;
+		end;
+	end;
+
+	procedure editJumpTo(jumpPos:byte);
+	var
+		v:smallint;
+
+	begin
+		v:=jumpPos;
+		if inputValue(winXStart+8,2+cursorPos,3,v,0,TAB_maxLength-1,0,color_selected) then
+		begin
+			jumpPos:=byte(v);
+			TAB_notes[_pos]:=jumpPos;
+			TAB_fnSFX[_pos]:=228;
+			modified:=true;
+		end;
+	end;
+
+	//
+
+	procedure setRepeat();
+	begin
+		if (TAB_fnSFX[_pos]<229) or (TAB_fnSFX[_pos]>238) then
+		begin
+			TAB_notes[_pos]:=0;
+			TAB_fnSFX[_pos]:=229;
+			modified:=true;
+		end;
+	end;
+
+	procedure editRepeat(times,repeatPos:byte);
+	var
+		v:smallint;
+
+	begin
+		times:=times-228;
+		v:=times;
+		if inputValue(winXStart+6,2+cursorPos,1,v,1,9,0,color_selected) then
+		begin
+			times:=byte(v);
+			v:=repeatPos;
+			if inputValue(winXStart+8,2+cursorPos,3,v,0,TAB_maxLength-1,0,color_selected) then
+			begin
+				repeatPos:=byte(v);
+				TAB_notes[_pos]:=repeatPos;
+				TAB_fnSFX[_pos]:=228+times;
+				modified:=true;
+			end;
+		end;
+	end;
+
+	//
+
+	procedure setNoteValue();
+	begin
+		if (TAB_fnSFX[_pos] and $80<>$80) then
+		begin
+			TAB_notes[_pos]:=0;
+			TAB_fnSFX[_pos]:=currentSFX or $80;
+			modified:=true;
+		end;
+	end;
+
+	procedure editNoteValue(value:byte);
+	var
+		v:smallint;
+
+	begin
+		v:=value;
+		if inputValue(winXStart+5,2+cursorPos,3,v,0,255,0,color_selected) then
+		begin
+			value:=byte(v);
+			v:=currentSFX and $7f;
+			if inputValue(winXStart+9,2+cursorPos,2,v,0,99,0,color_selected) then
+			begin;
+				TAB_notes[_pos]:=value;
+				TAB_fnSFX[_pos]:=byte(v) or $80;
+				modified:=true;
+			end;
+		end;
+	end;
+
+	//
+
+	procedure setSFXChange();
+	begin
+		// TODO: seach up from cursor position, first SFX set, and use it to set funtion
+		TAB_fnSFX[_pos]:=0;
+	end;
+
+	procedure editSFXChange(nSFX:byte);
+	var
+		v:smallint;
+
+	begin
+		v:=nSFX and $7f;
+		if inputValue(winXStart+9,2+cursorPos,2,v,0,99,0,color_selected) then
+		begin;
+			TAB_fnSFX[_pos]:=byte(v);
+			modified:=true;
+		end;
+	end;
+
+	//
+
+	procedure setBlank();
+	begin
+		TAB_notes[_pos]:=$ff;
+		TAB_fnSFX[_pos]:=$fe;
+		modified:=true;
+	end;
 
 begin
 	_pos:=cursorShift+cursorPos;
@@ -163,7 +154,7 @@ begin
 		255: opt:=0; 		// end-tab
 	end;
 	if (_note=0) and (_fnsfx<228) then opt:=4;
-	optionsList(resptr[menu_tab_edit],width_menuTABFunc,TABEditOptions,opt);
+	optionsList(resptr[menu_tab_edit],width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down);
 	case opt of
 		0: setEndTab();
 		1: setJumpTo();

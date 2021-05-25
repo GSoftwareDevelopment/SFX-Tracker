@@ -24,10 +24,50 @@ menu_sfx
 					dta 255
 
 menu_sfx_options
-					dta 164,d'SET NAME',255			; set SFX name
-					dta 184,d'KEY NOTE',255			; set key note table for SFX
-					dta 204,d'< BACK',255			; back to SFX menu bar
+					dta 144,d'SET NAME',255				; set SFX name
+					dta 164,d'KEY NOTE',255				; set key note table for SFX
+					dta 184,d'SFX MOD MODE',255		; set the type of modulation used in the SFX
+					dta 204,d'< BACK',255				; back to SFX menu bar
 					dta 255
+
+menu_sfx_mode
+					dta  84,d'HFD    ',255
+					dta 104,d'MFD    ',255
+					dta 124,d'LFD/NLM',255
+					dta 144,d'DSD    ',255
+					dta 164,d'< BACK',255
+					dta 255
+
+menu_HFD_mode
+					dta 44,d'STOP SFX',255
+					dta 64,d'FREQ SHIFT',255
+					dta 84,d'NOP',255
+					dta 104,d'BACK >',255
+					dta 124,d'< EXIT',255
+					dta 255
+menu_MFD_mode
+					dta 44,d'STOP SFX',255
+					dta 64,d'JUMP TO',255
+					dta 84,d'FREQ SHIFT',255
+					dta 104,d'NOP',255
+					dta 124,d'BACK >',255
+					dta 144,d'< EXIT',255
+					dta 255
+menu_LFD_NLM_mode
+					dta 44,d'STOP SFX',255
+					dta 64,d'JUMP TO',255
+					dta 84,d'FREQ SHIFT',255
+					dta 104,d'NOTE SHIFT',255
+					dta 124,d'NOP',255
+					dta 144,d'BACK >',255
+					dta 164,d'< EXIT',255
+					dta 255
+menu_DFD_mode
+					dta 44,d'FREQ SET',255
+					dta 64,d'BACK >',255
+					dta 84,d'< EXIT',255
+					dta 255
+
 
 menu_tabs
 					dta  20,d'#',255					; current TAB (number)
@@ -42,22 +82,21 @@ menu_tabs_option
 					dta 204,d'< BACK',255			; back to TAB menu bar
 					dta 255
 menu_tab_edit
-					dta  46,7,d'END TAB',255		; flag indicating the end of a TAB definition
-					dta  66,7,d'JUMP TO',255		; marker for absolute jump to line in current TAB
-					dta  86,7,d'REPEAT',255			; marker that defines a repeat n times from the pos position.
-					dta 106,7,d'NOTE VALUE',255	; flag specifying the value of the frequency divider for the played SFX
+					dta  44,d'END TAB',255		; flag indicating the end of a TAB definition
+					dta  64,d'JUMP TO',255		; marker for absolute jump to line in current TAB
+					dta  84,d'REPEAT',255			; marker that defines a repeat n times from the pos position.
+					dta 104,d'NOTE VALUE',255	; flag specifying the value of the frequency divider for the played SFX
 															; (direct value to the POKEY register, not from the note table)
-					dta 126,7,d'SFX CHANGE',255	; A marker that changes the SFX currently being played, without changing the note/divider
-					dta 146,7,d'NOP',255				; blank entry - no operation
-					dta 166,7,d'BACK',255			; back to TAB edit
-					dta 186,7,d'< EXIT',255			; back to TAB menu bar
+					dta 124,d'SFX CHANGE',255	; A marker that changes the SFX currently being played, without changing the note/divider
+					dta 144,d'NOP',255				; blank entry - no operation
+					dta 164,d'BACK >',255			; back to TAB edit
+					dta 184,d'< EXIT',255			; back to TAB menu bar
 					dta 255
 
 menu_GSD
 					dta 0,d'<',255						; back to main menu
-					dta 2,d'CREDITS',255				; credits
-					dta 10,d'THEME',255				; theme manager
-					dta 16,d'FREE',255				; memory statistics
+					dta 2,d'THEME',255				; theme manager
+					dta 10,d'FREE',255				; memory statistics
 					dta 255
 
 menu_Themes

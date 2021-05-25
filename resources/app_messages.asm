@@ -1,21 +1,7 @@
 messages
-msg_Credits
-					dta 25,d'THANKS TO:',255
-					dta 48,d'PIN',255
-					dta 61,d'FOR HARDWARE TESTS',255
-					dta 105,d'PIN MONO',255
-					dta 126,d'JHUSAK',255
-					dta 143,d'FOR KNOWLEDGE',255
-					dta 165,d'SUPPORTING',255
-
-					dta 200,d'SUPPORT THIS PROJECT',255
-					dta 221,d'BIT.LY/SFX-TRACKER',255
-					dta 255
-
 msg_IO_DirPrompt
 					dta 200,d'DEVICE:PATH',255,255			; IO->DIR prompt message
 msg_IO_SavePrompt
-					//        01234567890123456789
 					dta 200,d'SAVE AS:',255,255
 msg_IO_LoadPrompt
 					dta 200,d'ENTER FILE NAME:',255,255
@@ -45,3 +31,5 @@ but_Theme_Overwrite
 					dta 64,07,d'YES',255
 					dta 84,07,d'NO',255
 					dta 255
+msg_SFX_ValuePrompt
+					dta 220,d'VAL:____   ',6,d'________',255,255

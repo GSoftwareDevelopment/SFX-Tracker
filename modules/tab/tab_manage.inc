@@ -1,6 +1,7 @@
 procedure getTABData(nTAB:byte);
 var
-	hptr,i,tabAdr,size:word;
+	hptr,tabAdr,size:word;
+	i:byte;
 
 begin
 	hptr:=TABPtr[nTAB];
@@ -55,11 +56,8 @@ end;
 
 procedure storeTABData(nTAB:byte);
 var
-	tabAdr:word;
-	size:word;
-	ofs:word;
+	tabAdr,size,ofs,len:word;
 	i:byte;
-	len:word;
 
 begin
 	size:=HEAP_GetSize(TABPtr[nTAB]);

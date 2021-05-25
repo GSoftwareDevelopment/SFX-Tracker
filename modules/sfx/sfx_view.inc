@@ -1,7 +1,7 @@
 procedure updateSFXView();
 var
 	scrOfs,i,v,ch:byte;
-	pos:smallint;
+	pos:byte;
 
 begin
 	i:=0; pos:=cursorShift;
@@ -100,6 +100,9 @@ begin
 	putValue(SFXCurPosX,SFXCurPosY,cursorShift+cursorPos,3,0);
 	screen[SFXCurPosX+3+vadr[SFXCurPosY]]:=byte('/'~);
 	putValue(SFXLenX,SFXLenY,sfxLen,3,0);
+
+	i:=1+SFXModMode[currentSfx]*9;
+	move(pointer(word(resptr[menu_sfx_mode])+i),@screen[204],7);
 end;
 
 procedure SFXScreen();

@@ -1,6 +1,7 @@
 procedure getSFXData(nSFX:byte);
 var
-	hptr,i,sfxAdr,size:word;
+	hptr,sfxAdr,size:word;
+	i:byte;
 
 begin
 	hptr:=SFXPtr[nSFX];
@@ -60,11 +61,8 @@ end;
 
 procedure storeSFXData(nSFX:byte);
 var
-	sfxAdr:word;
-	size:word;
-	ofs:word;
+	sfxAdr,size,ofs,len:word;
 	i:byte;
-	len:word;
 
 begin
 	size:=HEAP_GetSize(SFXPtr[nSFX]);
@@ -106,7 +104,8 @@ begin
 end;
 
 procedure prepareSFXsList();
-var i:byte;
+var
+	i:byte;
 	hptr,adr,ofs:word;
 
 begin

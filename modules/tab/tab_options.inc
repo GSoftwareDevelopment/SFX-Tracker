@@ -2,7 +2,7 @@ procedure TAB_Options(defaultOpt:shortint);
 begin
 	// make possibility to direct invoke option
 	if defaultOpt=TABMenuOption_Back then
-		optionsList(resptr[menu_tabs_options],width_menuOptions,TABMenuOptions,defaultOpt);
+		optionsList(resptr[menu_tabs_options],width_menuOptions,TABMenuOptions,defaultOpt,key_Up,key_Down);
 
 	case defaultOpt of
 		0: if (inputText(SFXNameX,SFXNumberY,TABNameLength,TABName,0,color_choice)) then

@@ -3,38 +3,40 @@ data_pointers_list
 	dta a(menu_top)				;0
    dta a(menu_sfx)				;1
    dta a(menu_sfx_options)		;2
-   dta a(menu_tabs)				;3
-	dta a(menu_tabs_option)		;4
-	dta a(menu_tab_edit)			;5
-	dta a(menu_GSD)				;6
-	dta a(menu_Themes)			;7
-;	dta a(menu_ThemeEdit)		;8
-	dta a(menu_IO)					;8
+   dta a(menu_sfx_mode)			;3
+   dta a(menu_HFD_mode)			;4
+   dta a(menu_MFD_mode)			;5
+   dta a(menu_LFD_NLM_mode)	;6
+   dta a(menu_DFD_mode)			;7
+
+   dta a(menu_tabs)				;8
+	dta a(menu_tabs_option)		;9
+	dta a(menu_tab_edit)			;10
+	dta a(menu_GSD)				;11
+	dta a(menu_Themes)			;12
+	dta a(menu_IO)					;13
 
 ;strings
-	dta a(str_SFX_notDefined)	;9
-	dta a(str_TAB_types)			;10
-	dta a(str_IO_nextPage)		;11
-	dta a(str_IO_prevPage)		;12
-	dta a(str_NoteNames)			;13
+	dta a(str_SFX_notDefined)	;14
+	dta a(str_TAB_types)			;15
+	dta a(str_IO_nextPage)		;16
+	dta a(str_IO_prevPage)		;17
+	dta a(str_NoteNames)			;18
 
 ;message boxes
-	dta a(msg_Credits)			;14
-	dta a(msg_IO_DirPrompt)		;15
-	dta a(msg_IO_SavePrompt)	;16
-	dta a(msg_IO_LoadPrompt)	;17
-	dta a(msg_IO_noFiles)		;18
-	dta a(msg_IO_error)			;19
-	dta a(msg_IO_reading)		;20
-	dta a(msg_IO_writing)		;21
-	dta a(msg_IO_skipping)		;22
-	dta a(msg_IO_Quit)			;23
-	dta a(but_IO_Quit)			;24
-	dta a(msg_Theme_Overwrite)	;25
-	dta a(but_Theme_Overwrite)	;26
-
-; tables
-;	dta a(color_themes)			;27
+	dta a(msg_IO_DirPrompt)		;19
+	dta a(msg_IO_SavePrompt)	;20
+	dta a(msg_IO_LoadPrompt)	;21
+	dta a(msg_IO_noFiles)		;22
+	dta a(msg_IO_error)			;23
+	dta a(msg_IO_reading)		;24
+	dta a(msg_IO_writing)		;25
+	dta a(msg_IO_skipping)		;26
+	dta a(msg_IO_Quit)			;27
+	dta a(but_IO_Quit)			;28
+	dta a(msg_Theme_Overwrite)	;29
+	dta a(but_Theme_Overwrite)	;30
+	dta a(msg_SFX_ValuePrompt) ;31
 
 	icl 'app_menus.asm'
 	icl 'app_strings.asm'
@@ -48,4 +50,3 @@ data_pointers_list
  .print "MENUS : ", menus, "..", strings-1
  .print "STRINNGS : ", strings, "..", messages-1
  .print "MESSAGES : ", messages, "..", *-1
-; .print "TABLES : ", messages, '..', *-1

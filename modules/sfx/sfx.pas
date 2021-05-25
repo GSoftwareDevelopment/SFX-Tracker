@@ -1,6 +1,6 @@
 var
-	SFX_vol_dist:array[0..SFX_maxLength-1] of byte;
-	SFX_modulate:array[0..SFX_maxLength-1] of byte;
+	SFX_vol_dist:array[0..SFX_maxLength-1] of byte absolute EDIT_BUF1_ADDR;
+	SFX_modulate:array[0..SFX_maxLength-1] of byte absolute EDIT_BUF2_ADDR;
 
 	sfxLen:byte;
 	SFXName:string[SFXNameLength];

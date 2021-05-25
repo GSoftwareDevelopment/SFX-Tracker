@@ -22,9 +22,9 @@ defaultThemeFile	= 'D:DEFAULT.THM';
 // Interface constants
 width_menuTop		= 0;
 width_menuBar		= 4;
-// width_themeEdit	= 11;
-// width_colorEdit	= 9;
 width_menuOptions	= 16;
+width_menuModType = 8;
+width_menuSFXFunc	= 12;
 width_menuTabFunc	= 12;
 width_fileList		= 20;
 width_filePath		= 20;
@@ -37,14 +37,14 @@ winYStart			= 2;
 SFX_winWidth		= 16;
 TAB_winWidth		= 9;
 
-SFXNameX			= 4;
-SFXNameY			= 1;
-SFXNumberX		= 1;
-SFXNumberY		= 1;
+SFXNameX				= 4;
+SFXNameY				= 1;
+SFXNumberX			= 1;
+SFXNumberY			= 1;
 SFXCurPosX			= 13;
 SFXCurPosY			= 10;
-SFXLenX			= 17;
-SFXLenY			= 10;
+SFXLenX				= 17;
+SFXLenY				= 10;
 
 //
 //
@@ -97,20 +97,25 @@ note_val:array[0..63] of byte = (
 
 // resources ids
 	base_menus						= 0;
-	base_strings					= 9;
-	base_messages					= 14;
-//	base_tables						= 27;
+	base_strings					= 14;
+	base_messages					= 19;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
    menu_sfx_options				= base_menus+2;
-   menu_tabs						= base_menus+3;
-	menu_tabs_options				= base_menus+4;
-	menu_tab_edit					= base_menus+5;
-	menu_GSD							= base_menus+6;
-	menu_Themes						= base_menus+7;
-//	menu_ThemeEdit					= base_menus+8;
-	menu_IO							= base_menus+8;
+   menu_sfx_mode					= base_menus+3;
+
+	menu_HFD_mode					= base_menus+4;
+	menu_MFD_mode					= base_menus+5;
+	menu_LFD_NLM_mode				= base_menus+6;
+	menu_DFD_mode					= base_menus+7;
+
+   menu_tabs						= base_menus+8;
+	menu_tabs_options				= base_menus+9;
+	menu_tab_edit					= base_menus+10;
+	menu_GSD							= base_menus+11;
+	menu_Themes						= base_menus+12;
+	menu_IO							= base_menus+13;
 
 	str_SFX_notDefined			= base_strings+0;
 	str_TAB_types					= base_strings+1;
@@ -118,26 +123,26 @@ note_val:array[0..63] of byte = (
 	str_IO_prevPage				= base_strings+3;
 	str_NoteNames					= base_strings+4;
 
-	msg_Credits						= base_messages+0;
-	msg_IO_Prompt					= base_messages+1;
-	msg_IO_SavePrompt				= base_messages+2;
-	msg_IO_LoadPrompt				= base_messages+3;
-	msg_IO_noFiles					= base_messages+4;
-	msg_IO_Error					= base_messages+5;
-	msg_IO_Reading					= base_messages+6;
-	msg_IO_Writing					= base_messages+7;
-	msg_IO_Skipping				= base_messages+8;
-	msg_IO_Quit						= base_messages+9;
-	but_IO_Quit						= base_messages+10;
-	msg_Theme_Overwrite			= base_messages+11;
-	but_Theme_Overwrite			= base_messages+12;
-
-//	color_themes					= base_tables+0;
+	msg_IO_Prompt					= base_messages+0;
+	msg_IO_SavePrompt				= base_messages+1;
+	msg_IO_LoadPrompt				= base_messages+2;
+	msg_IO_noFiles					= base_messages+3;
+	msg_IO_Error					= base_messages+4;
+	msg_IO_Reading					= base_messages+5;
+	msg_IO_Writing					= base_messages+6;
+	msg_IO_Skipping				= base_messages+7;
+	msg_IO_Quit						= base_messages+8;
+	but_IO_Quit						= base_messages+9;
+	msg_Theme_Overwrite			= base_messages+10;
+	but_Theme_Overwrite			= base_messages+11;
+	msg_SFX_ValuePrompt			= base_messages+12;
 
 //
 
-   SFXMenuOptions					= 3;
-	SFXMenuOption_Back			= 2;
+   SFXMenuOptions					= 4;
+	SFXMenuOption_Back			= 3;
+	SFXMenuModType					= 5;
+	SFXMenuModType_Back			= 4;
 
 	TABMenuOptions					= 2;
 	TABMenuOption_Back			= 1;

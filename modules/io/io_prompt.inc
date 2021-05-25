@@ -24,8 +24,6 @@ Truth table
 ---------------+---+---+----------------------------
 *)
 var
-	wild: string[1] = '*';
-	fileDot: string[1] = '.';
 	is_star,is_dot:boolean;
 
 begin
@@ -35,8 +33,8 @@ begin
 		fillchar(@fn[1+length(fn)],FILEPATHMaxLength-length(fn),0);
 
 		// Recognize the entered name
-		is_star:=indexOf(fn,wild,1)>-1;
-		is_dot:=indexOf(fn,fileDot,1)>-1;
+		is_star:=findChar(fn,'*',1)>-1;
+		is_dot:=findChar(fn,'.',1)>-1;
 		if (not is_star) and (not is_dot) then
 			fn:=concat(fn,'*.*'); // add '*.*'
 		result:=byte((not is_star) and (is_dot));
