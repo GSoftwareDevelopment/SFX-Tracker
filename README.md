@@ -10,6 +10,29 @@ To run, you will need the MAD Pascal compiler and an ATARI emulator, or real har
 
 # CREDITS
 
+Since I had no other choice, I had to get rid of CREDITS from the main program and find a solution where to thank all the people who participated/are participating in the creation of this program.
+
+Here is a great place to do it, so thank you:
+
+### FOR THE HARDWARE TESTS
+## pin
+
+### FOR SHARING YOUR KNOWLEDGE
+## jhusak, mono, pin, makary, tebe, stork
+
+### FOR INSPIRATION FOR FUNCTIONAL SOLUTIONS
+## marok, mono
+
+### FOR ALL THE PROGRAM TESTING
+## marok, sun, pin,
+
+### FOR THE MENTAL SUPPORT :)
+## prix, mono, tebe, kaz, 0xF
+
+If anyone felt unappreciated by not being on the above list, please contact me :)
+
+# CONTRIBUTIONS
+
 Would you like to be a part of this project?
 Support it:
 
@@ -17,7 +40,6 @@ Support it:
 - [submit ideas](https://github.com/GSoftwareDevelopment/SFX-Tracker/issues/new?assignees=&labels=&template=feature_request.md&title=)
 - [report bugs or corrections to the code](https://github.com/GSoftwareDevelopment/SFX-Tracker/issues/new?assignees=&labels=&template=bug_report.md&title=)
 - improve the code
-- create a color theme
 - you can also [Discuss](https://github.com/GSoftwareDevelopment/SFX-Tracker/discussions) about this project
 - or just [comment](https://www.patreon.com/posts/sfx-music-maker-51353518) you like it :)
 

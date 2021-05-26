@@ -4,23 +4,18 @@
 
 ### Main section:
 - header: 'SFXMM'
-- program version: $10 (means v1.0)
+- program version: $10 (constant SFXMM_VER1_0 means v1.0)
 - number of bytes per title (constant SONGNameLength)
 - title: SONGNameLength bytes
 
 ### SFX definition section:
 - header: $00,$00,'SFX'
-- SFX number: $00
-- number of bytes per name (constant SFXNameLength)
+- SFX number: $00 (from 0 to maxSFXs-1)
+- SFX modulation type: $00 (from 0 to 3)
+- number of bytes per name (SFXNameLength constant)
 - name: SFXNameLength bytes
-- total length of the SFX (word): variable SFXLen*2
-- SFX data: SFXLen*2 bytes
-
-### KEY-NOTE definition section:
-- header: $00,$00,'KEY'
-- SFX number for which there is a KEY-NOTE array: $00
-- size: $40 (64 notes)
-- array of 64 note values
+- total length of SFX (variable SFXLen*2; word lo,hi)
+- SFXa data: SFXLen*2 bytes
 
 ### TAB definition section:
 - header: $00,$00,'TAB'
@@ -32,9 +27,9 @@
 
 ### SONG definition section:
 - header: $00,'SONG'
+- velocity: tact, beat, line per bear
 - number of SONG lines
 - SONG data: number of SONG lines*4
-- velocity: tact, beat, line per bear
 
 
-Translated with www.DeepL.com/Translator (free version)s
+Translated with www.DeepL.com/Translator (free version)
