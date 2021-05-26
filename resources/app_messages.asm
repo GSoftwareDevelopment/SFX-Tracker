@@ -4,7 +4,7 @@ msg_IO_DirPrompt
 msg_IO_SavePrompt
 					dta 200,d'SAVE AS:',255,255
 msg_IO_LoadPrompt
-					dta 200,d'ENTER FILE NAME:',255,255
+					dta 200,d'LOAD:',255,255
 msg_IO_noFiles
 					dta 126,d'NO FILES',255,255				; IO->DIR message for empty disk
 msg_IO_error

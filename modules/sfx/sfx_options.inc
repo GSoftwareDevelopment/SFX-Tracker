@@ -12,7 +12,7 @@ begin
 				storeSFXData(currentSFX);
 				modified:=false;
 			end;
-		2: begin
+		1: begin
 				mod_mode:=SFXModMode[currentSFX];
 				optionsList(resptr[menu_sfx_mode],width_menuModType,SFXMenuModType,mod_mode,key_Up,key_Down);
 				if (mod_mode<SFXMenuModType_Back) then

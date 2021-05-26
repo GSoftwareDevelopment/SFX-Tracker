@@ -67,7 +67,7 @@ begin
 			end;
 		end
 		else
-			result:=error_notThemeFormat;
+			result:=error_badSectionTag;
 		close(f);
 		{$I+}
 	end

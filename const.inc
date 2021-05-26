@@ -15,9 +15,9 @@ TABNameLength		= 8;
 SONGNameLength		= 32;
 
 defaultSongTitle	= 'SONG NAME';
-defaultSearchPath	= 'D:';
-defaultFileName	= 'D:SONG.SMM';
-defaultThemeFile	= 'D:DEFAULT.THM';
+defaultSearchPath	= 'H:';
+defaultFileName	= 'H:SONG.SMM';
+defaultThemeFile	= 'H:DEFAULT.THM';
 
 // Interface constants
 width_menuTop		= 0;
@@ -90,7 +90,6 @@ note_val:array[0..63] of byte = (
 // File TAGs sections
 	section_main	:TTag = (83, 70, 88, 77, 77);	// SFXMM
 	section_SFX		:TTag = ( 0,  0, 83, 70, 88);	// __SFX
-	section_KEY		:TTag = ( 0,  0, 75, 69, 89);	// __KEY
 	section_TAB 	:TTag = ( 0,  0, 84, 65, 66);	// __TAB
 	section_SONG	:TTag = ( 0, 83, 79, 78, 71);	// _SONG
 	section_theme	:TTag = (84, 72, 69, 77, 69); // THEME
@@ -140,7 +139,7 @@ note_val:array[0..63] of byte = (
 //
 
    SFXMenuOptions					= 4;
-	SFXMenuOption_Back			= 3;
+	SFXMenuOption_Back			= 2;
 	SFXMenuModType					= 5;
 	SFXMenuModType_Back			= 4;
 
@@ -152,7 +151,9 @@ note_val:array[0..63] of byte = (
 	TABEditOption_BackToMenuBar= 7;
 
 // Program Errors
-	error_notThemeFormat			= 1;
-
 	IO_OK								= 1;
+
+	error_badSectionTag			= 12;
+	error_badFileFormat			= 13;
+
 	IOError_fileNotFound			= 170;

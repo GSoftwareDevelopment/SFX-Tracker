@@ -26,7 +26,7 @@ var
 
 //
 	SFXModMode:array[0..maxSFXs-1] of byte absolute SFX_MODE_SET_ADDR; // indicates the type of modulation used in the SFX.
-(*
+(* SFX Mod Modes:
 	0 - HFD - High Freq. Div.     - relative modulation of the frequency divider in the range of +/- 127
 											- without the possibility of looping the SFX
 											- Full backwards compatibility with the original SFX engine
@@ -61,9 +61,11 @@ var
 	modified:boolean = false;
 	key:TKeys;
 
-// global access function and procedures (must have :D)
+// global access function and procedures
+{$i modules/io/io_clear_all_data.inc}
 {$i modules/io/io_error.inc}
 {$i modules/io/io_prompt.inc}
+{$i modules/io/io_tag_compare.inc}
 
 // modules
 {$i modules/gsd/gsd.pas}
@@ -74,7 +76,7 @@ var
 
 procedure init();
 begin
-	HEAP_Init();
+	IO_clearAllData();
 	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
 	getTheme(0,PFCOLS); // set default theme color
@@ -87,21 +89,10 @@ begin
 	CHBAS:=$BC;
 
 	fillchar(@listBuf,LIST_BUFFER_SIZE,0);
-	fillchar(@SFXPtr,maxSFXs*2,$ff);
-	fillchar(@TABPtr,maxTABs*2,$ff);
-	fillchar(@songData,256,$ff);
 
 	currentMenu:=0;
 
 // set defaults
-	currentSFX:=0;
-	currentTAB:=0;
-	currentOct:=$10;
-	song_tact:=4;
-	song_beat:=4;
-	song_lpb:=4;
-
-	fillchar(@SONGTitle,SongNameLength,0);
 	move(@defaultSongTitle,@SONGTitle,length(defaultSongTitle)+1);
 
 	fillchar(@currentFile,FILEPATHMaxLength,0);

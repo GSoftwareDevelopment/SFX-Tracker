@@ -111,6 +111,7 @@ end;
 
 procedure HEAP_Init;
 begin
+	HEAP_TOP:=0;
 	fillchar(@_mem,HEAP_MEMORY_SIZE,$ff);
 	fillchar(@_heap_offsets,HEAP_ENTRIES*2,$FF);
 	fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF);
