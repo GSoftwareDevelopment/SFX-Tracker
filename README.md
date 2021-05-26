@@ -14,20 +14,20 @@ Since I had no other choice, I had to get rid of CREDITS from the main program a
 
 Here is a great place to do it, so thank you:
 
-### FOR THE HARDWARE TESTS
-## pin
+## FOR THE HARDWARE TESTS
+### pin
 
-### FOR SHARING YOUR KNOWLEDGE
-## jhusak, mono, pin, makary, tebe, stork
+## FOR SHARING YOUR KNOWLEDGE
+### jhusak, mono, pin, makary, tebe, stork
 
-### FOR INSPIRATION FOR FUNCTIONAL SOLUTIONS
-## marok, mono
+## FOR INSPIRATION FOR FUNCTIONAL SOLUTIONS
+### marok, mono
 
-### FOR ALL THE PROGRAM TESTING
-## marok, sun, pin,
+## FOR ALL THE PROGRAM TESTING
+### marok, sun, pin,
 
-### FOR THE MENTAL SUPPORT :)
-## prix, mono, tebe, kaz, 0xF
+## FOR THE MENTAL SUPPORT :)
+### prix, mono, tebe, kaz, 0xF
 
 If anyone felt unappreciated by not being on the above list, please contact me :)
 
