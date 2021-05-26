@@ -101,7 +101,7 @@ I tak, dla:
 W module edycji SFX, wpisywanie wartości w sposób bezpośredni jest "nieco" kłopotliwe, stąd ułatwienie, które zostało zaczerpnięte z modułu edycji TAB.
 Po przejściu do edycji obwiedni SFXa, wyborze interesującej pozycji klawiszami strzałek __LEWO/PRAWO__ i naciśnięciu klawisza __RETURN__, zostanie otwarta lista dostępnych funkcji MOD/VAL.
 
-![SFX-Edit mode-Function List for HFD](SFX-Edit mode-Function List for HFD.png)
+![SFX-Edit mode-Function List for HFD](./SFX-Edit mode-Function List for HFD.png)
 
 Lista ta, będzie się różnić w zależności od trybu modulacji (patrz pkt. Ustalanie rodzaju modulacji)
 
@@ -109,7 +109,7 @@ Automatycznie zaznaczana jest opcja, która jest w miejscu kursora edycji. To ma
 
 Po wybraniu jednej z opcji, wyświetlony zostanie monit (w dolnej częsci ekranu - nad klawiaturą pianina) o podanie wartości dla wybranej funkcji - zakres tej wartości zostanie wyświetlony na ekranie.
 
-![SFX-Edit mode-Enter value for function](SFX-Edit mode-Enter value for function.png)
+![SFX-Edit mode-Enter value for function](./SFX-Edit mode-Enter value for function.png)
 
 Po zaakceptowaniu klawiszem __RETURN__, program przetworzy wprowadzone informacje do wartości MOD/VAL.
 
@@ -117,11 +117,11 @@ Po zaakceptowaniu klawiszem __RETURN__, program przetworzy wprowadzone informacj
 
 Tryb modulacji przedstawiony jest w lewym dolnym rogu ekranu edycji SFXa w postaci skrótu (pierwszych liter wyrazów)
 
-![SFX-Edit mode-Mod Mode for current SFX](SFX-Edit mode-Mod Mode for current SFX.png)
+![SFX-Edit mode-Mod Mode for current SFX](./SFX-Edit mode-Mod Mode for current SFX.png)
 
 Rodzaj modulacji można zmienić, wybierając __SFX->OPT->SET MOD MODE__.
 
-![SFX-OPT-SFX MOD Mode](SFX-OPT-SFX MOD Mode.png) ![SFX-OPT-SFX MOD Mode List](SFX-OPT-SFX MOD Mode List.png)
+![SFX-OPT-SFX MOD Mode](./SFX-OPT-SFX MOD Mode.png) ![SFX-OPT-SFX MOD Mode List](./SFX-OPT-SFX MOD Mode List.png)
 
 Pokaże się lista dostępnych trybów z których można wybierać, używając klawiszy strzałek __GÓRA/DÓŁ__ i akceptując klawiszem __RETURN__. Po otwarciu listy, zaznaczony zostanie aktualnie ustawiony tryb modulacji dla aktualnie edytowanego SFXa.
 
