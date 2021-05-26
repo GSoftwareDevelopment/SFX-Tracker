@@ -392,11 +392,8 @@ begin
 			key:=TKeys(kbcode);
 			controlSelectionKeys(key,pckey,ncKey,currentOpt,0,opts);
 			case key of
-				key_ESC:	exit(false);
-				key_RETURN: begin
-					kbcode:=255;
-					exit(true);
-				end;
+				key_ESC:	begin result:=false; break; end;
+				key_RETURN: begin result:=true; break;	end;
 			end;
 			updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
 			screen2video();

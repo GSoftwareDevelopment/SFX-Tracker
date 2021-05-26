@@ -6,7 +6,7 @@ var
 begin
 	hptr:=TABPtr[nTAB];
 	// clear local structure of TAB
-	fillchar(@TAB_notes,TAB_maxLength,$00);
+	fillchar(@TAB_notes,TAB_maxLength,$ff);
 	fillchar(@TAB_fnSFX,TAB_maxLength,$fe);
 	// clear current TAB name
 	//fillchar(@TABName,TABNameLength+1,0);

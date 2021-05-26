@@ -48,7 +48,7 @@ begin
 				0..99: begin // sfx note
 					noteOfs:=(_note and $f) shl 1; noteOct:=_note shr 4;
 
-					if _note>0 then
+					if _note<255 then
 					begin
 						// NOTE#
 						screen[scrOfs+4]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
@@ -72,11 +72,11 @@ begin
 					screen[scrOfs+7]:=$0f;
 				end;
 				228: begin // jump to
-					move(note_names[24],@screen[scrOfs+4],3); // J=
+					move(note_names[24],@screen[scrOfs+4],3); // __>___
 					putValue(winXStart+8,i,_note,3,0); // note gives position
 				end;
 				229..238: begin // repeat
-					move(note_names[27],@screen[scrOfs+4],6); // R=
+					move(note_names[27],@screen[scrOfs+4],6); // R_>___
 					ch:=$10+(_fnsfx-228); // repeat times is value from 1 to 9
 					screen[scrOfs+5]:=ch;
 					putValue(winXStart+8,i,_note,3,0); // note gives position

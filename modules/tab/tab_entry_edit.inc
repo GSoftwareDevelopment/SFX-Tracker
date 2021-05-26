@@ -117,7 +117,7 @@ var _note,_fnsfx,_pos:byte;
 	procedure setSFXChange();
 	begin
 		// TODO: seach up from cursor position, first SFX set, and use it to set funtion
-		TAB_fnSFX[_pos]:=0;
+		TAB_fnSFX[_pos]:=currentSFX;
 	end;
 
 	procedure editSFXChange(nSFX:byte);
@@ -147,13 +147,14 @@ begin
 	_note:=TAB_notes[_pos];
 	_fnsfx:=TAB_fnSFX[_pos];
 	case _fnsfx of
+		0..99: opt:=4;		// change SFX
 		128..227: opt:=3;	// note value
 		228: opt:=1;		// jump to
 		229..238: opt:=2;	// repeat
 		254: opt:=5; 		// blank
 		255: opt:=0; 		// end-tab
 	end;
-	if (_note=0) and (_fnsfx<228) then opt:=4;
+	if (_note=255) and (_fnsfx<228) then opt:=4;
 	optionsList(resptr[menu_tab_edit],width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down);
 	case opt of
 		0: setEndTab();
