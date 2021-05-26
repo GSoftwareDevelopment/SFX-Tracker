@@ -101,7 +101,7 @@ Thus, for:
 In the SFX editing module, typing in values directly is "slightly" cumbersome, hence the convenience that has been taken from the TAB editing module.
 When you go to edit the SFX envelope, select the item of interest with the __LEFT/RIGHT__ arrow keys and press the __RETURN__ key, a list of available MOD/VAL functions will open.
 
-![SFX-Edit mode-Function List for HFD](./SFX-Edit_mode-Function_List_for_HFD.png)
+![SFX-Edit mode-Function List for HFD](./imgs/SFX-Edit_mode-Function_List_for_HFD.png)
 
 This list, will vary depending on the modulation mode (see section Determining modulation type)
 
@@ -109,7 +109,7 @@ The option that is at the location of the edit cursor is automatically selected.
 
 After selecting one of the options, you will be prompted (at the bottom of the screen - above the piano keyboard) to enter a value for the selected function - the range of this value will be displayed on the screen.
 
-![SFX-Edit mode-Enter value for function](./SFX-Edit_mode-Enter_value_for_function.png)
+![SFX-Edit mode-Enter value for function](./imgs/SFX-Edit_mode-Enter_value_for_function.png)
 
 After accepting with the __RETURN__ key, the program will process the entered information into MOD/VAL values.
 
@@ -117,11 +117,11 @@ After accepting with the __RETURN__ key, the program will process the entered in
 
 The modulation mode is shown in the lower left corner of the SFX edit screen as an acronym (the first letters of the words)
 
-![SFX-Edit mode-Mod Mode for current SFX](./SFX-Edit_mode-Mod_Mode_for_current_SFX.png)
+![SFX-Edit mode-Mod Mode for current SFX](./imgs/SFX-Edit_mode-Mod_Mode_for_current_SFX.png)
 
 The modulation type can be changed by selecting __SFX->OPT->SET MOD MODE__.
 
-![SFX-OPT-SFX MOD Mode](./SFX-OPT-SFX_MOD_Mode.png) ![SFX-OPT-SFX MOD Mode List](./SFX-OPT-SFX_MOD_Mode_List.png)
+![SFX-OPT-SFX MOD Mode](./imgs/SFX-OPT-SFX_MOD_Mode.png) ![SFX-OPT-SFX MOD Mode List](./imgs/SFX-OPT-SFX_MOD_Mode_List.png)
 
 A list of available modes will appear from which you can select by using the __UP/DOWN__ arrow keys and accepting with the __RETURN__ key. When the list opens, the currently set modulation mode for the currently edited SFX will be selected.
 
