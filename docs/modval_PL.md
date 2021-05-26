@@ -101,7 +101,7 @@ I tak, dla:
 W module edycji SFX, wpisywanie wartości w sposób bezpośredni jest "nieco" kłopotliwe, stąd ułatwienie, które zostało zaczerpnięte z modułu edycji TAB.
 Po przejściu do edycji obwiedni SFXa, wyborze interesującej pozycji klawiszami strzałek __LEWO/PRAWO__ i naciśnięciu klawisza __RETURN__, zostanie otwarta lista dostępnych funkcji MOD/VAL.
 
-![Function List for HFD](./imgs/SFX-Edit mode-Function_List_for_HFD.png)
+![Function List for HFD](./imgs/SFX-Edit_mode-Function_List_for_HFD.png)
 
 Lista ta, będzie się różnić w zależności od trybu modulacji (patrz pkt. Ustalanie rodzaju modulacji)
 

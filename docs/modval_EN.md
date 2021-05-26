@@ -101,7 +101,7 @@ Thus, for:
 In the SFX editing module, typing in values directly is "slightly" cumbersome, hence the convenience that has been taken from the TAB editing module.
 When you go to edit the SFX envelope, select the item of interest with the __LEFT/RIGHT__ arrow keys and press the __RETURN__ key, a list of available MOD/VAL functions will open.
 
-![Function List for HFD](./imgs/SFX-Edit mode-Function_List_for_HFD.png)
+![Function List for HFD](./imgs/SFX-Edit_mode-Function_List_for_HFD.png)
 
 This list, will vary depending on the modulation mode (see section Determining modulation type)
 
