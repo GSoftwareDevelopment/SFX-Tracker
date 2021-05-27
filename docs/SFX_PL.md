@@ -74,7 +74,7 @@ W menu bar, pod skrótem `OPT`, ukryte są opcje związane z ustawieniami aktual
 ### SET NAME
 `SET NAME`,  pozwala nadać nazwę dla aktualnie edytowanego SFXa. Nazwa może mieć maksymalnie 14 znaków. Nazwy nie podlegają weryfikacji pod kątem już istniejących (występujących) nazw.
 
-### `SFX MOD MODE`
+### SFX MOD MODE
 Ta opcja jest szerzej opisana w sekcji [Modulacja w progrmie](./modval_PL.md#modulacja-w-programie)
 
 ### IO>LOAD

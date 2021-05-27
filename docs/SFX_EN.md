@@ -74,7 +74,7 @@ In the bar menu, under the shortcut `OPT`, are hidden options related to the set
 ### SET NAME
 `SET NAME`, allows you to give a name to the currently edited SFX. The name can be up to 14 characters long. Names are not validated against already existing (occurring) names.
 
-### `SFX MOD MODE`.
+### SFX MOD MODE
 This option is described in more detail under [Modulation in the program](./modval_EN.md#modulation-in-the-program)
 
 ### IO>LOAD
