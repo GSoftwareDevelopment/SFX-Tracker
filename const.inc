@@ -10,10 +10,6 @@ SFX_maxLength		= 128;
 TAB_maxLength		= 128;
 IO_pageLimit		= 100;
 
-SFXNameLength		= 14;
-TABNameLength		= 8;
-SONGNameLength		= 32;
-
 defaultSongTitle	= 'SONG NAME';
 defaultSearchPath	= 'H:';
 defaultFileName	= 'H:SONG.SMM';

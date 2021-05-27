@@ -13,9 +13,9 @@ var
 procedure DLI_theme;assembler;interrupt;
 asm {
 ; Register backup for DLI interrupt
-_regA 	= $fd;
-_regX 	= $fe;
-_regY 	= $ff;
+_regA 	= $f0;
+_regX 	= $f1;
+_regY 	= $f2;
 
 	sta _regA			; store registers A & Y
 	sty _regY

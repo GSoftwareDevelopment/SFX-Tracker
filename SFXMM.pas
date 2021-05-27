@@ -1,7 +1,7 @@
 {$DEFINE ROMOFF}
 
 {$librarypath './units/'}
-uses sysutils, strings, heap, gr2, ui, pmgraph;
+uses SFX_Engine, sysutils, strings, heap, gr2, ui, pmgraph;
 
 {$i types.inc}
 
@@ -25,26 +25,8 @@ var
 	currentTheme:byte;
 
 //
-	SFXModMode:array[0..maxSFXs-1] of byte absolute SFX_MODE_SET_ADDR; // indicates the type of modulation used in the SFX.
-(* SFX Mod Modes:
-	0 - HFD - High Freq. Div.     - relative modulation of the frequency divider in the range of +/- 127
-											- without the possibility of looping the SFX
-											- Full backwards compatibility with the original SFX engine
-	1 - MFD - Middle Freq. Div.   - relative modulation of the frequency divider in the range of +/- 63
-											- SFX looping possible
-	2 - LFD/NLM - Low Freq Div.	- note level modulation in relative range of +/- 32 half tones;
-											- relative modulation of freq. divider in the range of +/- 32
-											- SFX looping possible
-	3 - DSD - Direct Set Div.		- direct set of the frequency divider - without looping possible
-*)
-
-	SFXPtr:array[0..maxSFXs-1] of word absolute SFX_POINTERS_ADDR; // heap pointers to SFX definitions
-	TABPtr:array[0..maxTABs-1] of word absolute TAB_POINTERS_ADDR; // heap pointera to TAB definitions
-	SONGData:array[0..255] of byte absolute SONG_ADDR; // table for SONG data
 	SONGTitle:string[SONGNameLength];
-	song_tact,song_beat,song_lpb:byte;
 
-//
 	currentFile:string; // indicate a current opened SFXMM file with full path and device
 	searchPath:string; // used only in IO->DIR
 
@@ -76,6 +58,7 @@ var
 
 procedure init();
 begin
+	INIT_SFXEngine(SFX_MODE_SET_ADDR,SFX_POINTERS_ADDR,TAB_POINTERS_ADDR,SONG_ADDR);
 	IO_clearAllData();
 	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
