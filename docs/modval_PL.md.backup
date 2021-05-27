@@ -31,7 +31,7 @@ Modulacja na poziomie nuty (pół tonów)
 Zakres modulacji +/-32 pół tony w odniesieniu do nuty bazowej (tej umieszczonej w TABie)  
 Możliwość zapętlenia SFX
 
-### DSD - Direct Set Divider
+### DSD - Direct Set Divider*
 Bezpośrednia wartość dzielnika częstotliwości.  
 Zakres od 0 do 255  
 Brak możliwości zapętlenia.  
