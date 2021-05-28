@@ -100,6 +100,23 @@ Thus, for:
 %xxxxxxxx - direct value of the frequency divider register
 ~~~
 
+## Important things
+
+### Negative value notation
+
+Negative value must be VAL=255-VAL (opposite number)
+
+This is required because subtraction is based on addition modulo 256.
+
+![math-substraction by addition](./imgs/math-substraction_by_addition.png)
+
+Subtraction is adding opposite number to the base value.
+The 8-bit register used gets overflowed, which is ignored, and the result of the register is smaller by the VAL value.
+
+### JUMP TO function
+
+In each case, using the `JUMP TO` function will perform a jump to the specified position in the definition, however, volume setting and distortion information will be ignored.
+
 ## Modulation in the program
 
 In the SFX editing module, typing in values directly is "slightly" cumbersome, hence the convenience that has been taken from the TAB editing module.

@@ -2,6 +2,7 @@ RESOURCES_ADDR			= $AB00;	// programm resources from file resource/app_ressoures
 
 SONG_ADDR				= $B000;	// SONG table definition
 SFX_MODE_SET_ADDR		= $B100; // table of SFX modes
+NOTE_TABLE_ADDR		= $B180; //
 SFX_POINTERS_ADDR		= $B200;	// heap pointers list for SFX definitions
 TAB_POINTERS_ADDR		= $B300;	// heap pointers list for TAB definitions
 IO_BUFFER_ADDR			= $400;	// 768 bytes available

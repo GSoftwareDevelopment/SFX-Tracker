@@ -29,10 +29,12 @@ var
 	channels:array[0..15] of byte absolute SFX_CHANNELS_ADDR;
 
 procedure INIT_SFXEngine(_SFXModModes,_SFXList,_TABList,_SONGData:word);
+procedure SetNoteTable(_note_val:word);
 
 implementation
 var
 	AUDIO:array[0..0] of byte absolute $d200;
+	note_val:array[0..0] of byte;
 
 procedure INIT_SFXEngine;
 var
@@ -55,6 +57,11 @@ begin
 	until chnOfs>15;
 end;
 
+procedure SetNoteTable;
+begin
+	note_val:=pointer(_note_val);
+end;
+
 procedure SFX_tick(); Assembler; Interrupt;
 asm
 xitvbl   = $e462;
@@ -63,13 +70,13 @@ audf     = $d200;
 audc     = $d201;
 
 // below variables is only for current channel
-sfxPtr	= $f5; // SFX Pointer (2 bytes)
-chnOfs	= $f7; // SFX Offset in SFX definition
-chnMode	= $f8; // SFX Modulation Mode
-chnNote	= $f9; // SFX Note
-chnFreq	= $fa; // SFX Frequency
-chnModVal	= $fb; // SFX Modulator
-chnCtrl	= $fc; // SFX Control (distortion & volume)
+sfxPtr	= $f5; 		// SFX Pointer (2 bytes)
+chnOfs	= $f7; 		// SFX Offset in SFX definition
+chnMode	= $f8; 		// SFX Modulation Mode
+chnNote	= $f9; 		// SFX Note
+chnFreq	= $fa; 		// SFX Frequency
+chnModVal	= $fb;	// SFX Modulator
+chnCtrl	= $fc; 		// SFX Control (distortion & volume)
 
 _regA 	= $fd;
 _regX 	= $fe;
@@ -84,15 +91,13 @@ tick_start
 // prepare SFX Engine registers
 
 channel_set
-// get SFX offset
-         ldy SFX_CHANNELS_ADDR+2,x
-// check SFX offset
-         cpy #$ff ; $ff=no SFX
+			ldy SFX_CHANNELS_ADDR+2,x	// get SFX offset
+         cpy #$ff	// check SFX offset
          bne fetch_SFX_data
-			jmp next_channel
+			jmp next_channel // $ff=no SFX
 
 fetch_SFX_data
-         sty chnOfs
+         sty chnOfs	// propably, completly unnessesery
 
 // get SFX pointer
 			lda SFX_CHANNELS_ADDR,x
@@ -112,28 +117,50 @@ fetch_SFX_data
 
 //
 // modulators section
+// input: A register = modulation mode
+// output: A register = frequency value
 //
 modulators
-//
-// next LFD_NLM, because it is mostly used with melodies
-LFD_NLM
 			cmp #2			// check LFD/NLM
 			bne check_MFD
 
 LFD_NLM_mode				// code for LFD_NLM
          lda (sfxPtr),y	// get modulate value
-         sta chnModVal
-         bne decode_LFD_NLM	// check modulation
-         jmp getChannelFreq	// if 0, means no modulation
+         sta chnModVal	// store in loop register
+         bne decode_LFD_NLM	// check modulation value
+         jmp getChannelFreq	// if =0, means no modulation
 decode_LFD_NLM
-			bpl LFD_NLM_JumpTO	// jump to position in SFX definition
-			cmp #32			// check VAL<32
+			bpl LFD_NLM_JumpTO	// jump to position in SFX definition, if 7th bit is set
+			and #%01000000	// check 6th bit
+			bne LFD_NLM_note_mod
+// frequency modulation
+			lda chnModVal
+			cmp #32			// VAL<32 means positive value, otherwise negative
 			bpl LFD_NLM_inc_freq
-			ora #%11000000 // set 7th & 6th bit
+			ora #%11100000 // set 7t-5th bit
 LFD_NLM_inc_freq
 			clc
 			adc chnFreq
 			jmp setPokey	// return frequency in register A
+
+// note modulation
+LFD_NLM_note_mod
+			lda chnModVal
+			cmp #32			// VAL<32 means positive value, otherwise negative
+			bpl LFD_NLM_inc_note
+			ora #%11100000 // set 7-5th bit
+LFD_NLM_inc_note
+			clc
+			adc chnNote
+
+// get frequency representation of note
+			sty _regY
+			tay
+			lda adr.note_val,y
+			ldy _regY
+			jmp setPokey
+
+// Jump to
 LFD_NLM_JumpTo
 			and #%01111111 // clear 7th bit
 			bne LFD_NLM_set_SFX_ofs
@@ -158,13 +185,15 @@ MFD_mode						// code for MFD
 
 decode_MFD
 			bpl MFD_JumpTO	// jump to position in SFX definition, if 7th bit is set
-			cmp #64			// check VAL<64
+			cmp #64			// VAL<64 means positive value, otherwise negative
 			bpl MFD_inc_freq	// VAL is positive
 			ora #%11000000 // set 7th & 6th bit; VAL is negative
 MFD_inc_freq
 			clc
 			adc chnFreq
 			jmp setPokey	// return frequency in register A
+
+// Jump To
 MFD_JumpTo
 			and #%01111111 // clear 7th bit
 			bne MFD_set_SFX_ofs
