@@ -64,7 +64,7 @@ end;
 
 procedure SFX_tick(); Assembler; Interrupt;
 asm
-	icl 'units/sfx_engine.asm'
+	icl 'units/sfx_engine.a65'
 end;
 
 end.
