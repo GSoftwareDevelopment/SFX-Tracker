@@ -18,7 +18,7 @@ Here is a great place to do it, so thank you:
 ### pin
 
 ## FOR SHARING YOUR KNOWLEDGE
-### jhusak, mono, pin, makary, tebe, stork
+### jhusak, mono, pin, makary, tebe, bocianu
 
 ## FOR INSPIRATION FOR FUNCTIONAL SOLUTIONS
 ### marok, mono
