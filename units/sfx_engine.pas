@@ -68,7 +68,7 @@ chnOfs	= $f7; // SFX Offset in SFX definition
 chnMode	= $f8; // SFX Modulation Mode
 chnNote	= $f9; // SFX Note
 chnFreq	= $fa; // SFX Frequency
-chnMod	= $fb; // SFX Modulator
+chnModVal	= $fb; // SFX Modulator
 chnCtrl	= $fc; // SFX Control (distortion & volume)
 
 _regA 	= $fd;
@@ -78,17 +78,20 @@ _regY 	= $ff;
 			phr
 
 tick_start
-			ldx #0  // channel; channels data offset
+			ldx #0  // set channel offset to first channel
 
 // fetching channel & sfx data
 // prepare SFX Engine registers
 
-chnset
+channel_set
 // get SFX offset
          ldy SFX_CHANNELS_ADDR+2,x
 // check SFX offset
-         cpy #$ff ; ff=no SFX
-         beq noSFX
+         cpy #$ff ; $ff=no SFX
+         bne fetch_SFX_data
+			jmp next_channel
+
+fetch_SFX_data
          sty chnOfs
 
 // get SFX pointer
@@ -100,81 +103,17 @@ chnset
 // get SFX modulation mode
          lda SFX_CHANNELS_ADDR+3,x
          sta chnMode
-
 			cmp #3				// check DFD Modulation mode
-			bne get_note_freq
+			bne modulators
 //
 // DFD first becouse, must be fast as possible
          lda (sfxPtr),y		// get MOD/VAL
          jmp setPokey
 
-// fetch sound note & frequency
-get_note_freq
-// get SFX note
-         lda SFX_CHANNELS_ADDR+4,x
-         sta chnNote
-// get SFX frequency
-         lda SFX_CHANNELS_ADDR+5,x
-         sta chnFreq
-
-// get modulate value
-get_modval
-         lda (sfxPtr),y
-         sta chnMod
-// check modulation, if 0, means no modulation
-         lda chnMod
-         beq setPokey
-         jsr modulators
-// current frequency in register A
-
-setPokey
-			txa
-         lsr @
-         tax
-
-// store registers direct to POKEY
-         sta audf,x
-// get distortion & volume
-         iny					// shift sfx offset to next byte of definition
-         lda (sfxPtr),y
-         sta audc,x
-
-         txa
-         asl @
-         tax
-
-next_channel
-			clc
-
-         lda chnOfs
-         adc #2
-         sta SFX_CHANNELS_ADDR+2,x
-
-			lda chnFreq
-         sta SFX_CHANNELS_ADDR+3,x
-
-noSFX
-			txa			// shift offset to next channel
-			adc #8		// 8 bytes per channel
-			tax
-
-         cpx #$20 	// is it last channel?
-         bne chnset	// no, go to fetching data
-         jmp endtick
-
-sfxend
-         lda #$ff
-         sta SFX_CHANNELS_ADDR+2,x
-         jmp savFreq
-
-endtick  plr
-         jmp xitvbl
-         rts
-
-;
+//
+// modulators section
+//
 modulators
-			lda chnMode		// get modulation mode
-
 //
 // next LFD_NLM, because it is mostly used with melodies
 LFD_NLM
@@ -182,9 +121,28 @@ LFD_NLM
 			bne check_MFD
 
 LFD_NLM_mode				// code for LFD_NLM
+         lda (sfxPtr),y	// get modulate value
+         sta chnModVal
+         bne decode_LFD_NLM	// check modulation
+         jmp getChannelFreq	// if 0, means no modulation
+decode_LFD_NLM
+			bpl LFD_NLM_JumpTO	// jump to position in SFX definition
+			cmp #32			// check VAL<32
+			bpl LFD_NLM_inc_freq
+			ora #%11000000 // set 7th & 6th bit
+LFD_NLM_inc_freq
+			clc
+			adc chnFreq
+			jmp setPokey	// return frequency in register A
+LFD_NLM_JumpTo
+			and #%01111111 // clear 7th bit
+			bne LFD_NLM_set_SFX_ofs
+			ldy #$ff	// end of SFX definition
+			jmp next_SFX_def
+LFD_NLM_set_SFX_ofs
+			tay // set value to SFX offset register
+			jmp LFD_NLM_mode	// one more iteration
 
-
-			rts				// return frequency in register A
 
 //
 // next MFD
@@ -193,21 +151,86 @@ check_MFD
 			bne check_HFD
 
 MFD_mode						// code for MFD
+         lda (sfxPtr),y	// get modulate value
+         sta chnModVal
+         bne decode_MFD	// check modulation
+         jmp getChannelFreq	// if 0, means no modulation
 
-
-			rts				// return frequency in register A
+decode_MFD
+			bpl MFD_JumpTO	// jump to position in SFX definition, if 7th bit is set
+			cmp #64			// check VAL<64
+			bpl MFD_inc_freq	// VAL is positive
+			ora #%11000000 // set 7th & 6th bit; VAL is negative
+MFD_inc_freq
+			clc
+			adc chnFreq
+			jmp setPokey	// return frequency in register A
+MFD_JumpTo
+			and #%01111111 // clear 7th bit
+			bne MFD_set_SFX_ofs
+			ldy #$ff	// end of SFX definition
+			jmp next_SFX_def
+MFD_set_SFX_ofs
+			tay // set value to SFX offset register
+			jmp MFD_mode	// one more iteration
 
 //
 // last, compatibility with the original SFX engine
 check_HFD
 			cmp #0			// check HFD mode
-			bne exit_modulator
+			bne getChannelFreq
 
 HFD_MODE						// code for HFD
+         lda (sfxPtr),y	// get modulate value
+         sta chnModVal
+         bne decode_HFD	// check modulation
+			jmp getChannelFreq	//	if 0, means no modulation
+decode_HFD
+			clc
+			adc chnFreq
+			jmp setPokey
+
+//
+// end modulator section
+//
 
 
-exit_modulators
-         rts				// return frequency in register A
+// current frequency in register A
+getChannelFreq
+         lda SFX_CHANNELS_ADDR+5,x // get current channel frequency
+setPokey
+			txa
+         lsr @
+         tax
+
+         sta audf,x			// store direct to POKEY register
+// get distortion & volume
+         iny					// shift sfx offset to next byte of definition
+         lda (sfxPtr),y		// get SFX distortion & volume definition
+         sta audc,x			// store direct to POKEY register
+			iny
+
+         txa
+         asl @
+         tax
+
+
+next_SFX_def
+			tya
+         sta SFX_CHANNELS_ADDR+2,x // store SFX offset in channel register
+
+next_channel
+			txa			// shift offset to next channel
+			adc #8		// 8 bytes per channel
+         cmp #$20 	// is it last channel?
+         beq endtick	// yes, end tick
+
+			tax			// no, go to fetching data
+         jmp channel_set
+
+endtick  plr
+         jmp xitvbl
+         rts
 end;
 
 end.
