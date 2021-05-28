@@ -106,7 +106,7 @@ Thus, for:
 
 Negative value must be a opposite number:
 
-$Value_{opsite}=256-Value$
+![math-opposite value](./imgs/math-opposite_value.png)
 
 This is required because subtraction is based on addition opposite number in modulo 256.
 

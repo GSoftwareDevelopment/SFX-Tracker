@@ -105,7 +105,7 @@ I tak, dla:
 
 Wartość ujemna musi być liczbą przeciwną, tzn.
 
-$Value_{opsite}=256-Value$
+![math-opposite value](./imgs/math-opposite_value.png)
 
 Jest to wymagane, gdyż odejmowanie bazuje na dodawaniu liczb przeciwnych w modulo 256.
 
