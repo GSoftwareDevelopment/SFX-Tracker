@@ -1,3 +1,6 @@
+// This file is a part of sfx_engine.pas
+// will not work on its own unless you adapt it!
+
 xitvbl   = $e462;
 sysvbv   = $e45c;
 audf     = $d200;
