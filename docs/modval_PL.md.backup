@@ -112,7 +112,7 @@ Jest to wymagane, gdyż odejmowanie bazuje na dodawaniu liczb przeciwnych w modu
 ![math-substraction by addition](./imgs/math-substraction_by_addition.png)
 
 Odejmowanie to dodawanie przeciwnej liczby do wartości bazowej.
-Ośmiobitowy rejestr (z natury działa w modulo 256) ulega przepełnieniu, ale jest to ignorowane, a pozostała wartość w tym rejestrze jest mniejsza o wartości `Value`.
+Ośmiobitowy rejestr (z natury działa w modulo 256) ulega przepełnieniu, ale jest to ignorowane, a pozostała wartość w tym rejestrze jest wynikiem odejmowania wartości `Value`.
 
 ## Modulacja w programie
 

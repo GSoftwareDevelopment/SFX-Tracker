@@ -111,7 +111,8 @@ fetch_SFX_data
 			cmp #3				// check DFD Modulation mode
 			bne modulators
 //
-// DFD first becouse, must be fast as possible
+// DFD - Direct Frequency Divider
+// first becouse, must be fast as possible
          lda (sfxPtr),y		// get MOD/VAL
          jmp setPokey
 
@@ -124,6 +125,8 @@ modulators
 			cmp #2			// check LFD/NLM
 			bne check_MFD
 
+//
+// Low Frequency Divider Modulator/Note Value Modulator
 LFD_NLM_mode				// code for LFD_NLM
          lda (sfxPtr),y	// get modulate value
          sta chnModVal	// store in loop register
@@ -137,7 +140,7 @@ decode_LFD_NLM
 			lda chnModVal
 			cmp #32			// VAL<32 means positive value, otherwise negative
 			bpl LFD_NLM_inc_freq
-			ora #%11100000 // set 7t-5th bit
+			ora #%11100000 // set 7th-5th bit to get oposite value
 LFD_NLM_inc_freq
 			clc
 			adc chnFreq
@@ -148,7 +151,7 @@ LFD_NLM_note_mod
 			lda chnModVal
 			cmp #32			// VAL<32 means positive value, otherwise negative
 			bpl LFD_NLM_inc_note
-			ora #%11100000 // set 7-5th bit
+			ora #%11100000 // set 7th-5th bit to get oposite value
 LFD_NLM_inc_note
 			clc
 			adc chnNote
@@ -165,14 +168,14 @@ LFD_NLM_JumpTo
 			and #%01111111 // clear 7th bit
 			bne LFD_NLM_set_SFX_ofs
 			ldy #$ff	// end of SFX definition
-			jmp next_SFX_def
+			jmp next_SFX_Set
 LFD_NLM_set_SFX_ofs
 			tay // set value to SFX offset register
 			jmp LFD_NLM_mode	// one more iteration
 
 
 //
-// next MFD
+// MFD - Medium Frequency Divider Modulator
 check_MFD
 			cmp #1			// check MFD
 			bne check_HFD
@@ -198,13 +201,14 @@ MFD_JumpTo
 			and #%01111111 // clear 7th bit
 			bne MFD_set_SFX_ofs
 			ldy #$ff	// end of SFX definition
-			jmp next_SFX_def
+			jmp next_SFX_Set
 MFD_set_SFX_ofs
 			tay // set value to SFX offset register
 			jmp MFD_mode	// one more iteration
 
 //
-// last, compatibility with the original SFX engine
+// HFD - High Frequency Divider Modulator
+// only for compatibility with the original SFX engine
 check_HFD
 			cmp #0			// check HFD mode
 			bne getChannelFreq
@@ -244,8 +248,8 @@ setPokey
          tax
 
 
-next_SFX_def
-			tya
+next_SFX_Set
+			tya	// tranfer current SFX offset to A register
          sta SFX_CHANNELS_ADDR+2,x // store SFX offset in channel register
 
 next_channel

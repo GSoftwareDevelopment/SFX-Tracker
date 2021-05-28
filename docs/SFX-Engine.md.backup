@@ -52,7 +52,6 @@ _*_ in most cases contains a function and a value. Usually the oldest bits of th
 | _regY         | $fd     | temporary store for reg Y    |
 
 Much faster than regular instructions that operate on the stack. Use the `STA _regA`, `STA _regX`, `STA _regY` commands to preserve registers and the `LDA _regA`, `LDX _regX`, `LDY _regY` commands to restore registers.
-
 ## Channels registers
 
 This is an array that describes the state of all 4 channels that the SFX Engine supports. 

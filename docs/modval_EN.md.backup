@@ -113,7 +113,7 @@ This is required because subtraction is based on addition opposite number in mod
 ![math-substraction by addition](./imgs/math-substraction_by_addition.png)
 
 Subtraction is adding opposite number to the base value.
-The 8-bit register (inherently works in modulo 256) gets overflowed, which is ignored, and the result of the register is smaller by the `Value` value.
+The 8-bit register (inherently works in modulo 256) gets overflowed, which is ignored, and the result of the register is smaller by the ValueAL value.
 
 ### JUMP TO function
 
