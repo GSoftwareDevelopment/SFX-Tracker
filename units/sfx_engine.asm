@@ -1,23 +1,49 @@
 // This file is a part of sfx_engine.pas
 // will not work on its own unless you adapt it!
+//
+// Introduction: How to adapt?
+//
+// Two tables are required to be defined:
+// - SFX_CHANNELS_ADDR - is an array of engine registers; 32 bytes required
+// - NOTE_VAL - an array of note values (can be the one from RMT :P)
+//
+// The SFX_CHANNELS_ADDR arrays should be previously filled with the start values ($ff,$ff,$ff,$ff,$ff,$00,$00,$00,$00)
+//
+// And that's it. Hook it up to the VBLANK interrupt and go :D (I guess :P)
+//
 
-xitvbl   = $e462;
-sysvbv   = $e45c;
-audf     = $d200;
-audc     = $d201;
+xitvbl      = $e462;
+sysvbv      = $e45c;
+audf        = $d200;
+audc        = $d201;
 
 // below variables is only for current channel
-sfxPtr   = $f5;      // SFX Pointer (2 bytes)
-chnOfs   = $f7;      // SFX Offset in SFX definition
-chnMode  = $f8;      // SFX Modulation Mode
-chnNote  = $f9;      // SFX Note
-chnFreq  = $fa;      // SFX Frequency
-chnModVal   = $fb;   // SFX Modulator
-chnCtrl  = $fc;      // SFX Control (distortion & volume)
+_sfxPtr     = 0
+sfxPtr      = $f5      // SFX Pointer (2 bytes)
+_sfxPtrLo   = 0
+_sfxPtrHi   = 1
 
-_regA    = $fd;
-_regX    = $fe;
-_regY    = $ff;
+_chnOfs     = 2
+chnOfs      = $f7      // SFX Offset in SFX definition
+
+_chnMode    = 3
+chnMode     = $f8      // SFX Modulation Mode
+
+_chnNote    = 4
+chnNote     = $f9      // SFX Note
+
+_chnFreq    = 5
+chnFreq     = $fa      // SFX Frequency
+
+_chnModVal  = 6
+chnModVal   = $fb      // SFX Modulator
+
+_chnCtrl    = 7
+chnCtrl     = $fc;     // SFX Control (distortion & volume)
+
+_regA       = $fd;
+_regX       = $fe;
+_regY       = $ff;
 
          phr
 
@@ -28,7 +54,7 @@ tick_start
 // prepare SFX Engine registers
 
 channel_set
-         ldy SFX_CHANNELS_ADDR+2,x  // get SFX offset
+         ldy SFX_CHANNELS_ADDR+_chnOfs,x  // get SFX offset
          cpy #$ff // check SFX offset
          bne fetch_SFX_data
          jmp next_channel // $ff=no SFX
@@ -37,20 +63,20 @@ fetch_SFX_data
          sty chnOfs  // propably, completly unnessesery
 
 // get SFX pointer
-         lda SFX_CHANNELS_ADDR,x
+         lda SFX_CHANNELS_ADDR+_sfxPtrLo,x
          sta sfxPtr
-         lda SFX_CHANNELS_ADDR+1,x
+         lda SFX_CHANNELS_ADDR+_sfxPtrHi,x
          sta sfxPtr+1
 
 // get SFX modulation mode
-         lda SFX_CHANNELS_ADDR+3,x
+         lda SFX_CHANNELS_ADDR+_chnMode,x
          sta chnMode
          cmp #3            // check DFD Modulation mode
          bne modulators
 //
 // DFD - Direct Frequency Divider
 // first becouse, must be fast as possible
-         lda (sfxPtr),y    // get MOD/VAL
+         lda (sfxPtr),y    // get MOD/VAL=freq.divisor
          jmp setPokey
 
 //
@@ -80,7 +106,8 @@ decode_LFD_NLM
          ora #%11100000 // set 7th-5th bit to get oposite value
 LFD_NLM_inc_freq
          clc
-         adc chnFreq
+         adc SFX_CHANNELS_ADDR+_chnFreq,x
+         sta chnFreq
          jmp setPokey   // return frequency in register A
 
 // note modulation
@@ -91,22 +118,24 @@ LFD_NLM_note_mod
          ora #%11100000 // set 7th-5th bit to get oposite value
 LFD_NLM_inc_note
          clc
-         adc chnNote
+         adc SFX_CHANNELS_ADDR+_chnNote,x
+         sta chnNote
 
 // get frequency representation of note
          sty _regY
          tay
          lda adr.note_val,y
+         sta chnFreq
          ldy _regY
          jmp setPokey
 
 // Jump to
 LFD_NLM_JumpTo
          and #%01111111 // clear 7th bit
-         bne LFD_NLM_set_SFX_ofs
+         bne LFD_NLM_setSFXofs
          ldy #$ff // end of SFX definition
          jmp next_SFX_Set
-LFD_NLM_set_SFX_ofs
+LFD_NLM_setSFXofs
          tay // set value to SFX offset register
          jmp LFD_NLM_mode  // one more iteration
 
@@ -126,20 +155,21 @@ MFD_mode                // code for MFD
 decode_MFD
          bpl MFD_JumpTO // jump to position in SFX definition, if 7th bit is set
          cmp #64        // VAL<64 means positive value, otherwise negative
-         bpl MFD_inc_freq  // VAL is positive
+         bpl MFD_incFreq  // VAL is positive
          ora #%11000000 // set 7th & 6th bit; VAL is negative
-MFD_inc_freq
+MFD_incFreq
          clc
-         adc chnFreq
+         adc SFX_CHANNELS_ADDR+_chnFreq,x
+         sta chnFreq
          jmp setPokey   // return frequency in register A
 
 // Jump To
 MFD_JumpTo
          and #%01111111 // clear 7th bit
-         bne MFD_set_SFX_ofs
+         bne MFD_setSFXofs
          ldy #$ff // end of SFX definition
          jmp next_SFX_Set
-MFD_set_SFX_ofs
+MFD_setSFXofs
          tay // set value to SFX offset register
          jmp MFD_mode   // one more iteration
 
@@ -157,7 +187,7 @@ HFD_MODE                // code for HFD
          jmp getChannelFreq   // if 0, means no modulation
 decode_HFD
          clc
-         adc chnFreq
+         adc SFX_CHANNELS_ADDR+_chnFreq,x
          jmp setPokey
 
 //
@@ -167,7 +197,7 @@ decode_HFD
 
 // current frequency in register A
 getChannelFreq
-         lda SFX_CHANNELS_ADDR+5,x // get current channel frequency
+         lda SFX_CHANNELS_ADDR+_chnFreq,x // get current channel frequency
 setPokey
          txa
          lsr @
@@ -187,7 +217,7 @@ setPokey
 
 next_SFX_Set
          tya   // tranfer current SFX offset to A register
-         sta SFX_CHANNELS_ADDR+2,x // store SFX offset in channel register
+         sta SFX_CHANNELS_ADDR+_chnOfs,x // store SFX offset in channel register
 
 next_channel
          txa         // shift offset to next channel

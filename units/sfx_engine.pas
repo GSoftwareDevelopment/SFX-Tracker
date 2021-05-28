@@ -51,9 +51,10 @@ begin
 		channels[chnOfs]:=$ff; chnOfs:=chnOfs+1;	// SFX address lo
 		channels[chnOfs]:=$ff; chnOfs:=chnOfs+1;	// SFX address hi
 		channels[chnOfs]:=$ff; chnOfs:=chnOfs+1;	// SFX offset
-		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX Modulation mode
+		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX modulation Mode
 		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX Note
 		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX frequency
+		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX modulation Value
 	until chnOfs>15;
 end;
 

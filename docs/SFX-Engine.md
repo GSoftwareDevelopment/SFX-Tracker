@@ -67,7 +67,6 @@ Their layout is exactly the same as for the Tick loop registers.
 | chnNote       | chnfs+4       | SFX Note                     |
 | chnFreq       | chnfs+5       | SFX Frequency                |
 | chnMod        | chnfs+6       | SFX Fn& Modulator value      |
-| chnCtrl       | chnfs+7       | SFX distortion & volume      |
 
 The user specifies the memory space for these registers during engine initialization.
 
