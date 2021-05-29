@@ -12,18 +12,14 @@
 - nagłówek: $00,$00,'SFX'
 - numer SFXa: $00	(od 0 do maxSFXs-1)
 - rodzaj modulacji SFXa: $00 (od 0 do 3)
-- ilość bajtów przypadających na nazwę (stała SFXNameLength)
-- nazwa: SFXNameLength bajtów
-- całkowita długość SFXa (zmienna SFXLen*2; słowo lo,hi)
-- dane SFXa: SFXLen*2 bajtów
+- całkowita długość SFXa (SFXLen*2) wraz z nazwą (SFXNameLength bajtów) (słowo lo,hi)
+- dane SFXa: SFXNameLength+SFXLen*2 bajtów
 
 ### Sekcja definicji TAB:
 - nagłówek: $00,$00,'TAB'
 - numer TABa: $00
-- ilość bajtów przypadających na nazwę (stała TABNameLength)
-- nazwa: TABNameLength bajtów
-- całkowita długość TABa: zmienna TABLen*2
-- dane TABa: TABLen*2 bajtów
+- całkowita długość TABa (TABLen*2) wraz z nazwą  (TABNameLength bajtów) (słowo lo,hi)
+- dane TABa: TABNameLength+TABLen*2 bajtów
 
 ### Sekcja definicji SONG:
 - nagłówek: $00,'SONG'
