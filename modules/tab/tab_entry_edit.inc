@@ -155,30 +155,37 @@ begin
 		255: opt:=0; 		// end-tab
 	end;
 	if (_note=255) and (_fnsfx<228) then opt:=4;
-	optionsList(resptr[menu_tab_edit],width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down);
-	case opt of
-		0: setEndTab();
-		1: setJumpTo();
-		2: setRepeat();
-		3: setNoteValue();
-		4: setSFXChange();
-		5: setBlank();
-	end;
-	box(4,2,16,9,0);
-	updateTAB(true);
-	if opt=TABEditOption_BackToEdit then
+	if optionsList(resptr[menu_tab_edit],width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down) then
 	begin
-		colorHLine(winXStart,2+cursorPos,20-winXStart,color_selected);
-		exit(false);
+		case opt of
+			0: setEndTab();
+			1: setJumpTo();
+			2: setRepeat();
+			3: setNoteValue();
+			4: setSFXChange();
+			5: setBlank();
+		end;
+		box(4,2,16,9,0);
+		updateTAB(true);
+		if opt=TABEditOption_BackToEdit then
+		begin
+			colorHLine(winXStart,2+cursorPos,20-winXStart,color_selected);
+			exit(false);
+		end;
+		if opt=TABEditOption_BackToMenuBar then exit(true);
+		_note:=TAB_notes[_pos];
+		_fnsfx:=TAB_fnSFX[_pos];
+		case opt of
+			1: editJumpTo(_note);
+			2: editRepeat(_fnsfx,_note);
+			3: editNoteValue(_note);
+			4: editSFXChange(_fnsfx and $7f);
+		end;
+		result:=false;
+	end
+	else
+	begin
+		box(4,2,16,9,0);
+		updateTAB(true);
 	end;
-	if opt=TABEditOption_BackToMenuBar then exit(true);
-	_note:=TAB_notes[_pos];
-	_fnsfx:=TAB_fnSFX[_pos];
-	case opt of
-		1: editJumpTo(_note);
-		2: editRepeat(_fnsfx,_note);
-		3: editNoteValue(_note);
-		4: editSFXChange(_fnsfx and $7f);
-	end;
-	result:=false;
 end;
