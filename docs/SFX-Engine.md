@@ -55,18 +55,18 @@ Much faster than regular instructions that operate on the stack. Use the `STA _r
 
 ## Channels registers
 
-This is an array that describes the state of all 4 channels that the SFX Engine supports. 
+This is an array that describes the state of all 4 channels that the SFX Engine supports.
 
 Their layout is exactly the same as for the Tick loop registers.
 
 | Register name | relative addr | Description                  |
 |:--------------|:-------------:|:-----------------------------|
-| sfxPtr        | chnfs+0       | SFX Pointer                  |
-| chnOfs        | chnfs+2       | SFX Offset in SFX definition |
-| chnMode       | chnfs+3       | SFX Modulation Mode          |
-| chnNote       | chnfs+4       | SFX Note                     |
-| chnFreq       | chnfs+5       | SFX Frequency                |
-| chnMod        | chnfs+6       | SFX Fn& Modulator value      |
+| sfxPtr        | chnOfs+0      | SFX Pointer                  |
+| chnOfs        | chnOfs+2      | SFX Offset in SFX definition |
+| chnMode       | chnOfs+3      | SFX Modulation Mode          |
+| chnNote       | chnOfs+4      | SFX Note                     |
+| chnFreq       | chnOfs+5      | SFX Frequency                |
+| chnMod        | chnOfs+6      | SFX Fn& Modulator value      |
 
 The user specifies the memory space for these registers during engine initialization.
 
