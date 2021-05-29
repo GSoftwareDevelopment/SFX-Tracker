@@ -46,8 +46,9 @@ _regX       = $fe;
 _regY       = $ff;
 
          phr
+			dec $D301	// turn off ROM
 
-tick_start
+tick_start 		// $2ba6
          ldx #0  // set channel offset to first channel
 
 // fetching channel & sfx data
@@ -58,7 +59,6 @@ channel_set
          cpy #$ff // check SFX offset
          bne fetch_SFX_data
          jmp next_channel // $ff=no SFX
-
 fetch_SFX_data
          sty chnOfs  // propably, completly unnessesery
 
@@ -67,11 +67,14 @@ fetch_SFX_data
          sta sfxPtr
          lda SFX_CHANNELS_ADDR+_sfxPtrHi,x
          sta sfxPtr+1
-
 // get SFX modulation mode
          lda SFX_CHANNELS_ADDR+_chnMode,x
          sta chnMode
-         cmp #3            // check DFD Modulation mode
+
+         cmp #3
+         bmi DFD_Mod
+         jmp next_channel	// check DFD Modulation mode
+DFD_Mod
          bne modulators
 //
 // DFD - Direct Frequency Divider
@@ -186,6 +189,14 @@ HFD_MODE                // code for HFD
          bne decode_HFD // check modulation
          jmp getChannelFreq   // if 0, means no modulation
 decode_HFD
+			cmp #$80
+			bne HFD_modulate
+
+HFD_SFXEND
+         ldy #$ff // end of SFX definition
+         jmp next_SFX_Set
+
+HFD_modulate
          clc
          adc SFX_CHANNELS_ADDR+_chnFreq,x
          jmp setPokey
@@ -198,22 +209,22 @@ decode_HFD
 // current frequency in register A
 getChannelFreq
          lda SFX_CHANNELS_ADDR+_chnFreq,x // get current channel frequency
+         sta chnFreq
 setPokey
-         txa
-         lsr @
-         tax
+			stx _regX
+         txa	// transfer channel offset (X reg) to A reg
+         lsr @	// divide channel offset by 4
+         lsr @ // to get audf offset
+         tax   // transfer A reg to channel offset (X reg)
 
+			lda chnFreq
          sta audf,x        // store direct to POKEY register
 // get distortion & volume
          iny               // shift sfx offset to next byte of definition
          lda (sfxPtr),y    // get SFX distortion & volume definition
          sta audc,x        // store direct to POKEY register
          iny
-
-         txa
-         asl @
-         tax
-
+			ldx _regX
 
 next_SFX_Set
          tya   // tranfer current SFX offset to A register
@@ -221,6 +232,7 @@ next_SFX_Set
 
 next_channel
          txa         // shift offset to next channel
+         clc
          adc #8      // 8 bytes per channel
          cmp #$20    // is it last channel?
          beq endtick // yes, end tick
@@ -228,6 +240,8 @@ next_channel
          tax         // no, go to fetching data
          jmp channel_set
 
-endtick  plr
+endtick	inc $D301	// turn on ROM
+
+			plr
          jmp xitvbl
          rts

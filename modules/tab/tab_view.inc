@@ -12,12 +12,12 @@ var addr,scrOfs:word;
 
 begin
 	scrOfs:=224;
-	addr:=HEAP_GetAddr(SFXPtr[currentSFX]);
-
+	// addr:=HEAP_GetAddr(SFXPtr[currentSFX]);
+	addr:=SFXPtr[currentSFX];
 	if (addr<$ffff) then
 		conv2internalP2P(@_mem[addr],@screen[scrOfs],SFXNameLength)
 	else
-		conv2internalP2P(resptr[str_SFX_notDefined],@screen[scrOfs],SFXNameLength);
+		conv2internalP2P(resptr[str_notDefined],@screen[scrOfs],SFXNameLength);
 
 	putValue(1,11,currentSFX,2,1);
 	colorHLine(0,11,20,1);

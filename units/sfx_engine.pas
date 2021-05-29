@@ -1,11 +1,12 @@
 unit SFX_Engine;
 
 interface
+type
+	byteArray=array[0..0] of byte;
+	wordArray=array[0..0] of word;
+
 const
-	SFX_CHANNELS_ADDR	= $6F0;
-	SFXNameLength		= 14;
-	TABNameLength		= 8;
-	SONGNameLength		= 32;
+	SFX_CHANNELS_ADDR	= $6E0;
 
 var
 (* SFX Mod Modes:
@@ -19,28 +20,36 @@ var
 											- SFX looping possible
 	3 - DSD - Direct Set Div.		- direct set of the frequency divider - without looping possible
 *)
-	SFXModMode:array[0..0] of byte;	// indicates the type of modulation used in the SFX.
-	SFXPtr:array[0..0] of word;		// heap pointers to SFX definitions
-	TABPtr:array[0..0] of word;		// heap pointera to TAB definitions
-	SONGData:array[0..0] of byte;		// table for SONG data
+	SFXModMode:byteArray;	// indicates the type of modulation used in the SFX.
+	SFXPtr:wordArray;			// heap pointers to SFX definitions
+	TABPtr:wordArray;			// heap pointera to TAB definitions
+	SONGData:byteArray;		// table for SONG data
 
 	song_tact,song_beat,song_lpb:byte;
 
-	channels:array[0..15] of byte absolute SFX_CHANNELS_ADDR;
+	channels:array[0..31] of byte absolute SFX_CHANNELS_ADDR;
 
 procedure INIT_SFXEngine(_SFXModModes,_SFXList,_TABList,_SONGData:word);
 procedure SetNoteTable(_note_val:word);
+procedure SFX_Start();
+procedure SFX_Note(channel,note,modMode:byte; SFXAddr:word);
+procedure SFX_End();
 
 implementation
 var
-	AUDIO:array[0..0] of byte absolute $d200;
 	note_val:array[0..0] of byte;
+	NMIEN:byte absolute $D40E;
+	oldVBL:pointer;
+	AUDCTL:byte absolute $D208;
+	SKCTL:byte absolute $D20F;
 
-procedure INIT_SFXEngine;
-var
 	chnOfs:byte;
 
+procedure INIT_SFXEngine;
 begin
+	AUDCTL:=128;
+	SKCTL:=%00; SKCTL:=%11;
+
 	SFXModMode:=pointer(_SFXModModes);
 	SFXPtr:=pointer(_SFXList);
 	TABPtr:=pointer(_TABList);
@@ -48,14 +57,16 @@ begin
 
 	chnOfs:=0;
 	repeat
-		channels[chnOfs]:=$ff; chnOfs:=chnOfs+1;	// SFX address lo
-		channels[chnOfs]:=$ff; chnOfs:=chnOfs+1;	// SFX address hi
-		channels[chnOfs]:=$ff; chnOfs:=chnOfs+1;	// SFX offset
-		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX modulation Mode
-		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX Note
-		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX frequency
-		channels[chnOfs]:=$00; chnOfs:=chnOfs+1;	// SFX modulation Value
-	until chnOfs>15;
+		channels[chnOfs+0]:=$ff;	// SFX address lo
+		channels[chnOfs+1]:=$ff;	// SFX address hi
+		channels[chnOfs+2]:=$ff;	// SFX offset
+		channels[chnOfs+3]:=$00;	// SFX modulation Mode
+		channels[chnOfs+4]:=$00;	// SFX Note
+		channels[chnOfs+5]:=$00;	// SFX frequency
+		channels[chnOfs+6]:=$00;	// SFX modulation Value
+		channels[chnOfs+7]:=$00;	// SFX distortion & volume
+		chnOfs:=chnOfs+8;
+	until chnOfs>31;
 end;
 
 procedure SetNoteTable;
@@ -66,6 +77,32 @@ end;
 procedure SFX_tick(); Assembler; Interrupt;
 asm
 	icl 'units/sfx_engine.asm'
+end;
+
+procedure SFX_Start;
+begin
+	NMIEN:=$00;
+	GetIntVec(iVBL, oldVBL);
+	SetIntVec(iVBL, @SFX_tick);
+	NMIEN:=$40;
+end;
+
+procedure SFX_Note;
+begin
+	chnOfs:=channel*8;
+	channels[chnOfs+0]:=lo(SFXAddr);	// SFX address lo
+	channels[chnOfs+1]:=hi(SFXAddr);	// SFX address hi
+	channels[chnOfs+2]:=$00;	// SFX offset
+	channels[chnOfs+3]:=ModMode;	// SFX modulation Mode
+	channels[chnOfs+4]:=note;	// SFX Note
+	channels[chnOfs+5]:=note_val[note];	// SFX frequency
+end;
+
+procedure SFX_End;
+begin
+	NMIEN:=$00;
+	SetIntVec(iVBL, oldVBL);
+	NMIEN:=$40;
 end;
 
 end.

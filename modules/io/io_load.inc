@@ -1,3 +1,9 @@
+function getBlock(var f:file; var dest; size:word):boolean;
+begin
+	blockRead(f,dest,size);
+	result:=IOResult<>IO_OK;
+end;
+
 procedure IOLoad();
 var
 	f:file;
@@ -12,70 +18,54 @@ var
 		IO_clearAllData();
 
 		sum:=0;
-		blockRead(f,version,1,readed); sum:=sum+readed;
-		if (IOResult<>IO_OK) then begin err:=IOResult; exit; end;
-		blockRead(f,nameLen,1,readed); sum:=sum+readed;
-		if (IOResult<>IO_OK) then begin err:=IOResult; exit; end;
+		if getBlock(f,version,1) then begin err:=IOResult; exit; end;
+		// sum:=sum+readed;
+		if getBlock(f,nameLen,1) then begin err:=IOResult; exit; end;
+		// sum:=sum+readed;
 		if (nameLen=SONGNameLength) then
 		begin
 			SONGTitle[0]:=char(nameLen);
-			blockRead(f,SONGTitle[1],nameLen,readed); sum:=sum+readed;
+			blockRead(f,SONGTitle[1],nameLen,readed);
+			// sum:=sum+readed;
 		end;
 		if (IOResult<>3) then
 			if (IOResult<>IO_OK) then begin err:=IOResult; exit; end;
-		if (sum<>2+SONGNameLength) then err:=error_badFileFormat;
+//		if (sum<>2+SONGNameLength) then err:=error_badFileFormat;
 	end;
 
-	procedure loadDefinition(isSFX:boolean);
+	procedure loadDefinition(isSFX:boolean; nameLength:byte);
 	var
 		id,_sfxMode:byte;
 		dataSize,HPtr,dataAddr:word;
 
 	begin
 		sum:=0;
-		blockRead(f,id,1,readed);										// read ID
-		if IOResult<>IO_OK then begin err:=IOResult; exit; end;
+		if getBlock(f,id,1) then begin err:=IOResult; exit; end;	// read ID
 		putValue(17,1,id,3,0); // debug
 
 		if (isSFX) then
 		begin
 			if id>maxSFXs-1 then begin err:=error_badFileFormat; exit; end;
-			blockRead(f,_sfxMode,1,readed);							// read SFX Modulation Type
-			if IOResult<>IO_OK then begin err:=IOResult; exit; end;
+			if getBlock(f,_sfxMode,1) then begin err:=IOResult; exit; end;	// read SFX Modulation Type
 			if _sfxMode>3 then begin err:=error_badFileFormat; exit; end;
 		end
 		else
-			if id>maxTABs-1 then begin err:=error_badFileFormat; exit; end;
+			if id-64>maxTABs-1 then begin err:=error_badFileFormat; exit; end;
 
-		blockRead(f,nameLen,1,readed);								// read name length
-		if IOResult<>IO_OK then begin err:=IOResult; exit; end;
-		if isSFX then
-		begin
-			if nameLen<>SFXNameLength then begin err:=error_badFileFormat; exit; end;
-		end
-		else
-		begin
-			if nameLen<>TABNameLength then begin err:=error_badFileFormat; exit; end;
-		end;
+		if getBlock(f,dataSize,2) then begin err:=IOResult; exit; end; // read data size
+		if dataSize>256+nameLength then begin err:=error_badFileFormat; exit; end;
 
-		blockRead(f,IOBuf,nameLen,readed);						 	// read name into IO buffer
-		if IOResult<>IO_OK then begin err:=IOResult; exit; end;
-
-		blockRead(f,dataSize,2,readed);								// read data size
-		if IOResult<>IO_OK then begin err:=IOResult; exit; end;
-		if dataSize>256 then begin err:=error_badFileFormat; exit; end;
-
-		blockRead(f,IOBuf[nameLen],dataSize,readed);				// read data
+		blockRead(f,IOBuf,dataSize);				// read data
 		if IOResult<>3 then
 			if IOResult<>IO_OK then begin err:=IOResult; exit; end;
 
-		HPtr:=HEAP_Allocate(dataSize+nameLen);						// allocate mem in heap
-		if isSFX then
-			SFXPtr[id]:=HPtr												// set SFX entry
-		else
-			TABPtr[id]:=HPtr;												// set TAB entry
-		dataAddr:=HEAP_GetAddr(HPtr);
-		move(@IOBuf,@_mem[dataAddr],dataSize+nameLen);			// store name and data from IO buffer to HEAP
+		dataAddr:=HEAP_TOP;
+		HEAP_PTR[id]:=dataAddr;
+		move(@IOBuf,@_mem[dataAddr],dataSize);			// store name and data from IO buffer to HEAP
+		HEAP_TOP:=HEAP_TOP+dataSize;
+
+		// store data size in heap_sizes table
+		_heap_sizes[id]:=dataSize+nameLen
 	end;
 
 	procedure loadSONG();
@@ -100,10 +90,10 @@ begin
 					loadMain()
 				else
 					if (compareTag(IOBuf,section_SFX)) then
-						loadDefinition(true)
+						loadDefinition(true,SFXNameLength)
 					else
 						if (compareTag(IOBuf,section_TAB)) then
-							loadDefinition(false)
+							loadDefinition(false,TABNameLength)
 						else
 							if (compareTag(IOBuf,section_SONG)) then
 								loadSONG()

@@ -1,9 +1,6 @@
 strings
-str_SFX_notDefined
-					dta ' - FREE SFX - ',255		; "not defined" SFX string
-
-str_TAB_types
-					dta 'FREE TAB',255				; "not defined" TAB string
+str_notDefined
+					dta '- FREE -      ',255		; "not defined" SFX string
 
 str_IO_nextPage
 					dta d'PAGE >>>',255				; IO->DIR entry for next list page

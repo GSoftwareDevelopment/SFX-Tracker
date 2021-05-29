@@ -19,39 +19,20 @@ begin
 	repeat
 		if (kbcode<>255) then
 		begin
-			key:=TKeys(kbcode);
+			key:=TKeys(kbcode); kbcode:=255;
 			if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,section,3,6) then
 			begin
 				section:=section or $10;
 				break;
 			end;
+			colorVLine(winXStart+cursorPos,winYStart,8,0);
 			case key of
 				key_ESC: break;
 				key_RETURN: if SFXEntryEdit then break;
-				key_CTRL_Left: begin
-					colorVLine(winXStart+cursorPos,winYStart,8,0);
-					if (cursorPos=0) then
-						moveCursor(-SFX_winWidth,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift)
-					else
-						cursorPos:=0;
-					updateSFXView();
-				end;
-				key_CTRL_Right: begin
-					colorVLine(winXStart+cursorPos,winYStart,8,0);
-					if (cursorPos=SFX_winWidth-1) then
-						moveCursor(SFX_winWidth,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift)
-					else
-						cursorPos:=SFX_winWidth-1;
-					updateSFXView();
-				end;
-				key_LEFT: begin
-					colorVLine(winXStart+cursorPos,winYStart,8,0);
-					moveCursor(-1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift)
-				end;
-				key_RIGHT: begin
-					colorVLine(winXStart+cursorPos,winYStart,8,0);
-					moveCursor(1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift)
-				end;
+				key_CTRL_Left: moveCursor(-SFX_winWidth,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
+				key_CTRL_Right: moveCursor(SFX_winWidth,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
+				key_LEFT: moveCursor(-1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
+				key_RIGHT: moveCursor(1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
 			end;
 
 			at:=cursorShift+cursorPos;
@@ -78,9 +59,7 @@ begin
 			updateSFXView();
 			colorVLine(winXStart+cursorPos,winYStart,8,3);
 			screen2video();
-			kbcode:=255;
 		end;
 	until false;
-	kbcode:=255;
 end;
 

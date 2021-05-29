@@ -3,11 +3,7 @@ var
 	nTAB:shortint;
 
 begin
-	move(@screen[20],@tmpbuf,200);
-	box(0,2,20,9,$40);
-	prepareTABsList();
-	nTAB:=listChoice(4,2,TABNameLength,9,currentTAB,listBuf,maxTABs,true);
-	move(@tmpbuf,@screen[20],200);
+	nTAB:=dataList(TABPtr,currentTAB,maxTABs,TABNameLength);
 	if (nTAB<>-1) and (nTAB<>currentTAB) then
 	begin
 		getTABData(nTAB);

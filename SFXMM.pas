@@ -1,7 +1,7 @@
 {$DEFINE ROMOFF}
 
 {$librarypath './units/'}
-uses SFX_Engine, sysutils, strings, heap, gr2, ui, pmgraph;
+uses SFX_Engine, sysutils, strings, gr2, ui, pmgraph;
 
 {$i types.inc}
 
@@ -21,8 +21,14 @@ var
 
 	resptr:array[0..0] of pointer absolute RESOURCES_ADDR; // pointers list to resources
 
-	themesNames:array[0..0] of byte absolute DLI_COLOR_TABLE_ADDR+45; // list of subject names; located just after the color definition for the DLI
+	themesNames:array[0..0] of byte absolute DLI_COLOR_TABLE_ADDR+45; // list of themes names; located just after the color definition for the DLI
 	currentTheme:byte;
+//
+
+	HEAP_TOP:word; // memory occupied by heap
+	_mem:array[0..0] of byte absolute HEAP_MEMORY_ADDR;
+	HEAP_PTR:array[0..0] of word absolute HEAP_PTRLIST_ADDR;
+	_heap_sizes:array[0..0] of word absolute HEAP_SIZES_ADDR;
 
 //
 	SONGTitle:string[SONGNameLength];
@@ -44,6 +50,7 @@ var
 	key:TKeys;
 
 // global access function and procedures
+{$i units/heap_manage.inc}
 {$i modules/io/io_clear_all_data.inc}
 {$i modules/io/io_error.inc}
 {$i modules/io/io_prompt.inc}
@@ -61,7 +68,6 @@ begin
 	INIT_SFXEngine(SFX_MODE_SET_ADDR,SFX_POINTERS_ADDR,TAB_POINTERS_ADDR,SONG_ADDR);
 	SetNoteTable(NOTE_TABLE_ADDR);
 
-	IO_clearAllData();
 	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
 	getTheme(0,PFCOLS); // set default theme color
@@ -86,6 +92,7 @@ begin
 	fillchar(@searchPath,FILEPATHMaxLength,0);
 	move(@defaultSearchPath,@searchPath,length(defaultSearchPath)+1);
 
+	IO_clearAllData();
 end;
 
 begin

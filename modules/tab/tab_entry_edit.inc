@@ -126,7 +126,7 @@ var _note,_fnsfx,_pos:byte;
 
 	begin
 		v:=nSFX and $7f;
-		if inputValue(winXStart+9,2+cursorPos,2,v,0,99,0,color_selected) then
+		if inputValue(winXStart+9,2+cursorPos,2,v,0,maxSFXs-1,0,color_selected) then
 		begin;
 			TAB_fnSFX[_pos]:=byte(v);
 			modified:=true;

@@ -1,13 +1,11 @@
+{$i modules/sfx/sfx_piano.inc}
+
 function SFXList():boolean;
 var
 	nSFX:shortint;
 
 begin
-	move(@screen[20],@tmpbuf,200);
-	box(0,2,20,9,$40);
-	prepareSFXsList();
-	nSFX:=listChoice(1,2,SFXNameLength,9,currentSFX,listBuf,maxSFXs,true);
-	move(@tmpbuf,@screen[20],200);
+	nSFX:=dataList(SFXPtr,currentSFX,maxSFXs,SFXNameLength);
 	if (nSFX<>-1) and (nSFX<>currentSFX) then
 	begin
 		getSFXData(nSFX);
@@ -34,6 +32,7 @@ begin
 	case section of
 		0: if SFXList then modified:=false;
 		1: section:=3;
+		2: SFX_Piano();
 		7: SFX_Options(SFXMenuOption_Back);
 	end;
 

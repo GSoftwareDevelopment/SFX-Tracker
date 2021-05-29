@@ -3,12 +3,16 @@ SFXMM_VER1_0 		= $10;
 
 FILEPATHMaxLength	= 255;
 
-maxSFXs				= 100;
-maxTABs				= 100;
+	SFXNameLength		= 14;
+	TABNameLength		= 8;
+	SONGNameLength		= 32;
+
+maxSFXs				= 64;
+maxTABs				= 64;
 
 SFX_maxLength		= 128;
 TAB_maxLength		= 128;
-IO_pageLimit		= 100;
+IO_pageLimit		= 48;
 
 defaultSongTitle	= 'SONG NAME';
 defaultSearchPath	= 'H:';
@@ -53,14 +57,10 @@ SFXLenY				= 10;
 // | Z  | X  | C  | V  | B  | N  | M  | ,  | .  | /  |    |    |    |    |    |    |    |
 
 keys_notes:array[0..33] of byte = (
-//Z  S  X  D  C  V  G  B  H  N  J  M
- 23,62,22,58,18,16,61,21,57,35, 1,37,
-//,  L  .  ;  /
- 32, 0,34, 2,38,
-//Q  2  W  3  E  R  5  T  6  Y  7  U
- 47,30,46,26,42,40,29,45,27,43,51,11,
-//I  9  O  0  P
- 13,48, 8,50,10
+//Z  S  X  D  C  V  G  B  H  N  J  M  ,  L  .  ;  /
+ 23,62,22,58,18,16,61,21,57,35, 1,37,32, 0,34, 2,38,
+//Q  2  W  3  E  R  5  T  6  Y  7  U  I  9  O  0  P
+ 47,30,46,26,42,40,29,45,27,43,51,11,13,48, 8,50,10
 );
 
 key2Note:array[0..33] of byte = (
@@ -86,7 +86,7 @@ $20,$21,$22,$23,$24
 // resources ids
 	base_menus						= 0;
 	base_strings					= 14;
-	base_messages					= 19;
+	base_messages					= 18;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -105,11 +105,10 @@ $20,$21,$22,$23,$24
 	menu_Themes						= base_menus+12;
 	menu_IO							= base_menus+13;
 
-	str_SFX_notDefined			= base_strings+0;
-	str_TAB_types					= base_strings+1;
-	str_IO_nextPage				= base_strings+2;
-	str_IO_prevPage				= base_strings+3;
-	str_NoteNames					= base_strings+4;
+	str_notDefined					= base_strings+0;
+	str_IO_nextPage				= base_strings+1;
+	str_IO_prevPage				= base_strings+2;
+	str_NoteNames					= base_strings+3;
 
 	msg_IO_Prompt					= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;

@@ -1,6 +1,10 @@
 procedure IO_clearAllData();
 begin
-	HEAP_Init();	// clear all data
+	HEAP_TOP:=0;
+	fillchar(@_mem,HEAP_MEMORY_SIZE,$ff);
+	fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF);
+
+	fillchar(@SFXModMode,maxSFXs*2,$00);
 	fillchar(@SFXPtr,maxSFXs*2,$ff);
 	fillchar(@TABPtr,maxTABs*2,$ff);
 	fillchar(@SONGData,256,$ff);
