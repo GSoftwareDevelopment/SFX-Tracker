@@ -54,7 +54,6 @@ begin
 		// store SFX set after edit leave, if its modified
 		if modified then
 		begin
-			SFXDetermineLength();
 			storeSFXData(currentSFX);
 			modified:=false;
 		end;

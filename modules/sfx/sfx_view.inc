@@ -1,7 +1,7 @@
 procedure updateSFXView();
 var
 	scrOfs,i,v,ch:byte;
-	pos:byte;
+	pos,endPos:byte;
 
 begin
 	i:=0; pos:=cursorShift;
@@ -11,83 +11,74 @@ begin
 	begin
 		scrOfs:=40+winXStart+i;
 
-		if (v and $80<>$80) then
+	// volume
+		v:=SFX_vol_dist[pos] and $0f;
+	// volume bar
+		ch:=$00;
+		if (v>12) then ch:=$3e-v+13;
+		screen[scrOfs]:=ch;
+		if (v>8) then
+			if (v>12) then ch:=$3b else ch:=$3e-v+9;
+		screen[scrOfs+20]:=ch;
+		if (v>4) then
+			if (v>8) then ch:=$3b else ch:=$3e-v+5;
+		screen[scrOfs+40]:=ch;
+		if (v>4) then ch:=$3b else ch:=$3f-v;
+		screen[scrOfs+60]:=ch;
+	// volume value
+		if (v>0) then
 		begin
-		// volume
-			v:=SFX_vol_dist[pos] and $0f;
-		// volume bar
-			ch:=$00;
-			if (v>12) then ch:=$3e-v+13;
-			screen[scrOfs]:=ch;
-			if (v>8) then
-				if (v>12) then ch:=$3b else ch:=$3e-v+9;
-			screen[scrOfs+20]:=ch;
-			if (v>4) then
-				if (v>8) then ch:=$3b else ch:=$3e-v+5;
-			screen[scrOfs+40]:=ch;
-			if (v>4) then ch:=$3b else ch:=$3f-v;
-			screen[scrOfs+60]:=ch;
-		// volume value
-			if (v>0) then
-			begin
-				if (v<10) then
-					screen[scrOfs+80]:=$10+v
-				else
-					screen[scrOfs+80]:=$17+v;
-			end
+			if (v<10) then
+				screen[scrOfs+80]:=$10+v
 			else
-				screen[scrOfs+80]:=byte('-'~);
+				screen[scrOfs+80]:=$17+v;
+		end
+		else
+			screen[scrOfs+80]:=byte('-'~);
 
-			scrOfs:=scrOfs+100;
+		scrOfs:=scrOfs+100;
 
-		// Distortion value
-			if (SFX_vol_dist[pos]>0) then
-			begin
-				v:=SFX_vol_dist[pos] shr 4;
+	// Distortion value
+		if (SFX_vol_dist[pos]>0) then
+		begin
+			v:=SFX_vol_dist[pos] shr 4;
 //				screen[scrOfs]:=byte(hexVal[v+1]);
-				if (v<10) then
-					screen[scrOfs]:=$10+v
-				else
-					screen[scrOfs]:=$17+v;
-			end
+			if (v<10) then
+				screen[scrOfs]:=$10+v
 			else
-			  screen[scrOfs]:=byte('-'~);
+				screen[scrOfs]:=$17+v;
+		end
+		else
+		  screen[scrOfs]:=byte('-'~);
+		scrOfs:=scrOfs+20;
+
+	// SFX_modulate
+		if SFX_modulate[pos]>0 then
+		begin
+			v:=SFX_modulate[pos];
+			ch:=(v shr 4);
+			if (ch<10) then
+				screen[scrOfs]:=$10+ch
+			else
+				screen[scrOfs]:=$17+ch;
 			scrOfs:=scrOfs+20;
-
-		// SFX_modulate
-			if SFX_modulate[pos]>0 then
-			begin
-				v:=SFX_modulate[pos];
-				ch:=(v shr 4);
-				if (ch<10) then
-					screen[scrOfs]:=$10+ch
-				else
-					screen[scrOfs]:=$17+ch;
-				scrOfs:=scrOfs+20;
-				ch:=(v and $0f);
-				if (ch<10) then
-					screen[scrOfs]:=$10+ch
-				else
-					screen[scrOfs]:=$21+ch-10;
-			end
+			ch:=(v and $0f);
+			if (ch<10) then
+				screen[scrOfs]:=$10+ch
 			else
-			begin
-				ch:=byte('-'~);
-				screen[scrOfs]:=ch;
-				screen[scrOfs+20]:=ch;
-			end;
-
-			pos:=pos+1;
+				screen[scrOfs]:=$21+ch-10;
 		end
 		else
 		begin
-			for ch:=0 to 7 do
-			begin
-				screen[scrOfs]:=0; scrOfs:=scrOfs+20;
-			end;
+			ch:=byte('-'~);
+			screen[scrOfs]:=ch;
+			screen[scrOfs+20]:=ch;
 		end;
 
+		if (pos>=SFXLen) then
+			colorVLine(winXStart+i,2,8,2);
 		//
+		pos:=pos+1;
 		i:=i+1;
 	end;
 

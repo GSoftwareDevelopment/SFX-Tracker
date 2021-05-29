@@ -56,6 +56,7 @@ begin
 				end;
 			end;
 
+			SFXDetermineLength();
 			updateSFXView();
 			colorVLine(winXStart+cursorPos,winYStart,8,3);
 			screen2video();

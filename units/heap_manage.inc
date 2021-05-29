@@ -55,12 +55,14 @@ begin
 		size:=_heap_sizes[ptrId]-nameLength;
 		heap_getData(addr,size,nameLength,name);
 		// set notDefined string to current SFX name
-		name[0]:=char(nameLength);
-		move(resptr[str_notDefined],@name[1],nameLength);
 		result:=size;
 	end
 	else
+	begin
+		name[0]:=char(nameLength);
+		move(resptr[str_notDefined],@name[1],nameLength);
 		result:=0;
+	end;
 end;
 
 //
