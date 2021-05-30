@@ -71,5 +71,3 @@ Their layout is exactly the same as for the Tick loop registers.
 The user specifies the memory space for these registers during engine initialization.
 
 The required space is 32 bytes.
-
-## SFX_Engine UNIT

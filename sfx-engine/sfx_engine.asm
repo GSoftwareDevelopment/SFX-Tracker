@@ -48,10 +48,11 @@ _regY       = $ff;
          phr
 			dec $D301	; turn off ROM
 
-tick_start ; $2bb8
-         ldx #0  ; set channel offset to first channel
+tick_start
+//         ldx #0  ; set channel offset to first channel
+			ldx #$18		; set channel offset to last channel
 
-; fetching channel & sfx data
+; FETCHING CHANNEL & SFX DATA
 ; prepare SFX Engine registers
 
 channel_set
@@ -91,9 +92,13 @@ DFD_Mod
          jmp setChannelFreq
 
 ;
-; modulators section
-; input: A register = modulation mode
-; output: A register = frequency value
+; MODULATORS SECTIONS
+; input: A register		modulation mode
+; output: A register 	modulation value, on JMP change_freq, or
+;								frequency value, on JMP setChannelFreq
+;
+; Y Register - can be changed, if need do jump in SFX range
+; ATTENTION! The Engine does not check the jump ranges - IT CAN CRASH!
 ;
 modulators
          cmp #2         ; check LFD/NLM
@@ -113,15 +118,20 @@ check_HFD
 
 			icl 'sfx_engine-HFD.asm'
 
-modMode_notDefined
-;
-; end modulator section
-;
 
+; modulate value in register A
+change_freq
+         clc
+         adc SFX_CHANNELS_ADDR+_chnFreq,x
 
 ; current frequency in register A
 setChannelFreq
          sta chnFreq
+
+modMode_notDefined
+;
+; END OF MODULATOR SECTION
+;
 
 ; this part is responsible for the modulator mode.
 ; THIS FUNCTIONALITY IS NOT DOCUMENTED AND NOT SUPPORTED BY SFXMM!
@@ -139,33 +149,38 @@ setPokey
 			stx _regX
          txa	; transfer channel offset (X reg) to A reg
          lsr @	; divide channel offset by 4
-         lsr @ ; to get audf offset
-         tax   ; transfer A reg to channel offset (X reg)
+         lsr @ ; to calculate AUDIO offset
+         tax	; set AUDIO offset in X register
 
+; get current frequency
 			lda chnFreq
          sta audf,x        ; store direct to POKEY register
-; get distortion & volume
+; get current distortion & volume
          iny               ; shift sfx offset to next byte of definition
          lda (sfxPtr),y    ; get SFX distortion & volume definition
          sta audc,x        ; store direct to POKEY register
          iny
-			ldx _regX
+			ldx _regX			; restore current channel offset
 
 next_SFX_Set
-         tya   ; tranfer current SFX offset to A register
+         tya	; tranfer current SFX offset to A register
          sta SFX_CHANNELS_ADDR+_chnOfs,x ; store SFX offset in channel register
 
 next_channel
          txa         ; shift offset to next channel
-         clc
-         adc #8      ; 8 bytes per channel
-         cmp #$20    ; is it last channel?
-         beq endtick ; yes, end tick
+//         clc
+//         adc #8      ; 8 bytes per channel
+//         cmp #$20    ; is it last channel?
+//         beq end_tick ; yes, end tick
 
+			sec
+			sbc #8
+			bmi end_tick
          tax         ; no, go to fetching data
          jmp channel_set
 
-endtick	inc $D301	; turn on ROM
+end_tick
+			inc $D301	; turn on ROM
 
 			plr
          jmp xitvbl

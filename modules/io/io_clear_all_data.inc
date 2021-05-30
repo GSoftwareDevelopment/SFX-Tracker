@@ -12,7 +12,7 @@ begin
 
 	currentSFX:=0;
 	currentTAB:=0;
-	currentOct:=$10;
+	currentOct:=1;
 	song_tact:=4;
 	song_beat:=4;
 	song_lpb:=4;

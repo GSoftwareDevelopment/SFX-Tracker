@@ -32,7 +32,8 @@ var
 procedure INIT_SFXEngine(_SFXModModes,_SFXList,_TABList,_SONGData:word);
 procedure SetNoteTable(_note_val:word);
 procedure SFX_Start();
-procedure SFX_Silent(channel:byte);
+procedure SFX_ChannelOff(channel:byte);
+procedure SFX_Off();
 procedure SFX_Note(channel,note,modMode:byte; SFXAddr:word);
 procedure SFX_End();
 
@@ -50,7 +51,7 @@ var
 
 procedure INIT_SFXEngine;
 begin
-	AUDCTL:=128;
+	AUDCTL:=%00000001;
 	SKCTL:=%00; SKCTL:=%11;
 
 	SFXModMode:=pointer(_SFXModModes);
@@ -90,13 +91,17 @@ begin
 	NMIEN:=$40;
 end;
 
-procedure SFX_Silent;
+procedure SFX_ChannelOff;
 begin
 	__chnOfs:=channel*8;
 	channels[__chnOfs+2]:=$ff;	// SFX offset
-	__chnOfs:=channel*2;
-	AUDIO[__chnOfs]:=0; __chnOfs:=__chnOfs+1;
+	__chnOfs:=1+channel*2;
 	AUDIO[__chnOfs]:=0;
+end;
+
+procedure SFX_Off;
+begin
+	for __chn:=0 to 3 do SFX_ChannelOff(__chn);
 end;
 
 procedure SFX_Note;
@@ -115,7 +120,7 @@ begin
 	NMIEN:=$00;
 	SetIntVec(iVBL, oldVBL);
 	NMIEN:=$40;
-	for __chn:=0 to 3 do SFX_Silent(__chn);
+	SFX_Off();
 end;
 
 end.

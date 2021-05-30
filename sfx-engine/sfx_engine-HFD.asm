@@ -11,10 +11,7 @@ decode_HFD
 			cmp #$80
 			beq HFD_SFXEnd
 
-HFD_modulate
-         clc
-         adc chnFreq
-         jmp setChannelFreq
+         jmp change_freq
 
 HFD_SFXEnd
          ldy #$ff 		; end of SFX definition

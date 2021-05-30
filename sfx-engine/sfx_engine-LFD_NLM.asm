@@ -7,20 +7,16 @@ LFD_NLM_mode            ; code for LFD_NLM
          jmp setPokey   ; if =0, means no modulation
 decode_LFD_NLM
          bmi LFD_NLM_JumpTO   ; jump to position in SFX definition, if 7th bit is set
-//         and #%01000000 ; check 6th bit
 			cmp #64
          bpl LFD_NLM_note_mod
 
 ; frequency modulation
-//         lda chnModVal
          cmp #32        ; VAL<32 means positive value, otherwise negative
          bmi LFD_NLM_inc_freq
 
          ora #%11100000 ; set 7th-5th bit to get oposite value
 LFD_NLM_inc_freq
-         clc
-         adc SFX_CHANNELS_ADDR+_chnFreq,x
-         jmp setChannelFreq   ; return frequency in register A
+         jmp change_freq   ; return frequency in register A
 
 ; note modulation
 LFD_NLM_note_mod

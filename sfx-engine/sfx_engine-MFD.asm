@@ -13,10 +13,7 @@ decode_MFD
          bmi MFD_incFreq  ; VAL is positive
          ora #%11000000 ; set 7th & 6th bit; VAL is negative
 MFD_incFreq
-         clc
-         adc SFX_CHANNELS_ADDR+_chnFreq,x
-         sta chnFreq
-         jmp setChannelFreq   ; return frequency in register A
+         jmp change_freq   ; return frequency in register A
 
 ; Jump To
 MFD_JumpTo

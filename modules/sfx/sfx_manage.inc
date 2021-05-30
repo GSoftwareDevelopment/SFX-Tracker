@@ -31,13 +31,13 @@ var v,len,_modMode:byte;
 begin
 	len:=0; _modMode:=SFXModMode[currentSFX];
 	// auto seek end of SFX definition
-	if _modMode>0 then
+	if _modMode<3 then
 	begin
 		repeat
 			v:=SFX_modulate[len];
 			len:=len+1;
 			if ((_modMode=0) and (v=$80)) or
-				((_modMode>0) and (v and $80=$80)) then break;
+				((_modMode<3) and (v and $80=$80)) then break;
 		until (len=SFX_maxLength);
 		sfxLen:=len;
 	end
