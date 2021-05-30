@@ -1,8 +1,5 @@
 ;
 ; MFD - Medium Frequency Divider Modulator
-check_MFD
-         cmp #1         ; check MFD
-         bne check_HFD
 
 MFD_mode                ; code for MFD
          lda (sfxPtr),y ; get modulate value

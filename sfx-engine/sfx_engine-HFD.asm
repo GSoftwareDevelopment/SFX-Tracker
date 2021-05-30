@@ -1,9 +1,6 @@
 ;
 ; HFD - High Frequency Divider Modulator
 ; only for compatibility with the original SFX engine
-check_HFD
-         cmp #0         ; check HFD mode
-         bne getChannelFreq
 
 HFD_MODE                ; code for HFD
          lda (sfxPtr),y ; get modulate value

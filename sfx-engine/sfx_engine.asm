@@ -92,9 +92,20 @@ modulators
          bne check_MFD
 
 			icl 'sfx_engine-LFD_NLM.asm'
+
+check_MFD
+         cmp #1         ; check MFD
+         bne check_HFD
+
 			icl 'sfx_engine-MFD.asm'
+
+check_HFD
+         cmp #0         ; check HFD mode
+         bne modMode_notDefined
+
 			icl 'sfx_engine-HFD.asm'
 
+modMode_notDefined
 ;
 ; end modulator section
 ;
