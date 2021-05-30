@@ -1,10 +1,20 @@
-function getRangeValue(var v:smallint; min,max:smallint):boolean;
+function getMODValue(var v:smallint; min,max:smallint; pos,fnCode,minusBase:byte):boolean;
+var
+	a:byte;
+
 begin
 	putMultiText(resptr[msg_SFX_ValuePrompt],0);
 	putValue(13,11,abs(min),3,0);
 	putValue(17,11,max,3,0);
 	if (min<0) then screen[232]:=$0d else screen[232]:=$00;
-	result:=inputValue(4,11,4,v,min,max,0,0);
+	if inputValue(4,11,4,v,min,max,0,0) then
+	begin
+		if v<0 then
+			a:=minusBase-abs(v)
+		else
+			a:=v;
+		SFX_Modulate[pos]:=a or fnCode;
+	end;
 	fillchar(@screen[220],20,0);
 end;
 
@@ -22,64 +32,64 @@ begin
 	case _SFXMode of
 		0: begin // High Frequency Modulation
 (*
-* _mod
-* %00000000 - no modulation
-* %0xxxxxxx - incrace freq. value by x
-* %1xxxxxxx - decrace freq. value by x
-* %10000000 - end of SFX definition
+* _mod		opt
+* %00000000  2  - no modulation
+* %0xxxxxxx  1  - incrace freq. value by x
+* %1xxxxxxx  1  - decrace freq. value by x
+* %10000000  0  - end of SFX definition
 *)
 
 				opt:=1;
 				if optionsList(resptr[menu_HFD_mode],width_menuSFXFunc,5,opt,key_Up,key_Down) then
 					case opt of
-						0:SFX_modulate[_pos]:=$80;
-						1:getRangeValue(v,-127,127);
-						2:SFX_modulate[_pos]:=$00;
-						3:exit(false);
-						4:exit(true);
+						0: SFX_modulate[_pos]:=$80;
+						1: getMODValue(v,-127,127,_pos,$00,$00);
+						2: SFX_modulate[_pos]:=$00;
+						3: exit(false);
+						4: exit(true);
 					end;
 			end;
 		1: begin // Middle Frequency Modulation
 (*
-* _mod
-* %00000000 - no modulation
-* %00xxxxxx - incrase freq. value by x
-* %01xxxxxx - decrase freq. value by x
-* %1xxxxxxx - jump to position x in SFX definition
-* %10000000 - end of sfx definition
+* _mod      opt
+* %00000000  3  - no modulation
+* %00xxxxxx  2  - incrase freq. value by x
+* %01xxxxxx  2  - decrase freq. value by x
+* %1xxxxxxx  1  - jump to position x in SFX definition
+* %10000000  0  - end of sfx definition
 *)
 				opt:=2;
 				if optionsList(resptr[menu_MFD_mode],width_menuSFXFunc,6,opt,key_Up,key_Down) then
 					case opt of
-						0:SFX_modulate[_pos]:=$80;
-						1:getRangeValue(v,-63,63);
-						2:getRangeValue(v,0,127);
-						3:SFX_modulate[_pos]:=$00;
-						4:exit(false);
-						5:exit(true);
+						0: SFX_modulate[_pos]:=$80;
+						1: getMODValue(v, 0,127,_pos,$80,$00);
+						2: getMODValue(v,-63,63,_pos,$00,$40);
+						3: SFX_modulate[_pos]:=$00;
+						4: exit(false);
+						5: exit(true);
 					end;
 			end;
 		2: begin // Low Frequency Modulation/Note Level Modulation
 (*
-* _mod
-* %00000000 - no modulation
-* %000xxxxx - incrase freq. value by x
-* %001xxxxx - decrase freq. value by x
-* %010xxxxx - incrase note by x halftones
-* %011xxxxx - decrase note by x halftones
-* %1xxxxxxx - jump to position x in SFX definition
-* %10000000 - end of sfx definition
+* _mod		opt
+* %00000000  4  - no modulation
+* %000xxxxx  3  - incrase freq. value by x
+* %001xxxxx  3  - decrase freq. value by x
+* %010xxxxx  2  - incrase note by x halftones
+* %011xxxxx  2  - decrase note by x halftones
+* %1xxxxxxx  1  - jump to position x in SFX definition
+* %10000000  0  - end of sfx definition
 *)
 				opt:=3;
 				if optionsList(resptr[menu_LFD_NLM_mode],width_menuSFXFunc,7,opt,key_Up,key_Down) then
 					case opt of
-						0:SFX_modulate[_pos]:=$80;
-						1:getRangeValue(v,-31,31);
-						2:getRangeValue(v,-31,31);
-						3:getRangeValue(v,0,127);
-						4:SFX_modulate[_pos]:=$00;
-						5:exit(false);
-						6:exit(true);
+						0: SFX_modulate[_pos]:=$80;
+						1: getMODValue(v, 0,127,_pos,$80,$00);
+						2: getMODValue(v,-31,31,_pos,$40,$20);
+						3: getMODValue(v,-31,31,_pos,$00,$20);
+						4: SFX_modulate[_pos]:=$00;
+						5: exit(false);
+						6: exit(true);
 					end;
 			end;
 		3: begin	// Direct Set Divider
@@ -89,7 +99,7 @@ begin
 				opt:=1;
 				if	optionsList(resptr[menu_DFD_mode],width_menuSFXFunc,3,opt,key_Up,key_Down) then
 					case opt of
-						0:getRangeValue(v,0,255);
+						0:getMODValue(v,0,255,_pos,$00,$00);
 						1:exit(false);
 						2:exit(true);
 					end;

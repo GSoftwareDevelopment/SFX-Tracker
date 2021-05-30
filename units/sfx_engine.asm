@@ -48,7 +48,7 @@ _regY       = $ff;
          phr
 			dec $D301	; turn off ROM
 
-tick_start 		; $2ba6
+tick_start ; $2bb8
          ldx #0  ; set channel offset to first channel
 
 ; fetching channel & sfx data

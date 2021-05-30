@@ -15,24 +15,24 @@ LOGO_ADDR				= SCREEN_BUFFER_ADDR+60;	// SFXMM Logo Screen
 DLIST_ADDR				= $BBE0;							// screen organization map (Display List)
 CHARSET_ADDR			= $BC00;							// character set definition
 EDIT_BUF1_ADDR			= $BE00;
-EDIT_BUF2_ADDR			= $BF00;
+EDIT_BUF2_ADDR			= $BE80;
 
 RESOURCES_ADDR			= $C000;	// programm resources from file resource/app_ressoures.asm
 
 LIST_BUFFER_SIZE		= 1024;	// universal list buffer size
 LIST_BUFFER_ADDR		= $C800; // universal list buffer for UI.listChoice()
 
-SONG_ADDR				= $CC00;	// SONG table definition
+SONG_ADDR				= $CC00;	// table of SONG definition
 SFX_MODE_SET_ADDR		= $CD00; // table of SFX modes
-NOTE_TABLE_ADDR		= $CD80; // note frequency divider table
+NOTE_TABLE_ADDR		= $CD80; // table of note frequency divider
 
 HEAP_ENTRIES			= 128;
 HEAP_MEMORY_SIZE		= $27F9;
-HEAP_PTRLIST_ADDR		= $CE00;
+HEAP_PTRLIST_ADDR		= $CE00;	// general table of pointers on the heap
 
 SFX_POINTERS_ADDR		= HEAP_PTRLIST_ADDR;	// heap pointers list for SFX definitions
 TAB_POINTERS_ADDR		= HEAP_PTRLIST_ADDR + $0080;	// heap pointers list for TAB definitions
 
-HEAP_SIZES_ADDR		= $CF00;
+HEAP_SIZES_ADDR		= $CF00;	// table of data sizes on the heap
 
 HEAP_MEMORY_ADDR		= $D800;	// heap - main data memory

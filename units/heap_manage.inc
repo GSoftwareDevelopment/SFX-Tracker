@@ -1,8 +1,8 @@
 procedure heap_getData(addr,size:word; nameLength:byte; var name:string);
 begin
-	// ...get name and determine its length
-	move(@_mem[addr],@name[1],nameLength);
+	move(@_mem[addr],@name[1],nameLength);	// get name...
 	addr:=addr+nameLength; // move addr to begining of data set
+	// ... and determine its length
 	while (nameLength>0) and (name[nameLength]=#0) do nameLength:=nameLength-1;
 	name[0]:=char(nameLength); // store detected name length
 
@@ -52,13 +52,13 @@ begin
 	addr:=HEAP_PTR[ptrId];
 	if addr<>$FFFF then
 	begin
-		size:=_heap_sizes[ptrId]-nameLength;
+		size:=_heap_sizes[ptrId]-nameLength
 		heap_getData(addr,size,nameLength,name);
-		// set notDefined string to current SFX name
 		result:=size;
 	end
 	else
 	begin
+		// set notDefined string to current SFX name
 		name[0]:=char(nameLength);
 		move(resptr[str_notDefined],@name[1],nameLength);
 		result:=0;

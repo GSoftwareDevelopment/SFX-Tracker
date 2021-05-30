@@ -92,10 +92,8 @@ begin
 	screen[SFXCurPosX+3+vadr[SFXCurPosY]]:=byte('/'~);
 	putValue(SFXLenX,SFXLenY,sfxLen,3,0);
 
-	v:=SFXModMode[currentSfx];
-	i:=1+(v*9);
-	// i:=1+(SFXModMode[currentSFX]*9; <- BUG: in MP1.6.6, multiplication not work with table value
-	putValue(0,11,i,3,0);
+	v:=SFXModMode[currentSFX];	i:=1+(v*9);
+//	i:=1+(SFXModMode[currentSFX]*9); // <- BUG: in MP1.6.6, multiplication not work with table value
 	move(pointer(word(resptr[menu_sfx_mode])+i),@screen[204],7);
 end;
 

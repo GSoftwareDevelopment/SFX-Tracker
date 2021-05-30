@@ -10,6 +10,7 @@ begin
 	begin
 		getSFXData(nSFX);
 		SFXDetermineLength();
+		currentSFX:=nSFX;
 		result:=true;
 	end
 	else
@@ -22,6 +23,7 @@ begin
 	begin
 		controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1);
 		getSFXData(currentSFX);
+		SFXDetermineLength();
 		updateSFXView();
 		modified:=false;
 	end;

@@ -48,6 +48,7 @@ var
 			if id>maxSFXs-1 then begin err:=error_badFileFormat; exit; end;
 			if getBlock(f,_sfxMode,1) then begin err:=IOResult; exit; end;	// read SFX Modulation Type
 			if _sfxMode>3 then begin err:=error_badFileFormat; exit; end;
+			SFXModMode[id]:=_sfxMode;
 		end
 		else
 			if id-64>maxTABs-1 then begin err:=error_badFileFormat; exit; end;
@@ -65,7 +66,7 @@ var
 		HEAP_TOP:=HEAP_TOP+dataSize;
 
 		// store data size in heap_sizes table
-		_heap_sizes[id]:=dataSize+nameLen
+		_heap_sizes[id]:=dataSize;
 	end;
 
 	procedure loadSONG();
