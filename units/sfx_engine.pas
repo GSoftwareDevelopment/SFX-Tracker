@@ -32,6 +32,7 @@ var
 procedure INIT_SFXEngine(_SFXModModes,_SFXList,_TABList,_SONGData:word);
 procedure SetNoteTable(_note_val:word);
 procedure SFX_Start();
+procedure SFX_Silent(channel:byte);
 procedure SFX_Note(channel,note,modMode:byte; SFXAddr:word);
 procedure SFX_End();
 
@@ -40,10 +41,12 @@ var
 	note_val:array[0..0] of byte;
 	NMIEN:byte absolute $D40E;
 	oldVBL:pointer;
+	AUDIO:array[0..0] of byte absolute $D200;
 	AUDCTL:byte absolute $D208;
 	SKCTL:byte absolute $D20F;
 
-	chnOfs:byte;
+	__chn:byte;
+	__chnOfs:byte;
 
 procedure INIT_SFXEngine;
 begin
@@ -55,18 +58,18 @@ begin
 	TABPtr:=pointer(_TABList);
 	SONGData:=pointer(_SONGData);
 
-	chnOfs:=0;
+	__chnOfs:=0;
 	repeat
-		channels[chnOfs+0]:=$ff;	// SFX address lo
-		channels[chnOfs+1]:=$ff;	// SFX address hi
-		channels[chnOfs+2]:=$ff;	// SFX offset
-		channels[chnOfs+3]:=$00;	// SFX modulation Mode
-		channels[chnOfs+4]:=$00;	// SFX Note
-		channels[chnOfs+5]:=$00;	// SFX frequency
-		channels[chnOfs+6]:=$00;	// SFX modulation Value
-		channels[chnOfs+7]:=$00;	// SFX distortion & volume
-		chnOfs:=chnOfs+8;
-	until chnOfs>31;
+		channels[__chnOfs+0]:=$ff;	// SFX address lo
+		channels[__chnOfs+1]:=$ff;	// SFX address hi
+		channels[__chnOfs+2]:=$ff;	// SFX offset
+		channels[__chnOfs+3]:=$00;	// SFX modulation Mode
+		channels[__chnOfs+4]:=$00;	// SFX Note
+		channels[__chnOfs+5]:=$00;	// SFX frequency
+		channels[__chnOfs+6]:=$00;	// SFX modulation Value
+		channels[__chnOfs+7]:=$00;	// SFX distortion & volume
+		__chnOfs:=__chnOfs+8;
+	until __chnOfs>31;
 end;
 
 procedure SetNoteTable;
@@ -87,15 +90,24 @@ begin
 	NMIEN:=$40;
 end;
 
+procedure SFX_Silent;
+begin
+	__chnOfs:=channel*8;
+	channels[__chnOfs+2]:=$ff;	// SFX offset
+	__chnOfs:=channel*2;
+	AUDIO[__chnOfs]:=0; __chnOfs:=__chnOfs+1;
+	AUDIO[__chnOfs]:=0;
+end;
+
 procedure SFX_Note;
 begin
-	chnOfs:=channel*8;
-	channels[chnOfs+0]:=lo(SFXAddr);	// SFX address lo
-	channels[chnOfs+1]:=hi(SFXAddr);	// SFX address hi
-	channels[chnOfs+2]:=$00;	// SFX offset
-	channels[chnOfs+3]:=ModMode;	// SFX modulation Mode
-	channels[chnOfs+4]:=note;	// SFX Note
-	channels[chnOfs+5]:=note_val[note];	// SFX frequency
+	__chnOfs:=channel*8;
+	channels[__chnOfs+0]:=lo(SFXAddr);	// SFX address lo
+	channels[__chnOfs+1]:=hi(SFXAddr);	// SFX address hi
+	channels[__chnOfs+2]:=$00;	// SFX offset
+	channels[__chnOfs+3]:=ModMode;	// SFX modulation Mode
+	channels[__chnOfs+4]:=note;	// SFX Note
+	channels[__chnOfs+5]:=note_val[note];	// SFX frequency
 end;
 
 procedure SFX_End;
@@ -103,6 +115,7 @@ begin
 	NMIEN:=$00;
 	SetIntVec(iVBL, oldVBL);
 	NMIEN:=$40;
+	for __chn:=0 to 3 do SFX_Silent(__chn);
 end;
 
 end.

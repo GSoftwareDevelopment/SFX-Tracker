@@ -53,14 +53,14 @@ begin
 			end;
 		until section and $10=0;
 
-		// store SFX set after edit leave, if its modified
-		if modified then
-		begin
-			storeSFXData(currentSFX);
-			modified:=false;
-		end;
-
 		colorVLine(winXStart+cursorPos,winYStart,8,0);
+	end;
+
+	if modified then
+	begin
+		// store SFX set after edit leave, if its modified
+		storeSFXData(currentSFX);
+		modified:=false;
 	end;
 
 	SFXDetermineLength();

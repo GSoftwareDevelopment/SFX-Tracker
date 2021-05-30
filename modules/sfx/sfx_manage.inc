@@ -26,16 +26,23 @@ begin
 end;
 
 procedure SFXDetermineLength();
-var v,len:byte;
+var v,len,_modMode:byte;
 
 begin
-	len:=0;
+	len:=0; _modMode:=SFXModMode[currentSFX];
 	// auto seek end of SFX definition
-	repeat
-		v:=SFX_modulate[len] and $80;
-		len:=len+1;
-	until (len=SFX_maxLength) or (v=$80);
-	sfxLen:=len;
+	if _modMode>0 then
+	begin
+		repeat
+			v:=SFX_modulate[len];
+			len:=len+1;
+			if ((_modMode=0) and (v=$80)) or
+				((_modMode>0) and (v and $80=$80)) then break;
+		until (len=SFX_maxLength);
+		sfxLen:=len;
+	end
+	else
+		sfxLen:=SFX_maxLength
 end;
 
 procedure storeSFXData(nSFX:byte);

@@ -67,20 +67,28 @@ fetch_SFX_data
          sta sfxPtr
          lda SFX_CHANNELS_ADDR+_sfxPtrHi,x
          sta sfxPtr+1
+; get SFX note
+			lda SFX_CHANNELS_ADDR+_chnNote,x
+			sta chnNote
+; get SFX frequency
+			lda SFX_CHANNELS_ADDR+_chnFreq,x
+			sta chnFreq
 ; get SFX modulation mode
          lda SFX_CHANNELS_ADDR+_chnMode,x
          sta chnMode
 
+			// $2bda
+
          cmp #3
          bmi DFD_Mod
-         jmp next_channel	; check DFD Modulation mode
+         jmp setPokey	; check DFD Modulation mode
 DFD_Mod
          bne modulators
 ;
 ; DFD - Direct Frequency Divider
 ; first becouse, must be fast as possible
          lda (sfxPtr),y    ; get MOD/VAL=freq.divisor
-         jmp setPokey
+         jmp setChannelFreq
 
 ;
 ; modulators section
@@ -112,10 +120,21 @@ modMode_notDefined
 
 
 ; current frequency in register A
-getChannelFreq
-         lda SFX_CHANNELS_ADDR+_chnFreq,x ; get current channel frequency
 setChannelFreq
          sta chnFreq
+
+; this part is responsible for the modulator mode.
+; THIS FUNCTIONALITY IS NOT DOCUMENTED AND NOT SUPPORTED BY SFXMM!
+; When the 7th bit of the modulation mode is set, the modulation is in relative mode.
+; Otherwise, the mode is absolute.
+         lda chnMode
+         and #$80
+         bne setPokey
+         lda chnFreq
+         sta SFX_CHANNELS_ADDR+_chnFreq,x
+			lda chnNote
+			sta SFX_CHANNELS_ADDR+_chnNote,x
+
 setPokey
 			stx _regX
          txa	; transfer channel offset (X reg) to A reg

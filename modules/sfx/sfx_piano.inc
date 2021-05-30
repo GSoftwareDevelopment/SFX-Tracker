@@ -20,7 +20,9 @@ begin
 			i:=keyScan(key,keys_notes,34);
 			if i<>255 then
 			begin
-				SFXAddr:=HEAP_MEMORY_ADDR+SFXPtr[currentSFX]+SFXNameLength;
+				// SFXAddr:=HEAP_MEMORY_ADDR+SFXPtr[currentSFX]+SFXNameLength;
+				SFXAddr:=SFXPtr[currentSFX];
+				SFXAddr:=SFXAddr+HEAP_MEMORY_ADDR+SFXNameLength;
 				SFXMode:=SFXModMode[currentSFX];
 				if i>16 then Note:=i-5 else Note:=i;
 				SFX_Note(0,Note,SFXMode,SFXAddr);

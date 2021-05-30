@@ -5,7 +5,7 @@ MFD_mode                ; code for MFD
          lda (sfxPtr),y ; get modulate value
          sta chnModVal
          bne decode_MFD ; check modulation
-         jmp getChannelFreq   ; if 0, means no modulation
+         jmp setPokey   ; if 0, means no modulation
 
 decode_MFD
          bmi MFD_JumpTO ; jump to position in SFX definition, if 7th bit is set
@@ -25,5 +25,6 @@ MFD_JumpTo
          ldy #$ff ; end of SFX definition
          jmp next_SFX_Set
 MFD_setSFXofs
+			asl @
          tay ; set value to SFX offset register
          jmp MFD_mode   ; one more iteration

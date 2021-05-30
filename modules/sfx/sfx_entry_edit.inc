@@ -14,6 +14,7 @@ begin
 		else
 			a:=v;
 		SFX_Modulate[pos]:=a or fnCode;
+		modified:=true;
 	end;
 	fillchar(@screen[220],20,0);
 end;
@@ -63,7 +64,7 @@ begin
 					case opt of
 						0: SFX_modulate[_pos]:=$80;
 						1: getMODValue(v, 0,127,_pos,$80,$00);
-						2: getMODValue(v,-63,63,_pos,$00,$40);
+						2: getMODValue(v,-63,63,_pos,$00,$7f);
 						3: SFX_modulate[_pos]:=$00;
 						4: exit(false);
 						5: exit(true);
@@ -85,8 +86,8 @@ begin
 					case opt of
 						0: SFX_modulate[_pos]:=$80;
 						1: getMODValue(v, 0,127,_pos,$80,$00);
-						2: getMODValue(v,-31,31,_pos,$40,$20);
-						3: getMODValue(v,-31,31,_pos,$00,$20);
+						2: getMODValue(v,-31,31,_pos,$00,$3f);
+						3: getMODValue(v,-31,31,_pos,$40,$3f);
 						4: SFX_modulate[_pos]:=$00;
 						5: exit(false);
 						6: exit(true);
