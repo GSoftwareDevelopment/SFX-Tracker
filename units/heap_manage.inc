@@ -52,7 +52,7 @@ begin
 	addr:=HEAP_PTR[ptrId];
 	if addr<>$FFFF then
 	begin
-		size:=_heap_sizes[ptrId]-nameLength
+		size:=_heap_sizes[ptrId]-nameLength;
 		heap_getData(addr,size,nameLength,name);
 		result:=size;
 	end

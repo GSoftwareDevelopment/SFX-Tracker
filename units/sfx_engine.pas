@@ -76,7 +76,7 @@ end;
 
 procedure SFX_tick(); Assembler; Interrupt;
 asm
-	icl 'units/sfx_engine.asm'
+	icl 'sfx-engine/sfx_engine.asm'
 end;
 
 procedure SFX_Start;
