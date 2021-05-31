@@ -62,10 +62,10 @@ var
 	key:TKeys;
 
 function keyScan(key2Scan:byte; var keyDefs:byteArray; keysRange:byte):byte;
-function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:smallint):boolean;
-procedure moveCursor(ofs:smallint; winSize,overSize:smallint; var curPos,curShift:smallint);
+function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:byte):boolean;
+procedure moveCursor(ofs:shortint; winSize,overSize:byte; var curPos,curShift:byte);
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
-function inputLongText(x,y,width,maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
+function inputLongText(x,y,width:byte; maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputValue(x,y,width:byte; var v:smallint; min,max:smallint; colEdit,colOut:byte):boolean;
 procedure putMultiText(bar:pointer; bgColor:byte);
 procedure VBar(x,y,width,col:byte);
@@ -120,7 +120,7 @@ begin
 				curPos:=oversize;
 	end
 	else
-		if (_pos>-1) and (_pos<winSize) then
+		if (_pos>=0) and (_pos<winSize) then
 			curPos:=_pos
 		else
 		begin
@@ -130,7 +130,7 @@ begin
 				curPos:=winSize-1;
 
 			_pos:=curShift+ofs;
-			if (_pos>-1) and (_pos<overSize-winSize) then
+			if (_pos>=0) and (_pos<=overSize-winSize) then
 				curShift:=_pos
 			else
 				if (_pos<0) then
@@ -149,7 +149,7 @@ function inputLongText:boolean;
 var
 	buf:byteArray absolute $400; // use IO buffer for temporary input strage
 	i,len:byte;
-	curX,shiftX:smallint;
+	curX,shiftX:byte;
 	ch,ofs,scrOfs:byte;
 	tm:longint;
 	curState:boolean;
@@ -405,8 +405,7 @@ end;
 
 function listChoice:shortint;
 var
-	listShift:smallint;
-	listPos:smallint;
+	listShift,listPos:byte;
 	listData:array[0..0] of byte;
 
 	procedure listEntry(ey,n:byte);

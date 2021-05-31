@@ -1,7 +1,7 @@
 // SFX Music Maker basic setup
 SFXMM_VER1_0 		= $10;
 
-FILEPATHMaxLength	= 255;
+FILEPATHMaxLength	= 128;
 
 	SFXNameLength		= 14;
 	TABNameLength		= 8;
@@ -126,7 +126,7 @@ $20,$21,$22,$23,$24
 
 //
 
-   SFXMenuOptions					= 4;
+   SFXMenuOptions					= 3;
 	SFXMenuOption_Back			= 2;
 	SFXMenuModType					= 5;
 	SFXMenuModType_Back			= 4;

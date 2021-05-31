@@ -33,11 +33,11 @@ var
 //
 	SONGTitle:string[SONGNameLength];
 
-	currentFile:string; // indicate a current opened SFXMM file with full path and device
-	searchPath:string; // used only in IO->DIR
+	currentFile:string[FILEPATHMaxLength]; // indicate a current opened SFXMM file with full path and device
+	searchPath:string[FILEPATHMaxLength]; // used only in IO->DIR
 
-	cursorPos:smallInt;
-	cursorShift:smallInt;
+	cursorPos:byte;
+	cursorShift:byte;
 
 	currentMenu:shortint;
 	section:byte;

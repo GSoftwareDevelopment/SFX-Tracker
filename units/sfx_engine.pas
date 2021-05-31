@@ -51,7 +51,7 @@ var
 
 procedure INIT_SFXEngine;
 begin
-	AUDCTL:=%00000001;
+	AUDCTL:=%00000000;
 	SKCTL:=%00; SKCTL:=%11;
 
 	SFXModMode:=pointer(_SFXModModes);

@@ -13,7 +13,7 @@ var
 	PFCols:array[0..4] of byte absolute 708;
 
 procedure initGraph(dlAddr,videoAddr,bufferAddr:word);
-function getTime():longint;
+function getTime():longint; assembler;
 procedure conv2ASCII(var s:string);
 procedure conv2Internal(var s:string);
 procedure conv2internalP2P(src,dest:pointer; len:byte);
@@ -41,50 +41,51 @@ procedure conv2Internal;
 var i:byte;
 
 begin
-	for i:=1 to length(s) do
+	i:=1;
+	while i<=length(s) do //for i:=1 to length(s) do
+	begin
 		s[i]:=char(byte(s[i])-32);
+		i:=i+1;
+	end;
 end;
 
 procedure conv2ASCII;
 var i:byte;
 
 begin
-	for i:=1 to length(s) do
+	i:=1;
+	while i<=length(s) do
+	begin
 		s[i]:=char(byte(s[i])+32);
+		i:=i+1;
+	end;
 end;
 
-function getTime:longint;
-var
-	time:array[0..2] of byte absolute $12;
+function getTime:longint; assembler;
+asm
+	mva :rtclok+2 Result
+	mva :rtclok+1 Result+1
+	mva :rtclok Result+2
+	mva #$00 Result+3
+end;
 
+procedure _colorSet(ofs,steps,step,col:byte);
 begin
-  result:=time[0] shl 16+time[1] shl 8+time[2];
+	while steps>0 do
+	begin
+		screen[ofs]:=(screen[ofs] and $3f) or col;
+		ofs:=ofs+step; steps:=steps-1;
+	end;
 end;
 
 procedure colorHLine;
-var ofs:byte;
-
 begin
-	ofs:=vadr[y]+x;
-	color:=colMask[color];
-	while width>0 do
-	begin
-		screen[ofs]:=color+(screen[ofs] and $3f);
-		ofs:=ofs+1; width:=width-1;
-	end;
+	_colorSet(vadr[y]+x,width,1,colMask[color]);
 end;
 
 procedure colorVLine;
-var ofs,i:byte;
-
 begin
-	ofs:=vadr[y]+x;
-	color:=colMask[color];
-	while height>0 do
-	begin
-		screen[ofs]:=color+(screen[ofs] and $3f);
-		ofs:=ofs+20; height:=height-1;
-	end;
+	_colorSet(vadr[y]+x,height,20,colMask[color]);
 end;
 
 procedure box;
@@ -105,9 +106,12 @@ var i:byte;
 	_src,_dest:array[0..0] of byte;
 
 begin
-	_src:=src; _dest:=dest;
-	for i:=0 to len-1 do
+	_src:=src; _dest:=dest; i:=0;
+	while i<len do
+	begin
 		if _src[i]<32 then _dest[i]:=0 else _dest[i]:=_src[i]-32;
+		i:=i+1;
+	end;
 end;
 
 procedure putText;
