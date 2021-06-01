@@ -1,9 +1,8 @@
 
 IO_BUFFER_ADDR			= $400;	// 768 bytes available
 IO_BUFFER_SIZE			= $13F;	// 64 bytes for header; 256 bytes for raw data
-DLI_COLOR_TABLE_ADDR = $600;
 
-TOP_DATA					= $B400;	// only indicte top of all data used by program
+// TOP_DATA					= $B400;	// only indicte top of all data used by program
 
 PMG_BASE					= $B0;	// Player & Missile Graphics base page
 
@@ -12,10 +11,13 @@ VIDEO_ADDR				= $B900;							// direct screen address
 KEYBOARD_ADDR			= VIDEO_ADDR+240;				// view of piano roll
 SCREEN_BUFFER_ADDR	= VIDEO_ADDR+280;				// screen buffer (for better UI experience
 LOGO_ADDR				= SCREEN_BUFFER_ADDR+60;	// SFXMM Logo Screen
+DLI_COLOR_TABLE_ADDR = SCREEN_BUFFER_ADDR+240;	// DLI Color table (45 bytes) and...
+																// Theme names (72 bytes=6 schemas*12 char/name)
 DLIST_ADDR				= $BBE0;							// screen organization map (Display List)
 CHARSET_ADDR			= $BC00;							// character set definition
 EDIT_BUF1_ADDR			= $BE00;
 EDIT_BUF2_ADDR			= $BE80;
+VIS_TABLE_ADDR			= $BF00;	// Table for piano visualisation :)
 
 RESOURCES_ADDR			= $C000;	// programm resources from file resource/app_ressoures.asm
 

@@ -1,7 +1,7 @@
 procedure updateSFXView();
 var
 	scrOfs,i,v,ch:byte;
-	pos,endPos:byte;
+	pos:byte;
 
 begin
 	i:=0; pos:=cursorShift;

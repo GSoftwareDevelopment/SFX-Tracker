@@ -1,10 +1,10 @@
 (*
 const
+	__note 		= $0000; // 00ss ssss|00oo nnnn $ssnn - ss-SFX; nn-note number ($on - o-octave; n-note in octave)
+	__noteValue	= $8000;	// 01ss ssss|vvvv vvvv $ssvv - ss-sfx with 7bit set ($80-$e3); vv - value ($00-$ff) frequency divider
+	__repeat		= $8000;	// 1000 xxxx|posi tion $8rtp - r-repeat times 1-9 ($81-$89); tp - tab position
+	__jump		= $8000; // 1000 0000|posi tion $80tp - tp-tab position
 	__blank		= $FEFF;	// 1111 1110|1111 1111
-	__note 		= $0000; // 0000 0000|0000 0000 $ssnn - ss-SFX; nn-note number ($on - o-octave; n-note in octave)
-	__noteValue	= $8000;	// 1000 0000|0000 0000 $ssvv - ss-sfx with 7bit set ($80-$e3); vv - value ($00-$ff) frequency divider
-	__repeat		= $e500;	// 1110 0101|0000 0000 $rptp - tp-repeat times 1-9 ($e5-$ee); tp - tab position
-	__jump		= $e400; // 1110 0100|0000 0000 $e4tp - tp-tab position
 	__end			= $ffff; // 1111 1111|1111 1111
 *)
 
@@ -25,10 +25,10 @@ var _note,_fnsfx,_pos:byte;
 
 	procedure setJumpTo();
 	begin
-		if (TAB_fnSFX[_pos]<>228) then
+		if (TAB_fnSFX[_pos]<>128) then
 		begin
 			TAB_notes[_pos]:=0;
-			TAB_fnSFX[_pos]:=228;
+			TAB_fnSFX[_pos]:=128;
 			modified:=true;
 		end;
 	end;
@@ -43,7 +43,7 @@ var _note,_fnsfx,_pos:byte;
 		begin
 			jumpPos:=byte(v);
 			TAB_notes[_pos]:=jumpPos;
-			TAB_fnSFX[_pos]:=228;
+			TAB_fnSFX[_pos]:=128;
 			modified:=true;
 		end;
 	end;
@@ -55,7 +55,7 @@ var _note,_fnsfx,_pos:byte;
 		if (TAB_fnSFX[_pos]<229) or (TAB_fnSFX[_pos]>238) then
 		begin
 			TAB_notes[_pos]:=0;
-			TAB_fnSFX[_pos]:=229;
+			TAB_fnSFX[_pos]:=129;
 			modified:=true;
 		end;
 	end;
@@ -65,7 +65,7 @@ var _note,_fnsfx,_pos:byte;
 		v:smallint;
 
 	begin
-		times:=times-228;
+		times:=times-128;
 		v:=times;
 		if inputValue(winXStart+6,2+cursorPos,1,v,1,9,0,color_selected) then
 		begin
@@ -75,7 +75,7 @@ var _note,_fnsfx,_pos:byte;
 			begin
 				repeatPos:=byte(v);
 				TAB_notes[_pos]:=repeatPos;
-				TAB_fnSFX[_pos]:=228+times;
+				TAB_fnSFX[_pos]:=128+times;
 				modified:=true;
 			end;
 		end;
@@ -85,10 +85,10 @@ var _note,_fnsfx,_pos:byte;
 
 	procedure setNoteValue();
 	begin
-		if (TAB_fnSFX[_pos] and $80<>$80) then
+		if (TAB_fnSFX[_pos] and $40<>$40) then
 		begin
 			TAB_notes[_pos]:=0;
-			TAB_fnSFX[_pos]:=currentSFX or $80;
+			TAB_fnSFX[_pos]:=currentSFX or $40;
 			modified:=true;
 		end;
 	end;
@@ -102,11 +102,11 @@ var _note,_fnsfx,_pos:byte;
 		if inputValue(winXStart+5,2+cursorPos,3,v,0,255,0,color_selected) then
 		begin
 			value:=byte(v);
-			v:=currentSFX and $7f;
-			if inputValue(winXStart+9,2+cursorPos,2,v,0,99,0,color_selected) then
+			v:=currentSFX and $3f;
+			if inputValue(winXStart+9,2+cursorPos,2,v,0,maxSFXs-1,0,color_selected) then
 			begin;
 				TAB_notes[_pos]:=value;
-				TAB_fnSFX[_pos]:=byte(v) or $80;
+				TAB_fnSFX[_pos]:=byte(v) or $40;
 				modified:=true;
 			end;
 		end;
@@ -125,7 +125,7 @@ var _note,_fnsfx,_pos:byte;
 		v:smallint;
 
 	begin
-		v:=nSFX and $7f;
+		v:=nSFX and $3f;
 		if inputValue(winXStart+9,2+cursorPos,2,v,0,maxSFXs-1,0,color_selected) then
 		begin;
 			TAB_fnSFX[_pos]:=byte(v);
@@ -147,10 +147,10 @@ begin
 	_note:=TAB_notes[_pos];
 	_fnsfx:=TAB_fnSFX[_pos];
 	case _fnsfx of
-		0..99: opt:=4;		// change SFX
-		128..227: opt:=3;	// note value
-		228: opt:=1;		// jump to
-		229..238: opt:=2;	// repeat
+		  0..63: opt:=4;		// change SFX
+		 64..127: opt:=3;	// note value
+		128: opt:=1;		// jump to
+		129..138: opt:=2;	// repeat
 		254: opt:=5; 		// blank
 		255: opt:=0; 		// end-tab
 	end;

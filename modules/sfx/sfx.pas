@@ -26,7 +26,6 @@ begin
 	screen2video();
 	modified:=false;
 	repeat
-		updateModified();
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;

@@ -56,16 +56,17 @@ var
 {$i modules/io/io_prompt.inc}
 {$i modules/io/io_tag_compare.inc}
 
+{$i modules/vis_piano.inc}
+
 // modules
 {$i modules/gsd/gsd.pas}
 {$i modules/io/io.pas}
-{$i modules/modified.inc}
 {$i modules/sfx/sfx.pas}
 {$i modules/tab/tab.pas}
 
 procedure init();
 begin
-	INIT_SFXEngine(SFX_MODE_SET_ADDR,SFX_POINTERS_ADDR,TAB_POINTERS_ADDR,SONG_ADDR);
+	INIT_SFXEngine(HEAP_MEMORY_ADDR,SFX_MODE_SET_ADDR,SFX_POINTERS_ADDR,TAB_POINTERS_ADDR,SONG_ADDR);
 	SetNoteTable(NOTE_TABLE_ADDR);
 
 	PMGInit(PMG_BASE);

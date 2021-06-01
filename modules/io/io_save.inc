@@ -2,8 +2,7 @@ function storeHDataInFile(var f:file; var section:TTag; nameLength,id:byte):bool
 var
 	ofs,
 	dataSize,
-	dataAddr,
-	dataHPtr:word;
+	dataAddr:word;
 
 begin
 	ofs:=0;

@@ -78,7 +78,7 @@ fetch_SFX_data
          lda SFX_CHANNELS_ADDR+_chnMode,x
          sta chnMode
 
-			// $2bda
+			// $2ac9
 
          cmp #3
          bmi DFD_Mod
@@ -161,6 +161,7 @@ setPokey
          sta audc,x        ; store direct to POKEY register
          iny
 			ldx _regX			; restore current channel offset
+         sta SFX_CHANNELS_ADDR+_chnCtrl,x ; store SFX distortion & volume in channel register
 
 next_SFX_Set
          tya	; tranfer current SFX offset to A register

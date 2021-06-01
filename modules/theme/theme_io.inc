@@ -18,8 +18,8 @@ begin
 		IOBuf[ofs]:=currentTheme; ofs:=ofs+1;
 		for i:=0 to 5 do
 		begin
-			move(@DLIColTab[cOfs],@IOBuf[ofs],108); ofs:=ofs+5;
-			move(@ThemesNames[nOfs],@IOBuf[ofs],108); ofs:=ofs+5;
+			move(@DLIColTab[cOfs],@IOBuf[ofs],5); ofs:=ofs+5;
+			move(@ThemesNames[nOfs],@IOBuf[ofs],12); ofs:=ofs+5;
 		end;
 		blockWrite(f,IOBuf,ofs,writen);
 		if (writen=ofs) then	result:=IO_OK;

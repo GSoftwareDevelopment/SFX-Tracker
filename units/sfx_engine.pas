@@ -20,21 +20,23 @@ var
 											- SFX looping possible
 	3 - DSD - Direct Set Div.		- direct set of the frequency divider - without looping possible
 *)
+	SONGData:byteArray;		// table for SONG data
 	SFXModMode:byteArray;	// indicates the type of modulation used in the SFX.
 	SFXPtr:wordArray;			// heap pointers to SFX definitions
 	TABPtr:wordArray;			// heap pointera to TAB definitions
-	SONGData:byteArray;		// table for SONG data
+	dataAddr:word;				// base address to heap pointers
 
 	song_tact,song_beat,song_lpb:byte;
 
 	channels:array[0..31] of byte absolute SFX_CHANNELS_ADDR;
 
-procedure INIT_SFXEngine(_SFXModModes,_SFXList,_TABList,_SONGData:word);
+procedure INIT_SFXEngine(_dataAddr,_SFXModModes,_SFXList,_TABList,_SONGData:word);
 procedure SetNoteTable(_note_val:word);
 procedure SFX_Start();
 procedure SFX_ChannelOff(channel:byte);
 procedure SFX_Off();
-procedure SFX_Note(channel,note,modMode:byte; SFXAddr:word);
+procedure SFX_Note(channel,note,SFXId:byte);
+// procedure SFX_Note(channel,note,modMode:byte; SFXAddr:word);
 procedure SFX_End();
 
 implementation
@@ -54,6 +56,7 @@ begin
 	AUDCTL:=%00000000;
 	SKCTL:=%00; SKCTL:=%11;
 
+	dataAddr:=_dataAddr;
 	SFXModMode:=pointer(_SFXModModes);
 	SFXPtr:=pointer(_SFXList);
 	TABPtr:=pointer(_TABList);
@@ -95,6 +98,7 @@ procedure SFX_ChannelOff;
 begin
 	__chnOfs:=channel*8;
 	channels[__chnOfs+2]:=$ff;	// SFX offset
+	channels[__chnOfs+7]:=$00; // SFX distortion @ volume
 	__chnOfs:=1+channel*2;
 	AUDIO[__chnOfs]:=0;
 end;
@@ -105,14 +109,20 @@ begin
 end;
 
 procedure SFX_Note;
+var
+	SFXAddr:word;
+
 begin
+	SFXAddr:=SFXPtr[SFXId]+dataAddr;
+	SFXAddr:=SFXAddr+14; // skip first 14 bytes - length of SFX name
+
 	__chnOfs:=channel*8;
-	channels[__chnOfs+0]:=lo(SFXAddr);	// SFX address lo
-	channels[__chnOfs+1]:=hi(SFXAddr);	// SFX address hi
-	channels[__chnOfs+2]:=$00;	// SFX offset
-	channels[__chnOfs+3]:=ModMode;	// SFX modulation Mode
-	channels[__chnOfs+4]:=note;	// SFX Note
-	channels[__chnOfs+5]:=note_val[note];	// SFX frequency
+	channels[__chnOfs+0]:=lo(SFXAddr);			// SFX address lo
+	channels[__chnOfs+1]:=hi(SFXAddr);			// SFX address hi
+	channels[__chnOfs+2]:=$00;						// SFX offset
+	channels[__chnOfs+3]:=SFXModMode[SFXId];	// SFX modulation Mode
+	channels[__chnOfs+4]:=note;					// SFX Note
+	channels[__chnOfs+5]:=note_val[note];		// SFX frequency
 end;
 
 procedure SFX_End;

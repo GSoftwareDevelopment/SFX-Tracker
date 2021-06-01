@@ -36,7 +36,7 @@ var
 	procedure loadDefinition(isSFX:boolean; nameLength:byte);
 	var
 		id,_sfxMode:byte;
-		dataSize,HPtr,dataAddr:word;
+		dataSize,dataAddr:word;
 
 	begin
 		sum:=0;
