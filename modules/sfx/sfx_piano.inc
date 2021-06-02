@@ -25,7 +25,7 @@ end;
 
 procedure sfx_piano();
 var
-	i,chn,Note:byte;
+	i,chn:byte;
 
 begin
 	reset_pianoVis();

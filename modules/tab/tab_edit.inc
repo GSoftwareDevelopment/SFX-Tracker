@@ -2,7 +2,7 @@
 
 procedure TABEditLoop();
 var
-	_pos,i,v:byte;
+	_pos,i:byte;
 
 begin
 	colorHLine(winXStart,2+cursorPos,20-winXStart,3);
