@@ -130,7 +130,7 @@ begin
 
 	channels[__cOfs+0]:=lo(SFXAddr);			// SFX address lo
 	channels[__cOfs+1]:=hi(SFXAddr);			// SFX address hi
-	channels[__cOfs+2]:=$00;						// SFX offset
+	channels[__cOfs+2]:=$00;					// SFX offset
 	channels[__cOfs+3]:=note;					// SFX Note
 	channels[__cOfs+4]:=note_val[note];		// SFX frequency
 	channels[__cOfs+5]:=SFXModMode[SFXId];	// SFX modulation Mode
