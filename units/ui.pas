@@ -62,6 +62,7 @@ const
 var
 	KBCODE:byte absolute 764;
 	key:TKeys;
+	timer:byte absolute $14;
 
 function keyScan(key2Scan:byte; var keyDefs:byteArray; keysRange:byte):byte;
 function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:byte):boolean;
@@ -153,7 +154,7 @@ var
 	i,len:byte;
 	curX,shiftX:byte;
 	ch,ofs,scrOfs:byte;
-	tm:longint;
+	ctm,stm:byte;
 	curState:boolean;
 
 	procedure updateTextLine();
@@ -182,15 +183,8 @@ begin
 	scrOfs:=vadr[y]+x;
 	updateTextLine();
 	screen2video();
-	tm:=getTime; curState:=false;
+	ctm:=0; curState:=false;
 	repeat
-		if (getTime-tm>=10) then
-		begin
-			curState:=not curState;
-			screen[scrOfs+curX]:=screen[scrOfs+curX] xor $C0;
-			screen2video();
-			tm:=getTime;
-		end;
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode);
@@ -234,8 +228,18 @@ begin
 			end;
 
 			updateTextLine();
+			kbcode:=255; ctm:=0; curState:=false;
+		end;
+		if (timer-ctm>=$10) then
+		begin
+			ctm:=timer;
+			curState:=not curState;
+			screen[scrOfs+curX]:=screen[scrOfs+curX] xor $C0;
+		end;
+		if (timer<>stm) then
+		begin
+			stm:=timer;
 			screen2video();
-			kbcode:=255; tm:=0; curState:=false;
 		end;
 	until false;
 	if result then

@@ -13,7 +13,6 @@ var
 	PFCols:array[0..4] of byte absolute 708;
 
 procedure initGraph(dlAddr,videoAddr,bufferAddr:word);
-function getTime():longint; assembler;
 procedure conv2ASCII(var s:string);
 procedure conv2Internal(var s:string);
 procedure conv2internalP2P(src,dest:pointer; len:byte);

@@ -8,6 +8,7 @@ var
 	pianoScreen:array[0..0] of byte absolute KEYBOARD_ADDR;
 	old_pianoY:array[0..3] of byte;
 	pianoScopeOfs:byte;
+	pianoTm:byte;
 
 procedure reset_pianoVis();
 var i:byte;
@@ -31,6 +32,8 @@ var
 	pOfs:word;
 
 begin
+	if (timer=pianoTm) then exit;
+	pianoTm:=timer;
 	chn:=0; chnOfs:=0; minNote:=octShift[currentOct];
 //	gvol:=0; activeChns:=1;
 	repeat
@@ -56,9 +59,9 @@ begin
 		begin
 			playersHPos[chn]:=0;
 		end;
-		chnOfs:=chnOfs+8;
+		chnOfs:=chnOfs+16;
 		chn:=chn+1;
-	until chnOfs>31;
+	until chnOfs=64;
 //	if (pianoScopeOfs<239) then pianoScopeOfs:=pianoScopeOfs+1 else pianoScopeOfs:=220;
 //	video[pianoScopeOfs]:=$3f-(gvol shr activeChns);
 end;

@@ -54,6 +54,8 @@ var
 	currentOct:byte;
 	currentTAB:byte;
 
+	song_tact,song_beat:byte;
+
 	modified:boolean = false;
 	key:TKeys;
 
@@ -102,6 +104,11 @@ begin
 	move(@defaultSearchPath,@searchPath,length(defaultSearchPath)+1);
 
 	IO_clearAllData();
+
+	reset_pianoVis();
+	updatePiano();
+	SFX_Start();
+
 end;
 
 begin

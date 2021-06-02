@@ -46,7 +46,7 @@ begin
 			_note:=TAB_notes[pos]; _fnsfx:=TAB_fnSFX[pos];
 			case _fnsfx of
 				0..63: begin // sfx note
-					noteOfs:=(_note and $f) shl 1; noteOct:=_note shr 4;
+					noteOct:=_note div 12; noteOfs:=(_note mod 12) shl 1;
 
 					if _note<255 then
 					begin
@@ -122,4 +122,14 @@ begin
 		scrOfs:=scrOfs+20;
 		_nxt:=_nxt+1;
  	end;
+end;
+
+procedure TABScreen();
+begin
+	fillchar(@screen[20],220,$00);
+	VBar(0,1,width_menuBar,0);
+	screen[223]:=$06;
+	screen[33]:=$07;
+
+	menuBar(resptr[menu_tabs],width_menuBar,1);
 end;

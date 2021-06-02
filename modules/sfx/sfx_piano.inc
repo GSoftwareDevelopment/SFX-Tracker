@@ -11,22 +11,27 @@ begin
 	pianoScreen[39]:=$12+currentOct;
 end;
 
+function pianoKeyScan(playChn:byte):byte;
+begin
+	result:=keyScan(key,keys_notes,34);
+	if result<>255 then
+	begin
+		if result>16 then result:=result-5;
+		result:=result+(currentOct*12);
+		if playChn<>255 then
+			SFX_Note(playChn,result,currentSFX);
+	end;
+end;
+
 procedure sfx_piano();
 var
 	i,chn,Note:byte;
-	otm:longint;
 
 begin
 	reset_pianoVis();
-	updatePiano();
-	SFX_Start;
 	chn:=0;
 	repeat
-		if (getTime-otm>0) then
-		begin
-			otm:=getTime;
-			updatePianoVis();
-		end;
+		updatePianoVis();
 		if kbcode<>255 then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
@@ -36,18 +41,11 @@ begin
 				key_ESC: break;
 				key_INVERS: begin multiChnMode:=not multiChnMode; updatePiano(); end;
 			end;
-			i:=keyScan(key,keys_notes,34);
+			i:=pianoKeyScan(chn);
 			if i<>255 then
-			begin
-			if i>16 then Note:=i-5 else Note:=i;
-				Note:=Note+(currentOct*12);
-				// SFX_Note(chn,Note,SFXMode,SFXAddr);
-				SFX_Note(chn,Note,currentSFX);
 				if multiChnMode then
 					if chn<3 then chn:=chn+1 else chn:=0;
-			end;
 		end;
 	until false;
-	SFX_End();
 	reset_pianoVis();
 end;
