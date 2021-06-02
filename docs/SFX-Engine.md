@@ -1,5 +1,49 @@
 # SFX ENGINE
 
+TABLE OF CONTENT
+----------------------------------------------------
+
+Hardware registers
+---
+Important things  
+  - Custom SFX engine extensions  
+  - Modulator section
+
+Software registers
+---
+
+Zero page registers  
+  - SFX Tick-Loop registers  
+  - Temporary storage for hardware registers  
+Channels registers
+
+SFX_Engine UNIT
+---
+
+What it offers?  
+  - `INIT_SFXEngine`  
+  - `SetNoteTable`  
+  - `SFX_Start`  
+  - `SFX_ChannelOff`  
+  - `SFX_Off`  
+  - `SFX_Note`  
+  - `SFX_End`  
+  
+Engine Customization  
+  - Conditional Compilation Labels  
+    `SFX_SWITCH_ROM`  
+    `SFX_previewChannels`  
+    `USE_MODULATORS`  
+      `DFD_MOD`  
+      `LFD_NLM_MOD`  
+      `MFD`  
+      `HFD`  
+    ~~`USE_ALL_MODULATORS`~~  
+
+  - Operation mode without modulator section
+
+-------------------------------------------------------------------------
+
 ## Hardware registers
 
 In the SFX engine procedure, hardware registers are strictly assigned to specific functions.
@@ -18,10 +62,11 @@ If you want to use them, take care to store their state in the temporary _regX &
 
 #### Modulator section
 
-If you want to create your own kind of modulator, you should keep in mind the input parameter as well as (especially) the output parameter.
+If you want to create your own kind of modulator, you should keep in mind the output parameter.
 
-At the input of the modulator section, the modulator value is stored in the accumulator (register A).
-The section also returns a parameter in this register and this is the value of the frequency divider for the POKEY circuit (frequency).
+The section must returns a parameter in this register and this is the value of the frequency divider for the POKEY circuit (frequency).
+
+-------------------------------------------------------------------------
 
 ## Software registers
 
@@ -29,22 +74,21 @@ The section also returns a parameter in this register and this is the value of t
 
 #### SFX Tick-Loop registers
 
-These registers are used Only in the SFX_Tick loop and store information about the currently playing channel.
+These registers are used Only in the _SFX Tick-Loop_ and store information about the currently playing channel.
 
 | Register name | ZP addr | Description                      |
 |:--------------|:-------:|:---------------------------------|
-| sfxPtr        | $f5,$f6 | SFX Pointer                      |
-| ~~chnOfs~~    | ~~$f7~~ | ~~SFX Offset in SFX definition~~ |
-| chnMode       | $f7     | SFX modulation Mode              |
-| chnNote       | $f8     | SFX Note                         |
-| chnFreq       | $f9     | SFX Frequency                    |
+| sfxPtr        | $F5,$F6 | SFX Pointer                      |
+| chnNote       | $F7     | SFX Note                         |
+| chnFreq       | $F8     | SFX Frequency                    |
 
-Below parameters can be accessed by using the [conditional compilation labels](./SFX-Engine.md#conditional-compilation-labels) `SFX_previewChannels`.
+Below parameters can be accessed by using the [conditional compilation labels](./SFX-Engine.md#conditional-compilation-labels).
 
 | Register name | ZP addr | Description                  |
 |:--------------|:-------:|:-----------------------------|
-| chnMod        | $fa     | SFX Modulator value*         |
-| chnCtrl       | $fb     | SFX distortion & volume      |         
+| chnMode       | $F9     | SFX modulation Mode              |
+| chnMod        | $FA     | SFX Modulator value*         |
+| chnCtrl       | $FB     | SFX distortion & volume      |         
 
 _*_ in most cases contains a function and a value. Usually the oldest bits of this parameter describe the function. The rest is the value.
 
@@ -53,38 +97,41 @@ _*_ in most cases contains a function and a value. Usually the oldest bits of th
 | Register name | ZP addr | Description                  |
 |:--------------|:-------:|:-----------------------------|
 | _regA         | $fd     | temporary store for reg A    |
-| _regX         | $fd     | temporary store for reg X    |
-| _regY         | $fd     | temporary store for reg Y    |
+| _regX         | $fe     | temporary store for reg X    |
+| _regY         | $ff     | temporary store for reg Y    |
 
 Much faster than regular instructions that operate on the stack. Use the `STA _regA`, `STA _regX`, `STA _regY` commands to preserve registers and the `LDA _regA`, `LDX _regX`, `LDY _regY` commands to restore registers.
 
-## Channels registers
+### Channels registers
 
 This is an array that describes the state of all 4 channels that the SFX Engine supports.
-
-Their layout is exactly the same as for the Tick loop registers.
 
 | Register name | relative addr | Description                  |
 |:--------------|:-------------:|:-----------------------------|
 | sfxPtr        | chnOfs+0      | SFX Pointer                  |
 | chnOfs        | chnOfs+2      | SFX Offset in SFX definition |
-| chnMode       | chnOfs+3      | SFX Modulation Mode          |
-| chnNote       | chnOfs+4      | SFX Note                     |
+| chnNote       | chnOfs+3      | SFX Note                     |
+| chnFreq       | chnOfs+4      | SFX Frequency                |
 
-Below parameters can be accessed by using the [conditional compilation labels](./SFX-Engine.md#conditional-compilation-labels) `SFX_previewChannels`.
+Below parameters can be accessed by using the [conditional compilation labels](./SFX-Engine.md#conditional-compilation-labels).
 
 | Register name | relative addr | Description                  |
 |:--------------|:-------------:|:-----------------------------|
-| chnFreq       | chnOfs+5      | SFX Frequency                |
-| chnMod        | chnOfs+6      | SFX Fn& Modulator value      |
+| chnMode       | chnOfs+5      | SFX Modulation Mode          |
+| chnMod        | chnOfs+6      | SFX Fn & Modulator value     |
+| chnCtrl       | chnOfs+7      | SFX Distortion & Volume      |
 
-The user specifies the memory space for these registers during engine initialization.
+The memory location for this array is determined by the `SFX_CHANNELS_ADDR` constant in the _INTERFACE_ SFX_ENGINE UNIT section
 
-The required space is 32 bytes.
+__The required space is 32 bytes__.
+
+-------------------------------------------------------------------------
 
 ## SFX_Engine UNIT
 
 ### What it offers?
+
+- __INIT_SFXEngine__
 
 `INIT_SFXEngine(_SFXModModes, _SFXList, _TABList, _SONGData:word);`
 
@@ -98,9 +145,11 @@ Engine Initialization. Specify the memory map:
 
 `_SONGData` - array of TAB layouts
 
-#### Why relative values?
+__Why relative values?__
 
 Because it still works with HEAP, and it operates on an array `array[0..0] of byte`, which it assigns (via `ABSOLUTE`) a place in memory.
+
+- __SetNoteTable__
 
 `SetNoteTable(_note_val:word);`
 
@@ -108,46 +157,52 @@ Sets the memory location `_note_val` for the definition of the note table.
 Its layout is linear, i.e. 0 is note C-0, 1 is C#0, 2 is D-0, etc...
 Up to a maximum of 64 notes.
 
+- __SFX_Start__
+
 `SFX_Start();`
 
 Start the SFX engine.
 
+- __SFX_ChannelOff__
+
 `SFX_ChannelOff(channel:byte);`
 
 It turns off the current SFX playing in the specified channel.
+
+- __SFX_Off__
 
 `SFX_Off();`
 
 Here similar to `SFX_ChannelOff`, only for all channels.
 This routine is fired during SFX engine shutdown (procedure `SFX_End()`).
 
-`SFX_Note(channel,note,modMode:byte; SFXAddr:word);`.
+- __SFX_Note__
+
+`SFX_Note(channel,note,SFXId:byte);`
 
 `channel` - the channel on which SFX will be played
 
 `note` - a note (see `SetNoteTable` note table initialization)
 
-`modMode` - modulation mode. The engine does not read this data by itself.
+`SFXId` - Index of the SFX definition.
 
-`SFXAddr` - address of the SFX definition.
-
-The problem is that in the definitions (SFXs and TABs) are at the very beginning of the names that need to be omitted, hence the definition of the address in the computer memory, not the SFX number
+- __SFX_End__
 
 `SFX_End();`
 
 Disabling the SFX engine.
 
-### Engine Customization
+## Engine Customization
 
 The __SFX-Engine__ allows you to customize your code to suit your needs. A number of compilation directives allow you to choose the features you want to use in your program.
 
 ### Conditional Compilation Labels
 
-`SFX_SWITCH_ROM`.
+- `SFX_SWITCH_ROM`
 
 Defining this label allows access to the RAM "covered" by the ROM. The definition works with the ROMOFF label in __MAD Pascal__, which allows RAM to be used in this area.
 
-`SFX_previewChannels`.
+- `SFX_previewChannels`
 
 An option that generates a small amount of code, providing the ability to view the current state of the modulator and the distortion and volume values, by transferring from the main loop (_SFX_TICK_) the changes made by the engine to the channel registers.
 
@@ -155,7 +210,7 @@ Additional information is placed in the `CHANNELS` table at offsets 6 and 7 of e
 
 The absence of this definition, frees an additional two bytes on the null page.
 
-`USE_MODULATORS`.
+- `USE_MODULATORS`
 
 This complex label Must be defined to select supported modulation modes. Its absence at compile time, causes [operation without modulator section](./#mode-operation-without-modulator-section)
 
@@ -163,17 +218,14 @@ No modulator section frees one byte on the zero page.
 
 The presence of the following labels during compilation, create the corresponding code:
 
-- `DFD_MOD` - Direct Frequency Divider Modulation section.
+  - `DFD_MOD` - Direct Frequency Divider Modulation section.	
+  - `LFD_NLM_MOD` - Low Frequency Divider/Note Level Modulator section	
+  - `MFD` - Middle Frequency Divider	
+  - `HFD` - High Frequency Divider
 	
-- LFD_NLM_MOD` - Low Frequency Divider/Note Level Modulator section
-	
-- MFD` Middle Frequency Divider
-	
-- HFD` - High Frequency Divider
-
 For more on modulation, see [Modulation types](./modval_EN.md)
 
-~~`USE_ALL_MODULATORS`~~
+- ~~`USE_ALL_MODULATORS`~~
 
 ~~Forces the use of all supported modulators, regardless of the state of the `USE_MODULATORS` declaration and its subordinates.~~
 
