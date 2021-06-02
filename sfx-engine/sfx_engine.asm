@@ -12,85 +12,91 @@
 ; And that's it. Hook it up to the VBLANK interrupt and go :D (I guess :P)
 ;
 
-xitvbl      = $e462;
-sysvbv      = $e45c;
-audf        = $d200;
-audc        = $d201;
-
-; below variables is only for current channel
-_sfxPtr     = 0
-sfxPtr      = $f5      ; SFX Pointer (2 bytes)
-_sfxPtrLo   = 0
-_sfxPtrHi   = 1
-
-_chnOfs     = 2
-chnOfs      = $f7      ; SFX Offset in SFX definition
-
-_chnMode    = 3
-chnMode     = $f8      ; SFX Modulation Mode
-
-_chnNote    = 4
-chnNote     = $f9      ; SFX Note
-
-_chnFreq    = 5
-chnFreq     = $fa      ; SFX Frequency
-
-_chnModVal  = 6
-chnModVal   = $fb      ; SFX Modulator
-
-_chnCtrl    = 7
-chnCtrl     = $fc;     ; SFX Control (distortion & volume)
-
-_regA       = $fd;
-_regX       = $fe;
-_regY       = $ff;
+			icl 'sfx_engine-defs.asm'
 
          phr
-			dec $D301	; turn off ROM
+.ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
+.ifdef MAIN.@DEFINES.ROMOFF
+			dec $D301									; turn off ROM
+.endif
+.endif
 
 tick_start
-//         ldx #0  ; set channel offset to first channel
-			ldx #$18		; set channel offset to last channel
+			ldx #$18										; set channel offset to last channel
 
 ; FETCHING CHANNEL & SFX DATA
 ; prepare SFX Engine registers
-
 channel_set
-         ldy SFX_CHANNELS_ADDR+_chnOfs,x  ; get SFX offset
-         cpy #$ff ; check SFX offset
-         bne fetch_SFX_data
-         jmp next_channel ; $ff=no SFX
-fetch_SFX_data
-         sty chnOfs  ; propably, completly unnessesery
+         ldy SFX_CHANNELS_ADDR+_chnOfs,x  	; get SFX offset
 
-; get SFX pointer
-         lda SFX_CHANNELS_ADDR+_sfxPtrLo,x
+check_offset
+         cpy #SFX_OFF 								; check SFX offset
+         bne fetch_SFX_data
+         jmp next_channel 							; $ff=no SFX
+
+fetch_SFX_data
+
+         lda SFX_CHANNELS_ADDR+_chnMode,x 	; get SFX modulate type
+         sta chnMode
+
+
+; this feature is not used in SFXMM
+; %1sfxsize - if bit 7th is set, rest of bits of modulate type, indicate size of definition
+; %0000type - otherwise, MUST be set STOP SFX function in SFX definition!
+.ifdef MAIN.@DEFINES.USE_MODULATORS
+;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+			bpl continue_fetch
+			and %01111111
+			sta chnMode
+
+			cpy chnMode									; check SFX length
+			bne restore_offset_and_continue_fetch
+
+restore_offset_and_go_to_next_channel
+			ora %10000000
+			sta chnMode
+			jmp next_channel
+
+restore_offset_and_continue_fetch
+			ora %10000000
+			sta chnMode
+.else
+			bmi check_SFX_length
+			jmp next_channel
+
+check_SFX_length
+			and %01111111
+			sta chnMode
+
+			cpy chnMode									; check SFX length
+			bne restore_offset_and_continue_fetch
+
+restore_offset_and_go_to_next_channel
+			ora %10000000
+			sta chnMode
+			jmp next_channel
+
+restore_offset_and_continue_fetch
+			ora %10000000
+			sta chnMode
+.endif
+
+continue_fetch
+         lda SFX_CHANNELS_ADDR+_sfxPtrLo,x	; get SFX pointer
          sta sfxPtr
          lda SFX_CHANNELS_ADDR+_sfxPtrHi,x
          sta sfxPtr+1
-; get SFX note
-			lda SFX_CHANNELS_ADDR+_chnNote,x
+
+			lda SFX_CHANNELS_ADDR+_chnNote,x		; get SFX note
 			sta chnNote
-; get SFX frequency
-			lda SFX_CHANNELS_ADDR+_chnFreq,x
+
+			lda SFX_CHANNELS_ADDR+_chnFreq,x		; get SFX frequency
 			sta chnFreq
-; get SFX modulation mode
-         lda SFX_CHANNELS_ADDR+_chnMode,x
-         sta chnMode
 
-			// $2ac9
+; $2ac9
 
-         cmp #3
-         bmi DFD_Mod
-         jmp setPokey	; check DFD Modulation mode
-DFD_Mod
-         bne modulators
-;
-; DFD - Direct Frequency Divider
-; first becouse, must be fast as possible
-         lda (sfxPtr),y    ; get MOD/VAL=freq.divisor
-         jmp setChannelFreq
-
+.ifdef MAIN.@DEFINES.USE_MODULATORS
+;.or MAIN.@DEFINES.USE_ALL_MODULATORS
 ;
 ; MODULATORS SECTIONS
 ; input: A register		modulation mode
@@ -99,25 +105,51 @@ DFD_Mod
 ;
 ; Y Register - can be changed, if need do jump in SFX range
 ; ATTENTION! The Engine does not check the jump ranges - IT CAN CRASH!
-;
 modulators
-         cmp #2         ; check LFD/NLM
-         bne check_MFD
+; get SFX modulation mode
+
+			lda chnMode
+
+.ifdef MAIN.@DEFINES.DFD_MOD
+;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+			cmp #MODMODE_DFD							; check DFD Modulation mode
+			bmi DFD_Mod
+			jmp setPokey
+DFD_Mod
+			bne LFD_NLM_Mod
+;
+; DFD - Direct Frequency Divider
+; first becouse, must be fast as possible
+			lda (sfxPtr),y								; get MOD/VAL as frequency divider
+			jmp setChannelFreq
+.endif
+
+.ifdef MAIN.@DEFINES.LFD_NLM_MOD
+;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+LFD_NLM_Mod
+			cmp #MODMODE_LFD_NVM						; check LFD/NLM
+			bne check_MFD
 
 			icl 'sfx_engine-LFD_NLM.asm'
+.endif
 
+.ifdef MAIN.@DEFINES.MFD
+;.or MAIN.@DEFINES.USE_ALL_MODULATORS
 check_MFD
-         cmp #1         ; check MFD
-         bne check_HFD
+			cmp #MODMODE_MFD							; check MFD
+			bne check_HFD
 
 			icl 'sfx_engine-MFD.asm'
+.endif
 
+.ifdef MAIN.@DEFINES.HFD
+;.or MAIN.@DEFINES.USE_ALL_MODULATORS
 check_HFD
-         cmp #0         ; check HFD mode
-         bne modMode_notDefined
+			cmp #MODMODE_HFD							; check HFD mode
+			bne modMode_notDefined
 
 			icl 'sfx_engine-HFD.asm'
-
+.endif
 
 ; modulate value in register A
 change_freq
@@ -129,60 +161,63 @@ setChannelFreq
          sta chnFreq
 
 modMode_notDefined
-;
-; END OF MODULATOR SECTION
-;
+         iny 											; shift SFX offset to distortion & volume definition
 
-; this part is responsible for the modulator mode.
-; THIS FUNCTIONALITY IS NOT DOCUMENTED AND NOT SUPPORTED BY SFXMM!
-; When the 7th bit of the modulation mode is set, the modulation is in relative mode.
+; this part is responsible for the modulator work mode.
+; THIS FUNCTIONALITY IS NOT SUPPORTED BY SFXMM!
+; When the 3rd bit of the modulation mode is set, the modulation is in relative mode.
 ; Otherwise, the mode is absolute.
          lda chnMode
-         and #$80
+         and #MODMODE_RELATIVE
          bne setPokey
          lda chnFreq
          sta SFX_CHANNELS_ADDR+_chnFreq,x
 			lda chnNote
 			sta SFX_CHANNELS_ADDR+_chnNote,x
 
+.endif
+;
+; END OF MODULATOR SECTION
+;
+
 setPokey
 			stx _regX
-         txa	; transfer channel offset (X reg) to A reg
-         lsr @	; divide channel offset by 4
-         lsr @ ; to calculate AUDIO offset
-         tax	; set AUDIO offset in X register
+         txa											; transfer channel offset (X reg) to A reg
+         lsr @											; divide channel offset by 4
+         lsr @ 										; to calculate AUDIO offset
+         tax											; set AUDIO offset in X register
 
 ; get current frequency
 			lda chnFreq
-         sta audf,x        ; store direct to POKEY register
+         sta audf,x        						; store direct to POKEY register
 ; get current distortion & volume
-         iny               ; shift sfx offset to next byte of definition
-         lda (sfxPtr),y    ; get SFX distortion & volume definition
-         sta audc,x        ; store direct to POKEY register
+         lda (sfxPtr),y    						; get SFX distortion & volume definition
+         sta audc,x        						; store direct to POKEY register
          iny
-			ldx _regX			; restore current channel offset
-         sta SFX_CHANNELS_ADDR+_chnCtrl,x ; store SFX distortion & volume in channel register
+			ldx _regX									; restore current channel offset
+
+.ifdef MAIN.@DEFINES.SFX_previewChannels
+         sta SFX_CHANNELS_ADDR+_chnCtrl,x 	; store SFX distortion & volume in channel register
+.endif
 
 next_SFX_Set
-         tya	; tranfer current SFX offset to A register
-         sta SFX_CHANNELS_ADDR+_chnOfs,x ; store SFX offset in channel register
+         tya											; tranfer current SFX offset to A register
+         sta SFX_CHANNELS_ADDR+_chnOfs,x		; store SFX offset in channel register
 
 next_channel
-         txa         ; shift offset to next channel
-//         clc
-//         adc #8      ; 8 bytes per channel
-//         cmp #$20    ; is it last channel?
-//         beq end_tick ; yes, end tick
-
+         txa         								; shift offset to next channel
 			sec
 			sbc #8
 			bmi end_tick
-         tax         ; no, go to fetching data
+         tax         								; no, go to fetching data
          jmp channel_set
 
 end_tick
-			inc $D301	; turn on ROM
-
+.ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
+.ifdef MAIN.@DEFINES.ROMOFF
+			inc $D301									; turn on ROM
+.endif
+.endif
 			plr
          jmp xitvbl
          rts

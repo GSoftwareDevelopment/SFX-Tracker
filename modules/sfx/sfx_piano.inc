@@ -13,11 +13,11 @@ end;
 
 procedure sfx_piano();
 var
-	ofs,i,chn,Note:byte;
+	i,chn,Note:byte;
 	otm:longint;
 
 begin
-	init_pianoVis();
+	reset_pianoVis();
 	updatePiano();
 	SFX_Start;
 	chn:=0;
@@ -49,5 +49,5 @@ begin
 		end;
 	until false;
 	SFX_End();
-	done_pianoVis();
+	reset_pianoVis();
 end;

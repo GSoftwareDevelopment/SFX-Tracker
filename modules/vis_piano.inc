@@ -9,7 +9,7 @@ var
 	old_pianoY:array[0..3] of byte;
 	pianoScopeOfs:byte;
 
-procedure init_pianoVis();
+procedure reset_pianoVis();
 var i:byte;
 
 begin
@@ -18,7 +18,7 @@ begin
 	begin
 		playersHPos[i]:=0;
 		playersColor[i]:=15;
-		playersSize[i]:=PSizeByOne; // PSizeByFour;
+		playersSize[i]:=PSizeByOne;
 		old_pianoY[i]:=0;
 	end;
 	pianoScopeOfs:=220;
@@ -39,7 +39,7 @@ begin
 		if vol>0 then
 		begin
 			pOfs:=$100*chn;
-			note:=channels[chnOfs+4]-minNote;
+			note:=channels[chnOfs+3]-minNote;
 //			activeChns:=activeChns+1;
 			if note<=28 then
 			begin
@@ -61,18 +61,4 @@ begin
 	until chnOfs>31;
 //	if (pianoScopeOfs<239) then pianoScopeOfs:=pianoScopeOfs+1 else pianoScopeOfs:=220;
 //	video[pianoScopeOfs]:=$3f-(gvol shr activeChns);
-end;
-
-procedure done_pianoVis();
-var i:byte;
-
-begin
-	PMGClear();
-	for i:=0 to 3 do
-	begin
-		playersHPos[i]:=0;
-		playersColor[i]:=15;
-		playersSize[i]:=PSizeByOne; // PSizeByFour;
-		old_pianoY[i]:=0;
-	end;
 end;

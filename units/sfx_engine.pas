@@ -36,7 +36,6 @@ procedure SFX_Start();
 procedure SFX_ChannelOff(channel:byte);
 procedure SFX_Off();
 procedure SFX_Note(channel,note,SFXId:byte);
-// procedure SFX_Note(channel,note,modMode:byte; SFXAddr:word);
 procedure SFX_End();
 
 implementation
@@ -49,7 +48,7 @@ var
 	SKCTL:byte absolute $D20F;
 
 	__chn:byte;
-	__chnOfs:byte;
+	__cOfs:byte;
 
 procedure INIT_SFXEngine;
 begin
@@ -62,18 +61,21 @@ begin
 	TABPtr:=pointer(_TABList);
 	SONGData:=pointer(_SONGData);
 
-	__chnOfs:=0;
+	__cOfs:=0;
 	repeat
-		channels[__chnOfs+0]:=$ff;	// SFX address lo
-		channels[__chnOfs+1]:=$ff;	// SFX address hi
-		channels[__chnOfs+2]:=$ff;	// SFX offset
-		channels[__chnOfs+3]:=$00;	// SFX modulation Mode
-		channels[__chnOfs+4]:=$00;	// SFX Note
-		channels[__chnOfs+5]:=$00;	// SFX frequency
-		channels[__chnOfs+6]:=$00;	// SFX modulation Value
-		channels[__chnOfs+7]:=$00;	// SFX distortion & volume
-		__chnOfs:=__chnOfs+8;
-	until __chnOfs>31;
+		channels[__cOfs+0]:=$ff;	// SFX address lo
+		channels[__cOfs+1]:=$ff;	// SFX address hi
+		channels[__cOfs+2]:=$ff;	// SFX offset
+		channels[__cOfs+3]:=$00;	// SFX Note
+		channels[__cOfs+4]:=$00;	// SFX frequency
+		channels[__cOfs+5]:=$00;	// SFX modulation Mode
+
+{$IFDEF SFX_previewChannels}
+		channels[__cOfs+6]:=$00;	// SFX modulation Value
+		channels[__cOfs+7]:=$00;	// SFX distortion & volume
+{$ENDIF}
+		__cOfs:=__cOfs+8;
+	until __cOfs>31;
 end;
 
 procedure SetNoteTable;
@@ -83,7 +85,12 @@ end;
 
 procedure SFX_tick(); Assembler; Interrupt;
 asm
+sfx_engine_start
+
 	icl 'sfx-engine/sfx_engine.asm'
+
+ .print "SFX-ENGINE SIZE: ", *-sfx_engine_start
+
 end;
 
 procedure SFX_Start;
@@ -96,11 +103,14 @@ end;
 
 procedure SFX_ChannelOff;
 begin
-	__chnOfs:=channel*8;
-	channels[__chnOfs+2]:=$ff;	// SFX offset
-	channels[__chnOfs+7]:=$00; // SFX distortion @ volume
-	__chnOfs:=1+channel*2;
-	AUDIO[__chnOfs]:=0;
+	__cOfs:=channel*8;
+// {$IFDEF SFX_previewChannels}	// its comment, becouse I dont know, why it won't WORK!
+// The MP compiler does not generate code from this block, despite the label declaration.
+	channels[__cOfs+7]:=$00; // SFX distortion @ volume
+// {$ENDIF}
+	channels[__cOfs+2]:=$ff;	// SFX offset
+	__cOfs:=1+channel*2;
+	AUDIO[__cOfs]:=0;
 end;
 
 procedure SFX_Off;
@@ -116,21 +126,22 @@ begin
 	SFXAddr:=SFXPtr[SFXId]+dataAddr;
 	SFXAddr:=SFXAddr+14; // skip first 14 bytes - length of SFX name
 
-	__chnOfs:=channel*8;
-	channels[__chnOfs+0]:=lo(SFXAddr);			// SFX address lo
-	channels[__chnOfs+1]:=hi(SFXAddr);			// SFX address hi
-	channels[__chnOfs+2]:=$00;						// SFX offset
-	channels[__chnOfs+3]:=SFXModMode[SFXId];	// SFX modulation Mode
-	channels[__chnOfs+4]:=note;					// SFX Note
-	channels[__chnOfs+5]:=note_val[note];		// SFX frequency
+	__cOfs:=channel*8;
+
+	channels[__cOfs+0]:=lo(SFXAddr);			// SFX address lo
+	channels[__cOfs+1]:=hi(SFXAddr);			// SFX address hi
+	channels[__cOfs+2]:=$00;						// SFX offset
+	channels[__cOfs+3]:=note;					// SFX Note
+	channels[__cOfs+4]:=note_val[note];		// SFX frequency
+	channels[__cOfs+5]:=SFXModMode[SFXId];	// SFX modulation Mode
 end;
 
 procedure SFX_End;
 begin
+	SFX_Off();
 	NMIEN:=$00;
 	SetIntVec(iVBL, oldVBL);
 	NMIEN:=$40;
-	SFX_Off();
 end;
 
 end.
