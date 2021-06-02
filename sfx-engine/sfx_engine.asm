@@ -181,7 +181,7 @@ modMode_notDefined
 ;
 
 setPokey
-			stx _regX
+			stx _regTemp
          txa											; transfer channel offset (X reg) to A reg
          lsr @											; divide channel offset by 4
          lsr @ 										; to calculate AUDIO offset
@@ -194,7 +194,7 @@ setPokey
          lda (sfxPtr),y    						; get SFX distortion & volume definition
          sta audc,x        						; store direct to POKEY register
          iny
-			ldx _regX									; restore current channel offset
+			ldx _regTemp									; restore current channel offset
 
 .ifdef MAIN.@DEFINES.SFX_previewChannels
          sta SFX_CHANNELS_ADDR+_chnCtrl,x 	; store SFX distortion & volume in channel register

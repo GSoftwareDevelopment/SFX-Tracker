@@ -16,7 +16,6 @@ _chnModVal  = 6
 _chnCtrl    = 7
 
 sfxPtr      = $F5      ; SFX Pointer (2 bytes)
-; chnOfs      = $F7      ; SFX Offset in SFX definition
 chnNote     = $F7      ; SFX Note
 chnFreq     = $F8      ; SFX Frequency
 
@@ -24,9 +23,7 @@ chnMode     = $F9      ; SFX Modulation Mode
 chnModVal   = $FA      ; SFX Modulator
 chnCtrl     = $FB      ; SFX Control (distortion & volume)
 
-_regA       = $FD
-_regX       = $FE
-_regY       = $FF
+_regTemp    = $FC
 
 ;
 

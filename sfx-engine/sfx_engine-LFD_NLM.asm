@@ -32,10 +32,10 @@ LFD_NLM_inc_note
          sta chnNote
 
 ; get frequency representation of note
-         sty _regY
+         sty _regTemp
          tay
          lda NOTE_TABLE_ADDR,y
-         ldy _regY
+         ldy _regTemp
          jmp setChannelFreq
 
 ; Jump to
