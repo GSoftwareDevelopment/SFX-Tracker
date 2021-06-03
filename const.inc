@@ -47,8 +47,27 @@ SFXLenX				= 17;
 SFXLenY				= 10;
 
 //
-//
+//	TAB Function (Order)
 
+//												  order   |   param
+	TABFn_note 				= $00;	// 00ss ssss | 00oo nnnn - note
+	TABFn_freq				= $40;	// 01ss ssss | vvvv vvvv - frequency divider
+
+// TAB_FN_LOOP
+	TABFn_jump				= $80;	// 1000 0000 | 0vvv vvvv
+
+	TAB_maxRepeats 		= 63;
+	TABFn_repeat			= $81;	// 10xx xxxx | 0vvv vvvv
+	TABFn_repeatMax		= $BF;
+
+	TABFn_noteOff  		= $C0;	// 1100 0000 | 1000 0000
+	TABFn_noteOff_param	= $80;
+
+	TABFn_blank				= $C0;	// 1100 0000 | 0000 0000
+	TABFn_blank_param		= $00;
+
+	TABFn_end				= $FF;	// 1111 1111 | 1111 1111
+	TABFn_end_param		= $FF;
 
 // File TAGs sections
 	section_main	:TTag = (83, 70, 88, 77, 77);	// SFXMM

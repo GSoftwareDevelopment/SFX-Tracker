@@ -24,6 +24,7 @@
 tick_start
          ldx #$30                           ; set channel offset to last channel
 
+//			icl 'sfx_engine-tabs.asm'
 			icl 'sfx_engine-sfxs.asm'
 
 next_SFX_Set

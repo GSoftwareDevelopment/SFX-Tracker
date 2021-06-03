@@ -5,8 +5,8 @@ var
 
 begin
 	// clear local structure of TAB
-	fillchar(@TAB_notes,TAB_maxLength,$ff);
-	fillchar(@TAB_fnSFX,TAB_maxLength,$fe);
+	fillchar(@TAB_notes,TAB_maxLength,$00);
+	fillchar(@TAB_fnSFX,TAB_maxLength,$c0);
 
 	size:=getData(64+nTAB,TABNameLength,TABName);
 	if size>0 then

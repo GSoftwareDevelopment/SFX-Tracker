@@ -41,15 +41,8 @@ begin
 				updateTABInfo();
 				modified:=false;
 			end;
-		1: begin
-				TABEditLoop();
-				if modified then
-				begin
-					TABDetermineLength();
-					storeTABData(currentTAB);
-					modified:=false;
-				end;
-			end;
+		1: TABEditLoop();
+		2: TAB_Play();
 		3: TAB_Options(TABMenuOption_Back);
 		4: begin
 				SFXList();

@@ -32,10 +32,10 @@ var
 begin
 	note_names:=resptr[str_NoteNames];
 	scrOfs:=vadr[winYStart]+winXStart+1;
-	_nxt:=cursorShift;
 	_tact:=1+(cursorShift div (song_lpb*song_beat));
 	_beat:=1+cursorShift div song_beat mod song_beat;
 	_lpb:=1+cursorShift mod song_lpb;
+	_nxt:=cursorShift;
 	pos:=cursorShift; _fnsfx:=0;
 	for i:=2 to 10 do
 	begin
@@ -44,46 +44,55 @@ begin
 		if (_fnsfx<>255) then
 		Begin
 			_note:=TAB_notes[pos]; _fnsfx:=TAB_fnSFX[pos];
-			case _fnsfx of
-				0..63: begin // sfx note
+			if (_fnsfx=TABFn_end) and (_note=TABFn_end_param) then
+				move(note_names[33],@screen[scrOfs+4],6) // ENDTAB
+			else
+				if (_fnsfx and $c0=$00) then
+				begin // note
 					noteOct:=_note div 12; noteOfs:=(_note mod 12) shl 1;
 
-					if _note<255 then
-					begin
-						// NOTE#
-						screen[scrOfs+4]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
-						screen[scrOfs+5]:=note_names[noteOfs];
-						if (noteOct<=9) then
-							screen[scrOfs+6]:=$10+noteOct
-						else
-							screen[scrOfs+6]:=$0d; // hypen sign
-						screen[scrOfs+7]:=0;
-					end
+					// NOTE#
+					screen[scrOfs+4]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
+					screen[scrOfs+5]:=note_names[noteOfs];
+					if (noteOct<=9) then
+						screen[scrOfs+6]:=$10+noteOct
 					else
-						move(note_names[45],@screen[scrOfs+4],4);
+						screen[scrOfs+6]:=$0d; // hypen sign
+					screen[scrOfs+7]:=0;
 
 					// SFX#
 					putValue(winXStart+9,i,_fnsfx,2,0);
-				end;
-				64..127: begin // sfx direct value
-					_fnsfx:=_fnsfx and $7f;
-					putValue(winXStart+5,i,_note,3,0);
-					putValue(winXStart+9,i,_fnsfx,2,0);
-					screen[scrOfs+7]:=$0f;
-				end;
-				128: begin // jump to
-					move(note_names[24],@screen[scrOfs+4],3); // __>___
-					putValue(winXStart+8,i,_note,3,0); // note gives position
-				end;
-				129..138: begin // repeat
-					move(note_names[27],@screen[scrOfs+4],6); // R_>___
-					ch:=$10+(_fnsfx-128); // repeat times is value from 1 to 9
-					screen[scrOfs+5]:=ch;
-					putValue(winXStart+8,i,_note,3,0); // note gives position
-				end;
-				254: move(note_names[39],@screen[scrOfs+4],6); // ... .. (blank)
-				255: move(note_names[33],@screen[scrOfs+4],6); // ENDTAB
-			end;
+				end
+				else
+					if (_fnsfx and $c0=$40) then
+					begin // frequency value
+						_fnsfx:=_fnsfx and $7f;
+						putValue(winXStart+5,i,_note,3,0);
+						putValue(winXStart+9,i,_fnsfx,2,0);
+						screen[scrOfs+7]:=$0f;
+					end
+					else // function
+						if (_fnsfx and $40=$40) then
+						begin
+							if (_note and $80=TABFn_noteOff_param) then
+								move(note_names[45],@screen[scrOfs+4],6) // === .. (note off)
+							else
+								move(note_names[39],@screen[scrOfs+4],6); // ... .. (blank)
+						end
+						else
+							if (_note=0) then
+							begin // jump to
+								move(note_names[24],@screen[scrOfs+4],3); // __>___
+								putValue(winXStart+8,i,_note,3,0); // note gives position
+							end
+							else
+							begin // repeat
+								move(note_names[27],@screen[scrOfs+4],6); // R_>___
+								ch:=$10+(_fnsfx-128); // repeat times is value from 1 to 9
+								screen[scrOfs+5]:=ch;
+								putValue(winXStart+8,i,_note,3,0); // note gives position
+							end;
+
 			pos:=pos+1;
 		end
 		else

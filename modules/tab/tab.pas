@@ -7,6 +7,7 @@ var
 
 {$i modules/tab/tab_view.inc}
 {$i modules/tab/tab_manage.inc}
+{$i modules/tab/tab_play.inc}
 {$i modules/tab/tab_edit.inc}
 {$i modules/tab/tab_options.inc}
 {$i modules/tab/tab_menubar.inc}

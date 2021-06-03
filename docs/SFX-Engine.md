@@ -39,7 +39,7 @@ Engine Customization
       `MFD`  
       `HFD`  
     ~~`USE_ALL_MODULATORS`~~  
-
+	`CALC_ABS_SFX_ADDR`
   - Operation mode without modulator section
 
 -------------------------------------------------------------------------
@@ -135,7 +135,7 @@ Engine Initialization. Specify the memory map:
 
 `_SFXModModes` - an array of modulation modes for each SFX
 
-`_SFXList` - an array of pointers (relative for now) for SFX definitions
+`_SFXList` - an array of pointers for SFX definitions*
 
 `_TABList` - an array of indicators (relative for now) for TAB definitions
 
@@ -143,6 +143,7 @@ Engine Initialization. Specify the memory map:
 
 __Why relative values?__
 
+TODO: `CALC_ABS_ADDR`
 Because it still works with HEAP, and it operates on an array `array[0..0] of byte`, which it assigns (via `ABSOLUTE`) a place in memory.
 
 - __SetNoteTable__
@@ -205,6 +206,10 @@ An option that generates a small amount of code, providing the ability to view t
 Additional information is placed in the `CHANNELS` table at offsets 6 and 7 of each channel (see at [Channels registers](./SFX-Engine.md#channels-registers)).
 
 The absence of this definition, frees an additional two bytes on the null page.
+
+- `CALC_ABS_ADDR`
+
+TODO
 
 - `USE_MODULATORS`
 

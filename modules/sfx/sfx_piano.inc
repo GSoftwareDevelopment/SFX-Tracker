@@ -22,5 +22,6 @@ begin
 					if chn<3 then chn:=chn+1 else chn:=0;
 		end;
 	until false;
+	SFX_Off();
 	reset_pianoVis();
 end;

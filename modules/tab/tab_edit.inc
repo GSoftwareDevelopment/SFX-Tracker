@@ -45,8 +45,14 @@ begin
 				moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 			end;
 
+			if modified then
+			begin
+				TABDetermineLength();
+				storeTABData(currentTAB);
+				modified:=false;
+			end;
+
 			//
-			TABDetermineLength();
 			updateTAB(true);
 			colorHLine(winXStart,2+cursorPos,20-winXStart,3);
 			updateTABInfo();

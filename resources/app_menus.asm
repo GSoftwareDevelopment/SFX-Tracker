@@ -71,7 +71,7 @@ menu_DFD_mode
 menu_tabs
 					dta  20,d'#',255					; current TAB (number)
 					dta  40,d'>>>',255				; edit current TAB
-					dta 180,d'PLY',255				; play current TAB
+					dta  60,d'PLY',255				; play current TAB
 					dta 200,d'OPT',255				; TAB options
 					dta 220,d'#',255					; current SFX (number)
 					dta 255
@@ -81,12 +81,12 @@ menu_tabs_option
 					dta 204,d'< BACK',255			; back to TAB menu bar
 					dta 255
 menu_tab_edit
-					dta  44,d'END TAB',255		; flag indicating the end of a TAB definition
-					dta  64,d'JUMP TO',255		; marker for absolute jump to line in current TAB
+					dta  44,d'END TAB',255			; flag indicating the end of a TAB definition
+					dta  64,d'JUMP TO',255			; marker for absolute jump to line in current TAB
 					dta  84,d'REPEAT',255			; marker that defines a repeat n times from the pos position.
-					dta 104,d'NOTE VALUE',255	; flag specifying the value of the frequency divider for the played SFX
+					dta 104,d'NOTE VALUE',255		; flag specifying the value of the frequency divider for the played SFX
 															; (direct value to the POKEY register, not from the note table)
-					dta 124,d'SFX CHANGE',255	; A marker that changes the SFX currently being played, without changing the note/divider
+					dta 124,d'NOTE OFF',255			; turn off note
 					dta 144,d'NOP',255				; blank entry - no operation
 					dta 164,d'BACK >',255			; back to TAB edit
 					dta 184,d'< EXIT',255			; back to TAB menu bar

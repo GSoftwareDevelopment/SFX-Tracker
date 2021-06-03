@@ -1,25 +1,11 @@
-(*
-const
-	__note 		= $0000; // 00ss ssss|00oo nnnn $ssnn - ss-SFX; nn-note number ($on - o-octave; n-note in octave)
-	__noteValue	= $8000;	// 01ss ssss|vvvv vvvv $ssvv - ss-sfx with 7bit set ($80-$e3); vv - value ($00-$ff) frequency divider
-	__repeat		= $8000;	// 1000 xxxx|posi tion $8rtp - r-repeat times 1-9 ($81-$89); tp - tab position
-	__jump		= $8000; // 1000 0000|posi tion $80tp - tp-tab position
-	__blank		= $FEFF;	// 1111 1110|1111 1111
-	__end			= $ffff; // 1111 1111|1111 1111
-*)
-
-//
-//
-//
-
 function TABEntryEdit():boolean;
 var _note,_fnsfx,_pos:byte;
 	opt:shortint;
 
 	procedure setEndTab();
 	begin
-		TAB_notes[_pos]:=255;
-		TAB_fnSFX[_pos]:=255;
+		TAB_notes[_pos]:=TABFn_blank_param;
+		TAB_fnSFX[_pos]:=TABFn_blank;
 		modified:=true;
 	end;
 
@@ -28,7 +14,7 @@ var _note,_fnsfx,_pos:byte;
 		if (TAB_fnSFX[_pos]<>128) then
 		begin
 			TAB_notes[_pos]:=0;
-			TAB_fnSFX[_pos]:=128;
+			TAB_fnSFX[_pos]:=TABFn_jump;
 			modified:=true;
 		end;
 	end;
@@ -43,7 +29,6 @@ var _note,_fnsfx,_pos:byte;
 		begin
 			jumpPos:=byte(v);
 			TAB_notes[_pos]:=jumpPos;
-			TAB_fnSFX[_pos]:=128;
 			modified:=true;
 		end;
 	end;
@@ -55,7 +40,7 @@ var _note,_fnsfx,_pos:byte;
 		if (TAB_fnSFX[_pos]<229) or (TAB_fnSFX[_pos]>238) then
 		begin
 			TAB_notes[_pos]:=0;
-			TAB_fnSFX[_pos]:=129;
+			TAB_fnSFX[_pos]:=TABFn_repeat;
 			modified:=true;
 		end;
 	end;
@@ -65,9 +50,9 @@ var _note,_fnsfx,_pos:byte;
 		v:smallint;
 
 	begin
-		times:=times-128;
+		times:=times-$80;
 		v:=times;
-		if inputValue(winXStart+6,2+cursorPos,1,v,1,9,0,color_selected) then
+		if inputValue(winXStart+5,2+cursorPos,2,v,1,TAB_maxRepeats,0,color_selected) then
 		begin
 			times:=byte(v);
 			v:=repeatPos;
@@ -75,7 +60,7 @@ var _note,_fnsfx,_pos:byte;
 			begin
 				repeatPos:=byte(v);
 				TAB_notes[_pos]:=repeatPos;
-				TAB_fnSFX[_pos]:=128+times;
+				TAB_fnSFX[_pos]:=TABFn_repeat+times-1;
 				modified:=true;
 			end;
 		end;
@@ -85,10 +70,10 @@ var _note,_fnsfx,_pos:byte;
 
 	procedure setNoteValue();
 	begin
-		if (TAB_fnSFX[_pos] and $40<>$40) then
+		if (TAB_fnSFX[_pos] and $C0<>TABFn_freq) then
 		begin
 			TAB_notes[_pos]:=0;
-			TAB_fnSFX[_pos]:=currentSFX or $40;
+			TAB_fnSFX[_pos]:=currentSFX or TABFn_freq;
 			modified:=true;
 		end;
 	end;
@@ -106,7 +91,7 @@ var _note,_fnsfx,_pos:byte;
 			if inputValue(winXStart+9,2+cursorPos,2,v,0,maxSFXs-1,0,color_selected) then
 			begin;
 				TAB_notes[_pos]:=value;
-				TAB_fnSFX[_pos]:=byte(v) or $40;
+				TAB_fnSFX[_pos]:=byte(v) or TABFn_freq;
 				modified:=true;
 			end;
 		end;
@@ -114,31 +99,19 @@ var _note,_fnsfx,_pos:byte;
 
 	//
 
-	procedure setSFXChange();
+	procedure setNoteOff();
 	begin
-		// TODO: seach up from cursor position, first SFX set, and use it to set funtion
-		TAB_fnSFX[_pos]:=currentSFX;
-	end;
-
-	procedure editSFXChange(nSFX:byte);
-	var
-		v:smallint;
-
-	begin
-		v:=nSFX and $3f;
-		if inputValue(winXStart+9,2+cursorPos,2,v,0,maxSFXs-1,0,color_selected) then
-		begin;
-			TAB_fnSFX[_pos]:=byte(v);
-			modified:=true;
-		end;
+		TAB_notes[_pos]:=TABFn_noteOff_param;
+		TAB_fnSFX[_pos]:=TABFn_noteOff;
+		modified:=true;
 	end;
 
 	//
 
 	procedure setBlank();
 	begin
-		TAB_notes[_pos]:=$ff;
-		TAB_fnSFX[_pos]:=$fe;
+		TAB_notes[_pos]:=TABFn_blank_param;
+		TAB_fnSFX[_pos]:=TABFn_blank;
 		modified:=true;
 	end;
 
@@ -146,15 +119,41 @@ begin
 	_pos:=cursorShift+cursorPos;
 	_note:=TAB_notes[_pos];
 	_fnsfx:=TAB_fnSFX[_pos];
+	if (_fnsfx and $c0=$00) then
+		opt:=6				// note - default option is Back
+	else
+		if (_fnsfx and $c0=$40) then
+			opt:=3			// frequency value
+		else
+			if (_fnsfx and $40=$40) then
+			begin
+				if (_note and $80=TABFn_noteOff_param) then
+					opt:=4	// note off
+				else
+					opt:=5;	// blank
+			end
+			else
+			begin
+				if _note=0 then
+					opt:=1	// jump to
+				else
+					opt:=2;	// repeat
+			end;
+
+	if (_fnsfx=TABFn_end) and (_note=TABFn_end_param) then
+		opt:=0;			// end-tab
+(*
 	case _fnsfx of
-		  0..63: opt:=4;		// change SFX
-		 64..127: opt:=3;	// note value
-		128: opt:=1;		// jump to
-		129..138: opt:=2;	// repeat
-		254: opt:=5; 		// blank
-		255: opt:=0; 		// end-tab
+		 $40..$7f: opt:=3;	// note frequency value
+		      $80: opt:=1;	// jump to
+		 $81..$bf: opt:=2;	// repeat
+		 $00..$3f: opt:=4;	// note off
+		      $00: opt:=5; // blank
+		      $00: opt:=0; // end-tab
 	end;
 	if (_note=255) and (_fnsfx<228) then opt:=4;
+*)
+
 	if optionsList(resptr[menu_tab_edit],width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down) then
 	begin
 		case opt of
@@ -162,7 +161,7 @@ begin
 			1: setJumpTo();
 			2: setRepeat();
 			3: setNoteValue();
-			4: setSFXChange();
+			4: setNoteOff();
 			5: setBlank();
 		end;
 		box(4,2,16,9,0);
@@ -179,7 +178,6 @@ begin
 			1: editJumpTo(_note);
 			2: editRepeat(_fnsfx,_note);
 			3: editNoteValue(_note);
-			4: editSFXChange(_fnsfx and $7f);
 		end;
 		result:=false;
 	end

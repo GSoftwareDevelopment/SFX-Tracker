@@ -22,8 +22,11 @@ _tabOfs		= 10
 
 ; VARIABLES - PAGE ZERO
 SONG_LPB		= $F0		  ; SONG Line Per Beat
-TABPtr		= $F1		  ; TAB Pointer (2 bytes)
-TABOfs		= $F2		  ; TAB Offset
+SONG_TICK	= $F1		  ; SONG tick counter
+
+TABPtr		= $F5		  ; TAB Pointer (2 bytes)
+TABNote		= $F7		  ; TAB Note
+TABOrder		= $F8		  ; TAB Order
 
 sfxPtr      = $F5      ; SFX Pointer (2 bytes)
 chnNote     = $F7      ; SFX Note
@@ -39,6 +42,9 @@ _regTemp    = $FC
 ; CONSTANTS
 
 SFX_OFF           = $FF
+TAB_OFF				= $FF
+
+FN_NOTE_FREQ		= $40
 
 MODFN_SFX_STOP    = $80
 MODFN_LFD_FREQ    = $20
