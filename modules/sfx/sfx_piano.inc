@@ -1,28 +1,3 @@
-var
-	multiChnMode:boolean = false;
-
-procedure updatePiano();
-begin
-	if multiChnMode then
-		pianoScreen[0]:=byte('M'~)
-	else
-		pianoScreen[0]:=byte('S'~);
-	pianoScreen[20]:=$10+currentOct;
-	pianoScreen[39]:=$12+currentOct;
-end;
-
-function pianoKeyScan(playChn:byte):byte;
-begin
-	result:=keyScan(key,keys_notes,34);
-	if result<>255 then
-	begin
-		if result>16 then result:=result-5;
-		result:=result+(currentOct*12);
-		if playChn<>255 then
-			SFX_Note(playChn,result,currentSFX);
-	end;
-end;
-
 procedure sfx_piano();
 var
 	i,chn:byte;

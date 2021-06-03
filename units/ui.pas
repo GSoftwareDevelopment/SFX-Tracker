@@ -36,25 +36,6 @@ const
 	color_background	= 2;
 	color_selected		= 3;
 
-	chars_alphaNum:string[49] = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ. !#%*-/:<>?_'~;
-	keys_alphaNum:array[0..48] of byte = (
-		50,31,30,26,24,29,27,51,53,48,	// 0-9
-		63,21,18,58,42,56,61,57,13,1,5,0,37,35,8,10,47,40,62,45,11,16,46,22,43,23,	// A-Z
-		34,	// . (dot)
-		33,		// space
-		95,	// exclamation mark (!)
-		90,	// hash (#)
-		93,	// percent (%)
-		7,		// star (*)
-		14,	// hypen (-)
-		38,	// slash (/)
-		66,	// colon (:)
-		54,	// less sign (<)
-		55,	// more sign (>)
-		102,	// question mark (?)
-		78		// underscore mark (_)
-	);
-
 	keysRange_all			= 49;
 	keysRange_hexNum		= 16;
 	keysRange_decNum		= 10;
@@ -64,6 +45,10 @@ var
 	key:TKeys;
 	timer:byte absolute $14;
 
+	chars_alphaNum,
+	keys_alphaNum:byteArray;
+
+procedure Init_UI(res_chars_alphaNum,res_keys_alphaNum:pointer);
 function keyScan(key2Scan:byte; var keyDefs:byteArray; keysRange:byte):byte;
 function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:byte):boolean;
 procedure moveCursor(ofs:shortint; winSize,overSize:byte; var curPos,curShift:byte);
@@ -80,6 +65,12 @@ function messageBox(msgPtr:pointer; msgColor:byte;	menuPtr:pointer; menuWidth,me
 
 implementation
 uses gr2;
+
+procedure Init_UI;
+begin
+	chars_alphaNum:=res_chars_alphaNum;
+	keys_alphaNum:=res_keys_alphaNum;
+end;
 
 function keyScan:byte;
 var
@@ -220,7 +211,7 @@ begin
 				if (i<>255) then
 				begin
 					move(buf[ofs],buf[ofs+1],len-ofs);
-					ch:=byte(chars_alphaNum[i+1]);
+					ch:=chars_alphaNum[i];
 					buf[ofs]:=ch;
 					if len<maxLen then len:=len+1;
 					moveCursor(+1,width,maxLen,curX,shiftX);

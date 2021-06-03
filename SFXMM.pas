@@ -23,15 +23,22 @@ var
 	KRPDEL:byte absolute $2d9;
 	KEYREP:byte absolute $2da;
 
+//	buffers
+
 	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR; // universal list buffer array
 	tmpbuf:array[0..255] of byte absolute TEMP_BUFFER_ADDR; // store previous screen, for better UI experience
 	IOBuf:array[0..IO_BUFFER_SIZE-1] of byte absolute IO_BUFFER_ADDR;
 
+//	resources
+
 	resptr:array[0..0] of pointer absolute RESOURCES_ADDR; // pointers list to resources
+
+//	UI color themes
 
 	themesNames:array[0..0] of byte absolute DLI_COLOR_TABLE_ADDR+45; // list of themes names; located just after the color definition for the DLI
 	currentTheme:byte;
-//
+
+// heap
 
 	HEAP_TOP:word; // memory occupied by heap
 	_mem:array[0..0] of byte absolute HEAP_MEMORY_ADDR;
@@ -39,6 +46,7 @@ var
 	_heap_sizes:array[0..0] of word absolute HEAP_SIZES_ADDR;
 
 //
+
 	SONGTitle:string[SONGNameLength];
 
 	currentFile:string[FILEPATHMaxLength]; // indicate a current opened SFXMM file with full path and device
@@ -57,7 +65,6 @@ var
 	song_tact,song_beat:byte;
 
 	modified:boolean = false;
-	key:TKeys;
 
 // global access function and procedures
 {$i units/heap_manage.inc}
@@ -86,9 +93,12 @@ begin
 	fillchar(@screen[0],20,$40);
 	fillchar(@screen[20],20,$00);
 	fillchar(@screen[40],20,$80);
+
 	KRPDEL:=20;
 	KEYREP:=3;
 	CHBAS:=$BC;
+	Init_UI(resptr[scan_to_scr],resptr[scan_key_codes]);
+	keys_notes:=resptr[scan_piano_codes];
 
 	fillchar(@listBuf,LIST_BUFFER_SIZE,0);
 

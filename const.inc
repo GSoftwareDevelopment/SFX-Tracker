@@ -49,21 +49,6 @@ SFXLenY				= 10;
 //
 //
 
-//   C  C# D D# E  F   F# G G# A A# B | C  C# D D# E  F   F# G G# A A# B   C  C# D D# E |
-//   1                                | 2                                | 3            |
-// |   |  | |  |  |   |  | |  | |  |  |   |2 | |3 |  |   |5 | |6 | |7 |  |   |9 | |0 |  |
-// |   |S | |D |  |   |G | |H | |J |  |   |L | |; |  |   |  | |  | |  |  |   |  | |  |  |
-// |    |    |    |    |    |    |    | Q  | W  | E  | R  | T  | Y  | U  | I  | O  | P  |
-// | Z  | X  | C  | V  | B  | N  | M  | ,  | .  | /  |    |    |    |    |    |    |    |
-
-keys_notes:array[0..33] of byte = (
-//Z  S  X  D  C  V  G  B  H  N  J  M  ,  L  .  ;  /
- 23,62,22,58,18,16,61,21,57,35, 1,37,32, 0,34, 2,38,
-//Q  2  W  3  E  R  5  T  6  Y  7  U  I  9  O  0  P
- 47,30,46,26,42,40,29,45,27,43,51,11,13,48, 8,50,10
-);
-
-//
 
 // File TAGs sections
 	section_main	:TTag = (83, 70, 88, 77, 77);	// SFXMM
@@ -75,7 +60,7 @@ keys_notes:array[0..33] of byte = (
 // resources ids
 	base_menus						= 0;
 	base_strings					= 14;
-	base_messages					= 18;
+	base_messages					= 21;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -98,6 +83,10 @@ keys_notes:array[0..33] of byte = (
 	str_IO_nextPage				= base_strings+1;
 	str_IO_prevPage				= base_strings+2;
 	str_NoteNames					= base_strings+3;
+
+	scan_to_scr						= base_strings+4;
+	scan_key_codes					= base_strings+5;
+	scan_piano_codes				= base_strings+6;
 
 	msg_IO_Prompt					= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;
