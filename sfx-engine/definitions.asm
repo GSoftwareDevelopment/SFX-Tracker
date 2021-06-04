@@ -1,3 +1,10 @@
+SFX_TABLE_ADDR			= $CE00;	// list for SFX definitions
+TAB_TABLE_ADDR			= $CE80;	// list for TAB definitions
+DATA_ADDR				= $D800;	// data address
+NOTE_TABLE_ADDR		= $CD80;
+SFX_NameLength			= 14
+
+
 xitvbl      = $e462
 sysvbv      = $e45c
 audf        = $d200
@@ -19,6 +26,7 @@ _tabPtr		= 8
 _tabPtrLo	= 8
 _tabPtrHi	= 9
 _tabOfs		= 10
+_tabRep		= 11
 
 ; VARIABLES - PAGE ZERO
 SONG_LPB		= $F0		  ; SONG Line Per Beat

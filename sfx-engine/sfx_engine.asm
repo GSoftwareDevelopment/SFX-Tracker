@@ -12,7 +12,7 @@
 ; And that's it. Hook it up to the VBLANK interrupt and go :D (I guess :P)
 ;
 
-         icl 'sfx_engine-defs.asm'
+         icl 'definitions.asm'
 
          phr
 .ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
@@ -24,12 +24,8 @@
 tick_start
          ldx #$30                           ; set channel offset to last channel
 
-//			icl 'sfx_engine-tabs.asm'
-			icl 'sfx_engine-sfxs.asm'
-
-next_SFX_Set
-         tya                                 ; tranfer current SFX offset to A register
-         sta SFX_CHANNELS_ADDR+_chnOfs,x     ; store SFX offset in channel register
+  			icl 'TABs.asm'
+			icl 'SFXs.asm'
 
 next_channel
          txa                                 ; shift offset to next channel

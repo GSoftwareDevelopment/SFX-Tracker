@@ -63,17 +63,21 @@ begin
 
 	__cOfs:=0;
 	repeat
-		channels[__cOfs+0]:=$ff;	// SFX address lo
-		channels[__cOfs+1]:=$ff;	// SFX address hi
-		channels[__cOfs+2]:=$ff;	// SFX offset
-		channels[__cOfs+3]:=$00;	// SFX Note
-		channels[__cOfs+4]:=$00;	// SFX frequency
-		channels[__cOfs+5]:=$00;	// SFX modulation Mode
+		channels[__cOfs+ 0]:=$ff;	// SFX address lo
+		channels[__cOfs+ 1]:=$ff;	// SFX address hi
+		channels[__cOfs+ 2]:=$ff;	// SFX offset
+		channels[__cOfs+ 3]:=$00;	// SFX Note
+		channels[__cOfs+ 4]:=$00;	// SFX frequency
+		channels[__cOfs+ 5]:=$00;	// SFX modulation Mode
 
 {$IFDEF SFX_previewChannels}
-		channels[__cOfs+6]:=$00;	// SFX modulation Value
-		channels[__cOfs+7]:=$00;	// SFX distortion & volume
+		channels[__cOfs+ 6]:=$00;	// SFX modulation Value
+		channels[__cOfs+ 7]:=$00;	// SFX distortion & volume
 {$ENDIF}
+
+		channels[__cOfs+ 8]:=$ff;	// TAB address lo
+		channels[__cOfs+ 9]:=$ff;	// TAB address hi
+		channels[__cOfs+10]:=$ff;	// TAB offset
 		__cOfs:=__cOfs+$10;
 	until __cOfs=$40;
 end;
