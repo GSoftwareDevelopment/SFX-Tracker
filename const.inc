@@ -120,6 +120,10 @@ SFXLenY				= 10;
 	msg_Theme_Overwrite			= base_messages+10;
 	but_Theme_Overwrite			= base_messages+11;
 	msg_SFX_ValuePrompt			= base_messages+12;
+	msg_TAB_JumpToPrompt			= base_messages+13;
+	msg_TAB_RepeatPrompt			= base_messages+14;
+	msg_TAB_FreqPrompt			= base_messages+15;
+	msg_TAB_SFXIdPrompt			= base_messages+16;
 
 //
 

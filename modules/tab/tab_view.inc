@@ -41,62 +41,56 @@ begin
 	begin
 		putValue(winXStart+1,i,_nxt,3,0);
 
-		if (_fnsfx<>255) then
-		Begin
-			_note:=TAB_notes[pos]; _fnsfx:=TAB_fnSFX[pos];
-			if (_fnsfx=TABFn_end) and (_note=TABFn_end_param) then
-				move(note_names[33],@screen[scrOfs+4],6) // ENDTAB
-			else
-				if (_fnsfx and $c0=$00) then
-				begin // note
-					noteOct:=_note div 12; noteOfs:=(_note mod 12) shl 1;
+		_fnsfx:=TAB_fnSFX[pos]; _note:=TAB_notes[pos];
+		if (_fnsfx=TABFn_end) and (_note=TABFn_end_param) then
+			move(note_names[33],@screen[scrOfs+4],6) // ENDTAB
+		else
+			if (_fnsfx and $c0=$00) then
+			begin // note
+				noteOct:=_note div 12; noteOfs:=(_note mod 12) shl 1;
 
-					// NOTE#
-					screen[scrOfs+4]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
-					screen[scrOfs+5]:=note_names[noteOfs];
-					if (noteOct<=9) then
-						screen[scrOfs+6]:=$10+noteOct
-					else
-						screen[scrOfs+6]:=$0d; // hypen sign
-					screen[scrOfs+7]:=0;
-
-					// SFX#
-					putValue(winXStart+9,i,_fnsfx,2,0);
-				end
+				// NOTE#
+				screen[scrOfs+4]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
+				screen[scrOfs+5]:=note_names[noteOfs];
+				if (noteOct<=9) then
+					screen[scrOfs+6]:=$10+noteOct
 				else
-					if (_fnsfx and $c0=$40) then
-					begin // frequency value
-						_fnsfx:=_fnsfx and $7f;
-						putValue(winXStart+5,i,_note,3,0);
-						putValue(winXStart+9,i,_fnsfx,2,0);
-						screen[scrOfs+7]:=$0f;
+					screen[scrOfs+6]:=$0d; // hypen sign
+				screen[scrOfs+7]:=0;
+
+				// SFX#
+				putValue(winXStart+9,i,_fnsfx,2,0);
+			end
+			else
+				if (_fnsfx and $c0=$40) then
+				begin // frequency value
+					_fnsfx:=_fnsfx and $3f;
+					putValue(winXStart+5,i,_note,3,0);
+					putValue(winXStart+9,i,_fnsfx,2,0);
+					screen[scrOfs+7]:=$0f;
+				end
+				else // function
+					if (_fnsfx and $40=$40) then
+					begin
+						if (_note and $80=TABFn_noteOff_param) then
+							move(note_names[45],@screen[scrOfs+4],6) // === .. (note off)
+						else
+							move(note_names[39],@screen[scrOfs+4],6); // ... .. (blank)
 					end
-					else // function
-						if (_fnsfx and $40=$40) then
-						begin
-							if (_note and $80=TABFn_noteOff_param) then
-								move(note_names[45],@screen[scrOfs+4],6) // === .. (note off)
-							else
-								move(note_names[39],@screen[scrOfs+4],6); // ... .. (blank)
+					else
+						if (_fnsfx and $3f=0) then
+						begin // jump to
+							move(note_names[24],@screen[scrOfs+4],3); // __>___
+							putValue(winXStart+8,i,_note,3,0); // note gives position
 						end
 						else
-							if (_note=0) then
-							begin // jump to
-								move(note_names[24],@screen[scrOfs+4],3); // __>___
-								putValue(winXStart+8,i,_note,3,0); // note gives position
-							end
-							else
-							begin // repeat
-								move(note_names[27],@screen[scrOfs+4],6); // R_>___
-								ch:=$10+(_fnsfx-128); // repeat times is value from 1 to 9
-								screen[scrOfs+5]:=ch;
-								putValue(winXStart+8,i,_note,3,0); // note gives position
-							end;
-
-			pos:=pos+1;
-		end
-		else
-			fillchar(@screen[scrOfs+4],7,0);
+						begin // repeat
+							move(note_names[24],@screen[scrOfs+4],3); // __>___
+							ch:=(_fnsfx-128); // repeat times is value from 1 to 9
+							putValue(winXStart+5,i,ch,2,0);
+	//								screen[scrOfs+5]:=ch;
+							putValue(winXStart+8,i,_note,3,0); // note gives position
+						end;
 
 		if (showPos) then
 		begin
@@ -128,6 +122,12 @@ begin
 			end;
 		end;
 
+		if (pos>=TABLen) then
+			colorHLine(winXStart,i,16,2)
+		else
+			colorHLine(winXStart,i,16,0);
+
+		pos:=pos+1;
 		scrOfs:=scrOfs+20;
 		_nxt:=_nxt+1;
  	end;

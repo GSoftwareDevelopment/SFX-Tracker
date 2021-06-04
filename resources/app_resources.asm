@@ -40,6 +40,10 @@ data_pointers_list
 	dta a(msg_Theme_Overwrite)	;31
 	dta a(but_Theme_Overwrite)	;32
 	dta a(msg_SFX_ValuePrompt) ;33
+	dta a(msg_TAB_JumpToPrompt);34
+	dta a(msg_TAB_RepeatPrompt);35
+	dta a(msg_TAB_FreqPrompt)	;36
+	dta a(msg_TAB_SFXIdPrompt)	;37
 
 	icl 'app_menus.asm'
 	icl 'app_strings.asm'

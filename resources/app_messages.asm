@@ -33,3 +33,12 @@ but_Theme_Overwrite
 					dta 255
 msg_SFX_ValuePrompt
 					dta 220,d'VAL:____   ',6,d'________',255,255
+msg_TAB_JumpToPrompt
+					;     01234567890123456789
+					dta 224,d'JUMP ROW  ',6,d'0____',255,255
+msg_TAB_RepeatPrompt
+					dta 224,d'REPEAT     ',6,d'1_63',255,255
+msg_TAB_FreqPrompt
+					dta 224,d'FREQ.DIV. ',6,d'0_255',255,255
+msg_TAB_SFXIdPrompt
+					dta 224,d'SFX ID     ',6,d'0_63',255,255

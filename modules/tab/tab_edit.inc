@@ -14,6 +14,8 @@ begin
 			key:=TKeys(kbcode); kbcode:=255;
 			colorHLine(winXStart,2+cursorPos,20-winXStart,0);
 			_pos:=cursorShift+cursorPos;
+			if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
+				updateTABSFX();
 			if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,currentOct,0,3) then
 				updatePiano();
 			case key of
@@ -28,8 +30,16 @@ begin
 
 				key_SPACE: begin
 					SFX_ChannelOff(0);
-					TAB_notes[_pos]:=$ff;
-					TAB_fnSFX[_pos]:=$fe;
+//					if key=key_SPACE then
+//					begin
+						TAB_notes[_pos]:=TABFn_blank_param;
+						TAB_fnSFX[_pos]:=TABFn_blank;
+//					end
+//					else
+//					begin
+//						TAB_notes[_pos]:=TABFn_noteOff_param;
+//						TAB_fnSFX[_pos]:=TABFn_noteOff;
+//					end
 					modified:=true;
 					moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 				end;

@@ -34,7 +34,7 @@ begin
 	repeat
 		v:=TAB_fnSFX[len];
 		len:=len+1;
-	until (len=TAB_maxLength) or (v=$FF);
+	until (len=TAB_maxLength) or (v=TABFn_end) or (v=TABFn_jump);
 	TABLen:=len;
 end;
 

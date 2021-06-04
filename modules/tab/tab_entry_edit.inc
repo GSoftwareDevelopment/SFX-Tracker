@@ -4,8 +4,8 @@ var _note,_fnsfx,_pos:byte;
 
 	procedure setEndTab();
 	begin
-		TAB_notes[_pos]:=TABFn_blank_param;
-		TAB_fnSFX[_pos]:=TABFn_blank;
+		TAB_notes[_pos]:=TABFn_end_param;
+		TAB_fnSFX[_pos]:=TABFn_end;
 		modified:=true;
 	end;
 
@@ -24,8 +24,10 @@ var _note,_fnsfx,_pos:byte;
 		v:smallint;
 
 	begin
+		putMultiText(resptr[msg_TAB_JumpToPrompt],0);
+		putValue(17,11,_pos,3,0);
 		v:=jumpPos;
-		if inputValue(winXStart+8,2+cursorPos,3,v,0,TAB_maxLength-1,0,color_selected) then
+		if inputValue(winXStart+8,2+cursorPos,3,v,0,_pos,0,color_selected) then
 		begin
 			jumpPos:=byte(v);
 			TAB_notes[_pos]:=jumpPos;
@@ -37,7 +39,7 @@ var _note,_fnsfx,_pos:byte;
 
 	procedure setRepeat();
 	begin
-		if (TAB_fnSFX[_pos]<229) or (TAB_fnSFX[_pos]>238) then
+		if (TAB_fnSFX[_pos]<TABFn_repeat) or (TAB_fnSFX[_pos]>TABFn_repeatMax) then
 		begin
 			TAB_notes[_pos]:=0;
 			TAB_fnSFX[_pos]:=TABFn_repeat;
@@ -52,17 +54,12 @@ var _note,_fnsfx,_pos:byte;
 	begin
 		times:=times-$80;
 		v:=times;
+		putMultiText(resptr[msg_TAB_RepeatPrompt],0);
 		if inputValue(winXStart+5,2+cursorPos,2,v,1,TAB_maxRepeats,0,color_selected) then
 		begin
 			times:=byte(v);
-			v:=repeatPos;
-			if inputValue(winXStart+8,2+cursorPos,3,v,0,TAB_maxLength-1,0,color_selected) then
-			begin
-				repeatPos:=byte(v);
-				TAB_notes[_pos]:=repeatPos;
-				TAB_fnSFX[_pos]:=TABFn_repeat+times-1;
-				modified:=true;
-			end;
+			TAB_notes[_pos]:=repeatPos;
+			editJumpTo(repeatPos);
 		end;
 	end;
 
@@ -84,10 +81,12 @@ var _note,_fnsfx,_pos:byte;
 
 	begin
 		v:=value;
+		putMultiText(resptr[msg_TAB_FreqPrompt],0);
 		if inputValue(winXStart+5,2+cursorPos,3,v,0,255,0,color_selected) then
 		begin
 			value:=byte(v);
 			v:=currentSFX and $3f;
+			putMultiText(resptr[msg_TAB_SFXIdPrompt],0);
 			if inputValue(winXStart+9,2+cursorPos,2,v,0,maxSFXs-1,0,color_selected) then
 			begin;
 				TAB_notes[_pos]:=value;
@@ -134,7 +133,7 @@ begin
 			end
 			else
 			begin
-				if _note=0 then
+				if _fnsfx and $3f=0 then
 					opt:=1	// jump to
 				else
 					opt:=2;	// repeat
