@@ -1,6 +1,5 @@
 ; FETCHING CHANNEL & SFX DATA
 ; prepare SFX Engine registers
-channel_set
          ldy SFX_CHANNELS_ADDR+_chnOfs,x     ; get SFX offset
 
 check_offset
@@ -95,5 +94,6 @@ setPokey
 
 next_SFX_Set
          iny											; increase SFX offset
+SFX_Set_Offset
          tya                                 ; tranfer current SFX offset to A register
          sta SFX_CHANNELS_ADDR+_chnOfs,x     ; store SFX offset in channel register

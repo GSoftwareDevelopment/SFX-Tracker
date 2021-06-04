@@ -43,7 +43,7 @@ LFD_NLM_JumpTo
          and #%01111111          ; clear 7th bit
          bne LFD_NLM_setSFXofs
          ldy #SFX_OFF            ; end of SFX definition
-         jmp next_SFX_Set
+         jmp SFX_Set_Offset
 LFD_NLM_setSFXofs
          asl @
          tay                     ; set value to SFX offset register

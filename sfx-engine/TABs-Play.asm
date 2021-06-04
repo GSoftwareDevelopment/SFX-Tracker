@@ -1,9 +1,6 @@
 ; TAB - PLAY NOTE
 			sty _regTemp									; store current TAB offset
 
-			cmp #FN_NOTE_FREQ								; check for Note or Frequency Divider Set
-			bpl TAB_FN_Freq								; <64 its Note Set
-
 ; get note freq value
 			and %00111111									; extract SFX Id from Order
 			asl @												; multiply SFX Id by 2 to get offset in SFXPtr offset table
@@ -33,15 +30,18 @@
 			sta SFX_CHANNELS_ADDR+_chnOfs,x
 
 ; get Note frequency divider from NOTE_TABLE
-         ldy TABNote										; get TAB Note value
+         lda TABNote										; get TAB Note value
+			cmp #FN_NOTE_FREQ								; check for Note or Frequency Divider Set
+			bpl TAB_FN_Freq								; <64 its Note Set
+
+TAB_FN_Note
+			tay
+			sta SFX_CHANNELS_ADDR+_chnNote,x
          lda NOTE_TABLE_ADDR,y						; get note frequency value from NOTE_TABLE
 
 TAB_FN_Freq
 			sta SFX_CHANNELS_ADDR+_chnFreq,x
-			tya
 
-; set freq
-			sta SFX_CHANNELS_ADDR+_chnNote,x
          ldy _regTemp									; restore current TAB Offset
 
-			jmp end_player_tick
+			jmp next_player_tick

@@ -1,18 +1,14 @@
 
-			dec SONG_TICK
-			beq TAB_set										; Play TAB line only if SONG_TICK is zero!
+			lda SONG_TICK
+			beq TAB_set
+			jmp end_player_tick
 
-; reset tick counter
-			lda SONG_LPB									; otherwise, set SONG_TICK as SONG_LPB
-			sta SONG_TICK
-			jmp end_player_tick							; and skip Play routine
 ;
 ; TAB PLAY ROUTINE
 ;
-
 TAB_set
 			ldy SFX_CHANNELS_ADDR+_tabOfs,x			; get TAB offset
-
+;$29b5
 check_TAB_offset
 			cpy #TAB_OFF									; check TAB offset
 			bne fetch_TAB_row
@@ -38,6 +34,7 @@ fetch_TAB_row
 			icl 'TABs-Play.asm'
 			icl 'TABs-Func.asm'
 
-end_player_tick
+next_player_tick
 			tya
 			sta SFX_CHANNELS_ADDR+_tabOfs,x			; store current TAB offset in Channels register
+end_player_tick

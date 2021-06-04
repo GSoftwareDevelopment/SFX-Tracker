@@ -15,4 +15,4 @@ decode_HFD
 
 HFD_SFXEnd
          ldy #SFX_OFF            ; end of SFX definition
-         jmp next_SFX_Set
+         jmp SFX_Set_Offset

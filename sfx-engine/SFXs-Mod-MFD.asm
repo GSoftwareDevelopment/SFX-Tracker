@@ -22,7 +22,7 @@ MFD_JumpTo
          and #%01111111          ; clear 7th bit
          bne MFD_setSFXofs
          ldy #SFX_OFF            ; end of SFX definition
-         jmp next_SFX_Set
+         jmp SFX_Set_Offset
 MFD_setSFXofs
          asl @
          tay                     ; set value to SFX offset register

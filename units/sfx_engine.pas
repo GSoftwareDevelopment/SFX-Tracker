@@ -6,7 +6,7 @@ type
 	wordArray=array[0..0] of word;
 
 const
-	SFX_CHANNELS_ADDR	= $6E0;
+	SFX_CHANNELS_ADDR	= $6C0;
 
 var
 (* SFX Mod Modes:

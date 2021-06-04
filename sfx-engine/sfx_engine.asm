@@ -24,6 +24,8 @@
 tick_start
          ldx #$30                           ; set channel offset to last channel
 
+channel_set
+
   			icl 'TABs.asm'
 			icl 'SFXs.asm'
 
@@ -32,10 +34,19 @@ next_channel
          sec
          sbc #$10
          bmi end_tick
-         tax                                 ; no, go to fetching data
+         tax                                 ; no, go fetching next channel data
          jmp channel_set
-
 end_tick
+
+; SONG CLOCK CONTROL
+
+			dec SONG_TICK
+			bpl dont_reset_tick_counter
+; reset tick counter
+			lda SONG_LPB									; otherwise, set SONG_TICK as SONG_LPB
+			sta SONG_TICK
+dont_reset_tick_counter
+
 .ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
 .ifdef MAIN.@DEFINES.ROMOFF
          inc $D301                           ; turn on ROM

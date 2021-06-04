@@ -28,20 +28,12 @@ TAB_FN_NoteOff
 			lda #SFX_OFF									; turn off current SFX
 			sta SFX_CHANNELS_ADDR+_chnOfs,x
 
-			stx _regTemp
-			txa												; calculate the offset of the Audio channel
-			lsr @												; by dividing the SFX channel offset by 8
-			lsr @
-			lsr @
-			tax
-
-			lda #$00											; store in Audio control register value 0 (zero)
-			sta audc,x										; this mute Audio chanel
-
-.ifdef MAIN.@DEFINES.SFX_previewChannels
 			lda #$00
+			sta chnCtrl
+.ifdef MAIN.@DEFINES.SFX_previewChannels
 			sta SFX_CHANNELS_ADDR+_chnCtrl,x
 .endif
+			jmp setPokey
 
 TAB_FN_Blank
 ; This function does nothing with registers
