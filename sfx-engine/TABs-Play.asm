@@ -30,18 +30,22 @@
 			sta SFX_CHANNELS_ADDR+_chnOfs,x
 
 ; get Note frequency divider from NOTE_TABLE
-         lda TABNote										; get TAB Note value
+
+         lda TABOrder										; get TAB Note value
 			cmp #FN_NOTE_FREQ								; check for Note or Frequency Divider Set
 			bpl TAB_FN_Freq								; <64 its Note Set
 
 TAB_FN_Note
-			tay
+			ldy TABNote
 			sta SFX_CHANNELS_ADDR+_chnNote,x
          lda NOTE_TABLE_ADDR,y						; get note frequency value from NOTE_TABLE
+         ldy _regTemp									; restore current TAB Offset
+
+			jmp next_player_tick
 
 TAB_FN_Freq
+			lda TABNote
 			sta SFX_CHANNELS_ADDR+_chnFreq,x
-
          ldy _regTemp									; restore current TAB Offset
 
 			jmp next_player_tick
