@@ -1,3 +1,5 @@
+{$librarypath './units/'}
+uses SFX_Engine, sysutils, strings, gr2, ui, pmgraph;
 {$DEFINE ROMOFF}
 {$DEFINE SFX_SWITCH_ROM}
 {$DEFINE SFX_previewChannels}
@@ -7,9 +9,6 @@
 {$DEFINE LFD_NLM_MOD}
 {$DEFINE MFD}
 {$DEFINE HFD}
-
-{$librarypath './units/'}
-uses SFX_Engine, sysutils, strings, gr2, ui, pmgraph;
 
 {$i types.inc}
 

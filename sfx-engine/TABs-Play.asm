@@ -2,7 +2,7 @@
 			sty _regTemp									; store current TAB offset
 
 ; get note freq value
-			and %00111111									; extract SFX Id from Order
+			and #%00111111									; extract SFX Id from Order
 			asl @												; multiply SFX Id by 2 to get offset in SFXPtr offset table
 			tay
 
@@ -13,10 +13,10 @@
 .ifndef DONT_CALC_SFX_NAMES
 			adc #SFX_NameLength						// incrase about SFX name length
 .endif
-			adc DATA_ADDR
+			adc #<DATA_ADDR
 			sta SFX_CHANNELS_ADDR+_SFXPtrLo,x
 			lda SFX_TABLE_ADDR+1,y
-			adc DATA_ADDR+1
+			adc #>DATA_ADDR
 			sta SFX_CHANNELS_ADDR+_SFXPtrHi,x
 .else
 			lda SFX_TABLE_ADDR,y

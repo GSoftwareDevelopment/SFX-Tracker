@@ -14,8 +14,8 @@ begin
 		TABLen:=0; // set current TAB length to zero (0)
 		ofs:=0;
 		repeat
-			TAB_fnSFX[TABLen]:=tmpbuf[ofs]; ofs:=ofs+1;
 			TAB_notes[TABLen]:=tmpbuf[ofs]; ofs:=ofs+1;
+			TAB_fnSFX[TABLen]:=tmpbuf[ofs]; ofs:=ofs+1;
 			TABLen:=TABLen+1; size:=size-2;
 		until (TABLen=TAB_maxLength) or (size=0);
 	end
@@ -62,8 +62,8 @@ begin
 	ofs:=0;
 	for i:=0 to TABLen-1 do
 	begin
-		tmpbuf[ofs]:=TAB_fnSFX[i]; ofs:=ofs+1;
 		tmpbuf[ofs]:=TAB_notes[i]; ofs:=ofs+1;
+		tmpbuf[ofs]:=TAB_fnSFX[i]; ofs:=ofs+1;
 	end;
 	len:=TABLen shl 1; // multiply TAB length by two, becouse, for one entry is 2 bytes info
 

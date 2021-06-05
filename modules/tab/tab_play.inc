@@ -1,6 +1,7 @@
 procedure TAB_Play();
 begin
 	reset_pianoVis();
+	SFX_PlayTAB(0,currentTAB);
 	repeat
 		updatePianoVis();
 		if kbcode<>255 then

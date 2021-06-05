@@ -27,6 +27,7 @@ var
 	dataAddr:word;				// base address to heap pointers
 
 	song_lpb:byte absolute $f0;
+	SONG_Tick:byte absolute $f1;
 
 	channels:array[0..63] of byte absolute SFX_CHANNELS_ADDR;
 
@@ -36,6 +37,7 @@ procedure SFX_Start();
 procedure SFX_ChannelOff(channel:byte);
 procedure SFX_Off();
 procedure SFX_Note(channel,note,SFXId:byte);
+procedure SFX_PlayTAB(channel,TABId:byte);
 procedure SFX_End();
 
 implementation
@@ -78,6 +80,7 @@ begin
 		channels[__cOfs+ 8]:=$ff;	// TAB address lo
 		channels[__cOfs+ 9]:=$ff;	// TAB address hi
 		channels[__cOfs+10]:=$ff;	// TAB offset
+		channels[__cOfs+11]:=$ff;	// TAB repeat counter
 		__cOfs:=__cOfs+$10;
 	until __cOfs=$40;
 end;
@@ -108,11 +111,11 @@ end;
 procedure SFX_ChannelOff;
 begin
 	__cOfs:=channel*$10;
-// {$IFDEF SFX_previewChannels}	// its comment, becouse I dont know, why it won't WORK!
-// The MP compiler does not generate code from this block, despite the label declaration.
+{$IFDEF SFX_previewChannels}
 	channels[__cOfs+7]:=$00; // SFX distortion @ volume
-// {$ENDIF}
+{$ENDIF}
 	channels[__cOfs+2]:=$ff;	// SFX offset
+	channels[__cOfs+10]:=$ff;	// SFX offset
 	__cOfs:=1+channel*2;
 	AUDIO[__cOfs]:=0;
 end;
@@ -138,6 +141,23 @@ begin
 	channels[__cOfs+3]:=note;					// SFX Note
 	channels[__cOfs+4]:=note_val[note];		// SFX frequency
 	channels[__cOfs+5]:=SFXModMode[SFXId];	// SFX modulation Mode
+end;
+
+procedure SFX_PlayTAB(channel,TABId:byte);
+var
+	TABAddr:word;
+
+begin
+	TABAddr:=TABPtr[TABId]+dataAddr;
+	TABAddr:=TABAddr+8; // skip first 8 bytes - length of TAB name
+
+	__cOfs:=channel*$10;
+
+	channels[__cOfs+ 8]:=lo(TABAddr);			// TAB address lo
+	channels[__cOfs+ 9]:=hi(TABAddr);			// TAB address hi
+	channels[__cOfs+10]:=$00;						// TAB offset
+	channels[__cOfs+11]:=$00;						// TAB repeat counter
+	SONG_Tick:=$00;									// reset SONG tick counter
 end;
 
 procedure SFX_End;

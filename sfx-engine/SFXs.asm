@@ -76,8 +76,9 @@ continue_fetch
 setPokey
          stx _regTemp
          txa                                 ; transfer channel offset (X reg) to A reg
-         lsr @                               ; divide channel offset by 4
+         lsr @                               ; divide channel offset by 8
          lsr @                               ; to calculate AUDIO offset
+         lsr @
          tax                                 ; set AUDIO offset in X register
 
 ; get current frequency
