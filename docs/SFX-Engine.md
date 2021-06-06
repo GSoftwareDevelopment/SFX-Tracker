@@ -207,9 +207,30 @@ Additional information is placed in the `CHANNELS` table at offsets 6 and 7 of e
 
 The absence of this definition, frees an additional two bytes on the null page.
 
-- `CALC_ABS_ADDR`
+- `DONT_CALC_ABS_ADDR`& `DONT_CALC_SFX_NAMES`
 
-TODO
+__Dose not__ generates code that calculates the correct address of an SFX/TAB definition by summing the following values:
+The dashboard is by default initialized with the relative addresses of the definitions.
+The SFX Music Maker file contains a name in the body of the SFX and TAB definitions to be bypassed when playback is initiated.
+
+SFX name length = 12 bytes
+TAB name length = 8 bytes
+
+The length of the definition name is __not taken into account__ when the `DONT_CALC_SFX_NAMES` label is defined.
+
+The correct address in the above situation would be:
+
+![math-SFX_address_calculate](./imgs/math-SFX_address_calculate.png)
+
+![math-TAB_address_calculate](./imgs/math-TAB_address_calculate.png)
+
+- `SFX_SYNCAUDIOOUT`
+
+Because the execution time of the main SFX engine loop iteration can be perceptible by the human ear, the label generates code that synchronizes the Audio output.
+
+Before the information finally goes to the POKEY registers, it is stored in the Audio buffer (on the zero page). Once the information has been analyzed, the buffer content is directly transferred to POKEY.
+
+The cost of using buffering is 8 bytes per zero page.
 
 - `USE_MODULATORS`
 
@@ -226,9 +247,9 @@ The presence of the following labels during compilation, create the correspondin
 	
 For more on modulation, see [Modulation types](./modval_EN.md)
 
-- ~~`USE_ALL_MODULATORS`~~
+- `USE_ALL_MODULATORS`
 
-~~Forces the use of all supported modulators, regardless of the state of the `USE_MODULATORS` declaration and its subordinates.~~
+Forces the use of all supported modulators, regardless of the state of the `USE_MODULATORS` declaration and its subordinates.
 
 ### Operation mode without modulator section
 

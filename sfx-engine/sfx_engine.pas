@@ -7,6 +7,11 @@ type
 
 const
 	SFX_CHANNELS_ADDR	= $6C0;
+	SFX_TABLE_ADDR		= $CE00;	// list for SFX definitions
+	TAB_TABLE_ADDR		= $CE80;	// list for TAB definitions
+	DATA_ADDR			= $D800;	// data address
+	NOTE_TABLE_ADDR	= $CD80;
+	SFX_NameLength		= 14;
 
 var
 (* SFX Mod Modes:
@@ -134,8 +139,14 @@ var
 	SFXAddr:word;
 
 begin
+{$ifndef DONT_CALC_ABS_ADDR}
 	SFXAddr:=SFXPtr[SFXId]+dataAddr;
+{$ifndef DONT_CALC_SFX_NAMES}
 	SFXAddr:=SFXAddr+14; // skip first 14 bytes - length of SFX name
+{$endif}
+{$else}
+	SFXAddr:=SFXPtr[SFXId];
+{$endif}
 
 	__cOfs:=channel*$10;
 

@@ -1,10 +1,3 @@
-SFX_TABLE_ADDR			= $CE00;	// list for SFX definitions
-TAB_TABLE_ADDR			= $CE80;	// list for TAB definitions
-DATA_ADDR				= $D800;	// data address
-NOTE_TABLE_ADDR		= $CD80;
-SFX_NameLength			= 14
-
-
 xitvbl      = $e462
 sysvbv      = $e45c
 audf        = $d200
