@@ -44,13 +44,11 @@ TAB_FN_Note
 .endif
 
          lda NOTE_TABLE_ADDR,y						; get note frequency value from NOTE_TABLE
-			sta SFX_CHANNELS_ADDR+_chnFreq,x
-         ldy _regTemp									; restore current TAB Offset
-
-			jmp next_player_tick
+			jmp TAB_FN_setFreq
 
 TAB_FN_Freq
 			lda TABNote
+TAB_FN_setFreq
 			sta SFX_CHANNELS_ADDR+_chnFreq,x
          ldy _regTemp									; restore current TAB Offset
 
