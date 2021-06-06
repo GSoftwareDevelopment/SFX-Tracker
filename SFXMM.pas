@@ -13,6 +13,7 @@
 {$DEFINE TAB_PLAYBACK}
 
 {$librarypath './units/'}
+{$librarypath './sfx-engine/'}
 uses SFX_Engine, sysutils, strings, gr2, ui, pmgraph;
 
 {$i types.inc}
