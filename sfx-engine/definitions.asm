@@ -32,6 +32,10 @@ _tabRep		= 11
 SONG_LPB		= $F0		  ; SONG Line Per Beat
 SONG_TICK	= $F1		  ; SONG tick counter
 
+.ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
+AUDIOBUF		= $E8		  ; 8 bytes audio buffer for sync output
+.endif
+
 TABPtr		= $F5		  ; TAB Pointer (2 bytes)
 TABNote		= $F7		  ; TAB Note
 TABOrder		= $F8		  ; TAB Order

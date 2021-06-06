@@ -59,7 +59,13 @@ turn_off_Audio_channel
          tax                                 ; set AUDIO offset in X register
 
          lda #$00			                     ; silent Audio channel
+
+.ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
+			sta AUDIOBUF+1,x
+.else
          sta audc,x                          ; store direct to POKEY register
+.endif
+
          ldx _regTemp								; restore current channel offset
 
 			jmp next_player_tick

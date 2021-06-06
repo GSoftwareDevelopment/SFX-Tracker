@@ -25,6 +25,7 @@ var
 	SFXPtr:wordArray;			// heap pointers to SFX definitions
 	TABPtr:wordArray;			// heap pointera to TAB definitions
 	dataAddr:word;				// base address to heap pointers
+	note_val:array[0..0] of byte;
 
 	song_lpb:byte absolute $f0;
 	SONG_Tick:byte absolute $f1;
@@ -42,10 +43,13 @@ procedure SFX_End();
 
 implementation
 var
-	note_val:array[0..0] of byte;
 	NMIEN:byte absolute $D40E;
 	oldVBL:pointer;
+{$IFNDEF SFX_SYNCAUDIOOUT}
 	AUDIO:array[0..0] of byte absolute $D200;
+{$ELSE}
+	AUDIO:array[0..0] of byte absolute $E8;
+{$ENDIF}
 	AUDCTL:byte absolute $D208;
 	SKCTL:byte absolute $D20F;
 

@@ -69,7 +69,10 @@ var _note,_fnsfx,_pos:byte;
 	begin
 		if (TAB_fnSFX[_pos] and $C0<>TABFn_freq) then
 		begin
-			TAB_notes[_pos]:=0;
+			if (TAB_fnSFX[_pos] and $C0=TABFn_note) then
+				TAB_notes[_pos]:=note_val[TAB_notes[_pos]]
+			else
+				TAB_notes[_pos]:=0;
 			TAB_fnSFX[_pos]:=currentSFX or TABFn_freq;
 			modified:=true;
 		end;

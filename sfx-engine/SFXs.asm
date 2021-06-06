@@ -16,8 +16,7 @@ fetch_SFX_data
 ; this feature is not used in SFXMM
 ; %1sfxsize - if bit 7th is set, rest of bits of modulate type, indicate size of definition
 ; %0000type - otherwise, MUST be set STOP SFX function in SFX definition!
-.ifdef MAIN.@DEFINES.USE_MODULATORS
-;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+.ifdef MAIN.@DEFINES.USE_MODULATORS // .or .def MAIN.@DEFINES.USE_ALL_MODULATORS
          bpl continue_fetch
          and %01111111
          sta chnMode
@@ -66,8 +65,7 @@ continue_fetch
          lda SFX_CHANNELS_ADDR+_chnFreq,x    ; get SFX frequency
          sta chnFreq
 
-.ifdef MAIN.@DEFINES.USE_MODULATORS
-;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+.ifdef MAIN.@DEFINES.USE_MODULATORS // .or .def MAIN.@DEFINES.USE_ALL_MODULATORS
 
 			icl 'SFXs-Mod.asm'
 
@@ -81,12 +79,20 @@ setPokey
          lsr @
          tax                                 ; set AUDIO offset in X register
 
+.ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
+			lda chnFreq
+			sta AUDIOBUF,x
+			lda (sfxPtr),y
+			sta AUDIOBUF+1,x
+.else
 ; get current frequency
          lda chnFreq
          sta audf,x                          ; store direct to POKEY register
 ; get current distortion & volume
          lda (sfxPtr),y                      ; get SFX distortion & volume definition
          sta audc,x                          ; store direct to POKEY register
+.endif
+
          ldx _regTemp								; restore current channel offset
 
 .ifdef MAIN.@DEFINES.SFX_previewChannels

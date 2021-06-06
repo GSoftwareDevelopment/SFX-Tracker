@@ -26,7 +26,9 @@ tick_start
 
 channel_set
 
+.ifdef MAIN.@DEFINES.TAB_PLAYBACK
   			icl 'TABs.asm'
+.endif
 			icl 'SFXs.asm'
 
 next_channel
@@ -37,6 +39,15 @@ next_channel
          tax                                 ; no, go fetching next channel data
          jmp channel_set
 end_tick
+
+.ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
+			ldx #7
+audio_loop
+			lda AUDIOBUF,x
+			sta audf,x
+			dex
+			bpl audio_loop
+.endif
 
 ; SONG CLOCK CONTROL
 

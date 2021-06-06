@@ -11,8 +11,7 @@ modulators
 
          lda chnMode
 
-.ifdef MAIN.@DEFINES.DFD_MOD
-;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+.ifdef MAIN.@DEFINES.DFD_MOD // .or .def MAIN.@DEFINES.USE_ALL_MODULATORS
          cmp #MODMODE_DFD                    ; check DFD Modulation mode
          bmi DFD_Mod
          jmp setPokey
@@ -25,8 +24,7 @@ DFD_Mod
          jmp setChannelFreq
 .endif
 
-.ifdef MAIN.@DEFINES.LFD_NLM_MOD
-;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+.ifdef MAIN.@DEFINES.LFD_NLM_MOD // .or .def MAIN.@DEFINES.USE_ALL_MODULATORS
 LFD_NLM_Mod
          cmp #MODMODE_LFD_NVM                ; check LFD/NLM
          bne check_MFD
@@ -34,8 +32,7 @@ LFD_NLM_Mod
          icl 'SFXs-Mod-LFD_NLM.asm'
 .endif
 
-.ifdef MAIN.@DEFINES.MFD
-;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+.ifdef MAIN.@DEFINES.MFD //  .or MAIN.@DEFINES.USE_ALL_MODULATORS
 check_MFD
          cmp #MODMODE_MFD                    ; check MFD
          bne check_HFD
@@ -43,8 +40,7 @@ check_MFD
          icl 'SFXs-Mod-MFD.asm'
 .endif
 
-.ifdef MAIN.@DEFINES.HFD
-;.or MAIN.@DEFINES.USE_ALL_MODULATORS
+.ifdef MAIN.@DEFINES.HFD // .or MAIN.@DEFINES.USE_ALL_MODULATORS
 check_HFD
          cmp #MODMODE_HFD                    ; check HFD mode
          bne modMode_notDefined
