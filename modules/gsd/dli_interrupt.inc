@@ -1,5 +1,5 @@
 const
-	DLICount = $df;	// DLI counter used for current color table offset
+	DLICount = $1c;	// DLI counter used for current color table offset
 							// on each interrupt incrase about 4
 							// max. value 44
 							// reset to 0 before initialize interrupt
@@ -13,9 +13,9 @@ var
 procedure DLI_theme;assembler;interrupt;
 asm {
 ; Register backup for DLI interrupt
-_regA 	= $f0;
-_regX 	= $f1;
-_regY 	= $f2;
+_regA 	= $1d;
+_regX 	= $1e;
+_regY 	= $1f;
 
 	sta _regA			; store registers A & Y
 	sty _regY
@@ -52,6 +52,7 @@ end;
 
 procedure DLIInit();
 begin
+	SFX_End();
 	NMIEN:=%01000000; // turn off DLI
 	DLIThemeCnt:=0; // reset DLI counter
 	getIntVec(iDLI, oldDLI);
@@ -63,4 +64,5 @@ procedure DLIDone();
 begin
 	NMIEN:=%01000000; // turn off DLI
 	setIntVec(iDLI, oldDLI);
+	SFX_Start();
 end;

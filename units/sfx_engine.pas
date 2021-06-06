@@ -106,10 +106,10 @@ end;
 
 procedure SFX_Start;
 begin
-	NMIEN:=$00;
+	NMIEN:=%00000000;
 	GetIntVec(iVBL, oldVBL);
 	SetIntVec(iVBL, @SFX_tick);
-	NMIEN:=$40;
+	NMIEN:=%01000000;
 end;
 
 procedure SFX_ChannelOff;
@@ -167,9 +167,9 @@ end;
 procedure SFX_End;
 begin
 	SFX_Off();
-	NMIEN:=$00;
+	NMIEN:=%00000000;
 	SetIntVec(iVBL, oldVBL);
-	NMIEN:=$40;
+	NMIEN:=%01000000;
 end;
 
 end.

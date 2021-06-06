@@ -37,6 +37,12 @@
 
 TAB_FN_Note
 			ldy TABNote
+
+.ifdef MAIN.@DEFINES.SFX_previewChannels
+			tya
+			sta SFX_CHANNELS_ADDR+_chnNote,x
+.endif
+
          lda NOTE_TABLE_ADDR,y						; get note frequency value from NOTE_TABLE
 			sta SFX_CHANNELS_ADDR+_chnFreq,x
          ldy _regTemp									; restore current TAB Offset
