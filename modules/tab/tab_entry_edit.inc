@@ -32,6 +32,7 @@ var _note,_fnsfx,_pos:byte;
 		begin
 			jumpPos:=byte(v);
 			TAB_notes[_pos]:=jumpPos;
+			TAB_fnSFX[_pos]:=TABFn_jump;
 			modified:=true;
 		end;
 	end;
@@ -59,9 +60,9 @@ var _note,_fnsfx,_pos:byte;
 		putMultiText(resptr[msg_TAB_RepeatPrompt],0);
 		if inputValue(winXStart+5,2+cursorPos,2,v,1,TAB_maxRepeats,0,color_selected) then
 		begin
+			editJumpTo(repeatPos);
 			times:=byte(v)-1;
 			TAB_fnSFX[_pos]:=TABFN_repeat+times;
-			editJumpTo(repeatPos);
 		end;
 	end;
 

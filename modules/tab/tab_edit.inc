@@ -3,6 +3,7 @@
 procedure TABEditLoop();
 var
 	_pos,i:byte;
+	nSFX:shortint;
 
 begin
 	colorHLine(winXStart,2+cursorPos,20-winXStart,3);
@@ -27,7 +28,13 @@ begin
 				// cursor single step
 				key_Up: moveCursor(-1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 				key_Down: moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
-
+				key_CTRL_RETURN:begin
+					updateTABSFX();
+					nSFX:=dataList(SFXPtr,currentSFX,maxSFXs,SFXNameLength);
+					if (nSFX<>-1) and (nSFX<>currentSFX) then
+						currentSFX:=nSFX;
+					updateTABSFX();
+				end;
 				key_SPACE: begin
 					SFX_ChannelOff(0);
 //					if key=key_SPACE then
