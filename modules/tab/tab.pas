@@ -19,7 +19,6 @@ begin
 	getTABData(currentTAB);
 	TABDetermineLength();
 	updateTABInfo();
-//	updateTABSFX();
 	updateTAB(true);
 
 	updateBar(resptr[menu_tabs],width_menuBar,section,color_choice,color_selected);
@@ -41,7 +40,6 @@ begin
 		end;
 	until false;
 	kbcode:=255;
-	updateBar(resptr[menu_tabs],width_menuBar,-1,0,0);
 end;
 
 procedure TABModule();

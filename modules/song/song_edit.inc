@@ -18,16 +18,10 @@ begin
 
 			case key of
 				key_ESC: break;
-
-				// cursor screen step
-				key_CTRL_Up: moveCursor(-9,TAB_winWidth,SONG_maxLength,SONGPos,SONGShift);
-				key_CTRL_Down:	moveCursor(9,TAB_winWidth,SONG_maxLength,SONGPos,SONGShift);
-				// cursor single step
-				key_Up: moveCursor(-1,TAB_winWidth,SONG_maxLength,SONGPos,SONGShift);
-				key_Down: moveCursor(1,TAB_winWidth,SONG_maxLength,SONGPos,SONGShift);
-
 //				key_RETURN: if TABEntryEdit then break;
 			end;
+
+			controlEditKeys(key,SONG_winHeight,SONG_maxLength,SONGPos,SONGShift,key_Up,key_Down);
 
 			//
 			updateSONG(false);

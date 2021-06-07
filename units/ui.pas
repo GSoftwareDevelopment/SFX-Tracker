@@ -61,9 +61,9 @@ procedure putMultiText(bar:pointer; bgColor:byte);
 procedure VBar(x,y,width,col:byte);
 procedure updateBar(bar:pointer; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
 procedure menuBar(bar:pointer; width,bgColor:byte);
-function optionsList(optTabs:pointer; optWidth:byte; opts:shortint; var currentOpt:shortint; pcKey,ncKey:byte):boolean;
+function optionsList(optTabs:pointer; optWidth:byte; opts:byte; var currentOpt:byte; pcKey,ncKey:byte):boolean;
 function listChoice(x,y,width,height,defaultPos:byte; listPtr:pointer; listSize:byte; showCount:boolean):shortint;
-function messageBox(msgPtr:pointer; msgColor:byte;	menuPtr:pointer; menuWidth,menuOpts:byte; defaultOpt:shortint; pcKey,ncKey:byte):byte;
+function messageBox(msgPtr:pointer; msgColor:byte; menuPtr:pointer; menuWidth,menuOpts:byte; defaultOpt:byte; pcKey,ncKey:byte):byte;
 
 implementation
 uses gr2;
@@ -116,24 +116,33 @@ begin
 				curPos:=oversize;
 	end
 	else
-		if (_pos>=0) and (_pos<winSize) then
-			curPos:=_pos
-		else
+		if (_pos<0) then
 		begin
-			if (_pos<0) then
-				curPos:=0
-			else
-				curPos:=winSize-1;
-
-			_pos:=curShift+ofs;
-			if (_pos>=0) and (_pos<=overSize-winSize) then
-				curShift:=_pos
-			else
-				if (_pos<0) then
+			if (curPos=0) then
+			begin
+				_pos:=curShift+ofs;
+				if (_pos>=0) then
+					curShift:=_pos
+				else
 					curShift:=0
+			end;
+			curPos:=0;
+		end
+		else
+		if (_pos>winSize-1) then
+		begin
+			if (curPos=winSize-1) then
+			begin
+				_pos:=curShift+ofs;
+				if (_pos<=overSize-winSize) then
+					curShift:=_pos
 				else
 					curShift:=overSize-winSize;
-		end;
+			end;
+			curPos:=winSize-1;
+		end
+		else
+			curPos:=_pos
 end;
 
 function inputText:boolean;

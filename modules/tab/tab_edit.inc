@@ -21,13 +21,6 @@ begin
 				updatePiano();
 			case key of
 				key_ESC: break;
-
-				// cursor screen step
-				key_CTRL_Up: moveCursor(-9,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
-				key_CTRL_Down:	moveCursor(9,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
-				// cursor single step
-				key_Up: moveCursor(-1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
-				key_Down: moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
 				key_CTRL_RETURN:begin
 					updateTABSFX();
 					nSFX:=dataList(SFXPtr,currentSFX,maxSFXs,SFXNameLength);
@@ -48,11 +41,12 @@ begin
 //						TAB_fnSFX[_pos]:=TABFn_noteOff;
 //					end
 					modified:=true;
-					moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
+					moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 				end;
 				key_RETURN: if TABEntryEdit then break;
 			end;
 
+			controlEditKeys(key,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift,key_Up,key_Down);
 
 			i:=pianoKeyScan(0);
 			if i<>255 then
@@ -60,7 +54,7 @@ begin
 				TAB_notes[_pos]:=i;
 				TAB_fnSFX[_pos]:=currentSFX;
 				modified:=true;
-				moveCursor(1,TAB_winWidth,TAB_maxLength,cursorPos,cursorShift);
+				moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 			end;
 
 			if modified then

@@ -39,7 +39,6 @@ begin
 			screen2video();
 		end;
 	until false;
-	updateBar(resptr[menu_sfx],4,-1,0,0);
 end;
 
 procedure SFXModule();

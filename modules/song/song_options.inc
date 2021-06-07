@@ -1,4 +1,4 @@
-procedure SONG_Options(defaultOpt:shortint);
+procedure SONG_Options(defaultOpt:byte);
 begin
 	// make possibility to direct invoke option
 	if defaultOpt=SONGMenuOption_Back then

@@ -61,7 +61,7 @@ var
 
 	SONGChn,SONGPos,SONGShift:byte;		// SONG current channel,position and view offset
 
-	currentMenu:shortint;
+	currentMenu:byte;
 	section:byte;
 
 	currentSFX:byte;
@@ -82,7 +82,7 @@ var
 {$i modules/io/io_error.inc}
 {$i modules/io/io_prompt.inc}
 {$i modules/io/io_tag_compare.inc}
-
+{$i modules/edit_ctrl.inc}
 {$i modules/vis_piano.inc}
 
 // modules

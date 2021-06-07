@@ -1,6 +1,6 @@
-procedure SFX_Options(defaultOpt:shortint);
+procedure SFX_Options(defaultOpt:byte);
 var
-	mod_mode:shortint;
+	mod_mode:byte;
 
 begin
 	// make possibility to direct invoke option

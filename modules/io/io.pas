@@ -5,14 +5,11 @@
 {$i modules/io/io_quit.inc}
 
 procedure IOLoop();
-var
-	opt:shortint;
-
 begin
-	opt:=1;
+	section:=1;
 	repeat
-		if optionsList(resptr[menu_IO],width_menuTop,5,opt,key_Left,key_Right) then
-			case opt of
+		if optionsList(resptr[menu_IO],width_menuTop,5,section,key_Left,key_Right) then
+			case section of
 				0: break;
 				1: IODirectory();
 				2: IOLoad();

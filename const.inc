@@ -39,7 +39,8 @@ winYStart			= 2;
 winSONGXStart		= 8;
 
 SFX_winWidth		= 16;
-TAB_winWidth		= 9;
+TAB_winHeight		= 9;
+SONG_winHeight		= 9;
 
 SFXNameX				= 4;
 SFXNameY				= 1;

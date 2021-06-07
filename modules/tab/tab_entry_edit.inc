@@ -1,6 +1,6 @@
 function TABEntryEdit():boolean;
 var _note,_fnsfx,_pos:byte;
-	opt:shortint;
+	opt:byte;
 
 	procedure setEndTab();
 	begin

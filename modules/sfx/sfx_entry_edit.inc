@@ -22,7 +22,7 @@ end;
 function SFXEntryEdit():boolean;
 var
 	_pos,_mod,_SFXMode:byte;
-	opt:shortint;
+	opt:byte;
 	v:smallint;
 
 begin

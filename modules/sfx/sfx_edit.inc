@@ -29,11 +29,8 @@ begin
 			case key of
 				key_ESC: break;
 				key_RETURN: if SFXEntryEdit then break;
-				key_CTRL_Left: moveCursor(-SFX_winWidth,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
-				key_CTRL_Right: moveCursor(SFX_winWidth,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
-				key_LEFT: moveCursor(-1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
-				key_RIGHT: moveCursor(1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
 			end;
+			controlEditKeys(key,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift,key_Left,key_Right);
 
 			at:=cursorShift+cursorPos;
 			v:=tab[at];

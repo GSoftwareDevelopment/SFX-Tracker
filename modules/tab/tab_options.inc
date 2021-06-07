@@ -1,4 +1,4 @@
-procedure TAB_Options(defaultOpt:shortint);
+procedure TAB_Options(defaultOpt:byte);
 begin
 	// make possibility to direct invoke option
 	if defaultOpt=TABMenuOption_Back then
