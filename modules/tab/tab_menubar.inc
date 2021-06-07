@@ -25,10 +25,6 @@ begin
 				updateTABInfo();
 				updateTAB(true);
 			end;
-		4: begin
-				controlSelectionKeys(key,key_Left,key_Right,currentSFX,0,maxSFXs-1);
-				updateTABSFX();
-			end;
 	end;
 end;
 
@@ -44,10 +40,10 @@ begin
 		1: TABEditLoop();
 		2: TAB_Play();
 		3: TAB_Options(TABMenuOption_Back);
-		4: begin
-				SFXList();
-				updateTABSFX();
-			end;
+//		4: begin
+//				SFXList();
+//				updateTABSFX();
+//			end;
 	end;
 
 end;

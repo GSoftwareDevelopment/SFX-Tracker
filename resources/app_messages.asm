@@ -31,14 +31,20 @@ but_Theme_Overwrite
 					dta 64,07,d'YES',255
 					dta 84,07,d'NO',255
 					dta 255
+msg_UnknownDefinition
+					;         01234567890123456789
+					dta 221,d'UNKNOWN DEFINITION',255,255
 msg_SFX_ValuePrompt
 					dta 220,d'VAL:____   ',6,d'________',255,255
 msg_TAB_JumpToPrompt
-					;     01234567890123456789
-					dta 224,d'JUMP ROW  ',6,d'0____',255,255
+					dta 220,d'JUMP ROW',255
+					dta 234,6,d'0____',255,255
 msg_TAB_RepeatPrompt
-					dta 224,d'REPEAT     ',6,d'1_63',255,255
+					dta 220,d'REPEAT',255
+					dta 235,6,d'1_63',255,255
 msg_TAB_FreqPrompt
-					dta 224,d'FREQ.DIV. ',6,d'0_255',255,255
+					dta 220,d'FREQ.DIV.',255
+					dta 234,6,d'0_255',255,255
 msg_TAB_SFXIdPrompt
-					dta 224,d'SFX ID     ',6,d'0_63',255,255
+					dta 220,d'SFX ID',255
+					dta 235,6,d'0_63',255,255

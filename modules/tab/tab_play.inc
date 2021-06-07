@@ -1,5 +1,10 @@
 procedure TAB_Play();
 begin
+	if TABPtr[currentTAB]=$FFFF then
+	begin
+		showError(resptr[msg_UnknownDefinition]);
+		exit;
+	end;
 	reset_pianoVis();
 	SFX_PlayTAB(0,currentTAB);
 	repeat

@@ -3,6 +3,11 @@ var
 	i,chn:byte;
 
 begin
+	if SFXPtr[currentSFX]=$FFFF then
+	begin
+		showError(resptr[msg_UnknownDefinition]);
+		exit;
+	end;
 	reset_pianoVis();
 	chn:=0;
 	repeat

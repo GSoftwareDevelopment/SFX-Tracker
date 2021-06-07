@@ -19,7 +19,7 @@ begin
 	getTABData(currentTAB);
 	TABDetermineLength();
 	updateTABInfo();
-	updateTABSFX();
+//	updateTABSFX();
 	updateTAB(true);
 
 	updateBar(resptr[menu_tabs],width_menuBar,section,color_choice,color_selected);
@@ -29,7 +29,7 @@ begin
 		if (kbcode<>255) then
 		begin
 			key:=TKeys(kbcode);
-			controlSelectionKeys(key,key_Up,key_Down,section,0,4);
+			controlSelectionKeys(key,key_Up,key_Down,section,0,3);
 			case key of
 				key_ESC: break;
 				key_Left,key_Right: TABChangeMenuBarOpt(section);

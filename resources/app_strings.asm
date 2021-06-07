@@ -9,8 +9,9 @@ str_IO_prevPage
 str_NoteNames
 ;                    0         1         2         3         4         5         6         7
 ;                    012345678901234567890123456789012345678901234567890123456789012345678901234567890
-					dta d'C-C#D-D#E-F-F#G-G#A-A#H-  >R_>___ENDTAB___ __\\\   '
-
+					dta d'C-C#D-D#E-F-F#G-G#A-A#H-  >__>___ENDTAB___ __\\\   '
+str_EndSONGOrder
+					dta d'END-SONG'
 ;
 
 scan_to_scr

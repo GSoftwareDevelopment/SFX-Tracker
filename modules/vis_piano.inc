@@ -28,6 +28,12 @@ begin
 	result:=keyScan(key,keys_notes,34);
 	if result<>255 then
 	begin
+		if SFXPtr[currentSFX]=$FFFF then
+		begin
+			showError(resptr[msg_UnknownDefinition]);
+			exit(255);
+		end;
+
 		if result>16 then result:=result-5;
 		result:=result+(currentOct*12);
 		if playChn<>255 then

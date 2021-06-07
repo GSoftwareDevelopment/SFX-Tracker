@@ -57,8 +57,9 @@ var
 	currentFile:string[FILEPATHMaxLength]; // indicate a current opened SFXMM file with full path and device
 	searchPath:string[FILEPATHMaxLength]; // used only in IO->DIR
 
-	cursorPos:byte;
-	cursorShift:byte;
+	cursorPos,cursorShift:byte;			// general cursor position and view offset
+
+	SONGChn,SONGPos,SONGShift:byte;		// SONG current channel,position and view offset
 
 	currentMenu:shortint;
 	section:byte;
@@ -70,6 +71,10 @@ var
 	song_tact,song_beat:byte;
 
 	modified:boolean = false;
+
+//
+	statusBar:array[0..0] of byte absolute STATUSBAR_ADDR;
+	moduleBar:array[0..0] of byte absolute MODULE_ADDR;
 
 // global access function and procedures
 {$i units/heap_manage.inc}
@@ -85,6 +90,7 @@ var
 {$i modules/io/io.pas}
 {$i modules/sfx/sfx.pas}
 {$i modules/tab/tab.pas}
+{$i modules/song/song.pas}
 
 procedure init();
 begin
@@ -110,8 +116,6 @@ begin
 	currentMenu:=0;
 
 // set defaults
-	move(@defaultSongTitle,@SONGTitle,length(defaultSongTitle)+1);
-
 	fillchar(@currentFile,FILEPATHMaxLength,0);
 	move(@defaultFileName,@currentFile,length(defaultFileName)+1);
 
@@ -123,7 +127,14 @@ begin
 	reset_pianoVis();
 	updatePiano();
 	SFX_Start();
+end;
 
+procedure uncolorWorkarea();
+var i:byte;
+
+begin
+	for i:=1 to 11 do
+		colorHLine(0,i,20,0);
 end;
 
 begin
@@ -135,6 +146,8 @@ begin
 				1: IOModule();
 				2: SFXModule();
 				3: TABModule();
+				4: SONGModule();
 			end;
+		uncolorWorkarea();
 	until false;
 end.

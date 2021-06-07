@@ -14,7 +14,9 @@ begin
 			case opt of
 				0: break;
 				1: theme_selector();
-			end;
+			end
+		else
+			break;
 	until false;
 	move(@tmpbuf,@screen,240);
 end;

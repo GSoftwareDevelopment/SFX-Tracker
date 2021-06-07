@@ -18,7 +18,9 @@ begin
 				2: IOLoad();
 				3: IOSave();
 				4: IOQuit();
-			end;
+			end
+		else
+			break;
 	until false;
 	move(@tmpbuf,@screen,240);
 end;

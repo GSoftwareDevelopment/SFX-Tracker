@@ -11,16 +11,17 @@ procedure updateTABSFX();
 var addr,scrOfs:word;
 
 begin
+	fillchar(@statusBar,20,0);
 	scrOfs:=224;
-	// addr:=HEAP_GetAddr(SFXPtr[currentSFX]);
 	addr:=SFXPtr[currentSFX];
 	if (addr<$ffff) then
 		conv2internalP2P(@_mem[addr],@screen[scrOfs],SFXNameLength)
 	else
 		conv2internalP2P(resptr[str_notDefined],@screen[scrOfs],SFXNameLength);
 
-	putValue(1,11,currentSFX,2,1);
-	colorHLine(0,11,20,1);
+	statusBar[0]:=$03;
+	putValue(1,11,currentSFX,2,0);
+	statusBar[3]:=$1a;
 end;
 
 procedure updateTAB(showPos:boolean);
@@ -135,9 +136,8 @@ end;
 
 procedure TABScreen();
 begin
-	fillchar(@screen[20],220,$00);
+	fillchar(@moduleBar,220,$00);
 	VBar(0,1,width_menuBar,0);
-	screen[223]:=$06;
 	screen[33]:=$07;
 
 	menuBar(resptr[menu_tabs],width_menuBar,1);

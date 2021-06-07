@@ -7,9 +7,11 @@ begin
 	fillchar(@SFXModMode,maxSFXs*2,$00);
 	fillchar(@SFXPtr,maxSFXs*2,$ff);
 	fillchar(@TABPtr,maxTABs*2,$ff);
-	fillchar(@SONGData,256,$ff);
-	fillchar(@SONGTitle,SongNameLength,0);
+	fillchar(@SONGData,256,chnBlank);
+	fillchar(@SONGTitle,SONGNameLength+1,0);
+	move(@defaultSongTitle,@SONGTitle,length(defaultSongTitle)+1);
 
+	SONGChn:=0; SONGPos:=0; SONGShift:=0;
 	currentSFX:=0;
 	currentTAB:=0;
 	currentOct:=1;

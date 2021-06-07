@@ -73,7 +73,6 @@ menu_tabs
 					dta  40,d'>>>',255				; edit current TAB
 					dta  60,d'PLY',255				; play current TAB
 					dta 200,d'OPT',255				; TAB options
-					dta 220,d'#',255					; current SFX (number)
 					dta 255
 
 menu_tabs_option
@@ -107,6 +106,18 @@ menu_Themes
 					dta 203,d'SAVE THEME SET',255						; like above, but save
 					dta 255
 
+;
+menu_song
+					dta  40,d'>>>',255
+					dta  60,d'PLY',255
+					dta 200,d'OPT',255
+					dta 255
+
+menu_song_option
+					dta 164,d'SET SONG NAME',255
+					dta 184,d'RYTHM: _/_/_',255
+					dta 204,d'< BACK',255
+					dta 255
 
 ; menu_ThemeEdit
 ;					dta  40,d'MENU AREA',255		; color scheme definition

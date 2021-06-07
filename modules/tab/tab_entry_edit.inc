@@ -8,7 +8,7 @@ var _note,_fnsfx,_pos:byte;
 		TAB_fnSFX[_pos]:=TABFn_end;
 		modified:=true;
 	end;
-
+(*
 	procedure setJumpTo();
 	begin
 		if (TAB_fnSFX[_pos]<>128) then
@@ -18,12 +18,13 @@ var _note,_fnsfx,_pos:byte;
 			modified:=true;
 		end;
 	end;
-
+*)
 	procedure editJumpTo(jumpPos:byte);
 	var
 		v:smallint;
 
 	begin
+		fillchar(@statusBar,20,0);
 		putMultiText(resptr[msg_TAB_JumpToPrompt],0);
 		putValue(17,11,_pos,3,0);
 		v:=jumpPos;
@@ -36,7 +37,7 @@ var _note,_fnsfx,_pos:byte;
 	end;
 
 	//
-
+(*
 	procedure setRepeat();
 	begin
 		if (TAB_fnSFX[_pos]<TABFn_repeat) or (TAB_fnSFX[_pos]>TABFn_repeatMax) then
@@ -46,7 +47,7 @@ var _note,_fnsfx,_pos:byte;
 			modified:=true;
 		end;
 	end;
-
+*)
 	procedure editRepeat(times,repeatPos:byte);
 	var
 		v:smallint;
@@ -54,6 +55,7 @@ var _note,_fnsfx,_pos:byte;
 	begin
 		times:=times-$80;
 		v:=times;
+		fillchar(@statusBar,20,0);
 		putMultiText(resptr[msg_TAB_RepeatPrompt],0);
 		if inputValue(winXStart+5,2+cursorPos,2,v,1,TAB_maxRepeats,0,color_selected) then
 		begin
@@ -64,7 +66,7 @@ var _note,_fnsfx,_pos:byte;
 	end;
 
 	//
-
+(*
 	procedure setNoteValue();
 	begin
 		if (TAB_fnSFX[_pos] and $C0<>TABFn_freq) then
@@ -77,21 +79,29 @@ var _note,_fnsfx,_pos:byte;
 			modified:=true;
 		end;
 	end;
-
+*)
 	procedure editNoteValue(value:byte);
 	var
 		v:smallint;
 
 	begin
 		v:=value;
+		fillchar(@statusBar,20,0);
 		putMultiText(resptr[msg_TAB_FreqPrompt],0);
 		if inputValue(winXStart+5,2+cursorPos,3,v,0,255,0,color_selected) then
 		begin
 			value:=byte(v);
 			v:=currentSFX and $3f;
+			fillchar(@statusBar,20,0);
 			putMultiText(resptr[msg_TAB_SFXIdPrompt],0);
 			if inputValue(winXStart+9,2+cursorPos,2,v,0,maxSFXs-1,0,color_selected) then
-			begin;
+			begin
+				if SFXPtr[byte(v)]=$FFFF then
+				begin
+					showError(resptr[msg_UnknownDefinition]);
+					exit;
+				end;
+
 				TAB_notes[_pos]:=value;
 				TAB_fnSFX[_pos]:=byte(v) or TABFn_freq;
 				modified:=true;
@@ -160,9 +170,9 @@ begin
 	begin
 		case opt of
 			0: setEndTab();
-			1: setJumpTo();
-			2: setRepeat();
-			3: setNoteValue();
+//			1: setJumpTo();
+//			2: setRepeat();
+//			3: setNoteValue();
 			4: setNoteOff();
 			5: setBlank();
 		end;
@@ -181,6 +191,7 @@ begin
 			2: editRepeat(_fnsfx,_note);
 			3: editNoteValue(_note);
 		end;
+		fillchar(@statusBar,20,0);
 		result:=false;
 	end
 	else

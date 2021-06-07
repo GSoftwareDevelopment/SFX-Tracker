@@ -46,6 +46,7 @@ begin
 				key_RETURN: if TABEntryEdit then break;
 			end;
 
+
 			i:=pianoKeyScan(0);
 			if i<>255 then
 			begin

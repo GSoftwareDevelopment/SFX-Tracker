@@ -61,7 +61,7 @@ begin
 
 			findNext(f);
 		end;
-		fillchar(@screen[20],20,0);
+		fillchar(@moduleBar,20,0);
 		if (IOResult=1) then
 		begin
 			if (filesCount=IO_pageLimit) then
@@ -93,7 +93,8 @@ var
 	end;
 
 begin
-	box(0,2,20,9,$40);
+	fillchar(@moduleBar,200,$40);
+//	box(0,2,20,9,$40);
 
 	listStart:=0; listPage:=0;
 	repeat
@@ -151,7 +152,8 @@ var
 	FName:string[16];
 
 begin
-	box(0,2,20,9,$40);
+	fillchar(@moduleBar,200,$40);
+//	box(0,2,20,9,$40);
 	if filenamePrompt(resptr[msg_IO_Prompt],1,searchPath)<>-1 then
 		if IODirLoop(searchPath,FName) then
 			currentFile:=joinPathName(searchPath,FName)

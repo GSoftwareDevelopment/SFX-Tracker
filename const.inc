@@ -12,6 +12,7 @@ maxTABs				= 64;
 
 SFX_maxLength		= 128;
 TAB_maxLength		= 128;
+SONG_maxLength		= 64;
 IO_pageLimit		= 48;
 
 defaultSongTitle	= 'SONG NAME';
@@ -19,7 +20,9 @@ defaultSearchPath	= 'H:';
 defaultFileName	= 'H:SONG.SMM';
 defaultThemeFile	= 'H:DEFAULT.THM';
 
-// Interface constants
+//
+// INTERFACE CONSTANTS
+
 width_menuTop		= 0;
 width_menuBar		= 4;
 width_menuOptions	= 16;
@@ -33,6 +36,7 @@ width_filePath		= 20;
 winXStart			= 4;
 winYStart			= 2;
 
+winSONGXStart		= 8;
 
 SFX_winWidth		= 16;
 TAB_winWidth		= 9;
@@ -47,7 +51,24 @@ SFXLenX				= 17;
 SFXLenY				= 10;
 
 //
-//	TAB Function (Order)
+
+   SFXMenuOptions					= 3;
+	SFXMenuOption_Back			= 2;
+	SFXMenuModType					= 5;
+	SFXMenuModType_Back			= 4;
+
+	TABMenuOptions					= 2;
+	TABMenuOption_Back			= 1;
+
+	TABEditOptions					= 8;
+	TABEditOption_BackToEdit	= 6;
+	TABEditOption_BackToMenuBar= 7;
+
+	SONGMenuOptions				= 3;
+	SONGMenuOption_Back			= 2;
+
+//
+//	TAB FUNCTIONS (ORDERS)
 
 //												  order   |   param
 	TABFn_note 				= $00;	// 00ss ssss | 00oo nnnn - note
@@ -69,17 +90,36 @@ SFXLenY				= 10;
 	TABFn_end				= $FF;	// 1111 1111 | 1111 1111
 	TABFn_end_param		= $FF;
 
-// File TAGs sections
+//
+// SONG FUNCTIONS (ORDERS)
+
+//	in any channels
+//	%00xxxxx - set TAB#id in channel
+	chnBlank				= %01000000; // blank (No operation)
+	chnOff				= %01111111; // off channel
+
+//	only in first channel			  params in next channels
+	chnOrder				= %10000000;
+	chnOrder_Tempo		= %10000000; // %00000xxx - set tempo; x - line pre beat 0-9
+	chnOrder_JumpTo	= %10000010; // %00xxxxxx - JUMP TO SONG position; x - position 0-63
+	chnOrder_Repeat	= %10000100; // %00xxxxxx - REPEAT; x - repeat times 0-63
+//	chnOrder_Title		= %11000000; // %xxxxxxxx %xxxxxxxx - Sub SONG Title; x - heap offset of title
+	chnOrder_EndSong	= %11111111; // END SONG
+
+//
+// FILE SECTION TAGS
 	section_main	:TTag = (83, 70, 88, 77, 77);	// SFXMM
 	section_SFX		:TTag = ( 0,  0, 83, 70, 88);	// __SFX
 	section_TAB 	:TTag = ( 0,  0, 84, 65, 66);	// __TAB
 	section_SONG	:TTag = ( 0, 83, 79, 78, 71);	// _SONG
 	section_theme	:TTag = (84, 72, 69, 77, 69); // THEME
 
-// resources ids
+//
+// RESOURCES IDS
+
 	base_menus						= 0;
-	base_strings					= 14;
-	base_messages					= 21;
+	base_strings					= 16;
+	base_messages					= 24;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -96,16 +136,19 @@ SFXLenY				= 10;
 	menu_tab_edit					= base_menus+10;
 	menu_GSD							= base_menus+11;
 	menu_Themes						= base_menus+12;
-	menu_IO							= base_menus+13;
+	menu_Song						= base_menus+13;
+	menu_Song_options				= base_menus+14;
+	menu_IO							= base_menus+15;
 
 	str_notDefined					= base_strings+0;
 	str_IO_nextPage				= base_strings+1;
 	str_IO_prevPage				= base_strings+2;
 	str_NoteNames					= base_strings+3;
+	str_EndSONGOrder				= base_strings+4;
 
-	scan_to_scr						= base_strings+4;
-	scan_key_codes					= base_strings+5;
-	scan_piano_codes				= base_strings+6;
+	scan_to_scr						= base_strings+5;
+	scan_key_codes					= base_strings+6;
+	scan_piano_codes				= base_strings+7;
 
 	msg_IO_Prompt					= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;
@@ -119,27 +162,16 @@ SFXLenY				= 10;
 	but_IO_Quit						= base_messages+9;
 	msg_Theme_Overwrite			= base_messages+10;
 	but_Theme_Overwrite			= base_messages+11;
-	msg_SFX_ValuePrompt			= base_messages+12;
-	msg_TAB_JumpToPrompt			= base_messages+13;
-	msg_TAB_RepeatPrompt			= base_messages+14;
-	msg_TAB_FreqPrompt			= base_messages+15;
-	msg_TAB_SFXIdPrompt			= base_messages+16;
+	msg_UnknownDefinition		= base_messages+12;
+	msg_SFX_ValuePrompt			= base_messages+13;
+	msg_TAB_JumpToPrompt			= base_messages+14;
+	msg_TAB_RepeatPrompt			= base_messages+15;
+	msg_TAB_FreqPrompt			= base_messages+16;
+	msg_TAB_SFXIdPrompt			= base_messages+17;
 
 //
+// PROGRAMM ERRORS
 
-   SFXMenuOptions					= 3;
-	SFXMenuOption_Back			= 2;
-	SFXMenuModType					= 5;
-	SFXMenuModType_Back			= 4;
-
-	TABMenuOptions					= 2;
-	TABMenuOption_Back			= 1;
-
-	TABEditOptions					= 8;
-	TABEditOption_BackToEdit	= 6;
-	TABEditOption_BackToMenuBar= 7;
-
-// Program Errors
 	IO_OK								= 1;
 
 	error_badSectionTag			= 12;

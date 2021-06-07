@@ -84,7 +84,7 @@ begin
 
 	putValue(SFXNumberX,SFXNumberY,currentSFX,2,1);
 
-	fillchar(@screen[SFXNameX+vadr[SFXNumberY]],16,$40);
+	fillchar(@moduleBar[4],16,$40);
 	putASCIIText(SFXNameX,SFXNameY,SFXName,color_choice);
 
 	fillchar(@screen[204],16,0);
@@ -100,7 +100,7 @@ end;
 procedure SFXScreen();
 begin
 	section:=0; cursorPos:=0; cursorShift:=0;
-	fillchar(@screen[20],220,$00);
+	fillchar(@moduleBar,220,$00);
 	VBar(0,1,width_menuBar,0);
 	colorHLine(SFXNumberX-1,SFXNumberY,4,1);
 	menuBar(resptr[menu_sfx],width_menuBar,1);
