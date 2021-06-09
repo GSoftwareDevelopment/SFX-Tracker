@@ -25,30 +25,31 @@ data_pointers_list
 	dta a(str_IO_prevPage)		;19
 	dta a(str_NoteNames)			;20
 	dta a(str_EndSONGOrder)		;21
+	dta a(wild_allFiles)			;22
 
-	dta a(scan_to_scr)			;22
-	dta a(scan_key_codes)		;23
-	dta a(scan_piano_codes)		;24
+	dta a(scan_to_scr)			;23
+	dta a(scan_key_codes)		;24
+	dta a(scan_piano_codes)		;25
 
 ;message boxes
-	dta a(msg_IO_DirPrompt)		;25
-	dta a(msg_IO_SavePrompt)	;26
-	dta a(msg_IO_LoadPrompt)	;27
-	dta a(msg_IO_noFiles)		;28
-	dta a(msg_IO_error)			;29
-	dta a(msg_IO_reading)		;30
-	dta a(msg_IO_writing)		;31
-	dta a(msg_IO_skipping)		;32
-	dta a(msg_IO_Quit)			;33
-	dta a(but_IO_Quit)			;34
-	dta a(msg_Theme_Overwrite)	;35
-	dta a(but_Theme_Overwrite)	;36
-	dta a(msg_UnknownDefinition);37
-	dta a(msg_SFX_ValuePrompt) ;38
-	dta a(msg_TAB_JumpToPrompt);39
-	dta a(msg_TAB_RepeatPrompt);40
-	dta a(msg_TAB_FreqPrompt)	;41
-	dta a(msg_TAB_SFXIdPrompt)	;42
+	dta a(msg_IO_DirPrompt)		;26
+	dta a(msg_IO_SavePrompt)	;27
+	dta a(msg_IO_LoadPrompt)	;28
+	dta a(msg_IO_noFiles)		;29
+	dta a(msg_IO_error)			;30
+	dta a(msg_IO_reading)		;31
+	dta a(msg_IO_writing)		;32
+	dta a(msg_IO_skipping)		;33
+	dta a(msg_IO_Quit)			;34
+	dta a(but_IO_Quit)			;35
+	dta a(msg_Theme_Overwrite)	;36
+	dta a(but_Theme_Overwrite)	;37
+	dta a(msg_UnknownDefinition);38
+	dta a(msg_SFX_ValuePrompt) ;39
+	dta a(msg_TAB_JumpToPrompt);40
+	dta a(msg_TAB_RepeatPrompt);41
+	dta a(msg_TAB_FreqPrompt)	;42
+	dta a(msg_TAB_SFXIdPrompt)	;43
 
 	icl 'app_menus.asm'
 	icl 'app_strings.asm'

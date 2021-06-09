@@ -30,20 +30,18 @@ begin
 	putMultiText(promptMsgPtr,promptMsgColor);
 	if inputLongText(0,11,20,FILEPATHMaxLength,fn,0,0) then
 	begin
-		fillchar(@fn[1+length(fn)],FILEPATHMaxLength-length(fn),0);
-
 		// Recognize the entered name
-		is_star:=findChar(fn,'*',1)>-1;
-		is_dot:=findChar(fn,'.',1)>-1;
+		is_star:=findChar(fn,'*',1)>0;
+		is_dot:=findChar(fn,'.',1)>0;
 		if (not is_star) and (not is_dot) then
-			fn:=concat(fn,'*.*'); // add '*.*'
+		begin
+			move(resptr[wild_allFiles],@fn[1+byte(fn[0])],3);
+			fn[0]:=char(byte(fn[0])+3);
+		end;
 		result:=byte((not is_star) and (is_dot));
 
 		// update name on screen
-		if length(fn)<width_filePath then
-			conv2internalP2P(@fn[1],@screen[220],length(fn))
-		else
-			conv2internalP2P(@fn[1],@screen[220],width_filePath);
+		conv2internalP2P(@fn[1],@statusBar,width_filePath);
 	end
 	else
 		result:=-1;

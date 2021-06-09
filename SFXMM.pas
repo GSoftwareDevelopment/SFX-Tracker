@@ -45,7 +45,7 @@ var
 	SONGTitle:string[SONGNameLength];
 
 	currentFile:string[FILEPATHMaxLength]; // indicate a current opened SFXMM file with full path and device
-	searchPath:string[FILEPATHMaxLength]; // used only in IO->DIR
+	searchPath:string[FILEPATHMaxLength] absolute SEARCH_PATH_ADDR; // used only in IO->DIR
 
 	cursorPos,cursorShift:byte;			// general cursor position and view offset
 

@@ -13,6 +13,8 @@ str_NoteNames
 str_EndSONGOrder
 					dta d'END-SONG'
 ;
+wild_allFiles
+					dta '*.*'
 
 scan_to_scr
 					dta d'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ. !#%*-/:<>?_'

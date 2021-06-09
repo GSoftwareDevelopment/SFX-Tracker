@@ -17,5 +17,5 @@ begin
 	currentOct:=1;
 	song_tact:=4;
 	song_beat:=4;
-	song_lpb:=4;
+	song_lpb:=5;
 end;

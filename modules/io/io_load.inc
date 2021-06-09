@@ -70,7 +70,18 @@ var
 	end;
 
 	procedure loadSONG();
+	var
+		dataSize:word;
+
 	begin
+		if getBlock(f,dataSize,2) then begin err:=IOResult; exit; end; // read data size
+		if dataSize>256 then begin err:=error_badFileFormat; exit; end;
+
+		blockRead(f,IOBuf,dataSize);				// read data
+		if IOResult<>3 then
+			if IOResult<>IO_OK then begin err:=IOResult; exit; end;
+
+		move(@IOBuf,@SONGData,dataSize);
 	end;
 
 begin

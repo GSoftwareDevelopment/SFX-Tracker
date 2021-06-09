@@ -36,7 +36,7 @@ width_filePath		= 20;
 winXStart			= 4;
 winYStart			= 2;
 
-winSONGXStart		= 8;
+winSONGXStart		= 7;
 
 SFX_winWidth		= 16;
 TAB_winHeight		= 9;
@@ -122,7 +122,7 @@ SFXLenY				= 10;
 
 	base_menus						= 0;
 	base_strings					= 17;
-	base_messages					= 25;
+	base_messages					= 26;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -149,10 +149,11 @@ SFXLenY				= 10;
 	str_IO_prevPage				= base_strings+2;
 	str_NoteNames					= base_strings+3;
 	str_EndSONGOrder				= base_strings+4;
+	wild_allFiles					= base_strings+5;
 
-	scan_to_scr						= base_strings+5;
-	scan_key_codes					= base_strings+6;
-	scan_piano_codes				= base_strings+7;
+	scan_to_scr						= base_strings+6;
+	scan_key_codes					= base_strings+7;
+	scan_piano_codes				= base_strings+8;
 
 	msg_IO_Prompt					= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;

@@ -26,6 +26,23 @@ begin
 	result:=IOResult=1;
 end;
 
+function storeSONGDataInFile(var f:file):boolean;
+var
+	ofs:word;
+	SONGOfs:byte;
+
+begin
+	ofs:=0;
+	move(@section_SONG,@IOBuf[ofs],5); inc(ofs,5);
+	IOBuf[ofs]:=0; inc(ofs); // store data size
+	IOBuf[ofs]:=1; inc(ofs);
+	move(@SONGData,@IOBuf[ofs],256); inc(ofs,256);
+
+// write to disk
+	BlockWrite(f,IOBuf,ofs);
+	result:=IOResult=1;
+end;
+
 function makeCompletteFile(var f:file):boolean;
 var
 	i:byte;
@@ -39,6 +56,9 @@ begin
 	BlockWrite(f,IOBuf,5+1+1+SONGNameLength);
 
 	if IOResult<>1 then exit(false);
+	// store SONG data
+	if not storeSONGDataInFile(f) then exit(false);
+
 	// store SFXs data
 	for i:=0 to maxSFXs-1 do
 		if SFXPtr[i]<>$FFFF then

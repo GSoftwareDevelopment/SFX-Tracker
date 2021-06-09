@@ -9,12 +9,12 @@ begin
 	for i:=0 to 8 do
 	begin
 		fillchar(@screen[scrOfs],15,0);
-		if (indPos) and (_line=_pos) then
-			screen[scrOfs]:=$1e;
-		scrOfs:=scrOfs+1;
 
-		putValue(scrOfs,0,_line,2,0); scrOfs:=scrOfs+2;
-		screen[scrOfs]:=$1a; scrOfs:=scrOfs+1;
+		putValue(scrOfs,0,_line,2,2);
+		scrOfs:=scrOfs+2;
+		if (indPos) and (_line=_pos) then
+			screen[scrOfs]:=$9e;
+		scrOfs:=scrOfs+1;
 
 		order:=SONGData[songOfs];
 		if order<chnOrder then
@@ -42,41 +42,38 @@ begin
 				order:=SONGData[songOfs];
 				chn:=chn+1;
 			until chn>4;
-			scrOfs:=scrOfs+4;
+			scrOfs:=scrOfs+5;
 		end
 		else
 		begin
 			case Order of
 				chnOrder_Tempo: begin
-					screen[scrOfs  ]:=$34; // T
-					screen[scrOfs+1]:=$1a; // :
-					scrOfs:=scrOfs+3;
-					putValue(scrOfs,0,SONGData[songOfs+1],2,0);
-					scrOfs:=scrOfs+13;
-				end;
+						screen[scrOfs  ]:=$34; // T
+						screen[scrOfs+1]:=$1a; // :
+						scrOfs:=scrOfs+3;
+						putValue(scrOfs,0,SONGData[songOfs+1],2,0);
+						scrOfs:=scrOfs+14;
+					end;
 				chnOrder_JumpTo: begin
-					screen[scrOfs  ]:=$2a; // J
-					screen[scrOfs+1]:=$1e; // >
-					scrOfs:=scrOfs+3;
-					putValue(scrOfs,0,SONGData[songOfs+1],2,0);
-					scrOfs:=scrOfs+13;
-				end;
+						screen[scrOfs  ]:=$2a; // J
+						screen[scrOfs+1]:=$1e; // >
+						scrOfs:=scrOfs+3;
+						putValue(scrOfs,0,SONGData[songOfs+1],2,0);
+						scrOfs:=scrOfs+14;
+					end;
 				chnOrder_Repeat: begin
-					screen[scrOfs  ]:=$32; // R
-					screen[scrOfs+1]:=$1a; // :
-					scrOfs:=scrOfs+3;
-					putValue(scrOfs,0,SONGData[songOfs+1],2,0); scrOfs:=scrOfs+2;
-					screen[scrOfs]:=$1e; scrOfs:=scrOfs+1; // >
-					putValue(scrOfs,0,SONGData[songOfs+2],2,0);
-					scrOfs:=scrOfs+10;
-				end;
-//				chnOrder_Title: begin
-//
-//				end;
+						screen[scrOfs  ]:=$32; // R
+						screen[scrOfs+1]:=$1a; // :
+						scrOfs:=scrOfs+3;
+						putValue(scrOfs,0,SONGData[songOfs+1],2,0); scrOfs:=scrOfs+2;
+						screen[scrOfs]:=$1e; scrOfs:=scrOfs+1; // >
+						putValue(scrOfs,0,SONGData[songOfs+2],2,0);
+						scrOfs:=scrOfs+11;
+					end;
 				chnOrder_EndSong: begin
-					move(resptr[str_EndSONGOrder],@screen[scrOfs],8); // 8 - hardcoded string length!
-					scrOfs:=scrOfs+16;
-				end;
+						move(resptr[str_EndSONGOrder],@screen[scrOfs],8); // 8 - hardcoded string length!
+						scrOfs:=scrOfs+17;
+					end;
 			end;
 			songOfs:=songOfs+4;
 		end;

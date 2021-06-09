@@ -171,8 +171,9 @@ var
 begin
 	len:=length(s);
 	fillchar(@buf,256,0);
-	conv2internal(s);
-	move(@s[1],@buf,len);
+	// conv2internal(s);
+	// move(@s[1],@buf,len);
+	conv2internalP2P(@s[1],@buf,len);
 	if (len>width) then
 	begin
 		curX:=width-1; shiftX:=len-width;
@@ -251,7 +252,7 @@ begin
 		move(@buf,@screen[scrOfs],width);
 	end
 	else
-		move(@s[1],@screen[scrOfs],width);
+		conv2internalP2P(@s[1],@screen[scrOfs],width);
 	conv2ASCII(s);
 	colorHLine(x,y,width,colOut);
 	kbcode:=255;

@@ -1,4 +1,4 @@
-function IOReadDir(path:string; startRead:smallint):byte;
+function IOReadDir(var path:string; startRead:smallint):byte;
 const
 	attrMask:array[0..3] of byte = (faReadOnly,faSysFile,faHidden,faArchive);
 	attrChar:array[0..3] of byte = (50,51,40,33); // RSHA
@@ -24,7 +24,7 @@ begin
 			screen2video();
 			while (startRead>0) and (IOResult=1) do
 			begin
-				findNext(f); startRead:=startRead-1;
+				findNext(f); dec(startRead);
 			end;
 		end;
 		putMultiText(resptr[msg_IO_Reading],0);
@@ -34,7 +34,7 @@ begin
 			fillchar(@listBuf[listOfs],width_fileList,0); // clear list entry
 
 			nameLen:=length(f.Name);
-			// convert all characters in name to internal code and, if nessesert to uppercase
+			// convert all characters in name to internal code and to uppercase, if nessesery.
 			for i:=1 to nameLen do
 				if byte(f.Name[i])>95 then
 					f.Name[i]:=char(byte(f.Name[i])-64)
@@ -80,7 +80,7 @@ end;
 
 function IODirLoop(var searchPath:string; var resultFName:string[16]):boolean;
 var
-	f:TSearchRec;
+//	f:TSearchRec;
 	selFile:shortint;
 	filesCount:byte;
 	listStart,len:smallint;
@@ -93,12 +93,9 @@ var
 	end;
 
 begin
-	fillchar(@moduleBar,200,$40);
-//	box(0,2,20,9,$40);
-
 	listStart:=0; listPage:=0;
 	repeat
-		box(0,2,width_fileList,9,$40);
+		fillchar(@moduleBar,200,$40);
 		filesCount:=IOReadDir(searchPath,listStart);
 		if filesCount>0 then
 		begin
@@ -153,8 +150,8 @@ var
 
 begin
 	fillchar(@moduleBar,200,$40);
-//	box(0,2,20,9,$40);
+	fillchar(@FName,16,255);
 	if filenamePrompt(resptr[msg_IO_Prompt],1,searchPath)<>-1 then
 		if IODirLoop(searchPath,FName) then
-			currentFile:=joinPathName(searchPath,FName)
+			joinPathName(searchPath,FName,currentFile)
 end;

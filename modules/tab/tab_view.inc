@@ -27,109 +27,107 @@ end;
 procedure updateTAB(showPos:boolean);
 var
 	scrOfs,i,_note,_fnsfx,noteOfs,noteOct,pos:byte;
-	ch,_tact,_beat,_lpb,_nxt:byte;
+	ch,_beat,_nxt:byte;
 	note_names:array[0..0] of byte;
 
 begin
 	note_names:=resptr[str_NoteNames];
-	scrOfs:=vadr[winYStart]+winXStart+1;
-	_tact:=1+(cursorShift div (song_lpb*song_beat));
-	_beat:=1+cursorShift div song_beat mod song_beat;
-	_lpb:=1+cursorShift mod song_lpb;
+	scrOfs:=vadr[winYStart]+winXStart;
+	if song_beat>1 then
+		_beat:=cursorShift mod (song_beat-1);
+
 	_nxt:=cursorShift;
 	pos:=cursorShift; _fnsfx:=0;
 	for i:=2 to 10 do
 	begin
-		putValue(winXStart+1,i,_nxt,3,0);
+		fillchar(@screen[scrOfs],16,0);
+		putValue(scrOfs,0,_nxt,3,2); scrOfs:=scrOfs+5;
 
 		_fnsfx:=TAB_fnSFX[pos]; _note:=TAB_notes[pos];
 		if (_fnsfx=TABFn_end) and (_note=TABFn_end_param) then
-			move(note_names[33],@screen[scrOfs+4],6) // ENDTAB
+		begin
+			move(note_names[33],@screen[scrOfs],6); // ENDTAB
+			scrOfs:=scrOfs+7;
+		end
 		else
 			if (_fnsfx and $c0=$00) then
 			begin // note
 				noteOct:=_note div 12; noteOfs:=(_note mod 12) shl 1;
 
 				// NOTE#
-				screen[scrOfs+4]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
-				screen[scrOfs+5]:=note_names[noteOfs];
+				screen[scrOfs]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
+				screen[scrOfs+1]:=note_names[noteOfs];
+				scrOfs:=scrOfs+2;
 				if (noteOct<=9) then
-					screen[scrOfs+6]:=$10+noteOct
+					screen[scrOfs]:=$10+noteOct
 				else
-					screen[scrOfs+6]:=$0d; // hypen sign
-				screen[scrOfs+7]:=0;
+					screen[scrOfs]:=$0d; // hypen sign
+				scrOfs:=scrOfs+2;
 
 				// SFX#
-				putValue(winXStart+9,i,_fnsfx,2,0);
+				putValue(scrOfs,0,_fnsfx,2,0);
+				scrOfs:=scrOfs+5;
+
 			end
 			else
 				if (_fnsfx and $c0=$40) then
 				begin // frequency value
 					_fnsfx:=_fnsfx and $3f;
-					putValue(winXStart+5,i,_note,3,0);
-					putValue(winXStart+9,i,_fnsfx,2,0);
-					screen[scrOfs+7]:=$0f;
+					putValue(scrOfs,0,_note,3,0);
+					scrOfs:=scrOfs+3;
+					screen[scrOfs]:=$0f; // '/'
+					scrOfs:=scrOfs+1;
+					putValue(scrOfs,0,_fnsfx,2,0);
+					scrOfs:=scrOfs+5;
 				end
 				else // function
+				begin
 					if (_fnsfx and $40=$40) then
 					begin
 						if (_note and $80=TABFn_noteOff_param) then
-							move(note_names[45],@screen[scrOfs+4],6) // === .. (note off)
+							move(note_names[45],@screen[scrOfs],6) // === .. (note off)
 						else
-							move(note_names[39],@screen[scrOfs+4],6); // ... .. (blank)
+							move(note_names[39],@screen[scrOfs],6); // ... .. (blank)
+						scrOfs:=scrOfs+9;
 					end
 					else
 						if (_fnsfx and $3f=0) then
 						begin // jump to
-							move(note_names[24],@screen[scrOfs+4],3); // __>___
-							putValue(winXStart+8,i,_note,3,0); // note gives position
+							scrOfs:=scrOfs+2;
+							screen[scrOfs]:=$1e;
+							scrOfs:=scrOfs+1;
+							putValue(scrOfs,0,_note,3,0); // note gives position
+							scrOfs:=scrOfs+6;
 						end
 						else
 						begin // repeat
-							move(note_names[24],@screen[scrOfs+4],3); // __>___
 							ch:=(_fnsfx-128); // repeat times is value from 1 to 9
-							putValue(winXStart+5,i,ch,2,0);
-	//								screen[scrOfs+5]:=ch;
-							putValue(winXStart+8,i,_note,3,0); // note gives position
+							putValue(scrOfs,0,ch,2,0);
+							scrOfs:=scrOfs+2;
+							screen[scrOfs]:=$1e;
+							scrOfs:=scrOfs+1;
+							putValue(scrOfs,0,_note,3,0); // note gives position
+							scrOfs:=scrOfs+6;
 						end;
-
-		if (showPos) then
-		begin
-			ch:=$10+_lpb;
-			screen[scrOfs+13]:=ch;
-			if (_lpb=1) then
-			begin
-				ch:=$10+_beat;
-				screen[scrOfs+12]:=ch;
-				if (_beat=1) then ch:=$10+_tact else ch:=0;
-				screen[scrOfs+11]:=ch;
-			end
-			else
-			begin
-				screen[scrOfs+12]:=0;
-				screen[scrOfs+11]:=0;
-			end;
-
-			if (_lpb<song_lpb) then _lpb:=_lpb+1
-			else
-			begin
-				_lpb:=1;
-				if (_beat<song_beat) then _beat:=_beat+1
-				else
-				begin
-					_beat:=1;
-					if (_tact<song_tact) then _tact:=_tact+1 else _tact:=1;
 				end;
-			end;
-		end;
 
 		if (pos>=TABLen) then
-			colorHLine(winXStart,i,16,2)
+			colorHLine(winXStart+3,i,13,2)
 		else
-			colorHLine(winXStart,i,16,0);
-
+		begin
+			if showPos and (song_lpb>1) then
+			begin
+				if _beat=0 then
+					colorHLine(winXStart+3,i,13,2)
+				else
+					colorHLine(winXStart+3,i,13,0);
+				_beat:=_beat+1; if _beat=song_beat-1 then _beat:=0;
+			end
+			else
+				colorHLine(winXStart+3,i,13,0);
+		end;
 		pos:=pos+1;
-		scrOfs:=scrOfs+20;
+		scrOfs:=scrOfs+6;
 		_nxt:=_nxt+1;
  	end;
 end;

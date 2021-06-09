@@ -1,24 +1,47 @@
 procedure SONGEditLoop();
 var
-	_pos,SONGOfs,x,y:byte;
+	_pos,SONGOfs,maxCols,x,y:byte;
 	i:smallint;
 
+	procedure setCursor();
+	var
+	  order:byte;
+
+	begin
+		_pos:=SONGShift+SONGPos;
+		SONGOfs:=_pos*4;
+		x:=winSONGXStart; y:=2+SONGPos;
+		order:=SONGData[SONGOfs];
+		if order=chnOrder_EndSong then
+		begin
+			SONGChn:=0; maxCols:=0;
+			colorHLine(x,y,8,3); // 8-hardcoded length of 'END-SONG'
+		end
+		else
+		begin
+			if order and chnOrder<>0 then
+				case order of
+					chnOrder_Tempo,
+					chnOrder_JumpTo: maxCols:=1;
+					chnOrder_Repeat: maxCols:=2;
+				end
+			else
+				maxCols:=3;
+			x:=x+SONGChn*3;
+			colorHLine(x,y,2,3); // 8-hardcoded length of 'END-SONG'
+		end;
+	end;
 begin
 	updateSONG(false);
-	colorHLine(winSONGXStart+SONGChn*3,2+SONGPos,2,3);
+	// colorHLine(winSONGXStart+SONGChn*3,2+SONGPos,2,3);
+	setCursor();
 	screen2video(); kbcode:=255;
 	reset_pianoVis();
 	repeat
 		if (kbcode)<>255 then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
-			x:=winSONGXStart+SONGChn*3;
-			y:=2+SONGPos;
-			colorHLine(x,y,2,0);
-			_pos:=SONGShift+SONGPos;
-			SONGOfs:=_pos*4;
-
-			controlSelectionKeys(key,key_LEFT,key_RIGHT,SONGChn,0,3);
+			controlSelectionKeys(key,key_LEFT,key_RIGHT,SONGChn,0,maxCols);
 
 			case key of
 				key_ESC: break;
@@ -50,7 +73,7 @@ begin
 			end;
 			//
 			updateSONG(false);
-			colorHLine(winSONGXStart+SONGChn*3,2+SONGPos,2,3);
+			setCursor();
 			screen2video();
 		end;
 		updatePianoVis();

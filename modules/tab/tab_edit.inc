@@ -13,7 +13,7 @@ begin
 		if (kbcode)<>255 then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
-			colorHLine(winXStart,2+cursorPos,20-winXStart,0);
+//			colorHLine(winXStart,2+cursorPos,20-winXStart,0);
 			_pos:=cursorShift+cursorPos;
 			if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
 				updateTABSFX();
@@ -30,16 +30,8 @@ begin
 				end;
 				key_SPACE: begin
 					SFX_ChannelOff(0);
-//					if key=key_SPACE then
-//					begin
-						TAB_notes[_pos]:=TABFn_blank_param;
-						TAB_fnSFX[_pos]:=TABFn_blank;
-//					end
-//					else
-//					begin
-//						TAB_notes[_pos]:=TABFn_noteOff_param;
-//						TAB_fnSFX[_pos]:=TABFn_noteOff;
-//					end
+					TAB_notes[_pos]:=TABFn_blank_param;
+					TAB_fnSFX[_pos]:=TABFn_blank;
 					modified:=true;
 					moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 				end;
@@ -72,6 +64,7 @@ begin
 		end;
 		updatePianoVis();
 	until false;
+	updateTAB(true);
 	reset_pianoVis();
 	kbcode:=255;
 end;
