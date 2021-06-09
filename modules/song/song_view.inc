@@ -8,7 +8,7 @@ begin
 	_pos:=SONGShift+SONGPos;
 	for i:=0 to 8 do
 	begin
-		screen[scrOfs]:=$00;
+		fillchar(@screen[scrOfs],15,0);
 		if (indPos) and (_line=_pos) then
 			screen[scrOfs]:=$1e;
 		scrOfs:=scrOfs+1;
@@ -48,19 +48,27 @@ begin
 		begin
 			case Order of
 				chnOrder_Tempo: begin
-					screen[scrOfs]:=$34; scrOfs:=scrOfs+1; // T
-					screen[scrOfs]:=$1a; scrOfs:=scrOfs+2;	// :
+					screen[scrOfs  ]:=$34; // T
+					screen[scrOfs+1]:=$1a; // :
+					scrOfs:=scrOfs+3;
+					putValue(scrOfs,0,SONGData[songOfs+1],2,0);
 					scrOfs:=scrOfs+13;
 				end;
 				chnOrder_JumpTo: begin
-					screen[scrOfs]:=$2a; scrOfs:=scrOfs+1; // J
-					screen[scrOfs]:=$1a; scrOfs:=scrOfs+2; // :
+					screen[scrOfs  ]:=$2a; // J
+					screen[scrOfs+1]:=$1e; // >
+					scrOfs:=scrOfs+3;
+					putValue(scrOfs,0,SONGData[songOfs+1],2,0);
 					scrOfs:=scrOfs+13;
 				end;
 				chnOrder_Repeat: begin
-					screen[scrOfs]:=$32; scrOfs:=scrOfs+1; // R
-					screen[scrOfs]:=$1a; scrOfs:=scrOfs+2; // :
-					scrOfs:=scrOfs+13;
+					screen[scrOfs  ]:=$32; // R
+					screen[scrOfs+1]:=$1a; // :
+					scrOfs:=scrOfs+3;
+					putValue(scrOfs,0,SONGData[songOfs+1],2,0); scrOfs:=scrOfs+2;
+					screen[scrOfs]:=$1e; scrOfs:=scrOfs+1; // >
+					putValue(scrOfs,0,SONGData[songOfs+2],2,0);
+					scrOfs:=scrOfs+10;
 				end;
 //				chnOrder_Title: begin
 //

@@ -119,6 +119,17 @@ menu_song_option
 					dta 204,d'< BACK',255
 					dta 255
 
+menu_song_edit
+					dta  44,d'END SONG',255
+					dta  64,d'SET TEMPO',255
+					dta  84,d'JUMP TO',255
+					dta 104,d'REPEAT',255
+					dta 124,d'CHANNEL OFF',255
+					dta 144,d'NOP',255
+					dta 164,d'BACK >',255			; back to SONG edit
+					dta 184,d'< EXIT',255			; back to SONG menu bar
+					dta 255
+
 ; menu_ThemeEdit
 ;					dta  40,d'MENU AREA',255		; color scheme definition
 ;					dta  60,d'ITEM',255				; color scheme definition

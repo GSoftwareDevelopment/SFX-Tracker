@@ -67,6 +67,8 @@ SFXLenY				= 10;
 
 	SONGMenuOptions				= 3;
 	SONGMenuOption_Back			= 2;
+	SONGEditOption_BackToEdit	= 6;
+	SONGEditOption_BackToMenuBar= 7;
 
 //
 //	TAB FUNCTIONS (ORDERS)
@@ -119,8 +121,8 @@ SFXLenY				= 10;
 // RESOURCES IDS
 
 	base_menus						= 0;
-	base_strings					= 16;
-	base_messages					= 24;
+	base_strings					= 17;
+	base_messages					= 25;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -139,7 +141,8 @@ SFXLenY				= 10;
 	menu_Themes						= base_menus+12;
 	menu_Song						= base_menus+13;
 	menu_Song_options				= base_menus+14;
-	menu_IO							= base_menus+15;
+	menu_Song_edit					= base_menus+15;
+	menu_IO							= base_menus+16;
 
 	str_notDefined					= base_strings+0;
 	str_IO_nextPage				= base_strings+1;

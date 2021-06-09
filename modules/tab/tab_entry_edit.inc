@@ -179,12 +179,13 @@ begin
 		end;
 		box(4,2,16,9,0);
 		updateTAB(true);
-		if opt=TABEditOption_BackToEdit then
+		if opt>=TABEditOption_BackToEdit then exit(opt=TABEditOption_BackToMenuBar);
+(*		if opt=TABEditOption_BackToEdit then
 		begin
 			colorHLine(winXStart,2+cursorPos,20-winXStart,color_selected);
 			exit(false);
 		end;
-		if opt=TABEditOption_BackToMenuBar then exit(true);
+		if opt=TABEditOption_BackToMenuBar then exit(true);*)
 		_note:=TAB_notes[_pos];
 		_fnsfx:=TAB_fnSFX[_pos];
 		case opt of

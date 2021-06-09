@@ -1,19 +1,9 @@
-{$DEFINE ROMOFF}
-{$DEFINE SFX_SWITCH_ROM}
-{$DEFINE SFX_previewChannels}
-// {$DEFINE SFX_SYNCAUDIOOUT}
-
-{$DEFINE USE_MODULATORS}
-{$DEFINE DFD_MOD}
-{$DEFINE LFD_NLM_MOD}
-{$DEFINE MFD}
-{$DEFINE HFD}
-// {$DEFINE USE_ALL_MODULATORS}
-
-{$DEFINE TAB_PLAYBACK}
-
+program SFXMM;
 {$librarypath './units/'}
 {$librarypath './sfx-engine/'}
+
+{$DEFINE ROMOFF}
+
 uses SFX_Engine, sysutils, strings, gr2, ui, pmgraph;
 
 {$i types.inc}

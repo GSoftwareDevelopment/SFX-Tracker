@@ -5,26 +5,12 @@ type
 	byteArray=array[0..0] of byte;
 	wordArray=array[0..0] of word;
 
+{$i sfx_engine.conf.inc}
+
 const
-	SFX_CHANNELS_ADDR	= $6C0;
-	SFX_TABLE_ADDR		= $CE00;	// list for SFX definitions
-	TAB_TABLE_ADDR		= $CE80;	// list for TAB definitions
-	DATA_ADDR			= $D800;	// data address
-	NOTE_TABLE_ADDR	= $CD80;
 	SFX_NameLength		= 14;
 
 var
-(* SFX Mod Modes:
-	0 - HFD - High Freq. Div.     - relative modulation of the frequency divider in the range of +/- 127
-											- without the possibility of looping the SFX
-											- Full backwards compatibility with the original SFX engine
-	1 - MFD - Middle Freq. Div.   - relative modulation of the frequency divider in the range of +/- 63
-											- SFX looping possible
-	2 - LFD/NLM - Low Freq Div.	- note level modulation in relative range of +/- 32 half tones;
-											- relative modulation of freq. divider in the range of +/- 32
-											- SFX looping possible
-	3 - DSD - Direct Set Div.		- direct set of the frequency divider - without looping possible
-*)
 	SONGData:byteArray;		// table for SONG data
 	SFXModMode:byteArray;	// indicates the type of modulation used in the SFX.
 	SFXPtr:wordArray;			// heap pointers to SFX definitions
