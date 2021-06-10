@@ -2,21 +2,21 @@ function SONGEntryEdit(SONGOfs:byte):boolean;
 var
 	opt:byte;
 
-	procedure editTemp();
+	procedure setTempo();
 	begin
 		SONGData[SONGOfs]:=chnOrder_Tempo;
 		SONGData[SONGOfs+1]:=song_lpb;
 		SONGChn:=1;
 	end;
 
-	procedure editJumpTo();
+	procedure setJumpTo();
 	begin
 		SONGData[SONGOfs]:=chnOrder_JumpTo;
 		SONGData[SONGOfs+1]:=0;
 		SONGChn:=1;
 	end;
 
-	procedure editRepeat();
+	procedure setRepeat();
 	begin
 		SONGData[SONGOfs]:=chnOrder_Repeat;
 		SONGData[SONGOfs+1]:=0;
@@ -43,9 +43,9 @@ begin
 		if opt>=SONGEditOption_BackToEdit then exit(opt=SONGEditOption_BackToMenuBar);
 
 		case opt of
-			1: editTemp();
-			2: editJumpTo();
-			3: editRepeat();
+			1: setTempo();
+			2: setJumpTo();
+			3: setRepeat();
 		end;
 
 		fillchar(@statusBar,20,0);

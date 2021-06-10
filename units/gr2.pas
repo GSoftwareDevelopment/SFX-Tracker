@@ -1,13 +1,16 @@
 unit GR2;
 
 interface
+type
+	byteArray=array[0..0] of byte;
+
 const
 	vadr:array[0..11] of byte = (0,20,40,60,80,100,120,140,160,180,200,220);
 	colMask:array[0..3] of byte = ($00,$40,$80,$c0);
 
 var
-	screen:array[0..0] of byte;
-	video:array[0..0] of byte;
+	screen:byteArray;
+	video:byteArray;
 	DLIST:word absolute 560;
 	VCOUNT:byte absolute $d40b;
 	PFCols:array[0..4] of byte absolute 708;
@@ -23,7 +26,8 @@ procedure box(x,y,width,height,cCol:byte);
 procedure putText(x,y:byte; var s:string; color:byte);
 procedure putNText(x,y:byte; strptr:pointer; color:byte);
 procedure putASCIIText(x,y:byte; var s:string; color:byte);
-procedure putValue(x,y:byte; value:longint; zeros,color:byte);
+procedure strVal2Mem(_dest:pointer; value:smallint; zeros,color:byte);
+procedure putValue(x,y:byte; value:smallint; zeros,color:byte);
 procedure putHexValue(x,y,value:byte; color:byte);
 procedure wait4screen();
 procedure screen2video();
@@ -157,12 +161,14 @@ begin
 	end;
 end;
 
-procedure putValue;
+procedure strVal2Mem(_dest:pointer; value:smallint; zeros,color:byte);
 var
 	ptr,a:byte;
+	dest:array[0..0] of byte;
 
 begin
-	ptr:=x+vadr[y]; color:=colMask[color]+$10;
+	dest:=_dest;
+	ptr:=0; color:=colMask[color]+$10;
 	if (zeros=3) then begin
 		if (value>=200) then
 		begin
@@ -175,7 +181,7 @@ begin
 			end
 			else
 				a:=0;
-		screen[ptr]:=color+a; ptr:=ptr+1;
+		dest[ptr]:=color+a; ptr:=ptr+1;
 	end;
 	if (value>=50) then begin a:=5; value:=value-50; end else a:=0;
 	if (value>=40) then begin a:=a+4; value:=value-40; end
@@ -185,7 +191,7 @@ begin
 			if (value>=20) then begin a:=a+2; value:=value-20; end
 			else
 				if (value>=10) then begin a:=a+1; value:=value-10; end;
-	screen[ptr]:=color+a; ptr:=ptr+1;
+	dest[ptr]:=color+a; ptr:=ptr+1;
 	if (value>=5) then begin a:=5; value:=value-5; end else a:=0;
 	if (value>=4) then begin a:=a+4; value:=value-4; end
 	else
@@ -194,7 +200,16 @@ begin
 			if (value>=2) then begin a:=a+2; value:=value-2; end
 			else
 				if (value>=1) then begin a:=a+1; value:=value-1; end;
-	screen[ptr]:=color+a;
+	dest[ptr]:=color+a;
+end;
+
+procedure putValue;
+var
+	ptr,a:byte;
+
+begin
+	ptr:=x+vadr[y];
+	strVal2Mem(@screen[ptr],value,zeros,color);
 End;
 
 procedure putHexValue;

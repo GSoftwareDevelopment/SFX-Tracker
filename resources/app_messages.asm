@@ -48,3 +48,6 @@ msg_TAB_FreqPrompt
 msg_TAB_SFXIdPrompt
 					dta 220,d'SFX ID',255
 					dta 235,6,d'0_63',255,255
+msg_BeatStepPrompt
+					dta 220,d'BEAT STEP',255
+					dta 235,6,d'1_32',255,255

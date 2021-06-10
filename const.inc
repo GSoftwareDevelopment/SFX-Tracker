@@ -19,6 +19,9 @@ defaultSongTitle	= 'SONG NAME';
 defaultSearchPath	= 'H:';
 defaultFileName	= 'H:SONG.SMM';
 defaultThemeFile	= 'H:DEFAULT.THM';
+defaultSongBeat	= 4;
+defaultSongTempo	= 5;
+defaultPianoOctave= 1;
 
 //
 // INTERFACE CONSTANTS
@@ -58,15 +61,15 @@ SFXLenY				= 10;
 	SFXMenuModType					= 5;
 	SFXMenuModType_Back			= 4;
 
-	TABMenuOptions					= 2;
-	TABMenuOption_Back			= 1;
+	TABMenuOptions					= 3;
+	TABMenuOption_Back			= 2;
 
 	TABEditOptions					= 8;
 	TABEditOption_BackToEdit	= 6;
 	TABEditOption_BackToMenuBar= 7;
 
-	SONGMenuOptions				= 3;
-	SONGMenuOption_Back			= 2;
+	SONGMenuOptions				= 2;
+	SONGMenuOption_Back			= 1;
 	SONGEditOption_BackToEdit	= 6;
 	SONGEditOption_BackToMenuBar= 7;
 
@@ -74,7 +77,7 @@ SFXLenY				= 10;
 //	TAB FUNCTIONS (ORDERS)
 
 //												  order   |   param
-	TABFn_note 				= $00;	// 00ss ssss | 00oo nnnn - note
+//	TABFn_note 				= $00;	// 00ss ssss | 00oo nnnn - note
 	TABFn_freq				= $40;	// 01ss ssss | vvvv vvvv - frequency divider
 
 // TAB_FN_LOOP
@@ -82,7 +85,7 @@ SFXLenY				= 10;
 
 	TAB_maxRepeats 		= 63;
 	TABFn_repeat			= $81;	// 10xx xxxx | 0vvv vvvv
-	TABFn_repeatMax		= $BF;
+//	TABFn_repeatMax		= $BF;
 
 	TABFn_noteOff  		= $C0;	// 1100 0000 | 1000 0000
 	TABFn_noteOff_param	= $80;
@@ -122,7 +125,7 @@ SFXLenY				= 10;
 
 	base_menus						= 0;
 	base_strings					= 17;
-	base_messages					= 26;
+	base_messages					= 27;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -154,6 +157,7 @@ SFXLenY				= 10;
 	scan_to_scr						= base_strings+6;
 	scan_key_codes					= base_strings+7;
 	scan_piano_codes				= base_strings+8;
+	val_menu_beatStep				= base_strings+9;
 
 	msg_IO_Prompt					= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;
@@ -173,6 +177,7 @@ SFXLenY				= 10;
 	msg_TAB_RepeatPrompt			= base_messages+15;
 	msg_TAB_FreqPrompt			= base_messages+16;
 	msg_TAB_SFXIdPrompt			= base_messages+17;
+	msg_BeatStepPrompt			= base_messages+18;
 
 //
 // PROGRAMM ERRORS

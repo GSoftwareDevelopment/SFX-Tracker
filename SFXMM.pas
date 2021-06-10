@@ -58,7 +58,7 @@ var
 	currentOct:byte;
 	currentTAB:byte;
 
-	song_tact,song_beat:byte;
+	song_beat:byte;
 
 	modified:boolean = false;
 

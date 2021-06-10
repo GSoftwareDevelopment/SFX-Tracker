@@ -34,7 +34,7 @@ begin
 	note_names:=resptr[str_NoteNames];
 	scrOfs:=vadr[winYStart]+winXStart;
 	if song_beat>1 then
-		_beat:=cursorShift mod (song_beat-1);
+		_beat:=cursorShift mod song_beat;
 
 	_nxt:=cursorShift;
 	pos:=cursorShift; _fnsfx:=0;
@@ -47,7 +47,7 @@ begin
 		if (_fnsfx=TABFn_end) and (_note=TABFn_end_param) then
 		begin
 			move(note_names[33],@screen[scrOfs],6); // ENDTAB
-			scrOfs:=scrOfs+7;
+			scrOfs:=scrOfs+9;
 		end
 		else
 			if (_fnsfx and $c0=$00) then
@@ -121,7 +121,7 @@ begin
 					colorHLine(winXStart+3,i,13,2)
 				else
 					colorHLine(winXStart+3,i,13,0);
-				_beat:=_beat+1; if _beat=song_beat-1 then _beat:=0;
+				_beat:=_beat+1; if _beat=song_beat then _beat:=0;
 			end
 			else
 				colorHLine(winXStart+3,i,13,0);

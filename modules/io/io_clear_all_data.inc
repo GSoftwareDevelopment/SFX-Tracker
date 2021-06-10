@@ -14,8 +14,8 @@ begin
 	SONGChn:=0; SONGPos:=0; SONGShift:=0;
 	currentSFX:=0;
 	currentTAB:=0;
-	currentOct:=1;
-	song_tact:=4;
-	song_beat:=4;
-	song_lpb:=5;
+	currentOct:=defaultPianoOctave;
+//	song_tact:=4;
+	song_beat:=defaultSongBeat;
+	song_lpb:=defaultSongTempo;
 end;

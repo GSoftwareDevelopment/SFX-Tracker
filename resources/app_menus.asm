@@ -76,7 +76,10 @@ menu_tabs
 					dta 255
 
 menu_tabs_option
-					dta 184,d'SET NAME',255			; set TAB name
+					dta 164,d'SET NAME',255			; set TAB name
+					dta 184,d'BEAT STEP: '			; set beat step
+val_menu_beatStep
+					dta '__',255
 					dta 204,d'< BACK',255			; back to TAB menu bar
 					dta 255
 menu_tab_edit
@@ -114,8 +117,7 @@ menu_song
 					dta 255
 
 menu_song_option
-					dta 164,d'SET SONG NAME',255
-					dta 184,d'RYTHM: _/_/_',255
+					dta 184,d'SET SONG NAME',255
 					dta 204,d'< BACK',255
 					dta 255
 

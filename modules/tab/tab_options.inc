@@ -1,15 +1,32 @@
+procedure setTABName();
+begin
+	if (inputText(SFXNameX,SFXNumberY,TABNameLength,TABName,0,color_choice)) then
+	begin
+		storeTABData(currentTAB);
+		modified:=false;
+	end;
+end;
+
+procedure setBeatStep();
+var
+	newBeat:smallint;
+
+begin
+	putMultiText(resptr[msg_BeatStepPrompt],0);
+	newBeat:=song_beat;
+	if inputValue(15,9,2,newBeat,1,32,0,0) then
+		song_beat:=byte(newBeat);
+end;
+
 procedure TAB_Options(defaultOpt:byte);
 begin
-	// make possibility to direct invoke option
-	if defaultOpt=TABMenuOption_Back then
-		if optionsList(resptr[menu_tabs_options],width_menuOptions,TABMenuOptions,defaultOpt,key_Up,key_Down) then
-			case defaultOpt of
-				0: if (inputText(SFXNameX,SFXNumberY,TABNameLength,TABName,0,color_choice)) then
-					begin
-						storeTABData(currentTAB);
-						modified:=false;
-					end;
-			end;
+	strVal2Mem(resptr[val_menu_beatStep],song_beat,2,0);
+	if optionsList(resptr[menu_tabs_options],width_menuOptions,TABMenuOptions,defaultOpt,key_Up,key_Down) then
+		case defaultOpt of
+			0: setTABName();
+			1: setBeatStep();
+		end;
 	box(4,2,16,9,0);
+	fillchar(@statusBar,20,0);
 	updateTAB(true);
 end;

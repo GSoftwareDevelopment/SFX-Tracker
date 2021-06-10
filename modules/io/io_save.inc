@@ -29,7 +29,6 @@ end;
 function storeSONGDataInFile(var f:file):boolean;
 var
 	ofs:word;
-	SONGOfs:byte;
 
 begin
 	ofs:=0;

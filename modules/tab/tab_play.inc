@@ -1,14 +1,38 @@
 procedure TAB_Play();
+var
+	oldCurPos,oldCurShift:byte;
+
 begin
 	if TABPtr[currentTAB]=$FFFF then
 	begin
 		showError(resptr[msg_UnknownDefinition]);
 		exit;
 	end;
+	oldCurPos:=cursorPos; oldCurShift:=cursorShift;
 	reset_pianoVis();
 	SFX_PlayTAB(0,currentTAB);
 	repeat
 		updatePianoVis();
+
+		cursorPos:=channels[10] shr 1;
+		if (cursorPos>4) then
+		begin
+			if (cursorPos>TAB_maxLength-TAB_winHeight) then
+			begin
+				 cursorShift:=TAB_maxLength-TAB_winHeight;
+				 cursorPos:=cursorPos-cursorShift;
+			end
+			else
+			begin
+				cursorShift:=cursorPos-4; cursorPos:=4;
+			end;
+		end
+		else
+			cursorShift:=0;
+
+		updateTAB(true);
+		colorHLine(winXStart,2+cursorPos,16,3);
+
 		if kbcode<>255 then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
@@ -16,7 +40,10 @@ begin
 				key_ESC: break;
 			end;
 		end;
+		move(@screen,@video,240);
 	until false;
 	SFX_Off();
 	reset_pianoVis();
+	updateTAB(true);
+	// cursorPos:=oldCurPos; cursorShift:=oldCurShift;
 end;
