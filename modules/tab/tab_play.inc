@@ -36,6 +36,12 @@ begin
 		if kbcode<>255 then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
+			if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
+				updateTABSFX();
+			if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,currentOct,0,3) then
+				updatePiano();
+			pianoKeyScan(2);
+
 			case key of
 				key_ESC: break;
 			end;
