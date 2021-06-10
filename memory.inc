@@ -25,10 +25,11 @@ SEARCH_PATH_ADDR		= $C000;
 RESOURCES_ADDR			= $C080;	// programm resources from file resource/app_ressoures.asm
 
 LIST_BUFFER_SIZE		= 1024;	// universal list buffer size
-LIST_BUFFER_ADDR		= $C800; // universal list buffer for UI.listChoice()
+LIST_BUFFER_ADDR		= $C700; // universal list buffer for UI.listChoice()
 
-SONG_ADDR				= $CC00;	// table of SONG definition
-SFX_MODE_SET_ADDR		= $CD00; // table of SFX modes
+SONG_ADDR				= $CB00;	// table of SONG definition
+SFX_MODE_SET_ADDR		= $CC00; // table of SFX modes
+SFX_NOTE_SET_ADDR		= $CC80; // The array of pointers to arrays of notes
 NOTE_TABLE_ADDR		= $CD80; // table of note frequency divider
 
 HEAP_ENTRIES			= 128;

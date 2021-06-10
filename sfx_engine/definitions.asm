@@ -4,22 +4,8 @@ audf        = $d200
 audc        = $d201
 
 ; CONSTANTS - offsets in channels registers table
-_sfxPtr     = 0
-_sfxPtrLo   = 0
-_sfxPtrHi   = 1
-_chnOfs     = 2
-_chnNote    = 3
-_chnFreq    = 4
 
-_chnMode    = 5
-_chnModVal  = 6
-_chnCtrl    = 7
-
-_tabPtr		= 8
-_tabPtrLo	= 8
-_tabPtrHi	= 9
-_tabOfs		= 10
-_tabRep		= 11
+				icl 'sfx_engine_const.inc'
 
 ; VARIABLES - PAGE ZERO
 SONG_LPB		= $F0		  ; SONG Line Per Beat
@@ -29,11 +15,12 @@ SONG_TICK	= $F1		  ; SONG tick counter
 AUDIOBUF		= $E8		  ; 8 bytes audio buffer for sync output
 .endif
 
-TABPtr		= $F5		  ; TAB Pointer (2 bytes)
+TABPtr		= $F3		  ; TAB Pointer (2 bytes)
 TABNote		= $F7		  ; TAB Note
 TABOrder		= $F8		  ; TAB Order
 
-sfxPtr      = $F5      ; SFX Pointer (2 bytes)
+sfxPtr      = $F3      ; SFX Pointer (2 bytes)
+sfxNotePtr	= $F5		  ; SFX Table of Note Frequency pointer (2 byte)
 chnNote     = $F7      ; SFX Note
 chnFreq     = $F8      ; SFX Frequency
 

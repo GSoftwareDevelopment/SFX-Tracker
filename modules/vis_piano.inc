@@ -68,12 +68,12 @@ begin
 	chn:=0; chnOfs:=0; minNote:=octShift[currentOct];
 //	gvol:=0; activeChns:=1;
 	repeat
-		vol:=channels[chnOfs+7] and $0f;
+		vol:=channels[chnOfs+_chnCtrl] and $0f;
 //		gvol:=gvol+vol;
 		if vol>0 then
 		begin
 			pOfs:=$100*chn;
-			note:=channels[chnOfs+3]-minNote;
+			note:=channels[chnOfs+_chnNote]-minNote;
 //			activeChns:=activeChns+1;
 			if note<=28 then
 			begin

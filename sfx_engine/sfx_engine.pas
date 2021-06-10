@@ -9,10 +9,14 @@ type
 
 const
 	SFX_NameLength		= 14;
+// SFX-Engine Constants
+
+{$i sfx_engine/sfx_engine_const.inc}
 
 var
 	SONGData:byteArray;		// table for SONG data
 	SFXModMode:byteArray;	// indicates the type of modulation used in the SFX.
+	SFXNoteSetPtr:byteArray;// table of pointer to Table of Note Frequency
 	SFXPtr:wordArray;			// heap pointers to SFX definitions
 	TABPtr:wordArray;			// heap pointera to TAB definitions
 	dataAddr:word;				// base address to heap pointers
@@ -60,22 +64,24 @@ begin
 
 	__cOfs:=0;
 	repeat
-		channels[__cOfs+ 0]:=$ff;	// SFX address lo
-		channels[__cOfs+ 1]:=$ff;	// SFX address hi
-		channels[__cOfs+ 2]:=$ff;	// SFX offset
-		channels[__cOfs+ 3]:=$00;	// SFX Note
-		channels[__cOfs+ 4]:=$00;	// SFX frequency
-		channels[__cOfs+ 5]:=$00;	// SFX modulation Mode
+		channels[__cOfs+ _sfxPtrLo]:=$ff;	// SFX address lo
+		channels[__cOfs+ _sfxPtrHi]:=$ff;	// SFX address hi
+		channels[__cOfs+ _sfxNoteTabLo]:=$ff;	// SFX address lo
+		channels[__cOfs+ _sfxNoteTabHi]:=$ff;	// SFX address hi
+		channels[__cOfs+ _chnOfs]:=$ff;	// SFX offset
+		channels[__cOfs+ _chnNote]:=$00;	// SFX Note
+		channels[__cOfs+ _chnFreq]:=$00;	// SFX frequency
+		channels[__cOfs+ _chnMode]:=$00;	// SFX modulation Mode
 
 {$IFDEF SFX_previewChannels}
-		channels[__cOfs+ 6]:=$00;	// SFX modulation Value
-		channels[__cOfs+ 7]:=$00;	// SFX distortion & volume
+		channels[__cOfs+ _chnModVal]:=$00;	// SFX modulation Value
+		channels[__cOfs+ _chnCtrl]:=$00;	// SFX distortion & volume
 {$ENDIF}
 
-		channels[__cOfs+ 8]:=$ff;	// TAB address lo
-		channels[__cOfs+ 9]:=$ff;	// TAB address hi
-		channels[__cOfs+10]:=$ff;	// TAB offset
-		channels[__cOfs+11]:=$ff;	// TAB repeat counter
+		channels[__cOfs+ _tabPtrLo]:=$ff;	// TAB address lo
+		channels[__cOfs+ _tabPtrHi]:=$ff;	// TAB address hi
+		channels[__cOfs+ _tabOfs]:=$ff;	// TAB offset
+		channels[__cOfs+ _tabRep]:=$ff;	// TAB repeat counter
 		__cOfs:=__cOfs+$10;
 	until __cOfs=$40;
 end;
@@ -89,7 +95,7 @@ procedure SFX_tick(); Assembler; Interrupt;
 asm
 sfx_engine_start
 
-	icl 'sfx-engine/sfx_engine.asm'
+	icl 'sfx_engine/sfx_engine.asm'
 
  .print "SFX-ENGINE SIZE: ", *-sfx_engine_start
 
@@ -107,10 +113,10 @@ procedure SFX_ChannelOff;
 begin
 	__cOfs:=channel*$10;
 {$IFDEF SFX_previewChannels}
-	channels[__cOfs+7]:=$00; // SFX distortion @ volume
+	channels[__cOfs+ _chnCtrl]:=$00; // SFX distortion @ volume
 {$ENDIF}
-	channels[__cOfs+2]:=$ff;	// SFX offset
-	channels[__cOfs+10]:=$ff;	// SFX offset
+	channels[__cOfs+ _chnOfs]:=$ff;	// SFX offset
+	channels[__cOfs+ _tabOfs]:=$ff;	// TAB offset
 	__cOfs:=1+channel*2;
 	AUDIO[__cOfs]:=0;
 end;
@@ -136,12 +142,14 @@ begin
 
 	__cOfs:=channel*$10;
 
-	channels[__cOfs+0]:=lo(SFXAddr);			// SFX address lo
-	channels[__cOfs+1]:=hi(SFXAddr);			// SFX address hi
-	channels[__cOfs+2]:=$00;					// SFX offset
-	channels[__cOfs+3]:=note;					// SFX Note
-	channels[__cOfs+4]:=note_val[note];		// SFX frequency
-	channels[__cOfs+5]:=SFXModMode[SFXId];	// SFX modulation Mode
+	channels[__cOfs+ _sfxPtrLo]:=lo(SFXAddr);			// SFX address lo
+	channels[__cOfs+ _sfxPtrHi]:=hi(SFXAddr);			// SFX address hi
+	channels[__cOfs+ _sfxNoteTabLo]:=lo(NOTE_TABLE_ADDR);			// SFX Note table address lo
+	channels[__cOfs+ _sfxNoteTabHi]:=hi(NOTE_TABLE_ADDR);			// SFX Note table address hi
+	channels[__cOfs+ _chnOfs]:=$00;					// SFX offset
+	channels[__cOfs+ _chnNote]:=note;					// SFX Note
+	channels[__cOfs+ _chnFreq]:=note_val[note];		// SFX frequency
+	channels[__cOfs+ _chnMode]:=SFXModMode[SFXId];	// SFX modulation Mode
 end;
 
 procedure SFX_PlayTAB(channel,TABId:byte);
@@ -154,10 +162,10 @@ begin
 
 	__cOfs:=channel*$10;
 
-	channels[__cOfs+ 8]:=lo(TABAddr);			// TAB address lo
-	channels[__cOfs+ 9]:=hi(TABAddr);			// TAB address hi
-	channels[__cOfs+10]:=$00;						// TAB offset
-	channels[__cOfs+11]:=$00;						// TAB repeat counter
+	channels[__cOfs+ _tabPtrLo]:=lo(TABAddr);			// TAB address lo
+	channels[__cOfs+ _tabPtrHi]:=hi(TABAddr);			// TAB address hi
+	channels[__cOfs+ _tabOfs]:=$00;						// TAB offset
+	channels[__cOfs+ _tabRep]:=$00;						// TAB repeat counter
 	SONG_Tick:=$00;									// reset SONG tick counter
 end;
 

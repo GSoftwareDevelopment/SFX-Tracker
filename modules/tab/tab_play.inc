@@ -14,7 +14,7 @@ begin
 	repeat
 		updatePianoVis();
 
-		cursorPos:=channels[10] shr 1;
+		cursorPos:=channels[_tabOfs] shr 1;
 		if (cursorPos>4) then
 		begin
 			if (cursorPos>TAB_maxLength-TAB_winHeight) then

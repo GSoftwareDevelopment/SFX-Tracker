@@ -34,7 +34,14 @@ LFD_NLM_inc_note
 ; get frequency representation of note
          sty _regTemp
          tay
-         lda NOTE_TABLE_ADDR,y
+
+			lda SFX_CHANNELS_ADDR+_sfxNoteTabLo,x	; copy channels set note table pointer
+			sta sfxNotePtr									; to current channel note table pointer
+			lda SFX_CHANNELS_ADDR+_sfxNoteTabHi,x
+			sta sfxNotePtr+1
+
+//         lda NOTE_TABLE_ADDR,y
+			lda (sfxNotePtr),y
          ldy _regTemp
          jmp setChannelFreq
 

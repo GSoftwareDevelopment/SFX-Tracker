@@ -125,7 +125,7 @@ SFXLenY				= 10;
 
 	base_menus						= 0;
 	base_strings					= 17;
-	base_messages					= 27;
+	base_messages					= 28;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -158,6 +158,7 @@ SFXLenY				= 10;
 	scan_key_codes					= base_strings+7;
 	scan_piano_codes				= base_strings+8;
 	val_menu_beatStep				= base_strings+9;
+	val_menu_tempo					= base_strings+10;
 
 	msg_IO_Prompt					= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;
@@ -178,6 +179,7 @@ SFXLenY				= 10;
 	msg_TAB_FreqPrompt			= base_messages+16;
 	msg_TAB_SFXIdPrompt			= base_messages+17;
 	msg_BeatStepPrompt			= base_messages+18;
+	msg_SetTempoPrompt			= base_messages+19;
 
 //
 // PROGRAMM ERRORS
@@ -188,3 +190,4 @@ SFXLenY				= 10;
 	error_badFileFormat			= 13;
 
 	IOError_fileNotFound			= 170;
+

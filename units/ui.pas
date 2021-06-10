@@ -248,12 +248,12 @@ begin
 	if result then
 	begin
 		s[0]:=char(len);
-		if len>0 then move(@buf,@s[1],len);
+		if len>0 then move(@buf,@s[1],width);
 		move(@buf,@screen[scrOfs],width);
+		conv2ASCII(s);
 	end
 	else
 		conv2internalP2P(@s[1],@screen[scrOfs],width);
-	conv2ASCII(s);
 	colorHLine(x,y,width,colOut);
 	kbcode:=255;
 end;

@@ -51,3 +51,6 @@ msg_TAB_SFXIdPrompt
 msg_BeatStepPrompt
 					dta 220,d'BEAT STEP',255
 					dta 235,6,d'1_32',255,255
+msg_SetTempoPrompt
+					dta 220,d'TEMPO',255
+					dta 234,6,d'1_255',255,255

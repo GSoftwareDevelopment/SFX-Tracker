@@ -1,6 +1,6 @@
 program SFXMM;
 {$librarypath './units/'}
-{$librarypath './sfx-engine/'}
+{$librarypath './sfx_engine/'}
 
 {$DEFINE ROMOFF}
 
