@@ -1,7 +1,7 @@
 procedure SONGEditLoop();
 var
 	_pos,SONGOfs,maxCols,x,y:byte;
-	i:smallint;
+	value:smallint;
 
 	procedure setCursor();
 	var
@@ -27,10 +27,12 @@ var
 				end
 			else
 				maxCols:=3;
+			if SONGChn>maxCols then SONGChn:=maxCols;
 			x:=x+SONGChn*3;
 			colorHLine(x,y,2,3); // 8-hardcoded length of 'END-SONG'
 		end;
 	end;
+
 begin
 	updateSONG(false);
 	// colorHLine(winSONGXStart+SONGChn*3,2+SONGPos,2,3);
@@ -56,19 +58,33 @@ begin
 
 			controlEditKeys(key,SONG_winHeight,SONG_maxLength,SONGPos,SONGShift,key_Up,key_Down);
 
-			i:=keyScan(key,keys_alphaNum,keysRange_decNum);
-			if (i<>255) then
+			value:=keyScan(key,keys_alphaNum,keysRange_decNum);
+			if (value<>255) then
 			begin
-				if inputValue(x,y,2,i,0,maxTABs-1,0,0) then
+				if inputValue(x,y,2,value,0,maxTABs-1,0,0) then
 				begin
-					if TABPtr[i]=$FFFF then
-						showError(resptr[msg_UnknownDefinition])
+					if SONGChn=0 then
+					begin
+						if TABPtr[value]=$FFFF then
+							showError(resptr[msg_UnknownDefinition])
+						else
+						begin
+							if (SONGData[SONGOfs] and chnOrder<>0) then
+								fillchar(@SONGData[SONGOfs],4,chnBlank);
+							SONGData[SONGOfs+SONGChn]:=value;
+						end;
+					end
 					else
 					begin
-						if (SONGChn=0) and (SONGData[SONGOfs] and chnOrder<>0) then
-							fillchar(@SONGData[SONGOfs],4,chnBlank);
-						SONGData[SONGOfs+SONGChn]:=i;
+						if (SONGData[SONGOfs] and chnOrder<>0) then
+							SONGData[SONGOfs+SONGChn]:=value
+						else
+							if TABPtr[value]=$FFFF then
+								showError(resptr[msg_UnknownDefinition])
+							else
+								SONGData[SONGOfs+SONGChn]:=value;
 					end;
+
 				end;
 			end;
 			//

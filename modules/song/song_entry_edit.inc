@@ -6,12 +6,14 @@ var
 	begin
 		SONGData[SONGOfs]:=chnOrder_Tempo;
 		SONGData[SONGOfs+1]:=song_lpb;
+		SONGChn:=1;
 	end;
 
 	procedure editJumpTo();
 	begin
 		SONGData[SONGOfs]:=chnOrder_JumpTo;
 		SONGData[SONGOfs+1]:=0;
+		SONGChn:=1;
 	end;
 
 	procedure editRepeat();
@@ -19,6 +21,7 @@ var
 		SONGData[SONGOfs]:=chnOrder_Repeat;
 		SONGData[SONGOfs+1]:=0;
 		SONGData[SONGOfs+2]:=0;
+		SONGChn:=1;
 	end;
 
 begin
