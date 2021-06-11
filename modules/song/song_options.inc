@@ -14,7 +14,7 @@ var
 begin
 	putMultiText(resptr[msg_SetTempoPrompt],0);
 	newTempo:=song_lpb;
-	if inputValue(10,9,3,newTempo,0,255,0,0) then
+	if inputValue(11,9,3,newTempo,0,255,0,0) then
 		song_lpb:=byte(newTempo);
 end;
 

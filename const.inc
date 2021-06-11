@@ -68,8 +68,8 @@ SFXLenY				= 10;
 	TABEditOption_BackToEdit	= 6;
 	TABEditOption_BackToMenuBar= 7;
 
-	SONGMenuOptions				= 2;
-	SONGMenuOption_Back			= 1;
+	SONGMenuOptions				= 3;
+	SONGMenuOption_Back			= 2;
 	SONGEditOption_BackToEdit	= 6;
 	SONGEditOption_BackToMenuBar= 7;
 

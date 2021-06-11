@@ -119,7 +119,7 @@ menu_song
 
 menu_song_option
 					dta 164,d'SET SONG NAME',255
-					dta 184,d'TEMPO '
+					dta 184,d'TEMPO: '
 val_menu_tempo
 					dta d'___',255
 					dta 204,d'< BACK',255
