@@ -30,7 +30,7 @@ LIST_BUFFER_ADDR		= $C700; // universal list buffer for UI.listChoice()
 SONG_ADDR				= $CB00;	// table of SONG definition
 SFX_MODE_SET_ADDR		= $CC00; // table of SFX modes
 SFX_NOTE_SET_ADDR		= $CC80; // The array of pointers to arrays of notes
-NOTE_TABLE_ADDR		= $CD80; // table of note frequency divider
+NOTE_TABLE_ADDR		= $CD80; // predefined table of note frequency
 
 HEAP_ENTRIES			= 128;
 HEAP_MEMORY_SIZE		= $27F9;

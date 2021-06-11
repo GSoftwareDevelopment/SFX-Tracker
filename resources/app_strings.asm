@@ -48,3 +48,7 @@ scan_piano_codes
 ;      				 Q  2  W  3  E  R  5  T  6  Y  7  U  I  9  O  0  P
 					dta 47,30,46,26,42,40,29,45,27,43,51,11,13,48, 8,50,10
 
+pianoTuneOdd
+					dta d' ( ( ( ( ( ( ( '
+pianoTuneEven
+					dta d'( ( ( ( ( ( ( ('

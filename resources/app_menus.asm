@@ -24,6 +24,7 @@ menu_sfx
 					dta 255
 
 menu_sfx_options
+					dta 144,d'NOTE TUNE',255
 					dta 164,d'SET NAME',255				; set SFX name
 					dta 184,d'SFX MOD MODE',255		; set the type of modulation used in the SFX
 					dta 204,d'< BACK',255				; back to SFX menu bar

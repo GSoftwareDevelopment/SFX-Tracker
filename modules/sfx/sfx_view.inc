@@ -25,24 +25,25 @@ begin
 		screen[scrOfs+40]:=ch;
 		if (v>4) then ch:=$3b else ch:=$3f-v;
 		screen[scrOfs+60]:=ch;
+
 	// volume value
+		inc(scrOfs,80);
 		if (v>0) then
 		begin
 			if (v<10) then
-				screen[scrOfs+80]:=$10+v
+				screen[scrOfs]:=$10+v
 			else
-				screen[scrOfs+80]:=$17+v;
+				screen[scrOfs]:=$17+v;
 		end
 		else
-			screen[scrOfs+80]:=byte('-'~);
+			screen[scrOfs]:=byte('-'~);
 
-		scrOfs:=scrOfs+100;
+		scrOfs:=scrOfs+20;
 
 	// Distortion value
 		if (SFX_vol_dist[pos]>0) then
 		begin
 			v:=SFX_vol_dist[pos] shr 4;
-//				screen[scrOfs]:=byte(hexVal[v+1]);
 			if (v<10) then
 				screen[scrOfs]:=$10+v
 			else

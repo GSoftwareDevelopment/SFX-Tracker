@@ -20,7 +20,7 @@ var
 	SFXPtr:wordArray;			// heap pointers to SFX definitions
 	TABPtr:wordArray;			// heap pointera to TAB definitions
 	dataAddr:word;				// base address to heap pointers
-	note_val:array[0..0] of byte;
+//	note_val:array[0..0] of byte;
 
 	song_lpb:byte absolute $f0;
 	SONG_Tick:byte absolute $f1;
@@ -33,6 +33,7 @@ procedure SFX_Start();
 procedure SFX_ChannelOff(channel:byte);
 procedure SFX_Off();
 procedure SFX_Note(channel,note,SFXId:byte);
+procedure SFX_Freq(channel,freq,SFXId:byte);
 procedure SFX_PlayTAB(channel,TABId:byte);
 procedure SFX_End();
 
@@ -88,7 +89,7 @@ end;
 
 procedure SetNoteTable;
 begin
-	note_val:=pointer(_note_val);
+//	note_val:=pointer(_note_val);
 end;
 
 procedure SFX_tick(); Assembler; Interrupt;
@@ -129,6 +130,7 @@ end;
 procedure SFX_Note;
 var
 	SFXAddr:word;
+	note_val:array[0..0] of byte;
 
 begin
 {$ifndef DONT_CALC_ABS_ADDR}
@@ -146,9 +148,41 @@ begin
 	channels[__cOfs+ _sfxPtrHi]:=hi(SFXAddr);			// SFX address hi
 	channels[__cOfs+ _sfxNoteTabLo]:=lo(NOTE_TABLE_ADDR);			// SFX Note table address lo
 	channels[__cOfs+ _sfxNoteTabHi]:=hi(NOTE_TABLE_ADDR);			// SFX Note table address hi
-	channels[__cOfs+ _chnOfs]:=$00;					// SFX offset
+	channels[__cOfs+ _chnOfs]:=$00;						// SFX offset
 	channels[__cOfs+ _chnNote]:=note;					// SFX Note
+	note_val:=pointer(NOTE_TABLE_ADDR);
 	channels[__cOfs+ _chnFreq]:=note_val[note];		// SFX frequency
+	channels[__cOfs+ _chnMode]:=SFXModMode[SFXId];	// SFX modulation Mode
+end;
+
+procedure SFX_Freq;
+var
+	SFXAddr:word;
+	note_val:array[0..0] of byte;
+	note,i:byte;
+
+begin
+{$ifndef DONT_CALC_ABS_ADDR}
+	SFXAddr:=SFXPtr[SFXId]+dataAddr;
+{$ifndef DONT_CALC_SFX_NAMES}
+	SFXAddr:=SFXAddr+14; // skip first 14 bytes - length of SFX name
+{$endif}
+{$else}
+	SFXAddr:=SFXPtr[SFXId];
+{$endif}
+
+	__cOfs:=channel*$10;
+
+	channels[__cOfs+ _sfxPtrLo]:=lo(SFXAddr);			// SFX address lo
+	channels[__cOfs+ _sfxPtrHi]:=hi(SFXAddr);			// SFX address hi
+	channels[__cOfs+ _sfxNoteTabLo]:=lo(NOTE_TABLE_ADDR);			// SFX Note table address lo
+	channels[__cOfs+ _sfxNoteTabHi]:=hi(NOTE_TABLE_ADDR);			// SFX Note table address hi
+	channels[__cOfs+ _chnOfs]:=$00;						// SFX offset
+	note_val:=pointer(NOTE_TABLE_ADDR);
+	for i:=0 to 63 do
+		if freq<=note_val[i] then note:=i;
+	channels[__cOfs+ _chnNote]:=note;						// SFX Note
+	channels[__cOfs+ _chnFreq]:=freq;					// SFX frequency
 	channels[__cOfs+ _chnMode]:=SFXModMode[SFXId];	// SFX modulation Mode
 end;
 

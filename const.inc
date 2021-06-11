@@ -56,8 +56,8 @@ SFXLenY				= 10;
 
 //
 
-   SFXMenuOptions					= 3;
-	SFXMenuOption_Back			= 2;
+   SFXMenuOptions					= 4;
+	SFXMenuOption_Back			= 3;
 	SFXMenuModType					= 5;
 	SFXMenuModType_Back			= 4;
 
@@ -125,7 +125,7 @@ SFXLenY				= 10;
 
 	base_menus						= 0;
 	base_strings					= 17;
-	base_messages					= 28;
+	base_messages					= 30;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -159,6 +159,9 @@ SFXLenY				= 10;
 	scan_piano_codes				= base_strings+8;
 	val_menu_beatStep				= base_strings+9;
 	val_menu_tempo					= base_strings+10;
+
+	pianoTuneOdd					= base_strings+11;
+	pianoTuneEven					= base_strings+12;
 
 	msg_IO_Prompt					= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;

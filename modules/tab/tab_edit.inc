@@ -13,12 +13,9 @@ begin
 		if (kbcode)<>255 then
 		begin
 			key:=TKeys(kbcode); kbcode:=255;
-//			colorHLine(winXStart,2+cursorPos,20-winXStart,0);
 			_pos:=cursorShift+cursorPos;
 			if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
 				updateTABSFX();
-			if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,currentOct,0,3) then
-				updatePiano();
 			case key of
 				key_ESC: break;
 				key_CTRL_RETURN:begin
@@ -65,6 +62,7 @@ begin
 		updatePianoVis();
 	until false;
 	updateTAB(true);
+	SFX_Off();
 	reset_pianoVis();
 	kbcode:=255;
 end;
