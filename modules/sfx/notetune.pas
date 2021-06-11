@@ -13,9 +13,8 @@ begin
 	updateNoteTune(noteShift);
 	screen2video();
 	repeat
-		if kbcode<>255 then
+		if keypressed then
 		begin
-			key:=TKeys(kbcode); kbcode:=255;
 			case key of
 				key_ESC: break;
 			end;

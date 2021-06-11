@@ -53,7 +53,7 @@ begin
 	end
 	else
 	begin
-		box(4,2,16,9,0);
+//		box(4,2,16,9,0);
 		updateSONG(false);
 	end;
 end;

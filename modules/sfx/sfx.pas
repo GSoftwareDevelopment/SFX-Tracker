@@ -26,9 +26,8 @@ begin
 	screen2video();
 	modified:=false;
 	repeat
-		if (kbcode<>255) then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode); kbcode:=255;
 			controlSelectionKeys(key,key_Up,key_Down,section,0,7);
 			case key of
 				key_Left,key_Right: SFXChangeMenuBarOpt(section);

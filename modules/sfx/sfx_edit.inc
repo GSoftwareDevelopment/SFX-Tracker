@@ -17,9 +17,8 @@ var i,v:byte;
 
 begin
 	repeat
-		if (kbcode<>255) then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode); kbcode:=255;
 			if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,section,3,6) then
 			begin
 				section:=section or $10;

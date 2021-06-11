@@ -7,12 +7,11 @@ var
 
 begin
 	colorHLine(winXStart,2+cursorPos,20-winXStart,3);
-	screen2video(); kbcode:=255;
+	screen2video();
 	reset_pianoVis();
 	repeat
-		if (kbcode)<>255 then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode); kbcode:=255;
 			_pos:=cursorShift+cursorPos;
 			if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
 				updateTABSFX();
@@ -64,5 +63,4 @@ begin
 	updateTAB(true);
 	SFX_Off();
 	reset_pianoVis();
-	kbcode:=255;
 end;

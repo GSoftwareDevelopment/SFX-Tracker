@@ -51,6 +51,7 @@ var
 	keys_alphaNum:byteArray;
 
 procedure Init_UI(res_chars_alphaNum,res_keys_alphaNum:pointer);
+function keyPressed():boolean;
 function keyScan(key2Scan:byte; var keyDefs:byteArray; keysRange:byte):byte;
 function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:byte):boolean;
 procedure moveCursor(ofs:shortint; winSize,overSize:byte; var curPos,curShift:byte);
@@ -72,6 +73,17 @@ procedure Init_UI;
 begin
 	chars_alphaNum:=res_chars_alphaNum;
 	keys_alphaNum:=res_keys_alphaNum;
+end;
+
+function keyPressed:boolean;
+begin
+	if kbcode<>255 then
+	begin
+		key:=TKeys(kbcode); kbcode:=255;
+		result:=true;
+	end
+	else
+		result:=false;
 end;
 
 function keyScan:byte;
@@ -188,9 +200,8 @@ begin
 	screen2video();
 	ctm:=0; curState:=false;
 	repeat
-		if (kbcode<>255) then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode);
 			ofs:=shiftX+curX;
 			screen[scrOfs+curX]:=buf[ofs] or colEdit;
 			case key of
@@ -396,9 +407,8 @@ begin
 	updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
 	screen2video(); kbcode:=255;
 	repeat
-		if (kbcode<>255) then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode);
 			controlSelectionKeys(key,pckey,ncKey,currentOpt,0,opts);
 			case key of
 				key_ESC:	begin result:=false; break; end;
@@ -458,10 +468,9 @@ begin
 	screen2video();
 
 	repeat
-		if (kbcode)<>255 then
+		if keyPressed then
 		begin
 			colorHLine(x,y+listPos,width+3*byte(showCount),1);
-			key:=TKeys(kbcode);
 			case key of
 				key_CTRL_Up:begin
 					moveCursor(-height,height,listSize,listPos,listShift);
@@ -486,7 +495,6 @@ begin
 			updateList();
 			colorHLine(x,y+listPos,width+3*byte(showCount),3);
 			screen2video();
-			kbcode:=255;
 		end;
 	until false;
 	kbcode:=255;

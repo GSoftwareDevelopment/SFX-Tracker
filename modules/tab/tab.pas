@@ -25,9 +25,8 @@ begin
 
 	screen2video();
 	repeat
-		if (kbcode<>255) then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode);
 			controlSelectionKeys(key,key_Up,key_Down,section,0,3);
 			case key of
 				key_ESC: break;
@@ -36,10 +35,8 @@ begin
 			end;
 			updateBar(resptr[menu_tabs],width_menuBar,section,color_choice,color_selected);
 			screen2video();
-			kbcode:=255;
 		end;
 	until false;
-	kbcode:=255;
 end;
 
 procedure TABModule();

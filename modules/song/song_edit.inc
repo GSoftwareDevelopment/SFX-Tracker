@@ -40,9 +40,8 @@ begin
 	screen2video(); kbcode:=255;
 	reset_pianoVis();
 	repeat
-		if (kbcode)<>255 then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode); kbcode:=255;
 			controlSelectionKeys(key,key_LEFT,key_RIGHT,SONGChn,0,maxCols);
 
 			case key of
@@ -95,6 +94,5 @@ begin
 		updatePianoVis();
 	until false;
 	reset_pianoVis();
-	kbcode:=255;
 	updateSONG(true);
 end;

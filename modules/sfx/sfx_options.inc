@@ -28,7 +28,10 @@ begin
 	if defaultOpt=SFXMenuOption_Back then
 		if optionsList(resptr[menu_sfx_options],width_menuOptions,SFXMenuOptions,defaultOpt,key_Up,key_Down) then
 			case defaultOpt of
-				0: setNoteTune();
+				0: if SFXPtr[currentSFX]<>$FFFF then
+						setNoteTune()
+					else
+						showError(resptr[msg_UnknownDefinition]);
 				1: setSFXName();
 				2: setSFXModMode();
 			end;

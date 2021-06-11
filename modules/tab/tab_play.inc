@@ -33,9 +33,8 @@ begin
 		updateTAB(true);
 		colorHLine(winXStart,2+cursorPos,16,3);
 
-		if kbcode<>255 then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode); kbcode:=255;
 			if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
 				updateTABSFX();
 			if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,currentOct,0,3) then
@@ -51,5 +50,4 @@ begin
 	SFX_Off();
 	reset_pianoVis();
 	updateTAB(true);
-	// cursorPos:=oldCurPos; cursorShift:=oldCurShift;
 end;

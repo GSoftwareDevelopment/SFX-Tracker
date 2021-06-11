@@ -14,9 +14,8 @@ begin
 	screen2video();
 
 	repeat
-		if (kbcode<>255) then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode); kbcode:=255;
 			if nTheme<6 then
 				colorHLine(6,2+nTheme,14,1)
 			else

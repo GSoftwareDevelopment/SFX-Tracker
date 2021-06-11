@@ -12,9 +12,8 @@ begin
 	chn:=0;
 	repeat
 		updatePianoVis();
-		if kbcode<>255 then
+		if keyPressed then
 		begin
-			key:=TKeys(kbcode); kbcode:=255;
 			case key of
 				key_ESC: break;
 				key_INVERS: begin multiChnMode:=not multiChnMode; updatePiano(); end;
