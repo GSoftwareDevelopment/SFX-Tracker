@@ -1,5 +1,6 @@
 {$i modules/sfx/notetune_view.inc}
 {$i modules/sfx/notetune_edit.inc}
+{$i modules/sfx/notetune_options.inc}
 
 procedure setNoteTune();
 var
@@ -8,12 +9,14 @@ var
 begin
 	NoteTuneScreen();
 	updateNoteTune(currentOct*12);
-	opt:=0;
+	opt:=1;
 	repeat
 		if optionsList(resptr[menu_note_tune],width_menuBar,TUNEMenu,opt,key_Up,key_Down) then
 		begin
 			case opt of
-				0: NoteTuneLoop();
+				0: break;
+				1: NoteTuneLoop();
+				2: NoteTune_options(TUNEOptions_BackToEdit);
 			end;
 		end
 		else

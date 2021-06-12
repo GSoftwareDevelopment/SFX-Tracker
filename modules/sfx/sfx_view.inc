@@ -3,6 +3,14 @@ var
 	scrOfs,i,v,ch:byte;
 	pos:byte;
 
+	procedure putVal(v:byte); register;
+	begin
+		if (v<10) then
+			screen[scrOfs]:=$10+v
+		else
+			screen[scrOfs]:=$17+v;
+	end;
+
 begin
 	i:=0; pos:=cursorShift;
 	v:=SFX_modulate[0] and $7f; // init "v" modulation (can't be MOD80, before first iteration)
@@ -29,12 +37,7 @@ begin
 	// volume value
 		inc(scrOfs,80);
 		if (v>0) then
-		begin
-			if (v<10) then
-				screen[scrOfs]:=$10+v
-			else
-				screen[scrOfs]:=$17+v;
-		end
+			putVal(v)
 		else
 			screen[scrOfs]:=byte('-'~);
 
@@ -44,10 +47,7 @@ begin
 		if (SFX_vol_dist[pos]>0) then
 		begin
 			v:=SFX_vol_dist[pos] shr 4;
-			if (v<10) then
-				screen[scrOfs]:=$10+v
-			else
-				screen[scrOfs]:=$17+v;
+			putVal(v);
 		end
 		else
 		  screen[scrOfs]:=byte('-'~);
@@ -58,16 +58,10 @@ begin
 		begin
 			v:=SFX_modulate[pos];
 			ch:=(v shr 4);
-			if (ch<10) then
-				screen[scrOfs]:=$10+ch
-			else
-				screen[scrOfs]:=$17+ch;
+			putVal(ch);
 			scrOfs:=scrOfs+20;
 			ch:=(v and $0f);
-			if (ch<10) then
-				screen[scrOfs]:=$10+ch
-			else
-				screen[scrOfs]:=$21+ch-10;
+			putVal(ch);
 		end
 		else
 		begin
@@ -93,9 +87,8 @@ begin
 	screen[SFXCurPosX+3+vadr[SFXCurPosY]]:=byte('/'~);
 	putValue(SFXLenX,SFXLenY,sfxLen,3,0);
 
-	v:=SFXModMode[currentSFX];	i:=1+(v*9);
-//	i:=1+(SFXModMode[currentSFX]*9); // <- BUG: in MP1.6.6, multiplication not work with table value
-	move(pointer(word(resptr[menu_sfx_mode])+i),@screen[204],7);
+	v:=SFXModMode[currentSFX];	i:=1+(v*5);
+	move(pointer(word(resptr[menu_sfx_mode])+i),@screen[204],3);
 end;
 
 procedure SFXScreen();

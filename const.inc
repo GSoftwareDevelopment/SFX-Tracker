@@ -65,6 +65,8 @@ SFXLenY				= 10;
 	SFXMenuModType_Back			= 4;
 
 	TUNEMenu							= 3;
+	TUNEMenuOptions				= 5;
+	TUNEOptions_BackToEdit		= 2;
 
 	TABMenuOptions					= 3;
 	TABMenuOption_Back			= 2;
@@ -130,7 +132,7 @@ SFXLenY				= 10;
 
 	base_menus						= 0;
 	base_strings					= 19;
-	base_messages					= 32;
+	base_messages					= 33;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -169,6 +171,7 @@ SFXLenY				= 10;
 
 	pianoTuneOdd					= base_strings+11;
 	pianoTuneEven					= base_strings+12;
+	tuneIndChars					= base_strings+13;
 
 	msg_IO_Prompt					= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;

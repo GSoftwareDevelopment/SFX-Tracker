@@ -52,3 +52,20 @@ pianoTuneOdd
 					dta $7,$b,$0,$b,$0,$7,$b,$0,$b,$0,$b,$6
 pianoTuneEven
 					dta $7,$8,$0,$8,$0,$7,$8,$0,$8,$0,$8,$6
+tuneIndChars
+		dta $3b,$3b	// f +7
+		dta $3c,$3b	// e +6
+		dta $3d,$3b	// d +5
+		dta $3e,$3b	// c +4
+		dta $00,$3b	// b +3
+		dta $00,$3c	// a +2
+		dta $00,$3d	// 9 +1
+		dta $00,$3e	// 8 +0
+		dta $1b,$00	// 7 -1
+		dta $1d,$00	// 6 -2
+		dta $20,$00	// 5 -3
+		dta $3b,$00	// 4 -4
+		dta $3b,$1b	// 3 -5
+		dta $3b,$1d	// 2 -6
+		dta $3b,$20	// 1 -7
+		dta $3b,$3b	// 0 -8

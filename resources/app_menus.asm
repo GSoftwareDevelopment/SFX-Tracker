@@ -31,20 +31,24 @@ menu_sfx_options
 					dta 255
 
 menu_note_tune
-					dta 40,d'>>>',255
-					dta 60,d'SET',255
+					dta 40,d'<<<',255
+					dta 60,d'>>>',255
 					dta 200,d'OPT',255
 					dta 255
 
 menu_tune_options
-					dta 204,d'< BACK',255
+					dta 124,d'PRESETS',255
+					dta 144,d'USER DEFINED',255
+					dta 164,d'< BACK',255
+					dta 184,d'LOAD',255
+					dta 204,d'SAVE',255
 					dta 255
 
 menu_sfx_mode
-					dta  84,d'HFD    ',255
-					dta 104,d'MFD    ',255
-					dta 124,d'LFD/NLM',255
-					dta 144,d'DSD    ',255
+					dta  84,d'HFD',255
+					dta 104,d'MFD',255
+					dta 124,d'NLM',255
+					dta 144,d'DSD',255
 					dta 164,d'< BACK',255
 					dta 255
 
