@@ -5,10 +5,11 @@ type
 	byteArray=array[0..0] of byte;
 	wordArray=array[0..0] of word;
 
-{$i sfx_engine.conf.inc}
-
 const
 	SFX_NameLength		= 14;
+{$i sfx_engine.conf.inc} // import SFX-Engine configuration
+{$r sfx_engine.rc}
+
 // SFX-Engine Constants
 
 {$i sfx_engine/sfx_engine_const.inc}

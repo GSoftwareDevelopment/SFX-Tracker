@@ -1,7 +1,3 @@
-const
-	pianoTuneIOfs:array[0..11] of byte = (146,47,148,49,150,152,53,154,55,156,57,158);
-	pianoTuneVOfs:array[0..11] of byte = (126,127,128,129,130,132,133,134,135,136,137,138);
-
 procedure updateNoteTune(noteShift:byte);
 const
 	indChar:array[0..31] of byte = (
@@ -31,22 +27,16 @@ begin
 	note_val:=pointer(NOTE_TABLE_ADDR+noteShift);
 	for i:=0 to 11 do
 	begin
-		scrOfs:=pianoTuneVOfs[i];
-		v:=note_val[i] shr 4;
-		if (v<10) then
-			screen[scrOfs]:=$10+v
-		else
-			screen[scrOfs]:=$17+v;
-
+//		scrOfs:=pianoTuneVOfs[i];
+		scrOfs:=66+i;
 		v:=(note_val[i] and $0f) shl 1;
-
-		scrOfs:=pianoTuneIOfs[i];
+//		scrOfs:=pianoTuneIOfs[i];
 
 	// tune bar
 		if v>15 then
 		begin
 			screen[scrOfs]:=$00; inc(scrOfs,20);
-			screen[scrOfs]:=$00; inc(scrOfs,20);
+			screen[scrOfs]:=$3f; inc(scrOfs,20);
 			screen[scrOfs]:=indChar[v];
 			inc(scrOfs,20); inc(v);
 			screen[scrOfs]:=indChar[v];
@@ -60,6 +50,15 @@ begin
 			screen[scrOfs]:=0; inc(scrOfs,20);
 			screen[scrOfs]:=0;
 		end;
+		inc(scrOfs,20);
+//
+		v:=note_val[i] shr 4;
+		if (v<10) then
+			screen[scrOfs]:=$10+v
+		else
+			screen[scrOfs]:=$17+v;
+
+
 	end;
 end;
 
@@ -69,16 +68,8 @@ var i,scrOfs:byte;
 begin
 	move(@screen,@tmpbuf,240);
 	fillchar(@moduleBar[20],200,0);
-	scrOfs:=45;
-	for i:=0 to 3 do
-	begin
-		move(resptr[pianoTuneOdd],@screen[scrOfs],15);
-		scrOfs:=scrOfs+20;
-	end;
+	scrOfs:=166;
+	move(resptr[pianoTuneOdd],@screen[scrOfs],12);
 	scrOfs:=scrOfs+20;
-	for i:=0 to 3 do
-	begin
-		move(resptr[pianoTuneEven],@screen[scrOfs],15);
-		scrOfs:=scrOfs+20;
-	end;
+	move(resptr[pianoTuneEven],@screen[scrOfs],12);
 end;

@@ -8,7 +8,7 @@ var
 begin
 	note_val:=pointer(NOTE_TABLE_ADDR);
 	notePos:=0; noteShift:=0; _pos:=0;
-	colorVLine(pianoTuneIOfs[notePos],0,4,3);
+//	colorVLine(66,0,4,3);
 	reset_pianoVis();
 	updateNoteTune(noteShift);
 	screen2video();
@@ -32,7 +32,7 @@ begin
 				note_val[_pos]:=noteVal;
 
 			updateNoteTune(noteShift);
-			colorVLine(pianoTuneIOfs[notePos],0,4,3);
+			colorVLine(66+notePos,0,5,3);
 			screen2video();
 		end;
 		updatePianoVis();
