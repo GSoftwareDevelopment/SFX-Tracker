@@ -67,7 +67,7 @@ continue_fetch
 
 .ifdef MAIN.@DEFINES.USE_MODULATORS // .or .def MAIN.@DEFINES.USE_ALL_MODULATORS
 
-			icl 'SFXs-Mod.asm'
+         icl 'SFXs-Mod.asm'
 
 .endif
 
@@ -80,10 +80,10 @@ setPokey
          tax                                 ; set AUDIO offset in X register
 
 .ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
-			lda chnFreq
-			sta AUDIOBUF,x
-			lda (sfxPtr),y
-			sta AUDIOBUF+1,x
+         lda chnFreq
+         sta AUDIOBUF,x
+         lda (sfxPtr),y
+         sta AUDIOBUF+1,x
 .else
 ; get current frequency
          lda chnFreq
@@ -93,14 +93,14 @@ setPokey
          sta audc,x                          ; store direct to POKEY register
 .endif
 
-         ldx _regTemp								; restore current channel offset
+         ldx _regTemp                        ; restore current channel offset
 
 .ifdef MAIN.@DEFINES.SFX_previewChannels
          sta SFX_CHANNELS_ADDR+_chnCtrl,x    ; store SFX distortion & volume in channel register
 .endif
 
 next_SFX_Set
-         iny											; increase SFX offset
+         iny                                 ; increase SFX offset
 SFX_Set_Offset
          tya                                 ; tranfer current SFX offset to A register
          sta SFX_CHANNELS_ADDR+_chnOfs,x     ; store SFX offset in channel register

@@ -30,6 +30,16 @@ menu_sfx_options
 					dta 204,d'< BACK',255				; back to SFX menu bar
 					dta 255
 
+menu_note_tune
+					dta 40,d'>>>',255
+					dta 60,d'SET',255
+					dta 200,d'OPT',255
+					dta 255
+
+menu_tune_options
+					dta 204,d'< BACK',255
+					dta 255
+
 menu_sfx_mode
 					dta  84,d'HFD    ',255
 					dta 104,d'MFD    ',255

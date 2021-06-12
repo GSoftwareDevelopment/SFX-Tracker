@@ -9,15 +9,15 @@
 modulators
 ; get SFX modulation mode
 ; SFX Mod Modes:
-;	0 - HFD - High Freq. Div.     - relative modulation of the frequency divider in the range of +/- 127
-;											- without the possibility of looping the SFX
-;											- Full backwards compatibility with the original SFX engine
-;	1 - MFD - Middle Freq. Div.   - relative modulation of the frequency divider in the range of +/- 63
-;											- SFX looping possible
-;	2 - LFD/NLM - Low Freq Div.	- note level modulation in relative range of +/- 32 half tones;
-;											- relative modulation of freq. divider in the range of +/- 32
-;											- SFX looping possible
-;	3 - DSD - Direct Set Div.		- direct set of the frequency divider - without looping possible
+;  0 - HFD - High Freq. Div.     - relative modulation of the frequency divider in the range of +/- 127
+;                                - without the possibility of looping the SFX
+;                                - Full backwards compatibility with the original SFX engine
+;  1 - MFD - Middle Freq. Div.   - relative modulation of the frequency divider in the range of +/- 63
+;                                - SFX looping possible
+;  2 - LFD/NLM - Low Freq Div.   - note level modulation in relative range of +/- 32 half tones;
+;                                - relative modulation of freq. divider in the range of +/- 32
+;                                - SFX looping possible
+;  3 - DSD - Direct Set Div.     - direct set of the frequency divider - without looping possible
 ;
 
          lda chnMode
@@ -43,7 +43,7 @@ LFD_NLM_Mod
          icl 'SFXs-Mod-LFD_NLM.asm'
 .endif
 
-.ifdef MAIN.@DEFINES.MFD //  .or MAIN.@DEFINES.USE_ALL_MODULATORS
+.ifdef MAIN.@DEFINES.MFD_MOD //  .or MAIN.@DEFINES.USE_ALL_MODULATORS
 check_MFD
          cmp #MODMODE_MFD                    ; check MFD
          bne check_HFD
@@ -51,7 +51,7 @@ check_MFD
          icl 'SFXs-Mod-MFD.asm'
 .endif
 
-.ifdef MAIN.@DEFINES.HFD // .or MAIN.@DEFINES.USE_ALL_MODULATORS
+.ifdef MAIN.@DEFINES.HFD_MOD // .or MAIN.@DEFINES.USE_ALL_MODULATORS
 check_HFD
          cmp #MODMODE_HFD                    ; check HFD mode
          bne modMode_notDefined

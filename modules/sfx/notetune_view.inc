@@ -27,48 +27,58 @@ begin
 	note_val:=pointer(NOTE_TABLE_ADDR+noteShift);
 	for i:=0 to 11 do
 	begin
-//		scrOfs:=pianoTuneVOfs[i];
-		scrOfs:=66+i;
-		v:=(note_val[i] and $0f) shl 1;
-//		scrOfs:=pianoTuneIOfs[i];
-
-	// tune bar
-		if v>15 then
+		scrOfs:=tuneBarsPos+i;
+		if (noteShift+i<64) then
 		begin
-			screen[scrOfs]:=$00; inc(scrOfs,20);
-			screen[scrOfs]:=$3f; inc(scrOfs,20);
-			screen[scrOfs]:=indChar[v];
-			inc(scrOfs,20); inc(v);
-			screen[scrOfs]:=indChar[v];
+			v:=(note_val[i] and $0f) shl 1;
+			// tune bar
+			if v>15 then
+			begin
+				screen[scrOfs]:=$00; inc(scrOfs,20);
+				screen[scrOfs]:=$3f; inc(scrOfs,20);
+				screen[scrOfs]:=indChar[v];
+				inc(scrOfs,20); inc(v);
+				screen[scrOfs]:=indChar[v];
+			end
+			else
+			begin
+				screen[scrOfs]:=indChar[v];
+				inc(scrOfs,20); inc(v);
+				screen[scrOfs]:=indChar[v];
+				inc(scrOfs,20); inc(v);
+				screen[scrOfs]:=0; inc(scrOfs,20);
+				screen[scrOfs]:=0;
+			end;
+			inc(scrOfs,20);
+			// high nibbel of note frequency
+			v:=note_val[i] shr 4;
+			if (v<10) then
+				screen[scrOfs]:=$10+v
+			else
+				screen[scrOfs]:=$17+v;
 		end
 		else
 		begin
-			screen[scrOfs]:=indChar[v];
-			inc(scrOfs,20); inc(v);
-			screen[scrOfs]:=indChar[v];
-			inc(scrOfs,20); inc(v);
-			screen[scrOfs]:=0; inc(scrOfs,20);
-			screen[scrOfs]:=0;
+			screen[scrOfs]:=$00; inc(scrOfs,20);
+			screen[scrOfs]:=$3f; inc(scrOfs,20);
+			screen[scrOfs]:=$00;	inc(scrOfs,20);
+			screen[scrOfs]:=$00; inc(scrOfs,20);
+			screen[scrOfs]:=$10;
 		end;
-		inc(scrOfs,20);
-//
-		v:=note_val[i] shr 4;
-		if (v<10) then
-			screen[scrOfs]:=$10+v
-		else
-			screen[scrOfs]:=$17+v;
-
-
 	end;
 end;
 
 procedure NoteTuneScreen();
-var i,scrOfs:byte;
+var scrOfs:byte;
 
 begin
 	move(@screen,@tmpbuf,240);
 	fillchar(@moduleBar[20],200,0);
-	scrOfs:=166;
+
+	VBar(0,2,width_menuBar,0);
+//	menuBar(resptr[menu_note_tune],width_menuBar,1);
+
+	scrOfs:=tunePianoPos;
 	move(resptr[pianoTuneOdd],@screen[scrOfs],12);
 	scrOfs:=scrOfs+20;
 	move(resptr[pianoTuneEven],@screen[scrOfs],12);

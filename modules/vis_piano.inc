@@ -38,8 +38,10 @@ begin
 
 		if result>16 then result:=result-5;
 		result:=result+(currentOct*12);
-		if playChn<>255 then
-			SFX_Note(playChn,result,currentSFX);
+		if (result<64) and (playChn<>255) then
+			SFX_Note(playChn,result,currentSFX)
+		else
+			exit(255);
 	end;
 end;
 
