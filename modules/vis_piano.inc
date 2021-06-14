@@ -14,13 +14,17 @@ var
 	keys_notes:byteArray;
 
 procedure updatePiano();
+var v:byte;
 begin
 	if multiChnMode then
-		pianoScreen[0]:=byte('M'~)
+		pianoScreen[0]:=byte('M'~)		// multi channel
 	else
-		pianoScreen[0]:=byte('S'~);
-	pianoScreen[20]:=$10+currentOct;
-	pianoScreen[39]:=$12+currentOct;
+		pianoScreen[0]:=byte('S'~);	// single channel
+	pianoScreen[20]:=$10+currentOct;	// base octave
+	pianoScreen[39]:=$12+currentOct;	// finish octave
+
+	v:=SFXNoteSetOfs[currentSFX] shr 6;
+	pianoScreen[19]:=$21+v;				// note table
 end;
 
 function pianoKeyScan(playChn:byte):byte;

@@ -1,3 +1,7 @@
+var
+	noteSetId:byte;
+	definedNoteTune:array[0..0] of byte;
+
 {$i modules/sfx/notetune_view.inc}
 {$i modules/sfx/notetune_edit.inc}
 {$i modules/sfx/notetune_options.inc}
@@ -7,14 +11,16 @@ var
 	opt:byte;
 
 begin
+	currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
 	NoteTuneScreen();
-	updateNoteTune(currentOct*12);
-	opt:=1;
+
+	opt:=0;
 	repeat
+		NoteTuneRedraw();
 		if optionsList(resptr[menu_note_tune],width_menuBar,TUNEMenu,opt,key_Up,key_Down) then
 		begin
 			case opt of
-				0: break;
+				0: NoteTune_sets();
 				1: NoteTuneLoop();
 				2: NoteTune_options(TUNEOptions_BackToEdit);
 			end;
@@ -22,5 +28,6 @@ begin
 		else
 			break;
 	until false;
-	move(@tmpbuf,@screen,240);
+	currentNoteTableOfs:=$FF;
+	SFXScreen();
 end;

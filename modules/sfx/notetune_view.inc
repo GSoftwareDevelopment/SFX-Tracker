@@ -1,18 +1,18 @@
 procedure updateNoteTune(noteShift:byte);
 var
 	indChar:array[0..0] of byte;
-	note_val:array[0..0] of byte;
-	v,i,scrOfs:byte;
+	v,i,scrOfs,_pos:byte;
 
 begin
+	definedNoteTune:=pointer(NOTE_TABLE_ADDR+currentNoteTableOfs);
 	indChar:=resptr[tuneIndChars];
-	note_val:=pointer(NOTE_TABLE_ADDR+noteShift);
 	for i:=0 to 11 do
 	begin
 		scrOfs:=tuneBarsPos+i;
-		if (noteShift+i<64) then
+		_pos:=noteShift+i;
+		if (_pos<64) then
 		begin
-			v:=(note_val[i] and $0f) shl 1;
+			v:=(definedNoteTune[_pos] and $0f) shl 1;
 			// tune bar
 			if v>15 then
 			begin
@@ -30,7 +30,7 @@ begin
 			end;
 			inc(scrOfs,20);
 			// high nibbel of note frequency
-			v:=note_val[i] shr 4;
+			v:=definedNoteTune[_pos] shr 4;
 			if (v<10) then
 				screen[scrOfs]:=$10+v
 			else
@@ -45,19 +45,24 @@ begin
 			screen[scrOfs+80]:=$0d;
 		end;
 	end;
-	scrOfs:=tunePianoPos;
-	move(resptr[pianoTuneOdd],@screen[scrOfs],12);
-	move(resptr[pianoTuneEven],@screen[scrOfs+20],12);
+end;
+
+procedure NoteTunePiano();
+begin
+	move(resptr[pianoTuneOdd],@screen[tunePianoPos],12);
+	move(resptr[pianoTuneEven],@screen[tunePianoPos+20],12);
+end;
+
+procedure NoteTuneRedraw();
+begin
+	box(4,2,16,9,0);
+	noteSetId:=currentNoteTableOfs shr 6;
+	putNText(4,2,pointer(word(resptr[menu_NoteDef])+1+noteSetId*16),0);
+	updateNoteTune(currentOct*12);
+	NoteTunePiano();
 end;
 
 procedure NoteTuneScreen();
-var scrOfs:byte;
-
 begin
-	move(@screen,@tmpbuf,240);
-	fillchar(@moduleBar[20],200,0);
-
 	VBar(0,2,width_menuBar,0);
-//	menuBar(resptr[menu_note_tune],width_menuBar,1);
-
 end;

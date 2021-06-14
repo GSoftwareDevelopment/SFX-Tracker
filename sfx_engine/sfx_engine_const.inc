@@ -1,9 +1,8 @@
 _sfxPtr        = 0;     // pointer to SFX data definition
 _sfxPtrLo      = 0;     //
 _sfxPtrHi      = 1;     //
-_sfxNoteTab    = 2;     // pointer to note frequency table
-_sfxNoteTabLo  = 2;     //
-_sfxNoteTabHi  = 3;     //
+_sfxNoteTabOfs = 2;     //
+
 
 _chnOfs        = 4;     // SFX offset
 _chnNote       = 5;     // SFX Note

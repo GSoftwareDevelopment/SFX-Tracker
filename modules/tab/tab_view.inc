@@ -22,6 +22,7 @@ begin
 	statusBar[0]:=$03;
 	putValue(1,11,currentSFX,2,0);
 	statusBar[3]:=$1a;
+	updatePiano();
 end;
 
 procedure updateTAB(showPos:boolean);

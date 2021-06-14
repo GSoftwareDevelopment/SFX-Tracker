@@ -57,7 +57,8 @@ begin
 	if (sfxLen=0) then
 	begin
 		SFXPtr[nSFX]:=$ffff;	_heap_sizes[nSFX]:=0;
-		// ...
+
+		// set current name to "Not defined"
 		SFXName[0]:=char(SFXNameLength);
 		move(resptr[str_notDefined],@SFXName[1],SFXNameLength);
 //		fillchar(@screen[SFXNameX+vadr[SFXNumberY]],SFXNameLength,$40);

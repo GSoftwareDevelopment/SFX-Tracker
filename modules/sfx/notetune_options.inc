@@ -1,9 +1,10 @@
-procedure NoteTune_preset();
+procedure NoteTune_sets();
 begin
-end;
-
-procedure NoteTune_user();
-begin
+	noteSetId:=currentNoteTableOfs shr 6;
+	if optionsList(resptr[menu_NoteDef],width_menuOptions,NOTEDEFMenu,noteSetId,key_Up,key_Down) then
+		currentNoteTableOfs:=NOTE_TABLE_ADDR+noteSetId*64
+	else
+		currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
 end;
 
 procedure NoteTune_load();
@@ -18,11 +19,8 @@ procedure NoteTune_Options(defaultOpt:byte);
 begin
 	if optionsList(resptr[menu_tune_options],width_menuOptions,TUNEMenuOptions,defaultOpt,key_Up,key_Down) then
 		case defaultOpt of
-			0:NoteTune_preset();
-			1:NoteTune_user();
-			3:NoteTune_load();
-			4:NoteTune_save();
+			1:NoteTune_load();
+			2:NoteTune_save();
 		end;
-	box(4,2,16,9,0);
-	updateNoteTune(currentOct*12);
+	NoteTuneRedraw();
 end;

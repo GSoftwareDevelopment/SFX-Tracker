@@ -1,12 +1,11 @@
 procedure NoteTuneLoop();
 var
 	_pos,notePos,noteShift,noteVal,noteKey:byte;
-	note_val:array[0..0] of byte;
 
 begin
-	note_val:=pointer(NOTE_TABLE_ADDR);
 	notePos:=0; _pos:=0;
 	noteShift:=currentOct*12;
+	definedNoteTune:=pointer(NOTE_TABLE_ADDR+currentNoteTableOfs);
 
 	reset_pianoVis();
 	updateNoteTune(noteShift);
@@ -35,9 +34,9 @@ begin
 				end;
 			end;
 
-			noteVal:=note_val[_pos];
+			noteVal:=definedNoteTune[_pos];
 			if controlSelectionKeys(key,key_Up,key_Down,noteVal,0,255) then
-				note_val[_pos]:=noteVal;
+				definedNoteTune[_pos]:=noteVal;
 
 			updateNoteTune(noteShift);
 			colorVLine(tuneBarsPos+notePos,0,5,3);

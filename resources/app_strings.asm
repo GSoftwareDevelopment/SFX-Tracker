@@ -19,21 +19,21 @@ wild_allFiles
 scan_to_scr
 					dta d'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ. !#%*-/:<>?_'
 scan_key_codes
-					dta 50,31,30,26,24,29,27,51,53,48	// 0-9
-					dta 63,21,18,58,42,56,61,57,13,1,5,0,37,35,8,10,47,40,62,45,11,16,46,22,43,23	// A-Z
-					dta 34	// . (dot)
-					dta 33	// space
-					dta 95	// exclamation mark (!)
-					dta 90	// hash (#)
-					dta 93	// percent (%)
-					dta 7		// star (*)
-					dta 14	// hypen (-)
-					dta 38	// slash (/)
-					dta 66	// colon (:)
-					dta 54	// less sign (<)
-					dta 55	// more sign (>)
-					dta 102	// question mark (?)
-					dta 78	// underscore mark (_)
+					dta 50,31,30,26,24,29,27,51,53,48	; 0-9
+					dta 63,21,18,58,42,56,61,57,13,1,5,0,37,35,8,10,47,40,62,45,11,16,46,22,43,23	; A-Z
+					dta 34	; . (dot)
+					dta 33	; space
+					dta 95	; exclamation mark (!)
+					dta 90	; hash (#)
+					dta 93	; percent (%)
+					dta 7		; star (*)
+					dta 14	; hypen (-)
+					dta 38	; slash (/)
+					dta 66	; colon (:)
+					dta 54	; less sign (<)
+					dta 55	; more sign (>)
+					dta 102	; question mark (?)
+					dta 78	; underscore mark (_)
 
 scan_piano_codes
 ;NOTE     C  C# D D# E  F   F# G G# A A# B | C  C# D D# E  F   F# G G# A A# B   C  C# D D# E |
@@ -53,19 +53,19 @@ pianoTuneOdd
 pianoTuneEven
 					dta $7,$8,$0,$8,$0,$7,$8,$0,$8,$0,$8,$6
 tuneIndChars
-		dta $3b,$3b	// f +7
-		dta $3c,$3b	// e +6
-		dta $3d,$3b	// d +5
-		dta $3e,$3b	// c +4
-		dta $00,$3b	// b +3
-		dta $00,$3c	// a +2
-		dta $00,$3d	// 9 +1
-		dta $00,$3e	// 8 +0
-		dta $1b,$00	// 7 -1
-		dta $1d,$00	// 6 -2
-		dta $20,$00	// 5 -3
-		dta $3b,$00	// 4 -4
-		dta $3b,$1b	// 3 -5
-		dta $3b,$1d	// 2 -6
-		dta $3b,$20	// 1 -7
-		dta $3b,$3b	// 0 -8
+		dta $3b,$3b	; f +7
+		dta $3c,$3b	; e +6
+		dta $3d,$3b	; d +5
+		dta $3e,$3b	; c +4
+		dta $00,$3b	; b +3
+		dta $00,$3c	; a +2
+		dta $00,$3d	; 9 +1
+		dta $00,$3e	; 8 +0
+		dta $1b,$00	; 7 -1
+		dta $1d,$00	; 6 -2
+		dta $20,$00	; 5 -3
+		dta $3b,$00	; 4 -4
+		dta $3b,$1b	; 3 -5
+		dta $3b,$1d	; 2 -6
+		dta $3b,$20	; 1 -7
+		dta $3b,$3b	; 0 -8

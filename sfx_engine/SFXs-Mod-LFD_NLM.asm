@@ -35,13 +35,11 @@ LFD_NLM_inc_note
          sty _regTemp
          tay
 
-         lda SFX_CHANNELS_ADDR+_sfxNoteTabLo,x  ; copy channels set note table pointer
-         sta sfxNotePtr                         ; to current channel note table pointer
-         lda SFX_CHANNELS_ADDR+_sfxNoteTabHi,x
-         sta sfxNotePtr+1
+         lda SFX_CHANNELS_ADDR+_sfxNoteTabOfs,x  ; get SFX note table preset
+         sta self_SFXnoteAddr+1
 
-//         lda NOTE_TABLE_ADDR,y
-         lda (sfxNotePtr),y
+self_SFXnoteAddr
+         lda NOTE_TABLE_ADDR,y
          ldy _regTemp
          jmp setChannelFreq
 

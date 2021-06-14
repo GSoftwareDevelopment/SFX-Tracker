@@ -24,26 +24,30 @@ menu_sfx
 					dta 255
 
 menu_sfx_options
-					dta 144,d'NOTE TUNE',255
-					dta 164,d'SET NAME',255				; set SFX name
-					dta 184,d'SFX MOD MODE',255		; set the type of modulation used in the SFX
-					dta 204,d'< BACK',255				; back to SFX menu bar
+					dta 124,d'SET NOTE TABLE',255
+					dta 144,d'SET NAME',255				; set SFX name
+					dta 164,d'SFX MOD MODE',255		; set the type of modulation used in the SFX
+					dta 184,d'< BACK',255				; back to SFX menu bar
+					dta 204,d'EDIT NOTE TABLE',255
 					dta 255
 
 menu_note_tune
-					dta 40,d'<<<',255
+					dta 40,d'SET',255
 					dta 60,d'>>>',255
 					dta 200,d'OPT',255
 					dta 255
 
 menu_tune_options
-					dta 124,d'PRESETS',255
-					dta 144,d'USER DEFINED',255
 					dta 164,d'< BACK',255
 					dta 184,d'LOAD',255
 					dta 204,d'SAVE',255
 					dta 255
-
+menu_NoteDef
+					dta  44,d'A: PURE TONES ',255
+					dta  64,d'B: BASS 1     ',255
+					dta  84,d'C: BASS 2     ',255
+					dta 104,d'D: USER DEFINE',255
+					dta 255
 menu_sfx_mode
 					dta  84,d'HFD',255
 					dta 104,d'MFD',255

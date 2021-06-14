@@ -20,7 +20,7 @@ TABNote     = $F7      ; TAB Note
 TABOrder    = $F8      ; TAB Order
 
 sfxPtr      = $F3      ; SFX Pointer (2 bytes)
-sfxNotePtr  = $F5      ; SFX Table of Note Frequency pointer (2 byte)
+sfxNoteOfs  = $F5      ; SFX Note Table offset (1 byte)
 chnNote     = $F7      ; SFX Note
 chnFreq     = $F8      ; SFX Frequency
 

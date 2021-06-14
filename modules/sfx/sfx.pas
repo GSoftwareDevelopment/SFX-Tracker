@@ -42,6 +42,7 @@ end;
 
 procedure SFXModule();
 begin
+	section:=0; cursorPos:=0; cursorShift:=0;
 	SFXScreen();
 	SFXLoop();
 end;

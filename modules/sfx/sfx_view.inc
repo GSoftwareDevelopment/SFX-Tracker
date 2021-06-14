@@ -89,11 +89,12 @@ begin
 
 	v:=SFXModMode[currentSFX];	i:=1+(v*5);
 	move(pointer(word(resptr[menu_sfx_mode])+i),@screen[204],3);
+
+	updatePiano();
 end;
 
 procedure SFXScreen();
 begin
-	section:=0; cursorPos:=0; cursorShift:=0;
 	fillchar(@moduleBar,220,$00);
 	VBar(0,1,width_menuBar,0);
 	colorHLine(SFXNumberX-1,SFXNumberY,4,1);

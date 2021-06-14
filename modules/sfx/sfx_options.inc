@@ -26,11 +26,17 @@ procedure SFX_Options(defaultOpt:byte);
 begin
 	if optionsList(resptr[menu_sfx_options],width_menuOptions,SFXMenuOptions,defaultOpt,key_Up,key_Down) then
 		case defaultOpt of
-			0: if SFXPtr[currentSFX]<>$FFFF then
+			0: begin
+				currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
+				NoteTune_sets();
+				SFXNoteSetOfs[currentSFX]:=currentNoteTableOfs;
+				currentNoteTableOfs:=$FF;
+			end;
+			1: setSFXName();
+			2: setSFXModMode();
+			4: if SFXPtr[currentSFX]<>$FFFF then
 					setNoteTune()
 				else
 					showError(resptr[msg_UnknownDefinition]);
-			1: setSFXName();
-			2: setSFXModMode();
 		end;
 end;

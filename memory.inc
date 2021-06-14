@@ -30,17 +30,6 @@ LIST_BUFFER_ADDR		= $C700; 							// universal list buffer for UI.listChoice()
 HEAP_ENTRIES			= 128;
 HEAP_MEMORY_SIZE		= $27F9;
 
-// Below definitions of constants are duplicated
-
-SONG_ADDR				= $CB00;	// = SONG_ADDR										; table of SONG definition
-SFX_MODE_SET_ADDR		= $CC00; // = SFX_MODE_SET_ADDR							; table of SFX modes
-SFX_NOTE_SET_ADDR		= $CC80; // = SFX_NOTE_SET_ADDR							; The array of pointers to arrays of notes
-NOTE_TABLE_ADDR		= $CD00; // = NOTE_TABLE_ADDR								; predefined table of note frequency
-
-HEAP_PTRLIST_ADDR		= $CE00;	// general table of pointers on the heap
-SFX_POINTERS_ADDR		= HEAP_PTRLIST_ADDR;				// = SFX_TABLE_ADDR	; heap pointers list for SFX definitions
-TAB_POINTERS_ADDR		= HEAP_PTRLIST_ADDR + $0080;	// = TAB_TABLE_ADDR	; heap pointers list for TAB definitions
-
-HEAP_SIZES_ADDR		= $CF00;								// table of data sizes on the heap
-
+HEAP_PTRLIST_ADDR		= $CE00; // general table of pointers on the heap
+HEAP_SIZES_ADDR		= $CF00; // table of data sizes on the heap
 HEAP_MEMORY_ADDR		= $D800;	// = DATA_ADDR										; heap - main data memory

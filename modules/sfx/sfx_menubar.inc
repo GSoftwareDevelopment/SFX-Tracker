@@ -1,5 +1,3 @@
-{$i modules/sfx/sfx_piano.inc}
-
 function SFXList():boolean;
 var
 	nSFX:shortint;
@@ -21,13 +19,17 @@ procedure SFXChangeMenuBarOpt(section:byte);
 begin
 	if (section=0) then
 	begin
-		controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1);
-		getSFXData(currentSFX);
-		SFXDetermineLength();
-		updateSFXView();
-		modified:=false;
+		if controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1) then
+		begin
+			getSFXData(currentSFX);
+			SFXDetermineLength();
+			updateSFXView();
+			modified:=false;
+		end;
 	end;
 end;
+
+{$i modules/sfx/sfx_piano.inc}
 
 procedure SFXSelectMenuBar(var section:byte);
 begin

@@ -14,8 +14,14 @@
 SFX_CHANNELS_ADDR = $6C0;
 SONG_ADDR         = $CB00;                // table of SONG definition
 SFX_MODE_SET_ADDR = $CC00;                // table of SFX modes
-SFX_NOTE_SET_ADDR = $CC80;                // The array of pointers to arrays of notes
-NOTE_TABLE_ADDR   = $CD00;
+SFX_NOTE_SET_ADDR = $CC80;                // table of SFX note table presets
+
+NOTE_TABLE_PAGE		= $CD;
+NOTE_TABLE_ADDR		= NOTE_TABLE_PAGE*$100; // = NOTE_TABLE_ADDR								; predefined table of note frequency
+PREDEF_PURE_ADDR     = NOTE_TABLE_ADDR;      //
+PREDEF_BASS1_ADDR    = NOTE_TABLE_ADDR+$40;  //
+PREDEF_BASS2_ADDR    = NOTE_TABLE_ADDR+$80;  //
+
 
 SFX_TABLE_ADDR    = $CE00;                // list for SFX definitions
 TAB_TABLE_ADDR    = SFX_TABLE_ADDR+$0080; // list for TAB definitions

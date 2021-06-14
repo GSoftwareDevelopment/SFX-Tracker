@@ -1,13 +1,16 @@
 ; TAB - PLAY NOTE
-;$28e8         brk
          sty _regTemp                           ; store current TAB offset
 
 ; get note freq value
          and #%00111111                         ; extract SFX Id from Order
-         tay
+         tay												; transfer SFX Id to Y register
+         lda SFX_MODE_SET_ADDR,y                ; get modulator mode for SFX
+         sta SFX_CHANNELS_ADDR+_chnMode,x       ; and store it in current channel register
 
-         lda SFX_MODE_SET_ADDR,y                ; get modulate mode for SFX
-         sta SFX_CHANNELS_ADDR+_chnMode,x       ;
+         lda SFX_NOTE_SET_ADDR,y         	      ; get SFX note table preset
+         sta SFX_CHANNELS_ADDR+_sfxNoteTabOfs,x ; store in channels registers
+			sta self_TABnoteAddr+1						; change the lower byte of the command address
+
          tya
          asl @                                  ; multiply SFX Id by 2 to get offset in SFXPtr offset table
          tay
@@ -35,13 +38,6 @@
          lda #$00                               ; reset current SFX offset to the beginig of definition
          sta SFX_CHANNELS_ADDR+_chnOfs,x
 
-         lda #$80 ; SFX_NOTE_SET_ADDR,y         ; copy note frequency table pointer to...
-         sta SFX_CHANNELS_ADDR+_sfxNoteTabLo,x  ; ...channels set note table pointer
-         sta sfxNotePtr                         ; ...current channel note table pointer
-         lda #$CD ; SFX_NOTE_SET_ADDR+1,y
-         sta SFX_CHANNELS_ADDR+_sfxNoteTabHi,x
-         sta sfxNotePtr+1
-
 ; get Note frequency divider from NOTE_TABLE
 
          lda TABOrder                           ; get TAB Note value
@@ -56,7 +52,7 @@ TAB_FN_Note
          sta SFX_CHANNELS_ADDR+_chnNote,x
 .endif
 
-         lda (sfxNotePtr),y                     ; get note frequency value from SFX NOTE_TABLE Pointer
+self_TABnoteAddr  lda NOTE_TABLE_ADDR,y         ; get note frequency value
          jmp TAB_FN_setFreq
 
 TAB_FN_Freq
