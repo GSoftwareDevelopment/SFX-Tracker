@@ -1,4 +1,3 @@
-{$i modules/gsd/dli_interrupt.inc}
 {$i modules/gsd/gsd_view.inc}
 {$i modules/theme/theme_selector.inc}
 

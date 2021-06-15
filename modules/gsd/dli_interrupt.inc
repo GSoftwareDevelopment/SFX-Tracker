@@ -11,7 +11,7 @@ var
 	oldDLI:pointer;
 
 procedure DLI_theme;assembler;interrupt;
-asm {
+asm
 ; Register backup for DLI interrupt
 _regA 	= $1d;
 _regX 	= $1e;
@@ -47,13 +47,12 @@ storeRegY:
 
    ldy _regY		; restore old A & Y register
    lda _regA
-};
 end;
 
 procedure DLIInit();
 begin
 	SFX_End();
-	NMIEN:=%01000000; // turn off DLI
+	NMIEN:=%00000000; // turn off DLI
 	DLIThemeCnt:=0; // reset DLI counter
 	getIntVec(iDLI, oldDLI);
 	SetIntVec(iDLI, @DLI_theme);

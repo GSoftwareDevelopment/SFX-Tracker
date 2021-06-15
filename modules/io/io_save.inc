@@ -1,44 +1,71 @@
+var
+	IOOfs:word;
+
+procedure push2IOBuf(data:pointer; size:word);
+begin
+	move(data,@IOBuf[IOOfs],size); inc(IOOfs,size);
+end;
+
 function storeHDataInFile(var f:file; var section:TTag; nameLength,id:byte):boolean;
 var
-	ofs,
 	dataSize,
 	dataAddr:word;
+	noteTabId:byte;
 
 begin
-	ofs:=0;
-	move(@section,@IOBuf,5);	// store section tag
-	inc(ofs,5);
-	IOBuf[ofs]:=id; inc(ofs);			// store id for SFX/TAG
+	IOOfs:=0;
+	push2IOBuf(section,5);
+	push2IOBuf(@id,1);
 
 	if (id<maxSFXs) then // only for SFX!
 	begin
-		IOBuf[ofs]:=SFXModMode[id]; inc(ofs); // store SFX Mode
+		push2IOBuf(@SFXModMode[id],1);
+		noteTabId:=SFXNoteSetOfs[id] shr 6;
+		push2IOBuf(@noteTabId,1);
 	end;
 
 	dataAddr:=HEAP_PTR[id];	// get data address
 	dataSize:=_heap_sizes[id];
-	IOBuf[ofs]:=lo(dataSize); inc(ofs); // store data size
-	IOBuf[ofs]:=hi(dataSize); inc(ofs);
-	move(@_mem[dataAddr],@IOBuf[ofs],dataSize); inc(ofs,dataSize); // store data from heap
+	push2IOBuf(@dataSize,2);
+	push2IOBuf(@_mem[dataAddr],dataSize);
 
 // write to disk
-	BlockWrite(f,IOBuf,ofs);
+	BlockWrite(f,IOBuf,IOOfs);
+	result:=IOResult=1;
+end;
+
+function storeNOTEDataInFile(var f:file; noteTabId:byte):boolean;
+var
+	addr:word;
+
+begin
+	IOOfs:=0;
+	push2IOBuf(@section_NOTE,5);
+	push2IOBuf(@noteTabId,1);
+
+	addr:=word(resptr[menu_NoteDef])+4+noteTabId*16;
+	push2IOBuf(pointer(addr),NOTETABnameLength);
+	addr:=NOTE_TABLE_ADDR+noteTabId*64;
+	push2IOBuf(pointer(addr),64);
+
+// write to disk
+	BlockWrite(f,IOBuf,IOOfs);
 	result:=IOResult=1;
 end;
 
 function storeSONGDataInFile(var f:file):boolean;
 var
-	ofs:word;
+	dataSize:word;
 
 begin
-	ofs:=0;
-	move(@section_SONG,@IOBuf[ofs],5); inc(ofs,5);
-	IOBuf[ofs]:=0; inc(ofs); // store data size
-	IOBuf[ofs]:=1; inc(ofs);
-	move(@SONGData,@IOBuf[ofs],256); inc(ofs,256);
+	IOofs:=0;
+	push2IOBuf(@section_SONG,5);
+	dataSize:=$100;
+	push2IOBuf(@dataSize,2);
+	push2IOBuf(@SONGData,dataSize);
 
 // write to disk
-	BlockWrite(f,IOBuf,ofs);
+	BlockWrite(f,IOBuf,IOOfs);
 	result:=IOResult=1;
 end;
 
@@ -49,14 +76,19 @@ var
 begin
 	// prepare main section data
 	move(@section_main,@IOBuf,5);
-	IOBuf[5]:=SFXMM_VER1_0;
+	IOBuf[5]:=SFXMM_VER1_1;
 	IOBuf[6]:=SONGNameLength;
 	move(@SONGTitle[1],@IOBuf[7],SONGNameLength);
 	BlockWrite(f,IOBuf,5+1+1+SONGNameLength);
 
 	if IOResult<>1 then exit(false);
+
 	// store SONG data
 	if not storeSONGDataInFile(f) then exit(false);
+
+	// store NOTE TABLE data
+	for i:=0 to 3 do
+		if not storeNOTEDataInFile(f,i) then exit(false);
 
 	// store SFXs data
 	for i:=0 to maxSFXs-1 do
@@ -71,27 +103,36 @@ begin
 	result:=true;
 end;
 
-procedure IOSave();
-var
-	f:file;
-
+procedure saveSong();
 begin
-	box(0,2,20,10,$40);
-	if filenamePrompt(resptr[msg_IO_SavePrompt],1,currentFile)<>-1 then
+	SFX_End();
+	putMultiText(resptr[msg_IO_writing],0);
+	{$I-}
+	assign(f,currentFile);
+	rewrite(f,1);
+	if (IOResult=1) then
 	begin
-		putMultiText(resptr[msg_IO_writing],0);
-		{$I-}
-		assign(f,currentFile);
-		rewrite(f,1);
-		if (IOResult=1) then
-		begin
-			if (not makeCompletteFile(f)) then
-				IOError(IOResult);
-		end
-		else
+		if (not makeCompletteFile(f)) then
 			IOError(IOResult);
-		close(f);
-		{$I+}
-		fillchar(screen[20],20,0);
+	end
+	else
+		IOError(IOResult);
+	close(f);
+	{$I+}
+	fillchar(screen[20],20,0);
+	SFX_Start();
+end;
+
+procedure IOSave();
+begin
+	move(@screen,@tmpbuf,240);
+	fillchar(@moduleBar,20,0);
+	fillchar(@moduleBar[20],200,$40);
+	putMultiText(resptr[msg_IO_SavePrompt],1);
+	if IOPrompt(currentFile) then
+	begin
+		fillchar(@moduleBar,220,0);
+		saveSong();
 	end;
+	move(@tmpbuf,@screen,240);
 end;

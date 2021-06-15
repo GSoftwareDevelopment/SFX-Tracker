@@ -1,9 +1,11 @@
 // SFX Music Maker basic setup
 SFXMM_VER1_0 		= $10;
+SFXMM_VER1_1 		= $11;
 
-FILEPATHMaxLength	= 128;
+FILEPATHMaxLength	= 127;
 
 	SFXNameLength		= 14;
+	NOTETABnameLength = 11;
 	TABNameLength		= 8;
 	SONGNameLength		= 32;
 
@@ -19,6 +21,7 @@ defaultSongTitle	= 'SONG NAME';
 defaultSearchPath	= 'H:';
 defaultFileName	= 'H:SONG.SMM';
 defaultThemeFile	= 'H:DEFAULT.THM';
+defaultNoteTable	= 'H:DEFAULT.SNT';
 defaultSongBeat	= 4;
 defaultSongTempo	= 5;
 defaultPianoOctave= 1;
@@ -36,8 +39,8 @@ width_fileList		= 20;
 width_filePath		= 20;
 
 //
-tuneBarsPos			= 66;
-tunePianoPos		= 166;
+tuneBarsPos			= 86;
+tunePianoPos		= 186;
 
 winXStart			= 4;
 winYStart			= 2;
@@ -65,8 +68,8 @@ SFXLenY				= 10;
 	SFXMenuModType_Back			= 4;
 
 	TUNEMenu							= 3;
-	TUNEMenuOptions				= 3;
-	TUNEOptions_BackToEdit		= 0;
+	TUNEMenuOptions				= 4;
+	TUNEOptions_BackToEdit		= 1;
 	NOTEDEFMenu						= 4;
 
 	TABMenuOptions					= 3;
@@ -124,6 +127,7 @@ SFXLenY				= 10;
 // FILE SECTION TAGS
 	section_main	:TTag = (83, 70, 88, 77, 77);	// SFXMM
 	section_SFX		:TTag = ( 0,  0, 83, 70, 88);	// __SFX
+	section_NOTE	:TTag = ( 0, 78, 79, 84, 69); // _NOTE
 	section_TAB 	:TTag = ( 0,  0, 84, 65, 66);	// __TAB
 	section_SONG	:TTag = ( 0, 83, 79, 78, 71);	// _SONG
 	section_theme	:TTag = (84, 72, 69, 77, 69); // THEME
@@ -175,7 +179,7 @@ SFXLenY				= 10;
 	pianoTuneEven					= base_strings+12;
 	tuneIndChars					= base_strings+13;
 
-	msg_IO_Prompt					= base_messages+0;
+	msg_IO_DirPrompt				= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;
 	msg_IO_LoadPrompt				= base_messages+2;
 	msg_IO_noFiles					= base_messages+3;
@@ -206,3 +210,9 @@ SFXLenY				= 10;
 
 	IOError_fileNotFound			= 170;
 
+//
+// LOAD MODES
+
+	LOAD_ALL_DATA 	= 0;
+	LOAD_NOTE_DEF 	= 1;
+	LOAD_SFX_DEF	= 2;

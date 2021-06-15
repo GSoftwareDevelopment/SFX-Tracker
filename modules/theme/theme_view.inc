@@ -1,3 +1,5 @@
+{$i modules/gsd/dli_interrupt.inc}
+
 procedure prepareThemeList();
 var
 	nTheme,themeOfs:byte;

@@ -57,7 +57,7 @@ procedure NoteTuneRedraw();
 begin
 	box(4,2,16,9,0);
 	noteSetId:=currentNoteTableOfs shr 6;
-	putNText(4,2,pointer(word(resptr[menu_NoteDef])+1+noteSetId*16),0);
+	putNText(4,2,pointer(word(resptr[menu_NoteDef])+4+noteSetId*16),1);
 	updateNoteTune(currentOct*12);
 	NoteTunePiano();
 end;

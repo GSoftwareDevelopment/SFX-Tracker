@@ -50,10 +50,9 @@ dl_start
 
     dta DL_BLANK2
     dta DL_MODE_20x12T5
-    DTA DL_BLANK2
+    dta DL_BLANK2
     dta DL_MODE_20x12T5
-    DTA DL_MODE_20x12T5
-    dta DL_BLANK5
+    dta DL_MODE_20x12T5
     dta DL_JVB, a(dl_start)
 
 

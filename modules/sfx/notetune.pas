@@ -12,6 +12,7 @@ var
 
 begin
 	currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
+	noteSetId:=currentNoteTableOfs shr 6;
 	NoteTuneScreen();
 
 	opt:=0;

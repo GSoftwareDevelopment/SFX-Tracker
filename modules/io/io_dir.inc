@@ -9,7 +9,8 @@ var
 	i,filesCount,nameLen:byte;
 
 begin
-	fillchar(@listBuf,1024,0);
+	SFX_End();
+	fillchar(@listBuf,LIST_BUFFER_SIZE,0);
 	listOfs:=0; filesCount:=0;
 	fillchar(@f.Name,16,0);
 	FindFirst(path, faAnyFile, f);
@@ -75,12 +76,13 @@ begin
 	end;
 	if (filesCount<=IO_pageLimit) and (IOResult<>136) then IOError(IOResult);
 	FindClose(f);
+	fillchar(@statusBar,20,0);
+	SFX_Start();
 	result:=filesCount;
 end;
 
-function IODirLoop(var searchPath:string; var resultFName:string[16]):boolean;
+function IODirLoop(var choicedFName:string[16]):boolean;
 var
-//	f:TSearchRec;
 	selFile:shortint;
 	filesCount:byte;
 	listStart,len:smallint;
@@ -89,13 +91,15 @@ var
 
 	procedure updateListPage();
 	begin
-		putValue(17,1,listPage+1,3,0);
+		putValue(17,11,listPage+1,3,0);
 	end;
 
 begin
 	listStart:=0; listPage:=0;
+	fillchar(@moduleBar,20,$40);
+	putMultiText(resptr[msg_IO_DirPrompt],1);
 	repeat
-		fillchar(@moduleBar,200,$40);
+		fillchar(@moduleBar[20],180,$40);
 		filesCount:=IOReadDir(searchPath,listStart);
 		if filesCount>0 then
 		begin
@@ -126,10 +130,10 @@ begin
 					while (listBuf[listOfs]<>0) and (len<16) do
 					begin
 						len:=len+1;
-						resultFName[len]:=char(listBuf[listOfs]+32);
+						choicedFName[len]:=char(listBuf[listOfs]+32);
 						listOfs:=listOfs+1;
 					end;
-					resultFName[0]:=char(len);
+					choicedFName[0]:=char(len);
 
 					result:=true;
 					break;
@@ -143,15 +147,56 @@ begin
 		end;
 	until false;
 end;
-
+(*
 procedure IODirectory();
-var
-	FName:string[16];
-
 begin
 	fillchar(@moduleBar,200,$40);
-	fillchar(@FName,16,255);
 	if filenamePrompt(resptr[msg_IO_Prompt],1,searchPath)<>-1 then
 		if IODirLoop(searchPath,FName) then
 			joinPathName(searchPath,FName,currentFile)
+end;
+*)
+function IOPrompt(var promptFile:string):boolean;
+var
+	is_star,is_dot:boolean;
+	FName:string[16];
+	len:byte;
+
+begin
+	repeat
+		if inputLongText(0,11,20,FILEPATHMaxLength,promptFile,0,0) then
+		begin
+			// Recognize the entered name
+			is_star:=findChar(promptFile,'*',1)>0;
+			is_dot:=findChar(promptFile,'.',1)>0;
+			if (not is_star) and (not is_dot) then
+			begin
+				len:=byte(promptFile[0]);
+				move(resptr[wild_allFiles],@promptFile[1+len],3);
+				promptFile[0]:=char(len+3);
+			end;
+			// update name on screen
+			conv2internalP2P(@promptFile[1],@statusBar,width_filePath);
+			if ((not is_star) and (is_dot)) then
+			begin
+				result:=true; break;
+			end
+			else
+			begin
+				fillchar(@FName,16,255);
+				move(@promptFile,@searchPath,FILEPATHMaxLength+1);
+				if IODirLoop(FName) then
+					joinPathName(searchPath,FName,promptFile)
+				else
+				begin
+					result:=false; break;
+				end;
+			end;
+
+		end
+		else
+		begin
+			result:=false; break;
+		end;
+	until false;
 end;

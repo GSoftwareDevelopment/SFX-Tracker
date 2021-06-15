@@ -1,20 +1,21 @@
 messages
 msg_IO_DirPrompt
-					dta 200,d'DEVICE:PATH',255,255			; IO->DIR prompt message
+					dta 20,d'SELECT FILE:',255,255			; IO->DIR prompt message
 msg_IO_SavePrompt
 					dta 200,d'SAVE AS:',255,255
 msg_IO_LoadPrompt
-					dta 200,d'LOAD:',255,255
+					dta 180,d'LOAD:',255
+					dta 200,d'USE WILDCARD FOR DIR',255,255
 msg_IO_noFiles
 					dta 126,d'NO FILES',255,255				; IO->DIR message for empty disk
 msg_IO_error
 					dta 223,d'I/O ERROR #',255,255			; IO error message with it number
 msg_IO_reading
-					dta 20,d'READING...',255,255			; IO message for reading operation
+					dta 220,d'READING...',255,255			; IO message for reading operation
 msg_IO_writing
-					dta 20,d'WRITING...',255,255			; IO message for writing operation
+					dta 220,d'WRITING...',255,255			; IO message for writing operation
 msg_IO_skipping
-					dta 20,d'SKIPPING...',255,255			; IO message for skipping - ony IO->DIR when page is changing
+					dta 220,d'SKIPPING...',255,255			; IO message for skipping - ony IO->DIR when page is changing
 msg_IO_Quit
 					dta 42,07,d'ARE YOU LEAVE?',06,255,255	; quit ask message
 but_IO_Quit

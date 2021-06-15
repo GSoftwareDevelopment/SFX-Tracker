@@ -93,6 +93,7 @@ end;
 
 procedure SFX_Start;
 begin
+	INIT_SFXEngine();
    NMIEN:=%00000000;
    GetIntVec(iVBL, oldVBL);
    SetIntVec(iVBL, @SFX_tick);

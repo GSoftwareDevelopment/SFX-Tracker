@@ -1,1 +1,1 @@
-NOTE_TABLE_ADDR rcasm 'sfx_engine/note_values.asm'
+; NOTE_TABLE_ADDR rcasm 'sfx_engine/note_values.asm'

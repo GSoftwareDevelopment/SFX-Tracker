@@ -497,7 +497,6 @@ begin
 			screen2video();
 		end;
 	until false;
-	kbcode:=255;
 end;
 
 function messageBox:byte;

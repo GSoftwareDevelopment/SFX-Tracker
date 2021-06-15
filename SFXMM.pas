@@ -30,7 +30,7 @@ var
 
 //	UI color themes
 
-	themesNames:array[0..0] of byte absolute DLI_COLOR_TABLE_ADDR+45; // list of themes names; located just after the color definition for the DLI
+	themesNames:array[0..0] of byte absolute THEMES_NAMES_ADDR; // list of themes names
 	currentTheme:byte;
 
 // heap
@@ -44,7 +44,7 @@ var
 
 	SONGTitle:string[SONGNameLength];
 
-	currentFile:string[FILEPATHMaxLength]; // indicate a current opened SFXMM file with full path and device
+	currentFile:string[FILEPATHMaxLength]; // absolute $b300; // indicate a current opened SFXMM file with full path and device
 	searchPath:string[FILEPATHMaxLength] absolute SEARCH_PATH_ADDR; // used only in IO->DIR
 
 	cursorPos,cursorShift:byte;			// general cursor position and view offset
@@ -66,11 +66,12 @@ var
 	statusBar:array[0..0] of byte absolute STATUSBAR_ADDR;
 	moduleBar:array[0..0] of byte absolute MODULE_ADDR;
 
+	f:file;
+
 // global access function and procedures
 {$i units/heap_manage.inc}
 {$i modules/io/io_clear_all_data.inc}
 {$i modules/io/io_error.inc}
-{$i modules/io/io_prompt.inc}
 {$i modules/io/io_tag_compare.inc}
 {$i modules/edit_ctrl.inc}
 {$i modules/vis_piano.inc}
@@ -84,25 +85,33 @@ var
 
 procedure init();
 begin
-	INIT_SFXEngine();
+//	INIT_SFXEngine();
 
 	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
+	KRPDEL:=20;	KEYREP:=3; CHBAS:=CHARSET_PAGE;
+
 	getTheme(0,PFCOLS); // set default theme color
-	IOLoadTheme(defaultThemeFile);
+
 	fillchar(@screen[0],20,$40);
 	fillchar(@screen[20],20,$00);
 	fillchar(@screen[40],20,$80);
 
-	KRPDEL:=20;
-	KEYREP:=3;
-	CHBAS:=$BC;
 	Init_UI(resptr[scan_to_scr],resptr[scan_key_codes]);
 	keys_notes:=resptr[scan_piano_codes];
 
 	fillchar(@listBuf,LIST_BUFFER_SIZE,0);
 
 	currentMenu:=0;
+
+	IO_clearAllData();
+
+	reset_pianoVis();
+	updatePiano();
+	SFX_Start();
+
+	IOLoadTheme(defaultThemeFile);
+	IOLoadDefaultNoteTable();
 
 // set defaults
 	fillchar(@currentFile,FILEPATHMaxLength,0);
@@ -111,11 +120,6 @@ begin
 	fillchar(@searchPath,FILEPATHMaxLength,0);
 	move(@defaultSearchPath,@searchPath,length(defaultSearchPath)+1);
 
-	IO_clearAllData();
-
-	reset_pianoVis();
-	updatePiano();
-	SFX_Start();
 end;
 
 procedure uncolorWorkarea();
@@ -129,6 +133,7 @@ end;
 begin
 	init();
 	repeat
+		fillchar(@screen,20,$40);
 		if optionsList(resptr[menu_top],width_menuTop,5,currentMenu,key_Left,key_Right) then
 			case currentMenu of
 				0: GSDModule();

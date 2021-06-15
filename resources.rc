@@ -1,4 +1,5 @@
-DLI_COLOR_TABLE_ADDR rcasm 'resources/themes.asm'
+DLI_COLOR_TABLE_ADDR rcasm 'resources/themes_colors.asm'
+THEMES_NAMES_ADDR rcasm 'resources/themes_names.asm'
 VIS_TABLE_ADDR rcasm 'resources/vis_table.asm'
 RESOURCES_ADDR rcasm 'resources/app_resources.asm'
 

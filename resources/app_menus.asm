@@ -38,6 +38,7 @@ menu_note_tune
 					dta 255
 
 menu_tune_options
+					dta 144,d'SET TABLE NAME',255
 					dta 164,d'< BACK',255
 					dta 184,d'LOAD',255
 					dta 204,d'SAVE',255
@@ -166,8 +167,8 @@ menu_song_edit
 
 menu_IO
 					dta  0,d'<',255					; back to main menu
-					dta  2,d'DIR',255					; directory - list of files
-					dta 6,d'LOAD',255					; load - SFX/TAB/SONG
-					dta 11,d'SAVE',255				; sabe - SFX/TAB/SONF
+					dta  2,d'LOAD',255				; load - SFX/TAB/SONG
+					dta  7,d'SAVE',255				; save - SFX/TAB/SONG
+					dta 12,d'NEW',255					;
 					dta 16,d'QUIT',255				; quit to dos
 					dta 255
