@@ -55,7 +55,10 @@ audio_loop
 
 ; SONG CLOCK CONTROL
 
-         dec SONG_TICK
+			ldy SONG_TICK
+			bmi dont_reset_tick_counter
+         dey
+         sty SONG_TICK
          bpl dont_reset_tick_counter
 ; reset tick counter
          lda SONG_LPB                           ; otherwise, set SONG_TICK as SONG_LPB

@@ -45,12 +45,7 @@ begin
 				moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 			end;
 
-			if modified then
-			begin
-				TABDetermineLength();
-				storeTABData(currentTAB);
-				modified:=false;
-			end;
+			if modified then TABDetermineLength();
 
 			//
 			updateTAB(true);
@@ -62,5 +57,11 @@ begin
 	until false;
 	updateTAB(true);
 	SFX_Off();
+	if modified then
+	begin
+		TABDetermineLength();
+		storeTABData(currentTAB);
+		modified:=false;
+	end;
 	reset_pianoVis();
 end;

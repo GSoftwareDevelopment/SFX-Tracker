@@ -17,6 +17,8 @@ begin
 		if (mod_mode<SFXMenuModType_Back) then
 		begin
 			SFXModMode[currentSFX]:=mod_mode;
+			SFXDetermineLength();
+			storeSFXData(currentSFX);
 		end;
 end;
 

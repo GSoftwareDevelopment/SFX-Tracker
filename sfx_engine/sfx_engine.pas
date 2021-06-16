@@ -54,6 +54,7 @@ var
 
 procedure INIT_SFXEngine;
 begin
+	SONG_Tick:=$80;
    AUDCTL:=%00000000;
    SKCTL:=%00; SKCTL:=%11;
 	currentNoteTableOfs:=$FF;
@@ -116,6 +117,7 @@ end;
 
 procedure SFX_Off;
 begin
+	SONG_Tick:=$80;
    for __chn:=0 to 3 do SFX_ChannelOff(__chn);
 end;
 
@@ -126,6 +128,12 @@ var
    note_val:array[0..0] of byte;
 
 begin
+   if currentNoteTableOfs=$FF then
+		NoteTabOfs:=SFXNoteSetOfs[SFXId]
+	else
+		NoteTabOfs:=currentNoteTableOfs;
+	note_val:=pointer(NOTE_TABLE_ADDR+NoteTabOfs);
+
 {$ifndef DONT_CALC_ABS_ADDR}
    SFXAddr:=SFXPtr[SFXId]+DATA_ADDR;
 {$ifndef DONT_CALC_SFX_NAMES}
@@ -136,20 +144,14 @@ begin
 {$endif}
 
    __cOfs:=channel*$10;
-   if currentNoteTableOfs=$FF then
-		NoteTabOfs:=SFXNoteSetOfs[SFXId]
-	else
-		NoteTabOfs:=currentNoteTableOfs;
 
-	note_val:=pointer(NOTE_TABLE_ADDR+NoteTabOfs);
    channels[__cOfs+ _sfxPtrLo]:=lo(SFXAddr);       // SFX address lo
    channels[__cOfs+ _sfxPtrHi]:=hi(SFXAddr);       // SFX address hi
    channels[__cOfs+ _sfxNoteTabOfs]:=NoteTabOfs;   // SFX Note table address lo
-   channels[__cOfs+ _chnOfs]:=$00;                 // SFX offset
    channels[__cOfs+ _chnNote]:=note;               // SFX Note
-
    channels[__cOfs+ _chnFreq]:=note_val[note];     // SFX frequency
    channels[__cOfs+ _chnMode]:=SFXModMode[SFXId];  // SFX modulation Mode
+   channels[__cOfs+ _chnOfs]:=$00;                 // SFX offset
 end;
 
 procedure SFX_Freq;

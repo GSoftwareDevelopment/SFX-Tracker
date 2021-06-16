@@ -8,12 +8,12 @@ audc        = $d201
             icl 'sfx_engine_const.inc'
 
 ; VARIABLES - PAGE ZERO
-SONG_LPB    = $F0      ; SONG Line Per Beat
-SONG_TICK   = $F1      ; SONG tick counter
-
 .ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
 AUDIOBUF    = $E8      ; 8 bytes audio buffer for sync output
 .endif
+
+SONG_LPB    = $F0      ; SONG Line Per Beat
+SONG_TICK   = $F1      ; SONG tick counter
 
 TABPtr      = $F3      ; TAB Pointer (2 bytes)
 TABNote     = $F7      ; TAB Note
