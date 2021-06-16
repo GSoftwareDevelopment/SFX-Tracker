@@ -67,13 +67,25 @@ begin
 	move(@tmpbuf,@screen,240);
 end;
 
+procedure NoteTune_IO_Options();
+var
+	IOOpt:byte;
+
+begin
+	IOOpt:=0;
+	if optionsList(resptr[menu_IO_options],width_menuIOOptions,IOOptions,IOOpt,key_Up,key_Down) then
+	case IOOpt of
+		0:NoteTune_load();
+		1:NoteTune_save();
+	end;
+end;
+
 procedure NoteTune_Options(defaultOpt:byte);
 begin
 	if optionsList(resptr[menu_tune_options],width_menuOptions,TUNEMenuOptions,defaultOpt,key_Up,key_Down) then
 		case defaultOpt of
 			0:NoteTune_setName();
-			2:NoteTune_load();
-			3:NoteTune_save();
+			2:NoteTune_IO_Options();
 		end;
 
 	currentNoteTableOfs:=noteSetId*64;

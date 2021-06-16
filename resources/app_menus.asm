@@ -24,11 +24,12 @@ menu_sfx
 					dta 255
 
 menu_sfx_options
+					dta 104,d'SET NAME',255				; set SFX name
 					dta 124,d'SET NOTE TABLE',255
-					dta 144,d'SET NAME',255				; set SFX name
-					dta 164,d'SFX MOD MODE',255		; set the type of modulation used in the SFX
-					dta 184,d'< BACK',255				; back to SFX menu bar
-					dta 204,d'EDIT NOTE TABLE',255
+					dta 144,d'SFX MOD MODE',255		; set the type of modulation used in the SFX
+					dta 164,d'< BACK',255				; back to SFX menu bar
+					dta 184,d'EDIT NOTE TABLE',255
+					dta 204,d'IO >',255
 					dta 255
 
 menu_note_tune
@@ -38,11 +39,17 @@ menu_note_tune
 					dta 255
 
 menu_tune_options
-					dta 144,d'SET TABLE NAME',255
-					dta 164,d'< BACK',255
-					dta 184,d'LOAD',255
-					dta 204,d'SAVE',255
+					dta 164,d'SET TABLE NAME',255
+					dta 184,d'< BACK',255
+					dta 204,d'IO >',255
 					dta 255
+
+menu_IO_options
+					dta 188,7,d'LOAD',255
+					dta 208,7,d'SAVE',255
+					dta 168,7,d'IO',255
+					dta 255
+
 menu_NoteDef
 					dta  44,d'A: PURE TONES ',255
 					dta  64,d'B: BASS 1     ',255
@@ -50,11 +57,11 @@ menu_NoteDef
 					dta 104,d'D: USER DEFINE',255
 					dta 255
 menu_sfx_mode
-					dta  84,d'HFD',255
-					dta 104,d'MFD',255
-					dta 124,d'NLM',255
-					dta 144,d'DSD',255
-					dta 164,d'< BACK',255
+					dta  44,d'HFD',255
+					dta  64,d'MFD',255
+					dta  84,d'NLM',255
+					dta 104,d'DSD',255
+					dta 124,d'< BACK',255
 					dta 255
 
 menu_HFD_mode

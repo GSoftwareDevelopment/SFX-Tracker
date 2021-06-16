@@ -32,6 +32,7 @@ defaultPianoOctave= 1;
 width_menuTop		= 0;
 width_menuBar		= 4;
 width_menuOptions	= 16;
+width_menuIOOptions = 8;
 width_menuModType = 8;
 width_menuSFXFunc	= 12;
 width_menuTabFunc	= 12;
@@ -62,7 +63,7 @@ SFXLenY				= 10;
 
 //
 
-   SFXMenuOptions					= 5;
+   SFXMenuOptions					= 6;
 	SFXMenuOption_Back			= 3;
 	SFXMenuModType					= 5;
 	SFXMenuModType_Back			= 4;
@@ -71,6 +72,8 @@ SFXLenY				= 10;
 	TUNEMenuOptions				= 4;
 	TUNEOptions_BackToEdit		= 1;
 	NOTEDEFMenu						= 4;
+
+	IOOptions						= 2;
 
 	TABMenuOptions					= 3;
 	TABMenuOption_Back			= 2;
@@ -136,31 +139,34 @@ SFXLenY				= 10;
 // RESOURCES IDS
 
 	base_menus						= 0;
-	base_strings					= 20;
-	base_messages					= 34;
+	base_strings					= 21;
+	base_messages					= 35;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
    menu_sfx_options				= base_menus+2;
 	menu_note_tune					= base_menus+3;
 	menu_tune_options				= base_menus+4;
-	menu_NoteDef					= base_menus+5;
 
-   menu_sfx_mode					= base_menus+6;
-	menu_HFD_mode					= base_menus+7;
-	menu_MFD_mode					= base_menus+8;
-	menu_LFD_NLM_mode				= base_menus+9;
-	menu_DFD_mode					= base_menus+10;
+	menu_IO_options				= base_menus+5;
 
-   menu_tabs						= base_menus+11;
-	menu_tabs_options				= base_menus+12;
-	menu_tab_edit					= base_menus+13;
-	menu_GSD							= base_menus+14;
-	menu_Themes						= base_menus+15;
-	menu_Song						= base_menus+16;
-	menu_Song_options				= base_menus+17;
-	menu_Song_edit					= base_menus+18;
-	menu_IO							= base_menus+19;
+	menu_NoteDef					= base_menus+6;
+
+   menu_sfx_mode					= base_menus+7;
+	menu_HFD_mode					= base_menus+8;
+	menu_MFD_mode					= base_menus+9;
+	menu_LFD_NLM_mode				= base_menus+10;
+	menu_DFD_mode					= base_menus+11;
+
+   menu_tabs						= base_menus+12;
+	menu_tabs_options				= base_menus+13;
+	menu_tab_edit					= base_menus+14;
+	menu_GSD							= base_menus+15;
+	menu_Themes						= base_menus+16;
+	menu_Song						= base_menus+17;
+	menu_Song_options				= base_menus+18;
+	menu_Song_edit					= base_menus+19;
+	menu_IO							= base_menus+20;
 
 	str_notDefined					= base_strings+0;
 	str_IO_nextPage				= base_strings+1;

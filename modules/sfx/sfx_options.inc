@@ -24,21 +24,35 @@ end;
 
 {$i modules/sfx/notetune.pas}
 
+procedure SFX_IO_Options();
+var
+	IOOpt:byte;
+
+begin
+	IOOpt:=0;
+	if optionsList(resptr[menu_IO_options],width_menuIOOptions,IOOptions,IOOpt,key_Up,key_Down) then
+	case IOOpt of
+		0:exit;
+		1:exit;
+	end;
+end;
+
 procedure SFX_Options(defaultOpt:byte);
 begin
 	if optionsList(resptr[menu_sfx_options],width_menuOptions,SFXMenuOptions,defaultOpt,key_Up,key_Down) then
 		case defaultOpt of
-			0: begin
+			0: setSFXName();
+			1: begin
 				currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
 				NoteTune_sets();
 				SFXNoteSetOfs[currentSFX]:=currentNoteTableOfs;
 				currentNoteTableOfs:=$FF;
 			end;
-			1: setSFXName();
 			2: setSFXModMode();
 			4: if SFXPtr[currentSFX]<>$FFFF then
 					setNoteTune()
 				else
 					showError(resptr[msg_UnknownDefinition]);
+			5: SFX_IO_Options();
 		end;
 end;
