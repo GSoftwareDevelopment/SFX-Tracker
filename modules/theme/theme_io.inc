@@ -13,8 +13,7 @@ begin
 		move(@section_theme,@IOBuf,5);
 		IOBuf[5]:=SFXMM_VER1_0;
 		IOBuf[6]:=currentTheme;
-		move(@DLIColTab,@IOBuf[7],30);
-		move(@ThemesNames,@IOBuf[37],72);
+		move(@DLIColTab,@IOBuf[7],102);
 		blockWrite(f,IOBuf,109,writen);
 		if (writen=109) then	result:=IO_OK;
 	end
@@ -26,7 +25,7 @@ end;
 
 function IOLoadTheme(var fn:string):byte;
 var
-	readed,count:word;
+	readed:word;
 	fileVer:byte;
 
 begin
@@ -45,8 +44,7 @@ begin
 			if (fileVer=SFXMM_VER1_0) then
 			begin
 				blockRead(f,currentTheme,1);
-				blockRead(f,DLIColTab,30);
-				blockRead(f,ThemesNames,72);
+				blockRead(f,ThemesNames,102,readed);
 				if (readed=72) then
 				begin
 					getTheme(currentTheme,PFCOLS);

@@ -199,6 +199,7 @@ SFXLenY				= 10;
 	msg_TAB_SFXIdPrompt			= base_messages+17;
 	msg_BeatStepPrompt			= base_messages+18;
 	msg_SetTempoPrompt			= base_messages+19;
+	msg_pianoTuneInfo				= base_messages+20;
 
 //
 // PROGRAMM ERRORS

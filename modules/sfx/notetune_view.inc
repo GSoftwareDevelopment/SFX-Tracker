@@ -6,6 +6,8 @@ var
 begin
 	definedNoteTune:=pointer(NOTE_TABLE_ADDR+currentNoteTableOfs);
 	indChar:=resptr[tuneIndChars];
+	putMultiText(resptr[msg_pianoTuneInfo],0);
+	v:=noteShift div 12; screen[54+v]:=screen[54+v] xor $c0;
 	for i:=0 to 11 do
 	begin
 		scrOfs:=tuneBarsPos+i;
@@ -56,8 +58,9 @@ end;
 procedure NoteTuneRedraw();
 begin
 	box(4,2,16,9,0);
+	fillchar(@moduleBar[4],16,$40);
 	noteSetId:=currentNoteTableOfs shr 6;
-	putNText(4,2,pointer(word(resptr[menu_NoteDef])+4+noteSetId*16),1);
+	putNText(4,1,pointer(word(resptr[menu_NoteDef])+4+noteSetId*16),1);
 	updateNoteTune(currentOct*12);
 	NoteTunePiano();
 end;

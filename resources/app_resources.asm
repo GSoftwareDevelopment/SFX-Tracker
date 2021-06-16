@@ -62,6 +62,7 @@ data_pointers_list
 	dta a(msg_TAB_SFXIdPrompt)	;51
 	dta a(msg_BeatStepPrompt)	;52
 	dta a(msg_SetTempoPrompt)	;53
+	dta a(msg_pianoTuneInfo)	;54
 
 	icl 'app_menus.asm'
 	icl 'app_strings.asm'

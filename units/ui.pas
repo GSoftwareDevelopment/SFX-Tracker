@@ -183,8 +183,6 @@ var
 begin
 	len:=length(s);
 	fillchar(@buf,256,0);
-	// conv2internal(s);
-	// move(@s[1],@buf,len);
 	conv2internalP2P(@s[1],@buf,len);
 	if (len>width) then
 	begin
@@ -203,7 +201,8 @@ begin
 		if keyPressed then
 		begin
 			ofs:=shiftX+curX;
-			screen[scrOfs+curX]:=buf[ofs] or colEdit;
+			// screen[scrOfs+curX]:=buf[ofs] or colEdit;
+			if curState then screen[scrOfs+curX]:=screen[scrOfs+curX] xor $C0;
 			case key of
 				key_ESC: begin result:=false; break; end;
 				key_RETURN: begin result:=true; break; end;

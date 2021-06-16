@@ -32,8 +32,8 @@ menu_sfx_options
 					dta 255
 
 menu_note_tune
-					dta 40,d'SET',255
-					dta 60,d'>>>',255
+					dta 20,d'SET',255
+					dta 40,d'>>>',255
 					dta 200,d'OPT',255
 					dta 255
 

@@ -55,3 +55,7 @@ msg_BeatStepPrompt
 msg_SetTempoPrompt
 					dta 220,d'TEMPO',255
 					dta 234,6,d'1_255',255,255
+msg_pianoTuneInfo
+					dta 44,d'OCTAVE',255
+					dta 54,d'012345',255
+					dta 255

@@ -1,5 +1,13 @@
 procedure NoteTune_setName();
 begin
+	FName[0]:=char(NOTETABnameLength);
+	move(pointer(word(resptr[menu_NoteDef])+4+noteSetId*16),@FName[1],NOTETABnameLength);
+	conv2ASCII(FName);
+	if inputText(4,1,11,FName,1,1) then
+	begin
+		conv2Internal(FName);
+		move(@FName[1],pointer(word(resptr[menu_NoteDef])+4+noteSetId*16),NOTETABnameLength);
+	end;
 end;
 
 procedure NoteTune_sets();

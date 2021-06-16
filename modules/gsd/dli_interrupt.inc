@@ -6,7 +6,7 @@ const
 
 var
 	DLIThemeCnt:byte absolute DLICount;
-	DLIColTab:array[0..9*5-1] of byte absolute DLI_COLOR_TABLE_ADDR;
+	DLIColTab:array[0..6*5-1] of byte absolute DLI_COLOR_TABLE_ADDR;
 	NMIEN:word absolute $d40e;
 	oldDLI:pointer;
 
@@ -38,7 +38,7 @@ _regY 	= $1f;
 	sta $d018
 	iny
 
-	cpy #45			; check, if its last line?
+	cpy #30			; check, if its last line?
    bne storeRegY
    ldy #0			; yes, reset register
 

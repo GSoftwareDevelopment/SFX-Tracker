@@ -27,8 +27,12 @@ tick_start
 channel_set
 
 .ifdef MAIN.@DEFINES.TAB_PLAYBACK
+ .print "TAB PLAYBACK START: ", *
+
          icl 'TABs.asm'
 .endif
+ .print "SFX PLAYBACK START: ", *
+
          icl 'SFXs.asm'
 
 next_channel

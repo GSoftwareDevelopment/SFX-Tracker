@@ -159,7 +159,6 @@ end;
 function IOPrompt(var promptFile:string):boolean;
 var
 	is_star,is_dot:boolean;
-	FName:string[16];
 	len:byte;
 
 begin

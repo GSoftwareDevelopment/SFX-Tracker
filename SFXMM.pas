@@ -44,8 +44,9 @@ var
 
 	SONGTitle:string[SONGNameLength];
 
-	currentFile:string[FILEPATHMaxLength]; // absolute $b300; // indicate a current opened SFXMM file with full path and device
 	searchPath:string[FILEPATHMaxLength] absolute SEARCH_PATH_ADDR; // used only in IO->DIR
+	currentFile:string[FILEPATHMaxLength]; // absolute $b300; // indicate a current opened SFXMM file with full path and device
+	FName:string[16];
 
 	cursorPos,cursorShift:byte;			// general cursor position and view offset
 
@@ -94,8 +95,6 @@ begin
 	getTheme(0,PFCOLS); // set default theme color
 
 	fillchar(@screen[0],20,$40);
-	fillchar(@screen[20],20,$00);
-	fillchar(@screen[40],20,$80);
 
 	Init_UI(resptr[scan_to_scr],resptr[scan_key_codes]);
 	keys_notes:=resptr[scan_piano_codes];

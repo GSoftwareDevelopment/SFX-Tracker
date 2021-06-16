@@ -14,7 +14,7 @@ MODULE_ADDR				= SCREEN_BUFFER_ADDR+20;
 STATUSBAR_ADDR			= SCREEN_BUFFER_ADDR+220;
 LOGO_ADDR				= SCREEN_BUFFER_ADDR+60;		// SFXMM Logo Screen
 DLI_COLOR_TABLE_ADDR = SCREEN_BUFFER_ADDR+240;		// DLI Color table (45 bytes) and...
-THEMES_NAMES_ADDR		= DLI_COLOR_TABLE_ADDR+45;		// Theme names (72 bytes=6 schemas*12 char/name)
+THEMES_NAMES_ADDR		= DLI_COLOR_TABLE_ADDR+30;		// Theme names (72 bytes=6 schemas*12 char/name)
 DLIST_ADDR				= $BBE0;								// screen organization map (Display List)
 CHARSET_PAGE			= $BC;
 CHARSET_ADDR			= CHARSET_PAGE*$100;				// character set definition

@@ -85,6 +85,8 @@ procedure SFX_tick(); Assembler; Interrupt;
 asm
 sfx_engine_start
 
+ .print "SFX-ENGINE START: ", *
+
    icl 'sfx_engine/sfx_engine.asm'
 
  .print "SFX-ENGINE SIZE: ", *-sfx_engine_start
@@ -142,7 +144,7 @@ begin
 	note_val:=pointer(NOTE_TABLE_ADDR+NoteTabOfs);
    channels[__cOfs+ _sfxPtrLo]:=lo(SFXAddr);       // SFX address lo
    channels[__cOfs+ _sfxPtrHi]:=hi(SFXAddr);       // SFX address hi
-   channels[__cOfs+ _sfxNoteTabOfs]:=NoteTabOfs;  // SFX Note table address lo
+   channels[__cOfs+ _sfxNoteTabOfs]:=NoteTabOfs;   // SFX Note table address lo
    channels[__cOfs+ _chnOfs]:=$00;                 // SFX offset
    channels[__cOfs+ _chnNote]:=note;               // SFX Note
 
