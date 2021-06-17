@@ -127,12 +127,11 @@ menu_GSD
 					dta 255
 
 menu_Themes
-					dta 163,d'SET AS DEFAULT',255						; option to set the current set of topics as the default
+					dta 183,d'SET AS DEFAULT',255						; option to set the current set of topics as the default
 																				; - this set is saved as 'default.sth'.
 																				; When starting the program, the existence of the file
 																				; DEFAULT.THM' is checked on devices 'D:' and 'H:'.
-					dta 183,d'LOAD THEME SET',255						; As the name suggests, it allows you to load a set of topics
-					dta 203,d'SAVE THEME SET',255						; like above, but save
+					dta 203,d'LOAD THEME SET',255						; As the name suggests, it allows you to load a set of topics
 					dta 255
 
 ;

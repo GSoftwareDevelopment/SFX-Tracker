@@ -68,3 +68,11 @@ tuneIndChars
 		dta $3b,$1d	; 2 -6
 		dta $3b,$20	; 1 -7
 		dta $3b,$3b	; 0 -8
+
+themes_names_list
+					dta d'LIGHT       '		; predefined theme set
+					dta d'            '
+					dta d'            '
+					dta d'            '
+					dta d'            '
+					dta d'            '

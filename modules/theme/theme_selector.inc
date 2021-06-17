@@ -20,7 +20,9 @@ begin
 				colorHLine(6,2+nTheme,14,1)
 			else
 				colorHLine(0,2+nTheme,20,1);
-			controlSelectionKeys(key,key_Up,key_Down,nTheme,0,8);
+			repeat
+				controlSelectionKeys(key,key_Up,key_Down,nTheme,0,8);
+			until nTheme<>6;
 			case key of
 				key_ESC: break;
 				key_RETURN:
@@ -29,14 +31,9 @@ begin
 					else
 					begin
 						exitThemeSelector();
-						ThemeMenuOption(nTheme-6);
+						ThemeMenuOption(nTheme-7);
 						ThemesScreen();
 					end;
-//				key_SPACE: begin
-//					editTheme(nTheme);
-//					exitThemeSelector();
-//					initThemeSelector();
-//				end;
 			end;
 			if nTheme<6 then
 				colorHLine(6,2+nTheme,14,3)

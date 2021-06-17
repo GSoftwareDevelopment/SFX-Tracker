@@ -1,5 +1,3 @@
-// {$i modules/io/io_view.inc}
-{$i modules/io/io_dir.inc}
 {$i modules/io/io_load.inc}
 {$i modules/io/io_save.inc}
 {$i modules/io/io_quit.inc}

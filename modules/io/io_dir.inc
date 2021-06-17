@@ -96,15 +96,16 @@ var
 
 begin
 	listStart:=0; listPage:=0;
-	fillchar(@moduleBar,20,$40);
-	putMultiText(resptr[msg_IO_DirPrompt],1);
 	repeat
 		fillchar(@moduleBar[20],180,$40);
 		filesCount:=IOReadDir(searchPath,listStart);
 		if filesCount>0 then
 		begin
+			fillchar(@moduleBar,20,$00);
+			putMultiText(resptr[msg_IO_DirPrompt],0);
 			selFile:=0;
 			selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
+			fillchar(@moduleBar,20,$40);
 			if (selFile=-1) then
 			begin
 				result:=false; break; // exit(false);

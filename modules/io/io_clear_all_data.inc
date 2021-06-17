@@ -20,7 +20,6 @@ begin
 	currentSFX:=0;
 	currentTAB:=0;
 	currentOct:=defaultPianoOctave;
-//	song_tact:=4;
 	song_beat:=defaultSongBeat;
 	song_lpb:=defaultSongTempo;
 end;

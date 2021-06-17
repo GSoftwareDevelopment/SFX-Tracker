@@ -12,9 +12,9 @@
 {$DEFINE TAB_PLAYBACK}           // Enable TAB support
 
 SFX_CHANNELS_ADDR = $6C0;
-SONG_ADDR         = $CB00;                // table of SONG definition
-SFX_MODE_SET_ADDR = $CC00;                // table of SFX modes
-SFX_NOTE_SET_ADDR = $CC80;                // table of SFX note table presets
+SONG_ADDR         = $CC00;                // table of SONG definition
+SFX_MODE_SET_ADDR = $CD00;                // table of SFX modes
+SFX_NOTE_SET_ADDR = $CD80;                // table of SFX note table presets
 
 NOTE_TABLE_PAGE		= $CD;
 NOTE_TABLE_ADDR		= NOTE_TABLE_PAGE*$100; // = NOTE_TABLE_ADDR								; predefined table of note frequency

@@ -5,7 +5,7 @@ var
 	vis_xpos:array[0..28] of byte absolute VIS_TABLE_ADDR;
 	vis_ypos:array[0..28] of byte absolute VIS_TABLE_ADDR+29;
 
-	pianoScreen:array[0..0] of byte absolute KEYBOARD_ADDR;
+	pianoScreen:array[0..0] of byte absolute VIDEO_PIANO_ADDR;
 	old_pianoY:array[0..3] of byte;
 	pianoScopeOfs:byte;
 	pianoTm:byte;

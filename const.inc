@@ -140,7 +140,7 @@ SFXLenY				= 10;
 
 	base_menus						= 0;
 	base_strings					= 21;
-	base_messages					= 35;
+	base_messages					= 36;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -184,6 +184,7 @@ SFXLenY				= 10;
 	pianoTuneOdd					= base_strings+11;
 	pianoTuneEven					= base_strings+12;
 	tuneIndChars					= base_strings+13;
+	themes_names_list				= base_strings+14;
 
 	msg_IO_DirPrompt				= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;
@@ -220,8 +221,6 @@ SFXLenY				= 10;
 
 	error_badSectionTag			= 12;
 	error_badFileFormat			= 13;
-
-	IOError_fileNotFound			= 170;
 
 //
 // LOAD MODES

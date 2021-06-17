@@ -17,7 +17,7 @@ var
 begin
 	SFX_End();
 
-	assign(f,currentFile);
+	assign(f,fn);
 	case mode of
 		file_read: begin
 			reset(f,1);
@@ -31,6 +31,7 @@ begin
 
 	if (IOResult<>1) then
 	begin
+		IOError(IOResult);
 		closeFile();
 		result:=false;
 	end
@@ -38,5 +39,6 @@ begin
 	begin
 		result:=true;
 		putMultiText(msgPtr,0);
+		screen2video();
 	end;
 end;

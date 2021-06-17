@@ -44,8 +44,10 @@ const
 
 var
 	KBCODE:byte absolute 764;
+	CONSOL:byte absolute 53279;
 	key:TKeys;
 	timer:byte absolute $14;
+	keyClick:boolean = true;
 
 	chars_alphaNum,
 	keys_alphaNum:byteArray;
@@ -76,11 +78,29 @@ begin
 end;
 
 function keyPressed:boolean;
+var i:byte;
+
 begin
 	if kbcode<>255 then
 	begin
 		key:=TKeys(kbcode); kbcode:=255;
 		result:=true;
+		if keyClick then
+		begin
+			asm
+				ldx #$2E
+				pha
+loop_beep
+				stx $D01F   ;CONSOL
+				lda $D40B   ;VCOUNT
+loop_wait
+				cmp $D40B   ;VCOUNT
+				beq loop_wait
+				dex
+				bpl loop_beep
+				pla
+			end;
+		end;
 	end
 	else
 		result:=false;

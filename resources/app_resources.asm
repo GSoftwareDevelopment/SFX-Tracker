@@ -42,28 +42,30 @@ data_pointers_list
 	dta a(pianoTuneEven)			;33
 	dta a(tuneIndChars)			;34
 
+	dta a(themes_names_list)	;35
+
 ;message boxes
-	dta a(msg_IO_DirPrompt)		;35
-	dta a(msg_IO_SavePrompt)	;36
-	dta a(msg_IO_LoadPrompt)	;37
-	dta a(msg_IO_noFiles)		;38
-	dta a(msg_IO_error)			;39
-	dta a(msg_IO_reading)		;40
-	dta a(msg_IO_writing)		;41
-	dta a(msg_IO_skipping)		;42
-	dta a(msg_IO_Quit)			;43
-	dta a(but_IO_Quit)			;44
-	dta a(msg_Theme_Overwrite)	;45
-	dta a(but_Theme_Overwrite)	;46
-	dta a(msg_UnknownDefinition);47
-	dta a(msg_SFX_ValuePrompt) ;48
-	dta a(msg_TAB_JumpToPrompt);49
-	dta a(msg_TAB_RepeatPrompt);50
-	dta a(msg_TAB_FreqPrompt)	;51
-	dta a(msg_TAB_SFXIdPrompt)	;52
-	dta a(msg_BeatStepPrompt)	;53
-	dta a(msg_SetTempoPrompt)	;54
-	dta a(msg_pianoTuneInfo)	;55
+	dta a(msg_IO_DirPrompt)		;36
+	dta a(msg_IO_SavePrompt)	;37
+	dta a(msg_IO_LoadPrompt)	;38
+	dta a(msg_IO_noFiles)		;39
+	dta a(msg_IO_error)			;40
+	dta a(msg_IO_reading)		;41
+	dta a(msg_IO_writing)		;42
+	dta a(msg_IO_skipping)		;43
+	dta a(msg_IO_Quit)			;44
+	dta a(but_IO_Quit)			;45
+	dta a(msg_Theme_Overwrite)	;46
+	dta a(but_Theme_Overwrite)	;47
+	dta a(msg_UnknownDefinition);48
+	dta a(msg_SFX_ValuePrompt) ;49
+	dta a(msg_TAB_JumpToPrompt);50
+	dta a(msg_TAB_RepeatPrompt);51
+	dta a(msg_TAB_FreqPrompt)	;52
+	dta a(msg_TAB_SFXIdPrompt)	;53
+	dta a(msg_BeatStepPrompt)	;54
+	dta a(msg_SetTempoPrompt)	;55
+	dta a(msg_pianoTuneInfo)	;56
 
 	icl 'app_menus.asm'
 	icl 'app_strings.asm'

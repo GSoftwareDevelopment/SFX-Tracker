@@ -14,7 +14,6 @@ begin
 					if IORes<>IO_OK then IOError(IORes);
 				end;
 			end;
-		1: exit;
-		2: exit;
+		1: Theme_IO_Load();
 	end;
 end;

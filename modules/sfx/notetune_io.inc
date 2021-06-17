@@ -3,8 +3,6 @@ begin
 	if fileExists(defaultNoteTable) then
 	begin
 		setFilename(defaultNoteTable,currentFile);
-//		fillchar(@currentFile,FILEPATHMaxLength,0);
-//		move(@defaultNoteTable,@currentFile,length(defaultNoteTable)+1);
 		LoadData(LOAD_NOTE_DEF,255);
 	end;
 end;

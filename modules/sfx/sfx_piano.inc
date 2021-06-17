@@ -9,7 +9,7 @@ begin
 		exit;
 	end;
 	reset_pianoVis();
-	chn:=0;
+	chn:=0; keyClick:=false;
 	repeat
 		updatePianoVis();
 		if keyPressed then
@@ -24,6 +24,6 @@ begin
 					if chn<3 then chn:=chn+1 else chn:=0;
 		end;
 	until false;
-	SFX_Off();
+	SFX_Off(); keyClick:=true;
 	reset_pianoVis();
 end;

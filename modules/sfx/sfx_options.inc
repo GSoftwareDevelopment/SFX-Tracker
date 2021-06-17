@@ -32,11 +32,36 @@ begin
 		end;
 end;
 
+procedure SFX_IO_Load();
+begin
+	move(@screen,@tmpbuf,240);
+	if IOPrompt(currentFile) then
+		LoadData(LOAD_SFX_DEF,currentSFX);
+	move(@tmpbuf,@screen,240);
+end;
+
+procedure SFX_IO_Save();
+begin
+	move(@screen,@tmpbuf,240);
+	if IOPrompt(currentFile) then
+	begin
+		if openFile(currentFile,file_write) then
+		begin
+			if (not storeHDataInFile(section_SFX,SFXNameLength,currentSFX)) then
+				IOError(IOResult);
+			closeFile();
+		end
+		else
+			IOError(IOResult);
+	end;
+	move(@tmpbuf,@screen,240);
+end;
+
 procedure SFX_IO_Options();
 begin
 	case IO_Options of
-		0:exit;
-		1:exit;
+		0:SFX_IO_Load();
+		1:SFX_IO_Save();
 	end;
 end;
 

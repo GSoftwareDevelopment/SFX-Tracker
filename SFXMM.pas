@@ -30,7 +30,7 @@ var
 
 //	UI color themes
 
-	themesNames:array[0..0] of byte absolute THEMES_NAMES_ADDR; // list of themes names
+	themesNames:array[0..0] of byte; // list of themes names
 	currentTheme:byte;
 
 // heap
@@ -45,7 +45,7 @@ var
 	SONGTitle:string[SONGNameLength];
 
 	searchPath:string[FILEPATHMaxLength] absolute SEARCH_PATH_ADDR; // used only in IO->DIR
-	currentFile:string[FILEPATHMaxLength]; // absolute $b300; // indicate a current opened SFXMM file with full path and device
+	currentFile:string[FILEPATHMaxLength] absolute CURRENT_FILE_ADDR; // indicate a current opened SFXMM file with full path and device
 	FName:string[16];
 
 	cursorPos,cursorShift:byte;			// general cursor position and view offset
@@ -76,6 +76,7 @@ var
 {$i modules/io/io_tag_compare.inc}
 {$i modules/io/io_manage.inc}
 {$i modules/io/io_options.inc}
+{$i modules/io/io_dir.inc}
 {$i modules/edit_ctrl.inc}
 {$i modules/vis_piano.inc}
 
@@ -88,8 +89,6 @@ var
 
 procedure init();
 begin
-//	INIT_SFXEngine();
-
 	PMGInit(PMG_BASE);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
 	KRPDEL:=20;	KEYREP:=3; CHBAS:=CHARSET_PAGE;
@@ -100,6 +99,7 @@ begin
 
 	Init_UI(resptr[scan_to_scr],resptr[scan_key_codes]);
 	keys_notes:=resptr[scan_piano_codes];
+	themesNames:=resptr[themes_names_list];
 
 	fillchar(@listBuf,LIST_BUFFER_SIZE,0);
 
@@ -111,18 +111,13 @@ begin
 	updatePiano();
 	SFX_Start();
 
+// load defaults
 	IOLoadTheme(defaultThemeFile);
 	IOLoadDefaultNoteTable();
 
-// set defaults
+// set defaults files
 	setFilename(defaultFileName,currentFile);
-//	fillchar(@currentFile,FILEPATHMaxLength,0);
-//	move(@defaultFileName,@currentFile,length(defaultFileName)+1);
-
 	setFilename(defaultSearchPath,searchPath);
-//	fillchar(@searchPath,FILEPATHMaxLength,0);
-//	move(@defaultSearchPath,@searchPath,length(defaultSearchPath)+1);
-
 end;
 
 procedure uncolorWorkarea();
