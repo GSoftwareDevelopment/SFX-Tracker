@@ -105,7 +105,7 @@ end;
 
 procedure saveSong();
 begin
-	if openFile(currentFile,file_write) then
+	if openFile(currentFile,file_write)=IO_OK then
 	begin
 		if (not makeCompletteFile) then
 			IOError(IOResult);

@@ -45,7 +45,7 @@ begin
 	move(@screen,@tmpbuf,240);
 	if IOPrompt(currentFile) then
 	begin
-		if openFile(currentFile,file_write) then
+		if openFile(currentFile,file_write)=IO_OK then
 		begin
 			if (not storeHDataInFile(section_SFX,SFXNameLength,currentSFX)) then
 				IOError(IOResult);

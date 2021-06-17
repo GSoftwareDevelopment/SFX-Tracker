@@ -10,7 +10,7 @@ begin
 	SFX_Start();
 end;
 
-function openFile(var fn:string; mode:byte):boolean;
+function openFile(var fn:string; mode:byte):byte;
 var
 	msgPtr:pointer;
 
@@ -28,16 +28,14 @@ begin
 			msgPtr:=resptr[msg_IO_writing];
 		end;
 	end;
-
+	result:=IOResult;
 	if (IOResult<>1) then
 	begin
-		IOError(IOResult);
 		closeFile();
-		result:=false;
 	end
 	else
 	begin
-		result:=true;
+		result:=IO_OK;
 		putMultiText(msgPtr,0);
 		screen2video();
 	end;

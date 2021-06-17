@@ -3,7 +3,8 @@ var
 	writen:word;
 
 begin
-	if openFile(fn,file_write) then
+	result:=openFile(fn,file_write);
+	if result=IO_OK then
 	begin
 		move(@section_theme,@IOBuf,5);
 		IOBuf[5]:=SFXMM_VER1_0;
@@ -24,7 +25,8 @@ var
 	fileVer:byte;
 
 begin
-	if openFile(fn,file_read) then
+	result:=openFile(fn,file_read);
+	if result=IO_OK then
 	begin
 		blockRead(f,IOBuf,5,readed);
 		if (readed=5) and (compareTag(IOBuf,section_theme)) then
@@ -48,7 +50,7 @@ begin
 		else
 			result:=error_badSectionTag;
 		closeFile();
-	end;
+	end
 end;
 
 procedure Theme_IO_Load();

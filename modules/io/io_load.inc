@@ -126,41 +126,37 @@ var
 begin
 	fillchar(@statusBar,20,0);
 
-	if openFile(currentFile,file_read) then
+	err:=openFile(currentFile,file_read);
+	while (err=IO_OK) and (IOResult<>3) do
 	begin
-		err:=IO_OK;
-		repeat
-			blockRead(f,IOBuf,5,readed); // get tag
-			if (readed=5) then
-			begin
-				conv2internalP2P(@IOBuf,@statusBar[11],5);
-				if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_main)) then
-					loadMain()
-				else
-					if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_NOTE)) then
-						loadNoteTab()
-					else
-						if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_SFX)) then
-							loadDefinition(true,SFXNameLength)
-						else
-							if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_TAB)) then
-								loadDefinition(false,TABNameLength)
-							else
-								if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_SONG)) then
-									loadSONG()
-								else
-									err:=error_badSectionTag;
-			end
+		blockRead(f,IOBuf,5,readed); // get tag
+		if (readed=5) then
+		begin
+			conv2internalP2P(@IOBuf,@statusBar[11],5);
+			if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_main)) then
+				loadMain()
 			else
-				err:=error_badFileFormat;
-			move(@screen,@video,240); // put screen buffer to video without wait4screen
-		until (err<>IO_OK) or (IOResult=3);
-		fillchar(@statusBar,20,0);
-		if (err<>IO_OK) then	IOError(err);
-		closeFile();
-	end
-	else
-		IOError(IOResult);
+				if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_NOTE)) then
+					loadNoteTab()
+				else
+					if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_SFX)) then
+						loadDefinition(true,SFXNameLength)
+					else
+						if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_TAB)) then
+							loadDefinition(false,TABNameLength)
+						else
+							if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_SONG)) then
+								loadSONG()
+							else
+								err:=error_badSectionTag;
+		end
+		else
+			err:=error_badFileFormat;
+		move(@screen,@video,240); // put screen buffer to video without wait4screen
+	end;
+	fillchar(@statusBar,20,0);
+	if (err<>IO_OK) then	IOError(err);
+	closeFile();
 end;
 
 procedure IOLoad();

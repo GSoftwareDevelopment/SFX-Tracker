@@ -18,10 +18,10 @@ SONG_maxLength		= 64;
 IO_pageLimit		= 48;
 
 defaultSongTitle	= 'SONG NAME';
-defaultSearchPath	= 'H:';
-defaultFileName	= 'H:SONG.SMM';
-defaultThemeFile	= 'H:DEFAULT.THM';
-defaultNoteTable	= 'H:DEFAULT.SNT';
+defaultSearchPath	= 'D:';
+defaultFileName	= 'D:SONG.SMM';
+defaultThemeFile	= 'D:DEFAULT.THM';
+defaultNoteTable	= 'D:DEFAULT.SNT';
 defaultSongBeat	= 4;
 defaultSongTempo	= 5;
 defaultPianoOctave= 1;
