@@ -208,6 +208,12 @@ SFXLenY				= 10;
 	msg_pianoTuneInfo				= base_messages+20;
 
 //
+// FILE OPEN MODES
+
+	file_read	= 0;
+	file_write	= 1;
+
+//
 // PROGRAMM ERRORS
 
 	IO_OK								= 1;

@@ -1,3 +1,5 @@
+{$i modules/sfx/notetune_io.inc}
+
 procedure NoteTune_setName();
 begin
 	FName[0]:=char(NOTETABnameLength);
@@ -20,61 +22,9 @@ begin
 	noteSetId:=currentNoteTableOfs shr 6;
 end;
 
-procedure IOLoadDefaultNoteTable();
-begin
-	{$I-}
-	if fileExists(defaultNoteTable) then
-	begin
-		fillchar(@currentFile,FILEPATHMaxLength,0);
-		move(@defaultNoteTable,@currentFile,length(defaultNoteTable)+1);
-		LoadData(LOAD_NOTE_DEF,255);
-	end;
-	{$I+}
-end;
-
-procedure NoteTune_load();
-begin
-	move(@screen,@tmpbuf,240);
-	if IOPrompt(currentFile) then
-	begin
-		fillchar(@statusBar,20,0);
-		LoadData(LOAD_NOTE_DEF,noteSetId);
-	end;
-	move(@tmpbuf,@screen,240);
-end;
-
-procedure NoteTune_save();
-begin
-	move(@screen,@tmpbuf,240);
-	if IOPrompt(currentFile) then
-	begin
-		SFX_End();
-		putMultiText(resptr[msg_IO_writing],0);
-		{$I-}
-		assign(f,currentFile);
-		rewrite(f,1);
-		if (IOResult=1) then
-		begin
-			if (not storeNOTEDataInFile(f,noteSetId)) then
-				IOError(IOResult);
-		end
-		else
-			IOError(IOResult);
-		close(f);
-		{$I+}
-		SFX_Start();
-	end;
-	move(@tmpbuf,@screen,240);
-end;
-
 procedure NoteTune_IO_Options();
-var
-	IOOpt:byte;
-
 begin
-	IOOpt:=0;
-	if optionsList(resptr[menu_IO_options],width_menuIOOptions,IOOptions,IOOpt,key_Up,key_Down) then
-	case IOOpt of
+	case IO_Options of
 		0:NoteTune_load();
 		1:NoteTune_save();
 	end;

@@ -6,7 +6,7 @@ begin
 	move(data,@IOBuf[IOOfs],size); inc(IOOfs,size);
 end;
 
-function storeHDataInFile(var f:file; var section:TTag; nameLength,id:byte):boolean;
+function storeHDataInFile(var section:TTag; nameLength,id:byte):boolean;
 var
 	dataSize,
 	dataAddr:word;
@@ -34,7 +34,7 @@ begin
 	result:=IOResult=1;
 end;
 
-function storeNOTEDataInFile(var f:file; noteTabId:byte):boolean;
+function storeNOTEDataInFile(noteTabId:byte):boolean;
 var
 	addr:word;
 
@@ -53,7 +53,7 @@ begin
 	result:=IOResult=1;
 end;
 
-function storeSONGDataInFile(var f:file):boolean;
+function storeSONGDataInFile():boolean;
 var
 	dataSize:word;
 
@@ -69,7 +69,7 @@ begin
 	result:=IOResult=1;
 end;
 
-function makeCompletteFile(var f:file):boolean;
+function makeCompletteFile():boolean;
 var
 	i:byte;
 
@@ -84,43 +84,35 @@ begin
 	if IOResult<>1 then exit(false);
 
 	// store SONG data
-	if not storeSONGDataInFile(f) then exit(false);
+	if not storeSONGDataInFile then exit(false);
 
 	// store NOTE TABLE data
 	for i:=0 to 3 do
-		if not storeNOTEDataInFile(f,i) then exit(false);
+		if not storeNOTEDataInFile(i) then exit(false);
 
 	// store SFXs data
 	for i:=0 to maxSFXs-1 do
 		if SFXPtr[i]<>$FFFF then
-			if not storeHDataInFile(f,section_SFX,SFXNameLength,i) then exit(false);
+			if not storeHDataInFile(section_SFX,SFXNameLength,i) then exit(false);
 
 	// store TABs data
 	for i:=0 to maxTABs-1 do
 		if TABPtr[i]<>$FFFF then
-			if not storeHDataInFile(f,section_TAB,TABNameLength,64+i) then exit(false);
+			if not storeHDataInFile(section_TAB,TABNameLength,64+i) then exit(false);
 
 	result:=true;
 end;
 
 procedure saveSong();
 begin
-	SFX_End();
-	putMultiText(resptr[msg_IO_writing],0);
-	{$I-}
-	assign(f,currentFile);
-	rewrite(f,1);
-	if (IOResult=1) then
+	if openFile(currentFile,file_write) then
 	begin
-		if (not makeCompletteFile(f)) then
+		if (not makeCompletteFile) then
 			IOError(IOResult);
+		closeFile();
 	end
 	else
 		IOError(IOResult);
-	close(f);
-	{$I+}
-	fillchar(screen[20],20,0);
-	SFX_Start();
 end;
 
 procedure IOSave();
@@ -131,7 +123,7 @@ begin
 	putMultiText(resptr[msg_IO_SavePrompt],1);
 	if IOPrompt(currentFile) then
 	begin
-		fillchar(@moduleBar,220,0);
+		fillchar(@moduleBar,200,0);
 		saveSong();
 	end;
 	move(@tmpbuf,@screen,240);

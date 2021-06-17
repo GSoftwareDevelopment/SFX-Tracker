@@ -1,3 +1,13 @@
+{$i modules/sfx/notetune.pas}
+
+procedure setSFXNoteTable();
+begin
+	currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
+	NoteTune_sets();
+	SFXNoteSetOfs[currentSFX]:=currentNoteTableOfs;
+	currentNoteTableOfs:=$FF;
+end;
+
 procedure setSFXName();
 begin
 	if (inputText(SFXNameX,SFXNumberY,SFXNameLength,SFXName,0,color_choice)) then
@@ -22,16 +32,9 @@ begin
 		end;
 end;
 
-{$i modules/sfx/notetune.pas}
-
 procedure SFX_IO_Options();
-var
-	IOOpt:byte;
-
 begin
-	IOOpt:=0;
-	if optionsList(resptr[menu_IO_options],width_menuIOOptions,IOOptions,IOOpt,key_Up,key_Down) then
-	case IOOpt of
+	case IO_Options of
 		0:exit;
 		1:exit;
 	end;
@@ -42,12 +45,7 @@ begin
 	if optionsList(resptr[menu_sfx_options],width_menuOptions,SFXMenuOptions,defaultOpt,key_Up,key_Down) then
 		case defaultOpt of
 			0: setSFXName();
-			1: begin
-				currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
-				NoteTune_sets();
-				SFXNoteSetOfs[currentSFX]:=currentNoteTableOfs;
-				currentNoteTableOfs:=$FF;
-			end;
+			1: setSFXNoteTable();
 			2: setSFXModMode();
 			4: if SFXPtr[currentSFX]<>$FFFF then
 					setNoteTune()

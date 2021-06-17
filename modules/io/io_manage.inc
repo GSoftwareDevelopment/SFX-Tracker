@@ -1,0 +1,42 @@
+procedure setFilename(var fn,dest:string);
+begin
+	fillchar(@dest,FILEPATHMaxLength+1,0);
+	move(@fn,@dest,byte(fn[0])+1);
+end;
+
+procedure closeFile();
+begin
+	close(f);
+	SFX_Start();
+end;
+
+function openFile(var fn:string; mode:byte):boolean;
+var
+	msgPtr:pointer;
+
+begin
+	SFX_End();
+
+	assign(f,currentFile);
+	case mode of
+		file_read: begin
+			reset(f,1);
+			msgPtr:=resptr[msg_IO_reading];
+		end;
+		file_write: begin
+			rewrite(f,1);
+			msgPtr:=resptr[msg_IO_writing];
+		end;
+	end;
+
+	if (IOResult<>1) then
+	begin
+		closeFile();
+		result:=false;
+	end
+	else
+	begin
+		result:=true;
+		putMultiText(msgPtr,0);
+	end;
+end;

@@ -124,48 +124,43 @@ var
 	end;
 
 begin
-	SFX_End();
-	putMultiText(resptr[msg_IO_Reading],0);
-	{$I-}
-	assign(f,currentFile);
-	reset(f,1);
-	err:=IOResult;
-	while (err=IO_OK) do
-	begin
-		blockRead(f,IOBuf,5,readed); // get tag
-		if (readed=5) then
-		begin
-			conv2internalP2P(@IOBuf,@statusBar[11],5);
-			if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_main)) then
-				loadMain()
-			else
-				if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_NOTE)) then
-					loadNoteTab()
-				else
-					if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_SFX)) then
-						loadDefinition(true,SFXNameLength)
-					else
-						if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_TAB)) then
-							loadDefinition(false,TABNameLength)
-						else
-							if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_SONG)) then
-								loadSONG()
-							else
-								err:=error_badSectionTag;
-		end
-		else
-			err:=error_badFileFormat;
-		move(@screen,@video,240); // debug
-		if (IOResult=3) then break;
-	end;
-
-	fillchar(@moduleBar,20,0);
 	fillchar(@statusBar,20,0);
-	if (err<>IO_OK) then	IOError(err);
 
-	close(f);
-	{$I+}
-	SFX_Start();
+	if openFile(currentFile,file_read) then
+	begin
+		err:=IO_OK;
+		repeat
+			blockRead(f,IOBuf,5,readed); // get tag
+			if (readed=5) then
+			begin
+				conv2internalP2P(@IOBuf,@statusBar[11],5);
+				if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_main)) then
+					loadMain()
+				else
+					if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_NOTE)) then
+						loadNoteTab()
+					else
+						if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_SFX)) then
+							loadDefinition(true,SFXNameLength)
+						else
+							if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_TAB)) then
+								loadDefinition(false,TABNameLength)
+							else
+								if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_SONG)) then
+									loadSONG()
+								else
+									err:=error_badSectionTag;
+			end
+			else
+				err:=error_badFileFormat;
+			move(@screen,@video,240); // put screen buffer to video without wait4screen
+		until (err<>IO_OK) or (IOResult=3);
+		fillchar(@statusBar,20,0);
+		if (err<>IO_OK) then	IOError(err);
+		closeFile();
+	end
+	else
+		IOError(IOResult);
 end;
 
 procedure IOLoad();
@@ -177,7 +172,7 @@ begin
 
 	if IOPrompt(currentFile) then
 	begin
-		fillchar(@moduleBar,220,0);
+		fillchar(@moduleBar,200,0);
 		LoadData(LOAD_ALL_DATA,0);
 	end;
 	move(@tmpbuf,@screen,240);

@@ -5,7 +5,7 @@ program SFXMM;
 {$DEFINE ROMOFF}
 
 uses SFX_Engine, sysutils, strings, gr2, ui, pmgraph;
-
+{$I-}
 {$i types.inc}
 
 const
@@ -74,6 +74,8 @@ var
 {$i modules/io/io_clear_all_data.inc}
 {$i modules/io/io_error.inc}
 {$i modules/io/io_tag_compare.inc}
+{$i modules/io/io_manage.inc}
+{$i modules/io/io_options.inc}
 {$i modules/edit_ctrl.inc}
 {$i modules/vis_piano.inc}
 
@@ -113,11 +115,13 @@ begin
 	IOLoadDefaultNoteTable();
 
 // set defaults
-	fillchar(@currentFile,FILEPATHMaxLength,0);
-	move(@defaultFileName,@currentFile,length(defaultFileName)+1);
+	setFilename(defaultFileName,currentFile);
+//	fillchar(@currentFile,FILEPATHMaxLength,0);
+//	move(@defaultFileName,@currentFile,length(defaultFileName)+1);
 
-	fillchar(@searchPath,FILEPATHMaxLength,0);
-	move(@defaultSearchPath,@searchPath,length(defaultSearchPath)+1);
+	setFilename(defaultSearchPath,searchPath);
+//	fillchar(@searchPath,FILEPATHMaxLength,0);
+//	move(@defaultSearchPath,@searchPath,length(defaultSearchPath)+1);
 
 end;
 

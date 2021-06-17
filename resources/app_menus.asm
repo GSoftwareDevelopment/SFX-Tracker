@@ -47,7 +47,6 @@ menu_tune_options
 menu_IO_options
 					dta 188,7,d'LOAD',255
 					dta 208,7,d'SAVE',255
-					dta 168,7,d'IO',255
 					dta 255
 
 menu_NoteDef
