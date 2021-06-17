@@ -148,15 +148,7 @@ begin
 		end;
 	until false;
 end;
-(*
-procedure IODirectory();
-begin
-	fillchar(@moduleBar,200,$40);
-	if filenamePrompt(resptr[msg_IO_Prompt],1,searchPath)<>-1 then
-		if IODirLoop(searchPath,FName) then
-			joinPathName(searchPath,FName,currentFile)
-end;
-*)
+
 function IOPrompt(var promptFile:string):boolean;
 var
 	is_star,is_dot:boolean;

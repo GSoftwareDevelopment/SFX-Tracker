@@ -1,15 +1,12 @@
 procedure IO_clearAllData();
-var i:byte;
-
 begin
+	SFX_Off();
 	HEAP_TOP:=0;
 	fillchar(@_mem,HEAP_MEMORY_SIZE,$ff);
 	fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF);
 
-	for i:=0 to maxSFXs-1 do
-		SFXNoteSetOfs[i]:=lo(PREDEF_PURE_ADDR);
-
-	fillchar(@SFXModMode,maxSFXs*2,$00);
+	fillchar(@SFXNoteSetOfs,maxSFXs,0);
+	fillchar(@SFXModMode,maxSFXs,$00);
 	fillchar(@SFXPtr,maxSFXs*2,$ff);
 	fillchar(@TABPtr,maxTABs*2,$ff);
 	fillchar(@SONGData,256,chnBlank);
@@ -22,4 +19,5 @@ begin
 	currentOct:=defaultPianoOctave;
 	song_beat:=defaultSongBeat;
 	song_lpb:=defaultSongTempo;
+	SFX_Start();
 end;

@@ -9,7 +9,7 @@ begin
 		exit;
 	end;
 	oldCurPos:=cursorPos; oldCurShift:=cursorShift;
-	reset_pianoVis();
+	reset_pianoVis(); keyClick:=false;
 	SFX_PlayTAB(0,currentTAB);
 	repeat
 		updatePianoVis();
@@ -45,7 +45,7 @@ begin
 		end;
 		move(@screen,@video,240);
 	until false;
-	SFX_Off();
+	SFX_Off(); keyClick:=true;
 	reset_pianoVis();
 	updateTAB(true);
 end;
