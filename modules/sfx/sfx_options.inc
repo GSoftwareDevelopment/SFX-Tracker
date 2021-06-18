@@ -34,18 +34,15 @@ end;
 
 procedure SFX_IO_Load();
 begin
-//	move(@screen,@tmpbuf,240);
-	if IOPrompt(currentFile) then
-		LoadData(LOAD_SFX_DEF,currentSFX);
-//	move(@tmpbuf,@screen,240);
+	if IOPrompt(otherFile) then
+		LoadData(otherFile,LOAD_SFX_DEF,currentSFX);
 end;
 
 procedure SFX_IO_Save();
 begin
-//	move(@screen,@tmpbuf,240);
-	if IOPrompt(currentFile) then
+	if IOPrompt(otherFile) then
 	begin
-		if openFile(currentFile,file_write)=IO_OK then
+		if openFile(otherFile,file_write)=IO_OK then
 		begin
 			if (not storeHDataInFile(section_SFX,SFXNameLength,currentSFX)) then
 				IOError(IOResult);
@@ -54,7 +51,6 @@ begin
 		else
 			IOError(IOResult);
 	end;
-//	move(@tmpbuf,@screen,240);
 end;
 
 procedure SFX_IO_Options();

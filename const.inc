@@ -17,11 +17,11 @@ TAB_maxLength		= 128;
 SONG_maxLength		= 64;
 IO_pageLimit		= 48;
 
-defaultSongTitle	= 'SONG NAME';
+defaultSongTitle	= 'SONG TITLE';
 defaultSearchPath	= 'D:';
 defaultFileName	= 'D:SONG.SMM';
-defaultThemeFile	= 'D:DEFAULT.THM';
-defaultNoteTable	= 'D:DEFAULT.SNT';
+defaultThemeFile	= 'D:DEFAULTH.EME';
+defaultNoteTable	= 'D:DEFAULTN.OTE';
 defaultSongBeat	= 4;
 defaultSongTempo	= 5;
 defaultPianoOctave= 1;

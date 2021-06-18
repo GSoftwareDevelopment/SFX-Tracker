@@ -24,8 +24,9 @@ but_IO_Quit
 					dta 255
 msg_Theme_Overwrite
 					dta 44,07,d'OVERWRITE?',06,255
-					dta 162,d'THIS ACTION WILL',255
-					dta 183,d'OVERWRITE FILE',255
+					dta 142,d'THIS ACTION WILL',255
+					dta 163,d'OVERWRITE FILE',255
+					dta 184,d'DEFAULTH.EME',255
 					dta 202,d'ON THE DISKETTE!',255
 					dta 255
 but_Theme_Overwrite

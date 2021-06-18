@@ -57,9 +57,9 @@ procedure Theme_IO_Load();
 var err:byte;
 
 begin
-	if IOPrompt(currentFile) then
+	if IOPrompt(otherFile) then
 	begin
-		err:=IOLoadTheme(currentFile);
+		err:=IOLoadTheme(otherFile);
 		if err<>IO_OK then IOError(err);
 	end;
 end;

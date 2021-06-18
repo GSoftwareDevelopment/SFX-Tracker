@@ -5,7 +5,7 @@ begin
 end;
 
 
-procedure LoadData(mode:byte; destId:byte);
+procedure LoadData(var filename:string; mode:byte; destId:byte);
 (*
  * mode possible values:
  * 0 %000 - read all data (destId is ignored)
@@ -126,7 +126,7 @@ var
 begin
 	fillchar(@statusBar,20,0);
 
-	err:=openFile(currentFile,file_read);
+	err:=openFile(filename,file_read);
 	while (err=IO_OK) and (IOResult<>3) do
 	begin
 		blockRead(f,IOBuf,5,readed); // get tag
@@ -167,6 +167,6 @@ begin
 	if IOPrompt(currentFile) then
 	begin
 		fillchar(@moduleBar,200,0);
-		LoadData(LOAD_ALL_DATA,0);
+		LoadData(currentFile,LOAD_ALL_DATA,0);
 	end;
 end;

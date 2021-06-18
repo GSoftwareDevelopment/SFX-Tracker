@@ -1,26 +1,20 @@
 procedure IOLoadDefaultNoteTable();
 begin
 	if fileExists(defaultNoteTable) then
-	begin
-		setFilename(defaultNoteTable,currentFile);
-		LoadData(LOAD_NOTE_DEF,255);
-	end;
+		LoadData(defaultNoteTable,LOAD_NOTE_DEF,255);
 end;
 
 procedure NoteTune_load();
 begin
-//	move(@screen,@tmpbuf,240);
-	if IOPrompt(currentFile) then
-		LoadData(LOAD_NOTE_DEF,noteSetId);
-//	move(@tmpbuf,@screen,240);
+	if IOPrompt(otherFile) then
+		LoadData(otherFile,LOAD_NOTE_DEF,noteSetId);
 end;
 
 procedure NoteTune_save();
 begin
-//	move(@screen,@tmpbuf,240);
-	if IOPrompt(currentFile) then
+	if IOPrompt(otherFile) then
 	begin
-		if openFile(currentFile,file_write)=IO_OK then
+		if openFile(otherFile,file_write)=IO_OK then
 		begin
 			if (not storeNOTEDataInFile(noteSetId)) then
 				IOError(IOResult);
@@ -29,5 +23,4 @@ begin
 		else
 			IOError(IOResult);
 	end;
-//	move(@tmpbuf,@screen,240);
 end;
