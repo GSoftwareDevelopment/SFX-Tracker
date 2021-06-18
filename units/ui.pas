@@ -468,7 +468,7 @@ var
 	var i:byte;
 
 	begin
-		for i:=0 to 8 do listEntry(y+i,listShift+i);
+		for i:=0 to height-1 do listEntry(y+i,listShift+i);
 	end;
 
 begin

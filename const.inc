@@ -139,8 +139,8 @@ SFXLenY				= 10;
 // RESOURCES IDS
 
 	base_menus						= 0;
-	base_strings					= 21;
-	base_messages					= 36;
+	base_strings					= 20;
+	base_messages					= 35;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -162,11 +162,10 @@ SFXLenY				= 10;
 	menu_tabs_options				= base_menus+13;
 	menu_tab_edit					= base_menus+14;
 	menu_GSD							= base_menus+15;
-	menu_Themes						= base_menus+16;
-	menu_Song						= base_menus+17;
-	menu_Song_options				= base_menus+18;
-	menu_Song_edit					= base_menus+19;
-	menu_IO							= base_menus+20;
+	menu_Song						= base_menus+16;
+	menu_Song_options				= base_menus+17;
+	menu_Song_edit					= base_menus+18;
+	menu_IO							= base_menus+19;
 
 	str_notDefined					= base_strings+0;
 	str_IO_nextPage				= base_strings+1;

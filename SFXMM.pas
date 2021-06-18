@@ -21,7 +21,7 @@ var
 //	buffers
 
 	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR; // universal list buffer array
-	tmpbuf:array[0..255] of byte absolute TEMP_BUFFER_ADDR; // store previous screen, for better UI experience
+	tmpbuf:array[0..255] of byte absolute IO_BUFFER_ADDR;
 	IOBuf:array[0..IO_BUFFER_SIZE-1] of byte absolute IO_BUFFER_ADDR;
 
 //	resources

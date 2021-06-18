@@ -10,7 +10,7 @@ end;
 
 procedure GSDScreen();
 begin
-	move(@screen,@tmpbuf,240);
+//	move(@screen,@tmpbuf,240);
 	fillchar(@screen,20,$40);
 	updateFreeMem();
 end;

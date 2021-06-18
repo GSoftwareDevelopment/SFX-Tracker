@@ -76,3 +76,5 @@ themes_names_list
 					dta d'            '
 					dta d'            '
 					dta d'            '
+					dta d'SAVE DEFAULT'
+					dta d'LOAD THEMES '

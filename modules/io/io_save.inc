@@ -117,7 +117,7 @@ end;
 
 procedure IOSave();
 begin
-	move(@screen,@tmpbuf,240);
+//	move(@screen,@tmpbuf,240);
 	fillchar(@moduleBar,20,0);
 	fillchar(@moduleBar[20],200,$40);
 	putMultiText(resptr[msg_IO_SavePrompt],1);
@@ -126,5 +126,5 @@ begin
 		fillchar(@moduleBar,200,0);
 		saveSong();
 	end;
-	move(@tmpbuf,@screen,240);
+//	move(@tmpbuf,@screen,240);
 end;

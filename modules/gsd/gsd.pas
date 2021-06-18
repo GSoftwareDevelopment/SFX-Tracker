@@ -14,7 +14,7 @@ begin
 		else
 			break;
 	until false;
-	move(@tmpbuf,@screen,240);
+//	move(@tmpbuf,@screen,240);
 end;
 
 procedure GSDModule();

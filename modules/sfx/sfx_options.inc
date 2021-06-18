@@ -34,15 +34,15 @@ end;
 
 procedure SFX_IO_Load();
 begin
-	move(@screen,@tmpbuf,240);
+//	move(@screen,@tmpbuf,240);
 	if IOPrompt(currentFile) then
 		LoadData(LOAD_SFX_DEF,currentSFX);
-	move(@tmpbuf,@screen,240);
+//	move(@tmpbuf,@screen,240);
 end;
 
 procedure SFX_IO_Save();
 begin
-	move(@screen,@tmpbuf,240);
+//	move(@screen,@tmpbuf,240);
 	if IOPrompt(currentFile) then
 	begin
 		if openFile(currentFile,file_write)=IO_OK then
@@ -54,7 +54,7 @@ begin
 		else
 			IOError(IOResult);
 	end;
-	move(@tmpbuf,@screen,240);
+//	move(@tmpbuf,@screen,240);
 end;
 
 procedure SFX_IO_Options();
@@ -63,6 +63,7 @@ begin
 		0:SFX_IO_Load();
 		1:SFX_IO_Save();
 	end;
+	SFXScreen();
 end;
 
 procedure SFX_Options(defaultOpt:byte);

@@ -9,15 +9,15 @@ end;
 
 procedure NoteTune_load();
 begin
-	move(@screen,@tmpbuf,240);
+//	move(@screen,@tmpbuf,240);
 	if IOPrompt(currentFile) then
 		LoadData(LOAD_NOTE_DEF,noteSetId);
-	move(@tmpbuf,@screen,240);
+//	move(@tmpbuf,@screen,240);
 end;
 
 procedure NoteTune_save();
 begin
-	move(@screen,@tmpbuf,240);
+//	move(@screen,@tmpbuf,240);
 	if IOPrompt(currentFile) then
 	begin
 		if openFile(currentFile,file_write)=IO_OK then
@@ -29,5 +29,5 @@ begin
 		else
 			IOError(IOResult);
 	end;
-	move(@tmpbuf,@screen,240);
+//	move(@tmpbuf,@screen,240);
 end;

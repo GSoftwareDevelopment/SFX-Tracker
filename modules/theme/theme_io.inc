@@ -57,11 +57,9 @@ procedure Theme_IO_Load();
 var err:byte;
 
 begin
-	move(@screen,@tmpbuf,240);
 	if IOPrompt(currentFile) then
 	begin
 		err:=IOLoadTheme(currentFile);
 		if err<>IO_OK then IOError(err);
 	end;
-	move(@tmpbuf,@screen,240);
 end;

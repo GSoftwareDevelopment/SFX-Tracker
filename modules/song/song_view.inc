@@ -86,7 +86,7 @@ procedure SONGScreen();
 begin
 	fillchar(@moduleBar,220,$00);
 	VBar(0,1,width_menuBar,0);
-	screen[23]:=0;
+//	screen[23]:=0;
 	updateSONG(true);
 	menuBar(resptr[menu_song],width_menuBar,1);
 end;

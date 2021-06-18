@@ -154,14 +154,12 @@ begin
 			err:=error_badFileFormat;
 		move(@screen,@video,240); // put screen buffer to video without wait4screen
 	end;
-	fillchar(@statusBar,20,0);
 	if (err<>IO_OK) then	IOError(err);
 	closeFile();
 end;
 
 procedure IOLoad();
 begin
-	move(@screen,@tmpbuf,240);
 	fillchar(@moduleBar,20,0);
 	fillchar(@moduleBar[20],200,$40);
 	putMultiText(resptr[msg_IO_LoadPrompt],1);
@@ -171,5 +169,4 @@ begin
 		fillchar(@moduleBar,200,0);
 		LoadData(LOAD_ALL_DATA,0);
 	end;
-	move(@tmpbuf,@screen,240);
 end;

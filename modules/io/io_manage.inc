@@ -6,6 +6,7 @@ end;
 
 procedure closeFile();
 begin
+	fillchar(@statusBar,20,0);
 	close(f);
 	SFX_Start();
 end;
