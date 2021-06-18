@@ -1,7 +1,8 @@
 procedure SONGEditLoop();
 var
-	_pos,SONGOfs,maxCols,x,y:byte;
+	_pos,SONGOfs,SONGAdr,maxCols,x,y:byte;
 	value:smallint;
+	nTab:byte;
 
 	procedure setCursor();
 	var
@@ -31,6 +32,32 @@ var
 			x:=x+SONGChn*3;
 			colorHLine(x,y,2,3); // 8-hardcoded length of 'END-SONG'
 		end;
+		SONGAdr:=SONGOfs+SONGChn;
+	end;
+
+	procedure storeInSONGTab(value:shortint);
+	begin
+		if SONGChn=0 then
+		begin
+			if TABPtr[value]=$FFFF then
+				showError(resptr[msg_UnknownDefinition])
+			else
+			begin
+				if (SONGData[SONGOfs] and chnOrder<>0) then
+					fillchar(@SONGData[SONGOfs],4,chnBlank);
+				SONGData[SONGAdr]:=value;
+			end;
+		end
+		else
+		begin
+			if (SONGData[SONGOfs] and chnOrder<>0) then
+				SONGData[SONGAdr]:=value
+			else
+				if TABPtr[value]=$FFFF then
+					showError(resptr[msg_UnknownDefinition])
+				else
+					SONGData[SONGAdr]:=value;
+		end;
 	end;
 
 begin
@@ -46,46 +73,24 @@ begin
 
 			case key of
 				key_ESC: break;
-				key_SPACE: begin
-					if (SONGData[SONGOfs] and chnOrder<>0) then
-						fillchar(@SONGData[SONGOfs],4,chnBlank)
-					else
-						SONGData[SONGOfs+SONGChn]:=chnBlank;
-				end;
+				key_SPACE: storeInSONGTab(chnBlank);
 				key_RETURN: if SONGEntryEdit(SONGOfs) then break;
+				KEY_CTRL_RETURN: begin
+											nTab:=SONGData[SONGAdr];
+											if nTab>=maxTABs then nTab:=0;
+											nTAB:=dataList(TABPtr,nTab,maxTABs,TABNameLength);
+											if (nTAB<maxTABs) then
+												storeInSONGTab(nTab);
+										end;
 			end;
 
 			controlEditKeys(key,SONG_winHeight,SONG_maxLength,SONGPos,SONGShift,key_Up,key_Down);
 
 			value:=keyScan(key,keys_alphaNum,keysRange_decNum);
 			if (value<>255) then
-			begin
 				if inputValue(x,y,2,value,0,maxTABs-1,0,0) then
-				begin
-					if SONGChn=0 then
-					begin
-						if TABPtr[value]=$FFFF then
-							showError(resptr[msg_UnknownDefinition])
-						else
-						begin
-							if (SONGData[SONGOfs] and chnOrder<>0) then
-								fillchar(@SONGData[SONGOfs],4,chnBlank);
-							SONGData[SONGOfs+SONGChn]:=value;
-						end;
-					end
-					else
-					begin
-						if (SONGData[SONGOfs] and chnOrder<>0) then
-							SONGData[SONGOfs+SONGChn]:=value
-						else
-							if TABPtr[value]=$FFFF then
-								showError(resptr[msg_UnknownDefinition])
-							else
-								SONGData[SONGOfs+SONGChn]:=value;
-					end;
+					storeInSONGTab(value);
 
-				end;
-			end;
 			//
 			updateSONG(false);
 			setCursor();
