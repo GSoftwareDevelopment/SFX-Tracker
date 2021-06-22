@@ -160,13 +160,12 @@ end;
 
 procedure IOLoad();
 begin
-	fillchar(@moduleBar,20,0);
-	fillchar(@moduleBar[20],200,$40);
-	putMultiText(resptr[msg_IO_LoadPrompt],1);
+	clearModule();
+	putMultiText(msg_IO_LoadPrompt,0);
 
 	if IOPrompt(currentFile) then
 	begin
-		fillchar(@moduleBar,200,0);
+		clearModule();
 		LoadData(currentFile,LOAD_ALL_DATA,0);
-	end;
+	end
 end;

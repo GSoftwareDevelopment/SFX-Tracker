@@ -23,7 +23,7 @@ var
 
 begin
 	mod_mode:=SFXModMode[currentSFX];
-	if optionsList(resptr[menu_sfx_mode],width_menuModType,SFXMenuModType,mod_mode,key_Up,key_Down) then
+	if optionsList(menu_sfx_mode,width_menuModType,SFXMenuModType,mod_mode,key_Up,key_Down) then
 		if (mod_mode<SFXMenuModType_Back) then
 		begin
 			SFXModMode[currentSFX]:=mod_mode;
@@ -64,7 +64,7 @@ end;
 
 procedure SFX_Options(defaultOpt:byte);
 begin
-	if optionsList(resptr[menu_sfx_options],width_menuOptions,SFXMenuOptions,defaultOpt,key_Up,key_Down) then
+	if optionsList(menu_sfx_options,width_menuOptions,SFXMenuOptions,defaultOpt,key_Up,key_Down) then
 		case defaultOpt of
 			0: setSFXName();
 			1: setSFXNoteTable();
@@ -72,7 +72,7 @@ begin
 			4: if SFXPtr[currentSFX]<>$FFFF then
 					setNoteTune()
 				else
-					showError(resptr[msg_UnknownDefinition]);
+					showError(msg_UnknownDefinition);
 			5: SFX_IO_Options();
 		end;
 end;

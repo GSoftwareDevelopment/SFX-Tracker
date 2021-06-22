@@ -1,16 +1,11 @@
 procedure updateTheme(var themeColors:ThemeArray);
 var i:byte;
-//	tCol:byte;
 
 begin
 	for i:=0 to 4 do
 	begin
-//		tCol:=themeColors[i];
 		DLIcolTab[i*5]:=themeColors[i];
 		putHexValue(17,2+i,themeColors[i],0);
-//		tCol:=themeColors[i];
-//		DLIcolTab[i*5]:=tCol;
-//		putHexValue(17,2+i,tCol,0);
 	end;
 end;
 

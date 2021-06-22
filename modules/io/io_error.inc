@@ -19,7 +19,7 @@ begin
 	screen2video();
 end;
 
-procedure showError(msg:pointer);
+procedure showError(msg:byte);
 begin
 	fillchar(@statusBar,20,0);
 	putMultiText(msg,0);
@@ -29,7 +29,7 @@ end;
 procedure IOError(err:byte);
 begin
 	fillchar(@statusBar,20,0);
-	putMultiText(resptr[msg_IO_Error],0);
+	putMultiText(msg_IO_Error,0);
 	putValue(14,11,err,3,0);
 	flashError();
 end;

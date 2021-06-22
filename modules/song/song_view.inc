@@ -5,22 +5,24 @@ var
 
 begin
 	scrOfs:=44; songOfs:=SONGShift*4; _line:=SONGShift;
-	_pos:=SONGShift+SONGPos;
+	clearWorkarea();
 	for i:=0 to 8 do
 	begin
-		fillchar(@screen[scrOfs],15,0);
-
 		putValue(scrOfs,0,_line,2,2);
 		scrOfs:=scrOfs+2;
-		if (indPos) and (_line=_pos) then
-			screen[scrOfs]:=$9e;
-		scrOfs:=scrOfs+1;
 
 		order:=SONGData[songOfs];
 		if order<chnOrder then
 		begin
-			chn:=1;
+			chn:=0;
 			repeat
+				if indPos then
+				begin
+					_pos:=channels[chn*$10+_trackOfs] shr 2;
+					if _pos=_line then
+						screen[scrOfs]:=$1e;
+				end;
+				scrOfs:=scrOfs+1;
 				if order<maxTABs then
 					putValue(scrOfs,0,order,2,0)
 				else
@@ -37,15 +39,16 @@ begin
 						screen[scrOfs+1]:=$3c;
 					end
 				end;
-				scrOfs:=scrOfs+3;
+				scrOfs:=scrOfs+2;
 				songOfs:=songOfs+1;
 				order:=SONGData[songOfs];
 				chn:=chn+1;
-			until chn>4;
-			scrOfs:=scrOfs+5;
+			until chn=4;
+			scrOfs:=scrOfs+6;
 		end
 		else
 		begin
+			scrOfs:=scrOfs+1;
 			case Order of
 				chnOrder_Tempo: begin
 						screen[scrOfs  ]:=$34; // T
@@ -84,9 +87,8 @@ end;
 
 procedure SONGScreen();
 begin
-	fillchar(@moduleBar,220,$00);
-	VBar(0,1,width_menuBar,0);
-//	screen[23]:=0;
+	clearModule(); // fillchar(@moduleBar,220,$00);
+	VBar(0,1,width_menuBar,10,0);
+	menuBar(menu_song,width_menuBar,1);
 	updateSONG(true);
-	menuBar(resptr[menu_song],width_menuBar,1);
 end;

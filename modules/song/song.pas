@@ -9,7 +9,7 @@ procedure SONGLoop();
 begin
 	section:=0;
 	repeat
-		if optionsList(resptr[menu_song],width_menuBar,3,section,key_Up,key_Down) then
+		if optionsList(menu_song,width_menuBar,3,section,key_Up,key_Down) then
 			SONGSelectMenuBar(section)
 		else
 			break

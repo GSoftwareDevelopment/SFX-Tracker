@@ -5,11 +5,11 @@ var
 begin
 	if TABPtr[currentTAB]=$FFFF then
 	begin
-		showError(resptr[msg_UnknownDefinition]);
+		showError(msg_UnknownDefinition);
 		exit;
 	end;
 	oldCurPos:=cursorPos; oldCurShift:=cursorShift;
-	reset_pianoVis(); keyClick:=false;
+	reset_pianoVis(); keyClick:=false; PLYtm:=timer; PLYstate:=2;
 	SFX_PlayTAB(0,currentTAB);
 	repeat
 		updatePianoVis();
@@ -43,7 +43,12 @@ begin
 				key_ESC: break;
 			end;
 		end;
-		move(@screen,@video,240);
+		if (timer-ScreenTm)>0 then
+		begin
+			ScreenTm:=timer;
+			PlayFlash();
+			move(@screen,@video,240);
+		end;
 	until false;
 	SFX_Off(); keyClick:=true;
 	reset_pianoVis();

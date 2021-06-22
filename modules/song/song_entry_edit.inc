@@ -26,7 +26,7 @@ var
 
 begin
 	opt:=SONGEditOption_BackToEdit;
-	if optionsList(resptr[menu_song_edit],width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down) then
+	if optionsList(menu_song_edit,width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down) then
 	begin
 		if opt>=SONGEditOption_BackToEdit then exit(opt=SONGEditOption_BackToMenuBar);
 
@@ -39,7 +39,7 @@ begin
 			5: SONGData[SONGOfs+SONGChn]:=chnBlank;
 		end;
 
-		box(4,2,16,9,0);
+		clearWorkarea();
 		updateSONG(false);
 
 		case opt of
@@ -48,12 +48,9 @@ begin
 			3: setRepeat();
 		end;
 
-		fillchar(@statusBar,20,0);
+		clearStatusBar();
 		result:=false;
 	end
 	else
-	begin
-//		box(4,2,16,9,0);
 		updateSONG(false);
-	end;
 end;

@@ -15,20 +15,21 @@ begin
 	fillchar(@f.Name,16,0);
 	FindFirst(path, faAnyFile, f);
 	filesCount:=0; listOfs:=0;
+
 	if IOResult=1 then
 	begin
 		if (startRead>0) then
 		begin
 			move(resptr[str_IO_prevPage],@listBuf[listOfs],8); // hardcoded length of string!!!
 			filesCount:=filesCount+1; listOfs:=listOfs+width_fileList;
-			putMultiText(resptr[msg_IO_Skipping],0);
+			putMultiText(msg_IO_Skipping,0);
 			screen2video();
 			while (startRead>0) and (IOResult=1) do
 			begin
 				findNext(f); dec(startRead);
 			end;
 		end;
-		putMultiText(resptr[msg_IO_Reading],0);
+		putMultiText(msg_IO_Reading,0);
 		screen2video();
 		while (IOResult=1) and (filesCount<IO_pageLimit) do
 		begin
@@ -62,7 +63,7 @@ begin
 
 			findNext(f);
 		end;
-		fillchar(@moduleBar,20,0);
+		clearModuleBar();
 		if (IOResult=1) then
 		begin
 			if (filesCount=IO_pageLimit) then
@@ -76,7 +77,7 @@ begin
 	end;
 	if (filesCount<=IO_pageLimit) and (IOResult<>136) then IOError(IOResult);
 	FindClose(f);
-	fillchar(@statusBar,20,0);
+	clearStatusBar();
 	SFX_Start();
 	result:=filesCount;
 end;
@@ -97,18 +98,18 @@ var
 begin
 	listStart:=0; listPage:=0;
 	repeat
-		fillchar(@moduleBar[20],180,$40);
+		clearModule(); // fillchar(@moduleBar[20],180,$40);
 		filesCount:=IOReadDir(searchPath,listStart);
 		if filesCount>0 then
 		begin
-			fillchar(@moduleBar,20,$00);
-			putMultiText(resptr[msg_IO_DirPrompt],0);
+			clearModuleBar();
+			putMultiText(msg_IO_DirPrompt,0);
 			selFile:=0;
 			selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
-			fillchar(@moduleBar,20,$00);
+			clearModuleBar();
 			if (selFile=-1) then
 			begin
-				result:=false; break; // exit(false);
+				result:=false; break;
 			end;
 			if (filesCount>IO_pageLimit) and (selFile=IO_pageLimit) then
 			begin // next page
@@ -142,7 +143,7 @@ begin
 		end
 		else
 		begin
-			putMultiText(resptr[msg_IO_noFiles],1);
+			putMultiText(msg_IO_noFiles,1);
 			result:=false;
 			break;
 		end;

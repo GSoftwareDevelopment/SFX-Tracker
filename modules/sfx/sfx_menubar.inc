@@ -45,7 +45,7 @@ begin
 		colorVLine(winXStart+cursorPos,winYStart,8,3);
 		repeat
 			section:=section and $f;
-			updateBar(resptr[menu_sfx],width_menuBar,section,color_choice,color_selected);
+			updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
 			screen2video();
 			case section of
 				3: SFXEditLoop(SFX_vol_dist,0,modified);

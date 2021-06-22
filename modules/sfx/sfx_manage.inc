@@ -36,8 +36,8 @@ begin
 		repeat
 			v:=SFX_modulate[len];
 			len:=len+1;
-			if ((_modMode=0) and (v=$80)) or
-				((_modMode<3) and (v and $80=$80)) then break;
+			if ((_modMode=0) and (v=$80)) then break;
+			if	((_modMode>0) and (v and $80=$80)) then break;
 		until (len=SFX_maxLength);
 		sfxLen:=len;
 	end
@@ -47,7 +47,7 @@ end;
 
 procedure storeSFXData(nSFX:byte);
 var
-	sfxAdr,ofs,len:word;
+	ofs,len:word;
 	i:byte;
 
 begin
@@ -61,8 +61,6 @@ begin
 		// set current name to "Not defined"
 		SFXName[0]:=char(SFXNameLength);
 		move(resptr[str_notDefined],@SFXName[1],SFXNameLength);
-//		fillchar(@screen[SFXNameX+vadr[SFXNumberY]],SFXNameLength,$40);
-//		putText(SFXNameX,SFXNumberY,SFXName,1);
 		exit;
 	end;
 
@@ -75,8 +73,7 @@ begin
 	end;
 	len:=sfxLen shl 1; // multiply SFX length by two, becouse, for one entry is 2 bytes info
 
-	sfxAdr:=heap_putData(len,SFXNameLength,SFXName);
-	SFXPtr[nSFX]:=sfxAdr;
+	SFXPtr[nSFX]:=heap_putData(len,SFXNameLength,SFXName);
 
 	_heap_sizes[nSFX]:=SFXNameLength+len;
 end;

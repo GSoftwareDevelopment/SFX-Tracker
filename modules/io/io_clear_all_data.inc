@@ -6,6 +6,7 @@ begin
 	fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF);
 
 	fillchar(@SFXNoteSetOfs,maxSFXs,0);
+	fillchar(pointer(NOTE_TABLE_ADDR),256,0);
 	fillchar(@SFXModMode,maxSFXs,$00);
 	fillchar(@SFXPtr,maxSFXs*2,$ff);
 	fillchar(@TABPtr,maxTABs*2,$ff);

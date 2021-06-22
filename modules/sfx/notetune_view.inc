@@ -1,3 +1,9 @@
+procedure NoteTunePiano();
+begin
+	move(resptr[pianoTuneOdd],@screen[tunePianoPos],12);
+	move(resptr[pianoTuneEven],@screen[tunePianoPos+20],12);
+end;
+
 procedure updateNoteTune(noteShift:byte);
 var
 	indChar:array[0..0] of byte;
@@ -6,7 +12,7 @@ var
 begin
 	definedNoteTune:=pointer(NOTE_TABLE_ADDR+currentNoteTableOfs);
 	indChar:=resptr[tuneIndChars];
-	putMultiText(resptr[msg_pianoTuneInfo],0);
+	putMultiText(msg_pianoTuneInfo,0);
 	v:=noteShift div 12; screen[54+v]:=screen[54+v] xor $c0;
 	for i:=0 to 11 do
 	begin
@@ -49,23 +55,14 @@ begin
 	end;
 end;
 
-procedure NoteTunePiano();
-begin
-	move(resptr[pianoTuneOdd],@screen[tunePianoPos],12);
-	move(resptr[pianoTuneEven],@screen[tunePianoPos+20],12);
-end;
-
 procedure NoteTuneRedraw();
 begin
-	box(4,2,16,9,0);
+	clearWorkarea();
+	VBar(0,2,width_menuBar,9,0);
+	menuBar(menu_note_tune,width_menuBar,1);
 	fillchar(@moduleBar[4],16,$40);
 	noteSetId:=currentNoteTableOfs shr 6;
 	putNText(4,1,pointer(word(resptr[menu_NoteDef])+4+noteSetId*16),1);
 	updateNoteTune(currentOct*12);
 	NoteTunePiano();
-end;
-
-procedure NoteTuneScreen();
-begin
-	VBar(0,2,width_menuBar,0);
 end;

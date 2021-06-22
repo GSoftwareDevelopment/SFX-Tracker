@@ -6,13 +6,14 @@ LFD_NLM_mode
          bne decode_LFD_NLM      ; check modulation value
          jmp modMode_notDefined  ; if =0, means no modulation
 decode_LFD_NLM
-         bmi LFD_NLM_JumpTO      ; jump to position in SFX definition, if 7th bit is set
+         bmi LFD_NLM_JumpTo      ; jump to position in SFX definition, if 7th bit is set
 
          cmp #MODFN_NLM_NOTE
          bpl LFD_NLM_note_mod
 
 ; frequency modulation
-         cmp #MODFN_NLM_NOTE     ; VAL<32 means positive value, otherwise negative
+;$2a5b
+         cmp #$20     ; VAL<32 means positive value, otherwise negative
          bmi LFD_NLM_inc_freq
 
          ora #%11100000          ; set 7th-5th bit to get oposite value

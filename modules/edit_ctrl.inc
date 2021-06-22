@@ -1,3 +1,17 @@
+var
+	ScreenTm,PLYtm,PLYstate:byte;
+
+procedure PlayFlash();
+begin
+	if (timer-PLYtm>=$10) then
+	begin
+		PLYtm:=timer;
+		PLYstate:=2-PLYstate;
+		colorHLine(60,0,4,1+PLYstate);
+//		move(@screen[60],@video[60],4);
+	end;
+end;
+
 procedure controlEditKeys(key:byte; winSize:shortint; max:byte; var _pos,_shift:byte; pcKey,ncKey:byte);
 var step:shortint;
 

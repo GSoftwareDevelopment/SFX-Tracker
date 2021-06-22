@@ -3,7 +3,7 @@ var
 	a:byte;
 
 begin
-	putMultiText(resptr[msg_SFX_ValuePrompt],0);
+	putMultiText(msg_SFX_ValuePrompt,0);
 	putValue(13,11,abs(min),3,0);
 	putValue(17,11,max,3,0);
 	if (min<0) then screen[232]:=$0d else screen[232]:=$00;
@@ -41,7 +41,7 @@ begin
 *)
 
 				opt:=1;
-				if optionsList(resptr[menu_HFD_mode],width_menuSFXFunc,5,opt,key_Up,key_Down) then
+				if optionsList(menu_HFD_mode,width_menuSFXFunc,5,opt,key_Up,key_Down) then
 					case opt of
 						0: SFX_modulate[_pos]:=$80;
 						1: getMODValue(v,-127,127,_pos,$00,$00);
@@ -60,11 +60,11 @@ begin
 * %10000000  0  - end of sfx definition
 *)
 				opt:=2;
-				if optionsList(resptr[menu_MFD_mode],width_menuSFXFunc,6,opt,key_Up,key_Down) then
+				if optionsList(menu_MFD_mode,width_menuSFXFunc,6,opt,key_Up,key_Down) then
 					case opt of
 						0: SFX_modulate[_pos]:=$80;
 						1: getMODValue(v, 0,127,_pos,$80,$00);
-						2: getMODValue(v,-63,63,_pos,$00,$7f);
+						2: getMODValue(v,-63,63,_pos,$00,$80);
 						3: SFX_modulate[_pos]:=$00;
 						4: exit(false);
 						5: exit(true);
@@ -82,12 +82,12 @@ begin
 * %10000000  0  - end of sfx definition
 *)
 				opt:=3;
-				if optionsList(resptr[menu_LFD_NLM_mode],width_menuSFXFunc,7,opt,key_Up,key_Down) then
+				if optionsList(menu_LFD_NLM_mode,width_menuSFXFunc,7,opt,key_Up,key_Down) then
 					case opt of
 						0: SFX_modulate[_pos]:=$80;
 						1: getMODValue(v, 0,127,_pos,$80,$00);
-						2: getMODValue(v,-31,31,_pos,$00,$3f);
-						3: getMODValue(v,-31,31,_pos,$40,$3f);
+						2: getMODValue(v,-31,31,_pos,$00,$40);
+						3: getMODValue(v,-31,31,_pos,$40,$40);
 						4: SFX_modulate[_pos]:=$00;
 						5: exit(false);
 						6: exit(true);
@@ -98,7 +98,7 @@ begin
 * %xxxxxxxx - direct value to freq. divider register
 *)
 				opt:=1;
-				if	optionsList(resptr[menu_DFD_mode],width_menuSFXFunc,3,opt,key_Up,key_Down) then
+				if	optionsList(menu_DFD_mode,width_menuSFXFunc,3,opt,key_Up,key_Down) then
 					case opt of
 						0:getMODValue(v,0,255,_pos,$00,$00);
 						1:exit(false);

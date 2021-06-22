@@ -19,5 +19,5 @@ begin
 	until false;
 
 	exitThemeSelector(); DLIDone();
-	fillchar(@screen[20],200,0);
+	clearModule();
 end;

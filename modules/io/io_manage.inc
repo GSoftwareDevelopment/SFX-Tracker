@@ -13,7 +13,7 @@ end;
 
 function openFile(var fn:string; mode:byte):byte;
 var
-	msgPtr:pointer;
+	msgPtr:byte;
 
 begin
 	SFX_End();
@@ -22,11 +22,11 @@ begin
 	case mode of
 		file_read: begin
 			reset(f,1);
-			msgPtr:=resptr[msg_IO_reading];
+			msgPtr:=msg_IO_reading;
 		end;
 		file_write: begin
 			rewrite(f,1);
-			msgPtr:=resptr[msg_IO_writing];
+			msgPtr:=msg_IO_writing;
 		end;
 	end;
 	result:=IOResult;

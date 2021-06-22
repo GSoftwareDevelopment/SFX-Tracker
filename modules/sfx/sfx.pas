@@ -17,12 +17,11 @@ var
 
 procedure SFXLoop();
 begin
-	kbcode:=255; section:=0;
 	getSFXData(currentSFX);
 	SFXDetermineLength();
 	updateSFXView();
 
-	updateBar(resptr[menu_sfx],width_menuBar,section,color_choice,color_selected);
+	updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
 	screen2video();
 	modified:=false;
 	repeat
@@ -34,7 +33,7 @@ begin
 				key_ESC: break;
 				key_RETURN: SFXSelectMenuBar(section);
 			end;
-			updateBar(resptr[menu_sfx],width_menuBar,section,color_choice,color_selected);
+			updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
 			screen2video();
 		end;
 	until false;

@@ -39,8 +39,8 @@ var
 	begin
 		if SONGChn=0 then
 		begin
-			if TABPtr[value]=$FFFF then
-				showError(resptr[msg_UnknownDefinition])
+			if (value<64) and (TABPtr[value]=$FFFF) then
+				showError(msg_UnknownDefinition)
 			else
 			begin
 				if (SONGData[SONGOfs] and chnOrder<>0) then
@@ -53,8 +53,8 @@ var
 			if (SONGData[SONGOfs] and chnOrder<>0) then
 				SONGData[SONGAdr]:=value
 			else
-				if TABPtr[value]=$FFFF then
-					showError(resptr[msg_UnknownDefinition])
+				if (value<64) and (TABPtr[value]=$FFFF) then
+					showError(msg_UnknownDefinition)
 				else
 					SONGData[SONGAdr]:=value;
 		end;

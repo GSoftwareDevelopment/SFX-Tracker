@@ -1,9 +1,13 @@
 TAB_Function
-; in A register is current order
+; current order is in A register
          cmp #$FF
          bne TAB_not_end
 TAB_FN_TABEnd
-         ldy #00
+; in X reg - current channel offset
+
+			icl 'SONG.asm'
+
+         ldy #00					; set current TAB offset at the begining (zero)
          jmp fetch_TAB_row
 
 TAB_not_end
@@ -24,7 +28,15 @@ TAB_FN_ContinueLoop
          dec SFX_CHANNELS_ADDR+_tabRep,x        ; decrase current repeat value
          bne TAB_FN_JumpTo                      ; if current repeat value <>0 jump to position...
          iny                                    ; increment current TAB offset to next row
-         jmp fetch_TAB_row                      ; ...otherwise, fetch next TAB row - end of loop
+
+; end of loop
+
+         bne fetch_next_tab_row
+         jmp TRACK_process                      ; if TAB offset is wrap, process TRACK step
+
+fetch_next_tab_row
+         jmp fetch_TAB_ROW                      ; fetch next TAB row
+
 TAB_FN_RepeatSet
          lda _regTemp
          sta SFX_CHANNELS_ADDR+_tabRep,x

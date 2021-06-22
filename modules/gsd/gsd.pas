@@ -6,7 +6,7 @@ procedure GSDLoop();
 begin
 	section:=1;
 	repeat
-		if optionsList(resptr[menu_GSD],width_menuTop,2,section,key_Left,key_Right) then
+		if optionsList(menu_GSD,width_menuTop,2,section,key_Left,key_Right) then
 			case section of
 				0: break;
 				1: theme_selector();

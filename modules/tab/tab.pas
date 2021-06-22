@@ -14,16 +14,14 @@ var
 
 procedure TABLoop();
 begin
-	section:=0; cursorPos:=0; cursorShift:=0; modified:=false;
-
 	getTABData(currentTAB);
 	TABDetermineLength();
 	updateTABInfo();
 	updateTAB(true);
 
-	updateBar(resptr[menu_tabs],width_menuBar,section,color_choice,color_selected);
-
+	updateBar(menu_tabs,width_menuBar,section,color_choice,color_selected);
 	screen2video();
+	modified:=false;
 	repeat
 		if keyPressed then
 		begin
@@ -33,7 +31,7 @@ begin
 				key_Left,key_Right: TABChangeMenuBarOpt(section);
 				key_RETURN: TABSelectMenuBar(section);
 			end;
-			updateBar(resptr[menu_tabs],width_menuBar,section,color_choice,color_selected);
+			updateBar(menu_tabs,width_menuBar,section,color_choice,color_selected);
 			screen2video();
 		end;
 	until false;
@@ -41,6 +39,7 @@ end;
 
 procedure TABModule();
 begin
+	section:=0; cursorPos:=0; cursorShift:=0;
 	TABScreen();
 	TABLoop();
 end;

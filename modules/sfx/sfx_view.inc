@@ -1,7 +1,7 @@
 procedure updateSFXView();
 var
 	scrOfs,i,v,ch:byte;
-	pos:byte;
+	pos,_v:byte;
 
 	procedure putVal(v:byte); register;
 	begin
@@ -13,14 +13,12 @@ var
 
 begin
 	i:=0; pos:=cursorShift;
-	v:=SFX_modulate[0] and $7f; // init "v" modulation (can't be MOD80, before first iteration)
-
 	while (i<SFX_winWidth) do
 	begin
 		scrOfs:=40+winXStart+i;
-
+		_v:=SFX_vol_dist[pos];
 	// volume
-		v:=SFX_vol_dist[pos] and $0f;
+		v:=_v and $0f;
 	// volume bar
 		ch:=$00;
 		if (v>12) then ch:=$3e-v+13;
@@ -44,24 +42,21 @@ begin
 		scrOfs:=scrOfs+20;
 
 	// Distortion value
-		if (SFX_vol_dist[pos]>0) then
+		if (_v>0) then
 		begin
-			v:=SFX_vol_dist[pos] shr 4;
-			putVal(v);
+			v:=_v shr 4; putVal(v);
 		end
 		else
 		  screen[scrOfs]:=byte('-'~);
 		scrOfs:=scrOfs+20;
 
 	// SFX_modulate
-		if SFX_modulate[pos]>0 then
+		_v:=SFX_modulate[pos];
+		if _v>0 then
 		begin
-			v:=SFX_modulate[pos];
-			ch:=(v shr 4);
-			putVal(ch);
+			ch:=(_v shr 4);	putVal(ch);
 			scrOfs:=scrOfs+20;
-			ch:=(v and $0f);
-			putVal(ch);
+			ch:=(_v and $0f); putVal(ch);
 		end
 		else
 		begin
@@ -82,7 +77,7 @@ begin
 	fillchar(@moduleBar[4],16,$40);
 	putASCIIText(SFXNameX,SFXNameY,SFXName,color_choice);
 
-	fillchar(@screen[204],16,0);
+//	fillchar(@screen[204],16,0);
 	putValue(SFXCurPosX,SFXCurPosY,cursorShift+cursorPos,3,0);
 	screen[SFXCurPosX+3+vadr[SFXCurPosY]]:=byte('/'~);
 	putValue(SFXLenX,SFXLenY,sfxLen,3,0);
@@ -95,8 +90,8 @@ end;
 
 procedure SFXScreen();
 begin
-	fillchar(@moduleBar,220,$00);
-	VBar(0,1,width_menuBar,0);
+	clearModule(); //	fillchar(@moduleBar,220,$00);
+	VBar(0,1,width_menuBar,10,0);
 	colorHLine(SFXNumberX-1,SFXNumberY,4,1);
-	menuBar(resptr[menu_sfx],width_menuBar,1);
+	menuBar(menu_sfx,width_menuBar,1);
 end;

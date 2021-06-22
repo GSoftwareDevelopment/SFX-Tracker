@@ -9,7 +9,10 @@
 {$DEFINE HFD_MOD}                // High Frequency Divider modulator
 // {$DEFINE USE_ALL_MODULATORS}
 
-{$DEFINE TAB_PLAYBACK}           // Enable TAB support
+{$DEFINE SFX_PLAYBACK}           // Enable SONG/TAB playback support
+
+AUDIO_BUFFER_ADDR = $E8;
+SFX_REGISTERS		= $F0;
 
 SFX_CHANNELS_ADDR = $6C0;
 SONG_ADDR         = $CB00;                // table of SONG definition

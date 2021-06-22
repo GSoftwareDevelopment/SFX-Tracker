@@ -2,19 +2,37 @@
 
 procedure TABEditLoop();
 var
-	_pos,i:byte;
+	_pos,i,cTAB:byte;
 	nSFX:shortint;
+
+	procedure saveIfModified();
+	begin
+		if modified then
+		begin
+			TABDetermineLength();
+			storeTABData(currentTAB);
+			modified:=false;
+		end;
+	end;
 
 begin
 	colorHLine(winXStart,2+cursorPos,20-winXStart,3);
 	screen2video();
 	reset_pianoVis();
+	cTAB:=currentTAB;
 	repeat
 		if keyPressed then
 		begin
 			_pos:=cursorShift+cursorPos;
 			if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
 				updateTABSFX();
+			if controlSelectionKeys(key,key_CTRL_LEFT,key_CTRL_RIGHT,cTAB,0,maxTABs-1) then
+			begin
+				saveIfModified();
+				currentTab:=cTab;
+				getTABData(currentTAB);
+				TABDetermineLength();
+			end;
 			case key of
 				key_ESC: break;
 				key_CTRL_RETURN:begin
@@ -24,11 +42,19 @@ begin
 						currentSFX:=nSFX;
 					updateTABSFX();
 				end;
+				key_CTRL_INSERT: begin
+					i:=127-_pos;
+					TABdblMove(_pos,0,1);
+					TABputIn(_pos,TABFn_blank_param,TABFn_blank);
+				end;
+				key_CTRL_DELETE: begin
+					i:=127-_pos;
+					TABdblMove(_pos,1,0);
+					TABputIn(127,TABFn_blank_param,TABFn_blank);
+				end;
 				key_SPACE: begin
 					SFX_ChannelOff(0);
-					TAB_notes[_pos]:=TABFn_blank_param;
-					TAB_fnSFX[_pos]:=TABFn_blank;
-					modified:=true;
+					TABputIn(_pos,TABFn_blank_param,TABFn_blank);
 					moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 				end;
 				key_RETURN: if TABEntryEdit then break;
@@ -39,9 +65,7 @@ begin
 			i:=pianoKeyScan(0);
 			if i<>255 then
 			begin
-				TAB_notes[_pos]:=i;
-				TAB_fnSFX[_pos]:=currentSFX;
-				modified:=true;
+				TABputIn(_pos,i,currentSFX);
 				moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 			end;
 
@@ -57,11 +81,6 @@ begin
 	until false;
 	updateTAB(true);
 	SFX_Off();
-	if modified then
-	begin
-		TABDetermineLength();
-		storeTABData(currentTAB);
-		modified:=false;
-	end;
+	saveIfModified();
 	reset_pianoVis();
 end;

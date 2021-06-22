@@ -9,8 +9,8 @@ begin
 
 	case opt of
 		0: begin
-				box(0,1,20,11,$40);
-				if messageBox(resptr[msg_Theme_Overwrite],color_choice,resptr[but_Theme_overwrite],12,2,1,key_Up,key_Down)=0 then
+				clearModule(); // box(0,1,20,11,$40);
+				if messageBox(msg_Theme_Overwrite,color_choice,but_Theme_overwrite,12,2,1,key_Up,key_Down)=0 then
 				begin
 					IORes:=IOSaveTheme(defaultThemeFile);
 					if IORes<>IO_OK then IOError(IORes);

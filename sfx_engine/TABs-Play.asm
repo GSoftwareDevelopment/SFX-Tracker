@@ -19,18 +19,25 @@
 .ifndef DONT_CALC_ABS_ADDR
          lda SFX_TABLE_ADDR,y                   ; take low part of SFX Pointer
          clc
-.ifndef DONT_CALC_SFX_NAMES
-         adc #SFX_NameLength                    ; incrase about SFX name length
-.endif
          adc #<DATA_ADDR
          sta SFX_CHANNELS_ADDR+_SFXPtrLo,x
          lda SFX_TABLE_ADDR+1,y
          adc #>DATA_ADDR
          sta SFX_CHANNELS_ADDR+_SFXPtrHi,x
+
+.ifndef DONT_CALC_SFX_NAMES
+			lda SFX_CHANNELS_ADDR+_SFXPtrLo,x
+			clc
+         adc #SFX_NameLength                    ; incrase about SFX name length
+         sta SFX_CHANNELS_ADDR+_SFXPtrLo,X
+         bcc no_SFX_overflow
+         inc SFX_CHANNELS_ADDR+_SFXPtrHi,x
+no_SFX_overflow
+.endif
+
 .else
          lda SFX_TABLE_ADDR,y
          sta SFX_CHANNELS_ADDR+_SFXPtrLo,x
-         iny
          lda SFX_TABLE_ADDR+1,y
          sta SFX_CHANNELS_ADDR+_SFXPtrHi,x
 .endif

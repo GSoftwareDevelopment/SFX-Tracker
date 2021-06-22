@@ -91,7 +91,7 @@ SFXLenY				= 10;
 //	TAB FUNCTIONS (ORDERS)
 
 //												  order   |   param
-//	TABFn_note 				= $00;	// 00ss ssss | 00oo nnnn - note
+	TABFn_note 				= $00;	// 00ss ssss | 00oo nnnn - note
 	TABFn_freq				= $40;	// 01ss ssss | vvvv vvvv - frequency divider
 
 // TAB_FN_LOOP
@@ -99,7 +99,7 @@ SFXLenY				= 10;
 
 	TAB_maxRepeats 		= 63;
 	TABFn_repeat			= $81;	// 10xx xxxx | 0vvv vvvv
-//	TABFn_repeatMax		= $BF;
+	TABFn_repeatMax		= $BF;
 
 	TABFn_noteOff  		= $C0;	// 1100 0000 | 1000 0000
 	TABFn_noteOff_param	= $80;
@@ -123,7 +123,6 @@ SFXLenY				= 10;
 	chnOrder_Tempo		= %10000000; // %00000xxx - set tempo; x - line pre beat 0-9
 	chnOrder_JumpTo	= %10000010; // %00xxxxxx - JUMP TO SONG position; x - position 0-63
 	chnOrder_Repeat	= %10000100; // %00xxxxxx - REPEAT; x - repeat times 0-63
-//	chnOrder_Title		= %11000000; // %xxxxxxxx %xxxxxxxx - Sub SONG Title; x - heap offset of title
 	chnOrder_EndSong	= %11111111; // END SONG
 
 //
@@ -140,7 +139,7 @@ SFXLenY				= 10;
 
 	base_menus						= 0;
 	base_strings					= 20;
-	base_messages					= 35;
+	base_messages					= 36;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -180,10 +179,11 @@ SFXLenY				= 10;
 	val_menu_beatStep				= base_strings+9;
 	val_menu_tempo					= base_strings+10;
 
-	pianoTuneOdd					= base_strings+11;
-	pianoTuneEven					= base_strings+12;
-	tuneIndChars					= base_strings+13;
-	themes_names_list				= base_strings+14;
+	octaveShifts					= base_strings+11;
+	pianoTuneOdd					= base_strings+12;
+	pianoTuneEven					= base_strings+13;
+	tuneIndChars					= base_strings+14;
+	themes_names_list				= base_strings+15;
 
 	msg_IO_DirPrompt				= base_messages+0;
 	msg_IO_SavePrompt				= base_messages+1;

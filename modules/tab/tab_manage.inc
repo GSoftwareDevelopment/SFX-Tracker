@@ -1,3 +1,20 @@
+procedure TABputIn(_pos:byte; _note,_fn:byte);
+begin
+	TAB_notes[_pos]:=_note;
+	TAB_fnSFX[_pos]:=_fn;
+	modified:=true;
+end;
+
+procedure TABdblMove(_pos,ofsSrc,ofsDest:byte);
+var len:byte;
+
+begin
+	len:=127-_pos;
+	ofsSrc:=_pos+ofsSrc;	ofsDest:=_pos+ofsdest;
+	move(@TAB_notes[ofsSrc],@TAB_notes[ofsDest],len);
+	move(@TAB_fnSFX[ofsSrc],@TAB_fnsfx[ofsDest],len);
+end;
+
 procedure getTABData(nTAB:byte);
 var
 	size:word;
@@ -22,7 +39,8 @@ begin
 	else
 		TABLen:=TAB_maxLength; // set maximum length od pattfrn definition
 
-	cursorPos:=0; cursorShift:=0; currentTAB:=nTAB;
+	// cursorPos:=0; cursorShift:=0;
+	currentTAB:=nTAB;
 end;
 
 procedure TABDetermineLength();
@@ -40,7 +58,7 @@ end;
 
 procedure storeTABData(nTAB:byte);
 var
-	tabAdr,ofs,len:word;
+	ofs,len:word;
 	i:byte;
 
 begin
@@ -67,8 +85,7 @@ begin
 	end;
 	len:=TABLen shl 1; // multiply TAB length by two, becouse, for one entry is 2 bytes info
 
-	tabAdr:=heap_putData(len,TABNameLength,TABName);
-	TABPtr[nTAB]:=tabAdr;
+	TABPtr[nTAB]:=heap_putData(len,TABNameLength,TABName);
 
 	_heap_sizes[64+nTAB]:=TABNameLength+len;
 end;

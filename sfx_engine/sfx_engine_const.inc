@@ -13,6 +13,8 @@ _chnMode       = 6;     // SFX Modulator mode
 _chnModVal     = 7;     // SFX current Modulator value
 _chnCtrl       = 8;     // SFX current distortion & volume
 
+_trackOfs      = 10;    // current Track offest
+
 _tabPtr        = 12;    // pointer to TAB data definition
 _tabPtrLo      = 12;    //
 _tabPtrHi      = 13;    //

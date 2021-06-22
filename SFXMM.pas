@@ -24,10 +24,6 @@ var
 	tmpbuf:array[0..255] of byte absolute IO_BUFFER_ADDR;
 	IOBuf:array[0..IO_BUFFER_SIZE-1] of byte absolute IO_BUFFER_ADDR;
 
-//	resources
-
-	resptr:array[0..0] of pointer absolute RESOURCES_ADDR; // pointers list to resources
-
 //	UI color themes
 
 	themesNames:array[0..0] of byte; // list of themes names
@@ -67,11 +63,14 @@ var
 //
 	statusBar:array[0..0] of byte absolute STATUSBAR_ADDR;
 	moduleBar:array[0..0] of byte absolute MODULE_ADDR;
+	note_names:array[0..0] of byte;
+	octShift:array[0..0] of byte;
 
 	f:file;
 
 // global access function and procedures
 {$i units/heap_manage.inc}
+{$i modules/ui_helpers.inc}
 {$i modules/io/io_clear_all_data.inc}
 {$i modules/io/io_error.inc}
 {$i modules/io/io_tag_compare.inc}
@@ -98,7 +97,10 @@ begin
 
 	fillchar(@screen[0],20,$40);
 
-	Init_UI(resptr[scan_to_scr],resptr[scan_key_codes]);
+	Init_UI(RESOURCES_ADDR);
+	chars_alphaNum:=resptr[scan_to_scr];
+	keys_alphaNum:=resptr[scan_key_codes];
+	note_names:=resptr[str_NoteNames];
 	keys_notes:=resptr[scan_piano_codes];
 	themesNames:=resptr[themes_names_list];
 
@@ -121,19 +123,11 @@ begin
 	setFilename(defaultSearchPath,searchPath);
 end;
 
-procedure uncolorWorkarea();
-var i:byte;
-
-begin
-	for i:=1 to 11 do
-		colorHLine(0,i,20,0);
-end;
-
 begin
 	init();
 	repeat
 		fillchar(@screen,20,$40);
-		if optionsList(resptr[menu_top],width_menuTop,5,currentMenu,key_Left,key_Right) then
+		if optionsList(menu_top,width_menuTop,5,currentMenu,key_Left,key_Right) then
 			case currentMenu of
 				0: GSDModule();
 				1: IOModule();

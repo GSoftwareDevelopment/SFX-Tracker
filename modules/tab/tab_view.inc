@@ -11,7 +11,7 @@ procedure updateTABSFX();
 var addr,scrOfs:word;
 
 begin
-	fillchar(@statusBar,20,0);
+	clearStatusBar();
 	scrOfs:=224;
 	addr:=SFXPtr[currentSFX];
 	if (addr<$ffff) then
@@ -29,19 +29,17 @@ procedure updateTAB(showPos:boolean);
 var
 	scrOfs,i,_note,_fnsfx,noteOfs,noteOct,pos:byte;
 	ch,_beat,_nxt:byte;
-	note_names:array[0..0] of byte;
 
 begin
-	note_names:=resptr[str_NoteNames];
-	scrOfs:=vadr[winYStart]+winXStart;
+	scrOfs:=44; //vadr[winYStart]+winXStart;
 	if song_beat>1 then
 		_beat:=cursorShift mod song_beat;
 
 	_nxt:=cursorShift;
 	pos:=cursorShift; _fnsfx:=0;
+	clearWorkarea();
 	for i:=2 to 10 do
 	begin
-		fillchar(@screen[scrOfs],16,0);
 		putValue(scrOfs,0,_nxt,3,2); scrOfs:=scrOfs+5;
 
 		_fnsfx:=TAB_fnSFX[pos]; _note:=TAB_notes[pos];
@@ -113,20 +111,22 @@ begin
 				end;
 
 		if (pos>=TABLen) then
-			colorHLine(winXStart+3,i,13,2)
+			ch:=2
 		else
 		begin
 			if showPos and (song_lpb>1) then
 			begin
 				if _beat=0 then
-					colorHLine(winXStart+3,i,13,2)
+					ch:=2
 				else
-					colorHLine(winXStart+3,i,13,0);
+					ch:=0;
 				_beat:=_beat+1; if _beat=song_beat then _beat:=0;
 			end
 			else
-				colorHLine(winXStart+3,i,13,0);
+				ch:=0;
 		end;
+		colorHLine(winXStart+3,i,13,ch);
+
 		pos:=pos+1;
 		scrOfs:=scrOfs+6;
 		_nxt:=_nxt+1;
@@ -135,9 +135,9 @@ end;
 
 procedure TABScreen();
 begin
-	fillchar(@moduleBar,220,$00);
-	VBar(0,1,width_menuBar,0);
+	clearModule(); //	fillchar(@moduleBar,220,$00);
+	VBar(0,1,width_menuBar,10,0);
 	screen[33]:=$07;
 
-	menuBar(resptr[menu_tabs],width_menuBar,1);
+	menuBar(menu_tabs,width_menuBar,1);
 end;

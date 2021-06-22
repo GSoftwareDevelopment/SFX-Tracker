@@ -13,12 +13,10 @@ var
 begin
 	currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
 	noteSetId:=currentNoteTableOfs shr 6;
-	NoteTuneScreen();
-
 	opt:=0;
 	repeat
 		NoteTuneRedraw();
-		if optionsList(resptr[menu_note_tune],width_menuBar,TUNEMenu,opt,key_Up,key_Down) then
+		if optionsList(menu_note_tune,width_menuBar,TUNEMenu,opt,key_Up,key_Down) then
 		begin
 			case opt of
 				0: NoteTune_sets();

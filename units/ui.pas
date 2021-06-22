@@ -16,6 +16,7 @@ type
 		key_INVERS = 39,
 		key_TAB = 44,
 		key_BackSpc = 52,
+		key_INSERT = 55,
 		key_CAPS = 60,
 		key_SHIFT_RETURN = 76,
 		key_SHIFT_TAB = 108,
@@ -25,8 +26,8 @@ type
 		key_CTRL_Up = 142,
 		key_CTRL_Down = 143,
 		key_CTRL_BackSpc = 180,
-		key_DELETE = 180,
-		key_INSERT = 183,
+		key_CTRL_DELETE = 180,
+		key_CTRL_INSERT = 183,
 
 		key_SHIFT_Up = 206,
 		key_SHIFT_Down = 207
@@ -49,10 +50,11 @@ var
 	timer:byte absolute $14;
 	keyClick:boolean = true;
 
+	resptr:array[0..0] of pointer; // pointers list to resources
 	chars_alphaNum,
 	keys_alphaNum:byteArray;
 
-procedure Init_UI(res_chars_alphaNum,res_keys_alphaNum:pointer);
+procedure Init_UI(resAddr:word);
 function keyPressed():boolean;
 function keyScan(key2Scan:byte; var keyDefs:byteArray; keysRange:byte):byte;
 function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:byte):boolean;
@@ -60,21 +62,20 @@ procedure moveCursor(ofs:shortint; winSize,overSize:byte; var curPos,curShift:by
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputLongText(x,y,width:byte; maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputValue(x,y,width:byte; var v:smallint; min,max:smallint; colEdit,colOut:byte):boolean;
-procedure putMultiText(bar:pointer; bgColor:byte);
-procedure VBar(x,y,width,col:byte);
-procedure updateBar(bar:pointer; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
-procedure menuBar(bar:pointer; width,bgColor:byte);
-function optionsList(optTabs:pointer; optWidth:byte; opts:byte; var currentOpt:byte; pcKey,ncKey:byte):boolean;
+procedure putMultiText(multitext:byte; bgColor:byte);
+procedure VBar(x,y,width,height,col:byte);
+procedure updateBar(bar:byte; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
+procedure menuBar(bar:byte; width,bgColor:byte);
+function optionsList(optTabs:byte; optWidth:byte; opts:byte; var currentOpt:byte; pcKey,ncKey:byte):boolean;
 function listChoice(x,y,width,height,defaultPos:byte; listPtr:pointer; listSize:byte; showCount:boolean):shortint;
-function messageBox(msgPtr:pointer; msgColor:byte; menuPtr:pointer; menuWidth,menuOpts:byte; defaultOpt:byte; pcKey,ncKey:byte):byte;
+function messageBox(msgPtr:byte; msgColor:byte; menuPtr:byte; menuWidth,menuOpts:byte; defaultOpt:byte; pcKey,ncKey:byte):byte;
 
 implementation
 uses gr2;
 
 procedure Init_UI;
 begin
-	chars_alphaNum:=res_chars_alphaNum;
-	keys_alphaNum:=res_keys_alphaNum;
+	resptr:=pointer(resAddr);
 end;
 
 function keyPressed:boolean;
@@ -305,7 +306,7 @@ begin
 	until err=0;
 	result:=true;
 end;
-
+(*
 procedure putMultiText;
 var
 	v:byte;
@@ -332,18 +333,24 @@ begin
 		dataOfs:=dataOfs+1;
 	end;
 end;
+*)
 
-procedure VBar(x,y,width,col:byte);
-var i,ofs:byte;
+procedure putMultiText;
+begin
+	menuBar(multitext,0,bgColor);
+end;
+
+procedure VBar;
+var ofs:byte;
 
 begin
 	col:=colMask[col]; width:=width-1;
 	ofs:=x+vadr[y];
-	for i:=y to 10 do
+	while height>0 do
 	begin
 		fillchar(@screen[ofs],width,col);
 		screen[ofs+width]:=$06+col;
-		ofs:=ofs+20;
+		ofs:=ofs+20; height:=height-1;
 	end;
 end;
 
@@ -355,7 +362,7 @@ var
 	data:byteArray;
 
 begin
-	data:=bar;
+	data:=resptr[bar];
 	canChoiceColor:=colMask[canChoiceColor];
 	choicedColor:=colMask[choicedColor];
 	dataOfs:=0; i:=0; width:=width-1;
@@ -392,7 +399,7 @@ var
 	data:byteArray;
 
 begin
-	data:=bar;
+	data:=resptr[bar];
 	bgColor:=colMask[bgColor];
 	dataOfs:=0; width:=width-1;
 	while (data[dataOfs]<>255) do

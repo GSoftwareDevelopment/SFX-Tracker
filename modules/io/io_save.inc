@@ -117,14 +117,11 @@ end;
 
 procedure IOSave();
 begin
-//	move(@screen,@tmpbuf,240);
-	fillchar(@moduleBar,20,0);
-	fillchar(@moduleBar[20],200,$40);
-	putMultiText(resptr[msg_IO_SavePrompt],1);
+	clearModule();
+	putMultiText(msg_IO_SavePrompt,0);
 	if IOPrompt(currentFile) then
 	begin
-		fillchar(@moduleBar,200,0);
+		clearModule();
 		saveSong();
 	end;
-//	move(@tmpbuf,@screen,240);
 end;
