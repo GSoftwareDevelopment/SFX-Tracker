@@ -1,12 +1,17 @@
-procedure setFilename(var fn,dest:string);
+procedure clearFilename(var dest:string);
 begin
 	fillchar(@dest,FILEPATHMaxLength+1,0);
+end;
+
+procedure setFilename(var fn,dest:string);
+begin
+	clearFilename(dest);
 	move(@fn,@dest,byte(fn[0])+1);
 end;
 
 procedure closeFile();
 begin
-	fillchar(@statusBar,20,0);
+	clearStatusBar();
 	close(f);
 	SFX_Start();
 end;
@@ -21,19 +26,17 @@ begin
 	assign(f,fn);
 	case mode of
 		file_read: begin
-			reset(f,1);
-			msgPtr:=msg_IO_reading;
-		end;
+							reset(f,1);
+							msgPtr:=msg_IO_reading;
+						end;
 		file_write: begin
-			rewrite(f,1);
-			msgPtr:=msg_IO_writing;
-		end;
+							rewrite(f,1);
+							msgPtr:=msg_IO_writing;
+						end;
 	end;
 	result:=IOResult;
 	if (IOResult<>1) then
-	begin
-		closeFile();
-	end
+		closeFile()
 	else
 	begin
 		result:=IO_OK;

@@ -58,7 +58,7 @@ var
 	dataSize:word;
 
 begin
-	IOofs:=0;
+	IOOfs:=0;
 	push2IOBuf(@section_SONG,5);
 	dataSize:=$100;
 	push2IOBuf(@dataSize,2);
@@ -74,12 +74,13 @@ var
 	i:byte;
 
 begin
+	IOOfs:=0;
 	// prepare main section data
-	move(@section_main,@IOBuf,5);
-	IOBuf[5]:=SFXMM_VER1_1;
-	IOBuf[6]:=SONGNameLength;
-	move(@SONGTitle[1],@IOBuf[7],SONGNameLength);
-	BlockWrite(f,IOBuf,5+1+1+SONGNameLength);
+	push2IOBuf(@section_main,5); // move(@section_main,@IOBuf,5);
+	i:=SFXMM_VER1_1; push2IOBuf(@i,1); // IOBuf[5]:=SFXMM_VER1_1;
+	i:=SONGNameLength; push2IOBuf(@i,1); // IOBuf[6]:=SONGNameLength;
+	push2IOBuf(@SONGTitle[1],SONGNameLength); // move(@SONGTitle[1],@IOBuf[7],SONGNameLength);
+	BlockWrite(f,IOBuf,IOOfs);
 
 	if IOResult<>1 then exit(false);
 

@@ -10,7 +10,7 @@ var
 
 begin
 	SFX_End();
-	fillchar(@listBuf,LIST_BUFFER_SIZE,0);
+	clearListBuf();
 	listOfs:=0; filesCount:=0;
 	fillchar(@f.Name,16,0);
 	FindFirst(path, faAnyFile, f);
@@ -63,7 +63,6 @@ begin
 
 			findNext(f);
 		end;
-		clearModuleBar();
 		if (IOResult=1) then
 		begin
 			if (filesCount=IO_pageLimit) then
@@ -98,7 +97,6 @@ var
 begin
 	listStart:=0; listPage:=0;
 	repeat
-		clearModule(); // fillchar(@moduleBar[20],180,$40);
 		filesCount:=IOReadDir(searchPath,listStart);
 		if filesCount>0 then
 		begin
@@ -106,7 +104,6 @@ begin
 			putMultiText(msg_IO_DirPrompt,0);
 			selFile:=0;
 			selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
-			clearModuleBar();
 			if (selFile=-1) then
 			begin
 				result:=false; break;
@@ -143,11 +140,12 @@ begin
 		end
 		else
 		begin
-			putMultiText(msg_IO_noFiles,1);
+			putMultiText(msg_IO_noFiles,0);
 			result:=false;
 			break;
 		end;
 	until false;
+	clearModuleBar();
 end;
 
 function IOPrompt(var promptFile:string):boolean;

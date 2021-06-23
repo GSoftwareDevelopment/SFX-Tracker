@@ -95,19 +95,15 @@ begin
 
 	getTheme(0,PFCOLS); // set default theme color
 
-	fillchar(@screen[0],20,$40);
-
 	Init_UI(RESOURCES_ADDR);
 	chars_alphaNum:=resptr[scan_to_scr];
 	keys_alphaNum:=resptr[scan_key_codes];
 	note_names:=resptr[str_NoteNames];
 	keys_notes:=resptr[scan_piano_codes];
 	themesNames:=resptr[themes_names_list];
+	octShift:=resptr[octaveShifts];
 
-	fillchar(@listBuf,LIST_BUFFER_SIZE,0);
-
-	currentMenu:=0;
-
+	clearListBuf();
 	IO_clearAllData();
 
 	reset_pianoVis();
@@ -115,18 +111,23 @@ begin
 	SFX_Start();
 
 // load defaults
-	IOLoadTheme(defaultThemeFile);
+	setFilename(defaultThemeFile,otherFile);
+	IOLoadTheme();
 	IOLoadDefaultNoteTable();
 
 // set defaults files
+	clearFilename(otherFile);
 	setFilename(defaultFileName,currentFile);
 	setFilename(defaultSearchPath,searchPath);
+
+	currentMenu:=0;
+
 end;
 
 begin
 	init();
 	repeat
-		fillchar(@screen,20,$40);
+		clearTopMenu();
 		if optionsList(menu_top,width_menuTop,5,currentMenu,key_Left,key_Right) then
 			case currentMenu of
 				0: GSDModule();

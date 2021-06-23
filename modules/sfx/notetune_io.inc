@@ -24,3 +24,11 @@ begin
 			IOError(IOResult);
 	end;
 end;
+
+procedure NoteTune_IO_Options();
+begin
+	case IO_Options of
+		0:NoteTune_load();
+		1:NoteTune_save();
+	end;
+end;

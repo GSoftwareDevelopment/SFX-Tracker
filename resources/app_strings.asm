@@ -49,7 +49,7 @@ scan_piano_codes
 					dta 47,30,46,26,42,40,29,45,27,43,51,11,13,48, 8,50,10
 
 octaveShifts
-					dta 0,12,24,36,50,62
+					dta 0,12,24,36,48,60
 pianoTuneOdd
 					dta $7,$b,$0,$b,$0,$7,$b,$0,$b,$0,$b,$6
 pianoTuneEven

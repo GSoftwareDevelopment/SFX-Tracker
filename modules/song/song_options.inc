@@ -2,7 +2,6 @@ procedure setSONGName();
 begin
 	if inputLongText(0,1,20,SONGNameLength,SONGTitle,0,0) then
 	begin
-//		storeTABData(currentTAB);
 		modified:=false;
 	end;
 end;
@@ -26,6 +25,5 @@ begin
 			0: setSONGName();
 			1: setSONGTempo();
 		end;
-	box(4,2,16,9,0);
 	updateSONG(true);
 end;

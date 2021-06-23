@@ -22,14 +22,6 @@ begin
 	noteSetId:=currentNoteTableOfs shr 6;
 end;
 
-procedure NoteTune_IO_Options();
-begin
-	case IO_Options of
-		0:NoteTune_load();
-		1:NoteTune_save();
-	end;
-end;
-
 procedure NoteTune_Options(defaultOpt:byte);
 begin
 	if optionsList(menu_tune_options,width_menuOptions,TUNEMenuOptions,defaultOpt,key_Up,key_Down) then

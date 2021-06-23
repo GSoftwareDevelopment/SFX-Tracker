@@ -15,21 +15,24 @@ begin
 			screen2video();
 		end;
 	until kbcode<>255; kbcode:=255;
-	fillchar(@statusBar,20,0);
-	screen2video();
+	clearStatusBar();
+end;
+
+procedure drawError(msg:byte);
+begin
+	clearStatusBar();
+	putMultiText(msg,0);
 end;
 
 procedure showError(msg:byte);
 begin
-	fillchar(@statusBar,20,0);
-	putMultiText(msg,0);
+	drawError(msg);
 	flashError();
 end;
 
 procedure IOError(err:byte);
 begin
-	fillchar(@statusBar,20,0);
-	putMultiText(msg_IO_Error,0);
+	drawError(msg_IO_Error);
 	putValue(14,11,err,3,0);
 	flashError();
 end;

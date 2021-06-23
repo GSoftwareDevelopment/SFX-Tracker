@@ -124,7 +124,7 @@ var
 	end;
 
 begin
-	fillchar(@statusBar,20,0);
+	clearStatusBar();
 
 	err:=openFile(filename,file_read);
 	while (err=IO_OK) and (IOResult<>3) do

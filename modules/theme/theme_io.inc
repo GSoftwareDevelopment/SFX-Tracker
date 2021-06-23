@@ -1,9 +1,9 @@
-function IOSaveTheme(var fn:string):byte;
+function IOSaveTheme():byte;
 var
 	writen:word;
 
 begin
-	result:=openFile(fn,file_write);
+	result:=openFile(otherFile,file_write);
 	if result=IO_OK then
 	begin
 		move(@section_theme,@IOBuf,5);
@@ -19,13 +19,13 @@ begin
 		result:=IOResult;
 end;
 
-function IOLoadTheme(var fn:string):byte;
+function IOLoadTheme():byte;
 var
 	readed:word;
 	fileVer:byte;
 
 begin
-	result:=openFile(fn,file_read);
+	result:=openFile(otherFile,file_read);
 	if result=IO_OK then
 	begin
 		blockRead(f,IOBuf,5,readed);
@@ -59,7 +59,7 @@ var err:byte;
 begin
 	if IOPrompt(otherFile) then
 	begin
-		err:=IOLoadTheme(otherFile);
+		err:=IOLoadTheme();
 		if err<>IO_OK then IOError(err);
 	end;
 end;

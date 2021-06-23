@@ -38,7 +38,7 @@ begin
 		end;
 
 		if result>16 then result:=result-5;
-		result:=result+(currentOct*12);
+		result:=result+octShift[currentOct];
 		if (result<64) and (playChn<>255) then
 			SFX_Note(playChn,result,currentSFX)
 		else
@@ -70,7 +70,7 @@ begin
 	pianoTm:=timer;
 	chn:=0; chnOfs:=0; minNote:=octShift[currentOct];
 	repeat
-		vol:=channels[chnOfs+_chnCtrl] and $0f;
+		vol:=channels[chnOfs+_chnCtrl] and $0f; x:=0;
 		if vol>0 then
 		begin
 			pOfs:=$100*chn;
@@ -80,15 +80,11 @@ begin
 				y:=old_pianoY[chn];
 				fillchar(@playersData[pOfs+y],14,0);
 				x:=vis_xpos[note];
-				y:=vis_ypos[note]+15-vol;
+				y:=vis_ypos[note]-vol;
 				fillchar(@playersData[pOfs+y],vol,%11111000);
 				old_pianoY[chn]:=y;
-			end
-			else
-				x:=0;
-		end
-		else
-		  x:=0;
+			end;
+		end;
 		playersHPos[chn]:=x;
 		chn:=chn+1;
 		chnOfs:=chnOfs+$10;

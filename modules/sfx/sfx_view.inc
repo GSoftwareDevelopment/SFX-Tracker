@@ -77,7 +77,7 @@ begin
 	fillchar(@moduleBar[4],16,$40);
 	putASCIIText(SFXNameX,SFXNameY,SFXName,color_choice);
 
-//	fillchar(@screen[204],16,0);
+	fillchar(@screen[204],16,0);
 	putValue(SFXCurPosX,SFXCurPosY,cursorShift+cursorPos,3,0);
 	screen[SFXCurPosX+3+vadr[SFXCurPosY]]:=byte('/'~);
 	putValue(SFXLenX,SFXLenY,sfxLen,3,0);

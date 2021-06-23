@@ -5,10 +5,11 @@
 procedure IOModule();
 begin
 	section:=1;
-	fillchar(@screen,20,$40);
+	clearTopMenu();
 	if optionsList(menu_IO,width_menuTop,5,section,key_Left,key_Right) then
 	begin
 		case section of
+			0: exit;
 			1: IOLoad();
 			2: IOSave();
 			4: IOQuit();
