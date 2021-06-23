@@ -77,33 +77,37 @@ var
 {$i modules/io/io_manage.inc}
 {$i modules/io/io_options.inc}
 {$i modules/io/io_dir.inc}
-{$i modules/edit_ctrl.inc}
 {$i modules/vis_piano.inc}
 
 // modules
 {$i modules/gsd/gsd.pas}
 {$i modules/io/io.pas}
+{$i modules/notetune/notetune.pas}
 {$i modules/sfx/sfx.pas}
 {$i modules/tab/tab.pas}
 {$i modules/song/song.pas}
 
 procedure init();
 begin
+	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR); CHBAS:=CHARSET_PAGE;
 	PMGInit(PMG_BASE);
-	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR);
-	KRPDEL:=20;	KEYREP:=3; CHBAS:=CHARSET_PAGE;
+	Init_UI(RESOURCES_ADDR);
 
 	getTheme(0,PFCOLS); // set default theme color
 
-	Init_UI(RESOURCES_ADDR);
+// keyboard set
+	KRPDEL:=20;	KEYREP:=3;
+
+// keyboard resources set
 	chars_alphaNum:=resptr[scan_to_scr];
 	keys_alphaNum:=resptr[scan_key_codes];
-	note_names:=resptr[str_NoteNames];
 	keys_notes:=resptr[scan_piano_codes];
+
+// other resources set
+	note_names:=resptr[str_NoteNames];
 	themesNames:=resptr[themes_names_list];
 	octShift:=resptr[octaveShifts];
 
-	clearListBuf();
 	IO_clearAllData();
 
 	reset_pianoVis();
@@ -121,7 +125,6 @@ begin
 	setFilename(defaultSearchPath,searchPath);
 
 	currentMenu:=0;
-
 end;
 
 begin

@@ -1,4 +1,4 @@
-{$i modules/sfx/notetune_io.inc}
+{$i modules/notetune/notetune_io.inc}
 
 procedure NoteTune_setName();
 begin

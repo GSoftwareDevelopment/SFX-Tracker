@@ -2,9 +2,9 @@ var
 	noteSetId:byte;
 	definedNoteTune:array[0..0] of byte;
 
-{$i modules/sfx/notetune_view.inc}
-{$i modules/sfx/notetune_edit.inc}
-{$i modules/sfx/notetune_options.inc}
+{$i modules/notetune/notetune_view.inc}
+{$i modules/notetune/notetune_edit.inc}
+{$i modules/notetune/notetune_options.inc}
 
 procedure setNoteTune();
 var
@@ -28,5 +28,4 @@ begin
 			break;
 	until false;
 	currentNoteTableOfs:=$FF;
-	SFXScreen();
 end;

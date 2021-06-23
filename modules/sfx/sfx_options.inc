@@ -1,4 +1,3 @@
-{$i modules/sfx/notetune.pas}
 {$i modules/sfx/sfx_io.inc}
 
 procedure setSFXNoteTable();
@@ -41,7 +40,10 @@ begin
 			1: setSFXNoteTable();
 			2: setSFXModMode();
 			4: if SFXPtr[currentSFX]<>$FFFF then
-					setNoteTune()
+				begin
+					setNoteTune();
+					SFXScreen();
+				end
 				else
 					showError(msg_UnknownDefinition);
 			5: SFX_IO_Options();
