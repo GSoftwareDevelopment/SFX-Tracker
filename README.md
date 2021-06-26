@@ -4,9 +4,12 @@ Music Maker for ATARI 8-bit computers.
 
 A program created using the MAD Pascal and MAD Assembler cross-compiler for the 6502 processor platform.
 
+# PROGRAM COMPILATION
+
+
 # RUN
 
-To run, you will need the MAD Pascal compiler and an ATARI emulator, or real hardware and software that allows you to load the compiled program.
+To run, you will need an ATARI emulator, or real hardware and software that allows you to load the compiled program.
 
 # CREDITS
 

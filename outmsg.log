@@ -336,3 +336,171 @@ Writing listing file...
 Writing object file...
 32844 lines of source assembled in 17 pass
 35194 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling SFXMM.pas
+modules/ui_helpers.inc (121) Note: Local proc 'GOTOXY' not used
+162 lines compiled, 9.52 sec, 29860 tokens, 1839 idents, 488 blocks, 7 types
+1 note(s) issued
+SFXMM.a65 (2925) WARNING: Register A is changed
+SFXMM.a65 (8568) WARNING: Register A is changed
+ZPAGE: $0080..$00D7
+RTLIB: $20CE..$26E4
+SFX-ENGINE START: $28E6
+PLAYBACK START: $28FC
+TAB PLAYBACK START: $2903
+SONG PLAYBACK START: $2985
+SFX PLAYBACK START: $2A4C
+SFX-ENGINE SIZE: $0285
+SYSTEM: $2791..$2885
+SFX_ENGINE: $2886..$2DD1
+SYSUTILS: $2DD2..$2FA9
+STRINGS: $2FAA..$316E
+GR2: $316F..$36E0
+UI: $36E1..$468A
+PMGRAPH: $468B..$46F0
+CODE: $2000..$A897
+DATA: $A898..$AC4D
+Writing listing file...
+Writing object file...
+32844 lines of source assembled in 17 pass
+35194 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling SFXMM.pas
+modules/ui_helpers.inc (121) Note: Local proc 'GOTOXY' not used
+162 lines compiled, 7.18 sec, 29860 tokens, 1839 idents, 488 blocks, 7 types
+1 note(s) issued
+SFXMM.a65 (2925) WARNING: Register A is changed
+SFXMM.a65 (8568) WARNING: Register A is changed
+ZPAGE: $0080..$00D7
+RTLIB: $20CE..$26E4
+SFX-ENGINE START: $28E6
+PLAYBACK START: $28FC
+TAB PLAYBACK START: $2903
+SONG PLAYBACK START: $2985
+SFX PLAYBACK START: $2A4C
+SFX-ENGINE SIZE: $0285
+SYSTEM: $2791..$2885
+SFX_ENGINE: $2886..$2DD1
+SYSUTILS: $2DD2..$2FA9
+STRINGS: $2FAA..$316E
+GR2: $316F..$36E0
+UI: $36E1..$468A
+PMGRAPH: $468B..$46F0
+CODE: $2000..$A897
+DATA: $A898..$AC4D
+Writing listing file...
+Writing object file...
+32844 lines of source assembled in 17 pass
+35194 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling SFXMM.pas
+modules/ui_helpers.inc (121) Note: Local proc 'GOTOXY' not used
+162 lines compiled, 7.17 sec, 29860 tokens, 1839 idents, 488 blocks, 7 types
+1 note(s) issued
+SFXMM.a65 (2925) WARNING: Register A is changed
+SFXMM.a65 (8568) WARNING: Register A is changed
+ZPAGE: $0080..$00D7
+RTLIB: $20CE..$26E4
+SFX-ENGINE START: $28E6
+PLAYBACK START: $28FC
+TAB PLAYBACK START: $2903
+SONG PLAYBACK START: $2985
+SFX PLAYBACK START: $2A4C
+SFX-ENGINE SIZE: $0285
+SYSTEM: $2791..$2885
+SFX_ENGINE: $2886..$2DD1
+SYSUTILS: $2DD2..$2FA9
+STRINGS: $2FAA..$316E
+GR2: $316F..$36E0
+UI: $36E1..$468A
+PMGRAPH: $468B..$46F0
+CODE: $2000..$A897
+DATA: $A898..$AC4D
+Writing listing file...
+Writing object file...
+32844 lines of source assembled in 17 pass
+35194 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling SFXMM.pas
+modules/ui_helpers.inc (121) Note: Local proc 'GOTOXY' not used
+162 lines compiled, 7.28 sec, 29860 tokens, 1839 idents, 488 blocks, 7 types
+1 note(s) issued
+SFXMM.a65 (2925) WARNING: Register A is changed
+SFXMM.a65 (8568) WARNING: Register A is changed
+ZPAGE: $0080..$00D7
+RTLIB: $20CE..$26E4
+SFX-ENGINE START: $28E6
+PLAYBACK START: $28FC
+TAB PLAYBACK START: $2903
+SONG PLAYBACK START: $2985
+SFX PLAYBACK START: $2A4C
+SFX-ENGINE SIZE: $0285
+SYSTEM: $2791..$2885
+SFX_ENGINE: $2886..$2DD1
+SYSUTILS: $2DD2..$2FA9
+STRINGS: $2FAA..$316E
+GR2: $316F..$36E0
+UI: $36E1..$468A
+PMGRAPH: $468B..$46F0
+CODE: $2000..$A897
+DATA: $A898..$AC4D
+Writing listing file...
+Writing object file...
+32844 lines of source assembled in 17 pass
+35194 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling SFXMM.pas
+modules/ui_helpers.inc (121) Note: Local proc 'GOTOXY' not used
+162 lines compiled, 7.97 sec, 29860 tokens, 1839 idents, 488 blocks, 7 types
+1 note(s) issued
+SFXMM.a65 (2925) WARNING: Register A is changed
+SFXMM.a65 (8568) WARNING: Register A is changed
+ZPAGE: $0080..$00D7
+RTLIB: $20CE..$26E4
+SFX-ENGINE START: $28E6
+PLAYBACK START: $28FC
+TAB PLAYBACK START: $2903
+SONG PLAYBACK START: $2985
+SFX PLAYBACK START: $2A4C
+SFX-ENGINE SIZE: $0285
+SYSTEM: $2791..$2885
+SFX_ENGINE: $2886..$2DD1
+SYSUTILS: $2DD2..$2FA9
+STRINGS: $2FAA..$316E
+GR2: $316F..$36E0
+UI: $36E1..$468A
+PMGRAPH: $468B..$46F0
+CODE: $2000..$A897
+DATA: $A898..$AC4D
+Writing listing file...
+Writing object file...
+32844 lines of source assembled in 17 pass
+35194 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling SFXMM.pas
+modules/ui_helpers.inc (121) Note: Local proc 'GOTOXY' not used
+162 lines compiled, 7.29 sec, 29860 tokens, 1839 idents, 488 blocks, 7 types
+1 note(s) issued
+SFXMM.a65 (2925) WARNING: Register A is changed
+SFXMM.a65 (8568) WARNING: Register A is changed
+ZPAGE: $0080..$00D7
+RTLIB: $20CE..$26E4
+SFX-ENGINE START: $28E6
+PLAYBACK START: $28FC
+TAB PLAYBACK START: $2903
+SONG PLAYBACK START: $2985
+SFX PLAYBACK START: $2A4C
+SFX-ENGINE SIZE: $0285
+SYSTEM: $2791..$2885
+SFX_ENGINE: $2886..$2DD1
+SYSUTILS: $2DD2..$2FA9
+STRINGS: $2FAA..$316E
+GR2: $316F..$36E0
+UI: $36E1..$468A
+PMGRAPH: $468B..$46F0
+CODE: $2000..$A897
+DATA: $A898..$AC4D
+Writing listing file...
+Writing object file...
+32844 lines of source assembled in 17 pass
+35194 bytes written to the object file
