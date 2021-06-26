@@ -19,5 +19,5 @@ begin
 	until false;
 
 	exitThemeSelector(); DLIDone();
-	clearModule();
+	showAppSplash();
 end;

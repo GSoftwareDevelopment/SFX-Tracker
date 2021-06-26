@@ -106,10 +106,10 @@ end;
 procedure SFX_Start;
 begin
 	INIT_SFXEngine();
-   NMIEN:=%00000000;
-   GetIntVec(iVBL, oldVBL);
-   SetIntVec(iVBL, @SFX_tick);
-   NMIEN:=%01000000;
+	NMIEN:=%00000000;
+	GetIntVec(iVBL, oldVBL);
+	SetIntVec(iVBL, @SFX_tick);
+	NMIEN:=%01000000;
 end;
 
 procedure SFX_ChannelOff;
@@ -257,10 +257,14 @@ end;
 
 procedure SFX_End;
 begin
-   SFX_Off();
-   NMIEN:=%00000000;
-   SetIntVec(iVBL, oldVBL);
-   NMIEN:=%01000000;
+	SFX_Off();
+	if oldVBL<>nil then
+	begin
+		NMIEN:=%00000000;
+		SetIntVec(iVBL, oldVBL);
+		NMIEN:=%01000000;
+		oldVBL:=nil;
+	end;
 end;
 
 end.

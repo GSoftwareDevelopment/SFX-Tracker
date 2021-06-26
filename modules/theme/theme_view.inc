@@ -27,7 +27,7 @@ var
 	POfs:word;
 
 begin
-	box(0,1,20,11,$40);
+	clearModule(); // box(0,1,20,11,$40);
 	prepareThemeList();
 
 	PMGClear();

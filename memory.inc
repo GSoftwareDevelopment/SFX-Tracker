@@ -1,6 +1,6 @@
 
 IO_BUFFER_ADDR			= $400;							   // 768 bytes available
-IO_BUFFER_SIZE			= $13F;								// 64 bytes for header; 256 bytes for raw data
+IO_BUFFER_SIZE			= $140;								// 64 bytes for header; 256 bytes for raw data
 
 // TOP_DATA					= $B400;							// only indicte top of all data used by program
 
@@ -23,14 +23,14 @@ CHARSET_ADDR			= CHARSET_PAGE*$100;				//  (512) character set definition
 EDIT_BUF1_ADDR			= $BE00;								//  (128)
 EDIT_BUF2_ADDR			= $BE80;								//  (128)
 
-VIS_TABLE_ADDR			= $BF00;								//   (58) Table for piano visualisation :)
-DLI_COLOR_TABLE_ADDR = VIS_TABLE_ADDR+58;				//   (30) DLI Color table (30 bytes)
-DLIST_ADDR				= DLI_COLOR_TABLE_ADDR+30;		//   (24) screen organization map (Display List)
+VIS_TABLE_ADDR			= $600;								//   (58) Table for piano visualisation :)
+DLI_COLOR_TABLE_ADDR = $63a;								//   (30) DLI Color table (30 bytes)
+DLIST_ADDR				= $658;								//   (24) screen organization map (Display List)
 
-RESOURCES_ADDR			= DLIST_ADDR+24;					// (...$C6FF) programm resources from file resource/app_ressoures.asm
+RESOURCES_ADDR			= $C000;								// (...$CAFF) programm resources
 
 LIST_BUFFER_SIZE		= 1024;								// universal list buffer size
-LIST_BUFFER_ADDR		= $C700; 							// (1024) universal list buffer for UI.listChoice()
+LIST_BUFFER_ADDR		= $B400; 							// (1024) universal list buffer for UI.listChoice()
 
 HEAP_ENTRIES			= 128;
 HEAP_MEMORY_SIZE		= $27F9;

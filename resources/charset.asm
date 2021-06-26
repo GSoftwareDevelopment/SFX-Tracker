@@ -1,0 +1,2 @@
+charset
+	ins "sfxmm.fnt"

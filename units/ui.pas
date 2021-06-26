@@ -45,6 +45,8 @@ const
 
 var
 	KBCODE:byte absolute 764;
+	KRPDEL:byte absolute $2d9;
+	KEYREP:byte absolute $2da;
 	CONSOL:byte absolute 53279;
 	key:TKeys;
 	timer:byte absolute $14;
@@ -431,7 +433,7 @@ begin
 	opts:=opts-1;
 	menuBar(optTabs,optWidth,color_choice);
 	updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
-	screen2video(); kbcode:=255;
+	screen2video();
 	repeat
 		if keyPressed then
 		begin
@@ -442,10 +444,8 @@ begin
 			end;
 			updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
 			screen2video();
-			kbcode:=255;
 		end;
 	until false;
-	kbcode:=255;
 end;
 
 function listChoice:shortint;

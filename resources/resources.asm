@@ -1,3 +1,7 @@
+
+	opt h-
+	org $C000
+
 data_pointers_list
 ;menus
 	dta a(menu_top)				;0
@@ -67,10 +71,23 @@ data_pointers_list
 	dta a(msg_SetTempoPrompt)	;55
 	dta a(msg_pianoTuneInfo)	;56
 
+	dta a(app_logo)				;57
+	dta a(app_virtual_piano)	;58
+
+	dta a(dl_start)
+	dta a(DLI_color_schemas)
+	dta a(vis_tables)
+	dta a(charset)
+
 	icl 'app_menus.asm'
 	icl 'app_strings.asm'
 	icl 'app_messages.asm'
-;	icl 'app_tables.asm'
+	icl 'app_data.asm'
+
+	icl "dlist.asm"
+	icl "themes_colors.asm"
+	icl "vis_table.asm"
+	icl "charset.asm"
 
 ; SUMMARY LOG
 
@@ -78,4 +95,6 @@ data_pointers_list
  .print "TABLE OF POINTERS SIZE: ",menus - data_pointers_list
  .print "MENUS : ", menus, "..", strings-1
  .print "STRINNGS : ", strings, "..", messages-1
- .print "MESSAGES : ", messages, "..", *-1
+ .print "MESSAGES : ", messages, "..", app_data-1
+ .print "DATA : ", app_data, "..", *-1
+ .print "DLIST SIZE: ", DLI_color_schemas - dl_start

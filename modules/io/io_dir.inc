@@ -74,7 +74,10 @@ begin
 		else
 			if filesCount>0 then filesCount:=filesCount-1;
 	end;
-	if (filesCount<=IO_pageLimit) and (IOResult<>136) then IOError(IOResult);
+	if (filesCount<=IO_pageLimit) and (IOResult<>136) then
+	begin
+		IOErr:=IOResult; IOError();
+	end;
 	FindClose(f);
 	clearStatusBar();
 	SFX_Start();

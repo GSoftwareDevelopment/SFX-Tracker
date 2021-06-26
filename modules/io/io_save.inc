@@ -1,11 +1,3 @@
-var
-	IOOfs:word;
-
-procedure push2IOBuf(data:pointer; size:word);
-begin
-	move(data,@IOBuf[IOOfs],size); inc(IOOfs,size);
-end;
-
 function storeHDataInFile(var section:TTag; nameLength,id:byte):boolean;
 var
 	dataSize,
@@ -30,8 +22,7 @@ begin
 	push2IOBuf(@_mem[dataAddr],dataSize);
 
 // write to disk
-	BlockWrite(f,IOBuf,IOOfs);
-	result:=IOResult=1;
+	result:=putIOBuf;
 end;
 
 function storeNOTEDataInFile(noteTabId:byte):boolean;
@@ -49,8 +40,7 @@ begin
 	push2IOBuf(pointer(addr),64);
 
 // write to disk
-	BlockWrite(f,IOBuf,IOOfs);
-	result:=IOResult=1;
+	result:=putIOBuf;
 end;
 
 function storeSONGDataInFile():boolean;
@@ -65,8 +55,7 @@ begin
 	push2IOBuf(@SONGData,dataSize);
 
 // write to disk
-	BlockWrite(f,IOBuf,IOOfs);
-	result:=IOResult=1;
+	result:=putIOBuf;
 end;
 
 function makeCompletteFile():boolean;
@@ -80,9 +69,7 @@ begin
 	i:=SFXMM_VER1_1; push2IOBuf(@i,1); // IOBuf[5]:=SFXMM_VER1_1;
 	i:=SONGNameLength; push2IOBuf(@i,1); // IOBuf[6]:=SONGNameLength;
 	push2IOBuf(@SONGTitle[1],SONGNameLength); // move(@SONGTitle[1],@IOBuf[7],SONGNameLength);
-	BlockWrite(f,IOBuf,IOOfs);
-
-	if IOResult<>1 then exit(false);
+	if not putIOBuf then exit(false);
 
 	// store SONG data
 	if not storeSONGDataInFile then exit(false);
@@ -109,11 +96,11 @@ begin
 	if openFile(currentFile,file_write)=IO_OK then
 	begin
 		if (not makeCompletteFile) then
-			IOError(IOResult);
+			IOError();
 		closeFile();
 	end
 	else
-		IOError(IOResult);
+		IOError();
 end;
 
 procedure IOSave();

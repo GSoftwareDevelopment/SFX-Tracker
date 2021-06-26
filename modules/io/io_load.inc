@@ -1,10 +1,3 @@
-function getBlock(var f:file; var dest; size:word):boolean;
-begin
-	blockRead(f,dest,size);
-	result:=IOResult<>IO_OK;
-end;
-
-
 procedure LoadData(var filename:string; mode:byte; destId:byte);
 (*
  * mode possible values:
@@ -15,7 +8,6 @@ procedure LoadData(var filename:string; mode:byte; destId:byte);
 
 var
 	readed,sum:word;
-	err:byte;
 
 	version:byte;
 	nameLen:byte;
@@ -26,17 +18,15 @@ var
 		IO_clearAllData();
 
 		sum:=0;
-		if getBlock(f,version,1) then begin err:=IOResult; exit; end;
+		if getBlock(version,1) then exit;
 		_readNoteTabData:=version>SFXMM_VER1_0;
 
-		if getBlock(f,nameLen,1) then begin err:=IOResult; exit; end;
+		if getBlock(nameLen,1) then exit;
 		if (nameLen=SONGNameLength) then
 		begin
+			if getBlock(SONGTitle[1],nameLen) then exit;
 			SONGTitle[0]:=char(nameLen);
-			blockRead(f,SONGTitle[1],nameLen,readed);
 		end;
-		if (IOResult<>3) then
-			if (IOResult<>IO_OK) then begin err:=IOResult; exit; end;
 	end;
 
 	procedure loadNoteTab();
@@ -45,14 +35,13 @@ var
 		dataAddr:word;
 
 	begin
-		if getBlock(f,noteTabId,1) then begin err:=IOResult; exit; end;	// read ID
+		if getBlock(noteTabId,1) then exit;	// read ID
 		if (mode=LOAD_NOTE_DEF) and (destId<255) then noteTabId:=destId;
-		if noteTabId>3 then begin err:=error_badFileFormat; exit end;
-		putValue(17,11,noteTabId,3,0); // debug
+		if noteTabId>3 then begin IOErr:=error_badFileFormat; exit; end;
+//		putValue(17,11,noteTabId,3,0); // debug
 
-		blockRead(f,IOBuf,NOTETABnameLength+64);				// read data
-		if IOResult<>3 then
-			if IOResult<>IO_OK then begin err:=IOResult; exit; end;
+		getBlock(IOBuf,NOTETABnameLength+64);				// read data
+		if (IOErr<>3) and (IOErr<>IO_OK) then exit;
 
 		dataAddr:=word(resptr[menu_NoteDef])+4+noteTabId*16;
 		move(@IOBuf,pointer(dataAddr),NOTETABnameLength);
@@ -70,34 +59,33 @@ var
 		if (mode=LOAD_SFX_DEF) then
 			id:=destId
 		else
-			if getBlock(f,id,1) then begin err:=IOResult; exit; end;	// read ID
+			if getBlock(id,1) then exit;	// read ID
 
 		if (isSFX) then
 		begin
-			putValue(17,11,id,3,0); // debug
-			if id>maxSFXs-1 then begin err:=error_badFileFormat; exit; end;
-			if getBlock(f,_sfxMode,1) then begin err:=IOResult; exit; end;	// read SFX Modulation Type
-			if _sfxMode>3 then begin err:=error_badFileFormat; exit; end;
+//			putValue(17,11,id,3,0); // debug
+			if id>maxSFXs-1 then begin IOErr:=error_badFileFormat; exit; end;
+			if getBlock(_sfxMode,1) then exit;	// read SFX Modulation Type
+			if _sfxMode>3 then begin IOErr:=error_badFileFormat; exit; end;
 			SFXModMode[id]:=_sfxMode;
 			if _readNoteTabData then
 			begin
-				if getBlock(f,_sfxNoteTabOfs,1) then begin err:=IOResult; exit; end;	// read SFX Modulation Type
-				if _sfxNoteTabOfs>3 then begin err:=error_badFileFormat; exit; end;
+				if getBlock(_sfxNoteTabOfs,1) then exit;	// read SFX Modulation Type
+				if _sfxNoteTabOfs>3 then begin IOErr:=error_badFileFormat; exit; end;
 				SFXNoteSetOfs[id]:=_sfxNoteTabOfs shl 6;
 			end;
 		end
 		else
 		begin
-			putValue(17,11,id-64,3,0); // debug
-			if id-64>maxTABs-1 then begin err:=error_badFileFormat; exit; end;
+//			putValue(17,11,id-64,3,0); // debug
+			if id-64>maxTABs-1 then begin IOErr:=error_badFileFormat; exit; end;
 		end;
 
-		if getBlock(f,dataSize,2) then begin err:=IOResult; exit; end; // read data size
-		if dataSize>256+nameLength then begin err:=error_badFileFormat; exit; end;
+		if getBlock(dataSize,2) then exit; // read data size
+		if dataSize>256+nameLength then begin IOErr:=error_badFileFormat; exit; end;
 
-		blockRead(f,IOBuf,dataSize);				// read data
-		if IOResult<>3 then
-			if IOResult<>IO_OK then begin err:=IOResult; exit; end;
+		getBlock(IOBuf,dataSize);				// read data
+		if (IOErr<>3) and (IOErr<>IO_OK) then exit;
 
 		dataAddr:=HEAP_TOP;
 		HEAP_PTR[id]:=dataAddr;
@@ -113,26 +101,25 @@ var
 		dataSize:word;
 
 	begin
-		if getBlock(f,dataSize,2) then begin err:=IOResult; exit; end; // read data size
-		if dataSize>256 then begin err:=error_badFileFormat; exit; end;
+		if getBlock(dataSize,2) then exit; // read data size
+		if dataSize>256 then begin IOErr:=error_badFileFormat; exit; end;
 
-		blockRead(f,IOBuf,dataSize);				// read data
-		if IOResult<>3 then
-			if IOResult<>IO_OK then begin err:=IOResult; exit; end;
+		getBlock(IOBuf,dataSize);				// read data
+		if (IOErr<>3) and (IOErr<>IO_OK) then exit;
 
 		move(@IOBuf,@SONGData,dataSize);
 	end;
 
 begin
-	clearStatusBar();
+	if IO_messages then clearStatusBar();
 
-	err:=openFile(filename,file_read);
-	while (err=IO_OK) and (IOResult<>3) do
+	openFile(filename,file_read);
+	while (IOErr=IO_OK) and (IOErr<>3) do
 	begin
 		blockRead(f,IOBuf,5,readed); // get tag
-		if (readed=5) then
+		if (readed=5) and (IOErr=1) then
 		begin
-			conv2internalP2P(@IOBuf,@statusBar[11],5);
+//			conv2internalP2P(@IOBuf,@statusBar[11],5); // debug
 			if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_main)) then
 				loadMain()
 			else
@@ -148,13 +135,12 @@ begin
 							if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_SONG)) then
 								loadSONG()
 							else
-								err:=error_badSectionTag;
+								IOErr:=error_badFileFormat;
 		end
 		else
-			err:=error_badFileFormat;
-		move(@screen,@video,240); // put screen buffer to video without wait4screen
+			IOErr:=error_badFileFormat;
+//		move(@screen,@video,240); // put screen buffer to video without wait4screen
 	end;
-	if (err<>IO_OK) then	IOError(err);
 	closeFile();
 end;
 
@@ -167,5 +153,6 @@ begin
 	begin
 		clearModule();
 		LoadData(currentFile,LOAD_ALL_DATA,0);
+		if (IOErr<>3) then IOError();
 	end
 end;

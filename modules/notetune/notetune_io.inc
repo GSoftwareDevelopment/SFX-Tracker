@@ -17,11 +17,11 @@ begin
 		if openFile(otherFile,file_write)=IO_OK then
 		begin
 			if (not storeNOTEDataInFile(noteSetId)) then
-				IOError(IOResult);
+				IOError();
 			closeFile();
 		end
 		else
-			IOError(IOResult);
+			IOError();
 	end;
 end;
 

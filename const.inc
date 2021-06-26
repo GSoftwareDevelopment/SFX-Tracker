@@ -17,6 +17,8 @@ TAB_maxLength		= 128;
 SONG_maxLength		= 64;
 IO_pageLimit		= 48;
 
+resourcesFile		= 'D:SFXMM.RES';
+
 defaultSongTitle	= 'SONG TITLE';
 defaultSearchPath	= 'D:';
 defaultFileName	= 'D:SONG.SMM';
@@ -140,6 +142,7 @@ SFXLenY				= 10;
 	base_menus						= 0;
 	base_strings					= 20;
 	base_messages					= 36;
+	base_appdata					= 57;
 
 	menu_top							= base_menus+0;
    menu_sfx							= base_menus+1;
@@ -206,6 +209,14 @@ SFXLenY				= 10;
 	msg_BeatStepPrompt			= base_messages+18;
 	msg_SetTempoPrompt			= base_messages+19;
 	msg_pianoTuneInfo				= base_messages+20;
+
+	app_logo							= base_appdata+0;
+	app_virtual_piano				= base_appdata+1;
+
+	app_dlist						= base_appdata+2;
+	app_color_schemas				= base_appdata+3;
+	app_vis_tables					= base_appdata+4;
+	app_charset						= base_appdata+5;
 
 //
 // FILE OPEN MODES

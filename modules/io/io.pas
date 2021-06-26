@@ -14,6 +14,6 @@ begin
 			2: IOSave();
 			4: IOQuit();
 		end;
-		clearModule();
+		showAppSplash();
 	end;
 end;

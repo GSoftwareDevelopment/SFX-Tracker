@@ -1,3 +1,7 @@
+var
+	IOErr:byte;
+	IOOfs:word;
+
 procedure clearFilename(var dest:string);
 begin
 	fillchar(@dest,FILEPATHMaxLength+1,0);
@@ -11,27 +15,27 @@ end;
 
 procedure closeFile();
 begin
-	clearStatusBar();
+	if IO_messages then clearStatusBar();
 	close(f);
-	SFX_Start();
+	if IO_preventSFX then SFX_Start();
 end;
 
 function openFile(var fn:string; mode:byte):byte;
 var
-	msgPtr:byte;
+	msgRes:byte;
 
 begin
-	SFX_End();
+	if IO_preventSFX then SFX_End();
 
 	assign(f,fn);
 	case mode of
 		file_read: begin
 							reset(f,1);
-							msgPtr:=msg_IO_reading;
+							msgRes:=msg_IO_reading;
 						end;
 		file_write: begin
 							rewrite(f,1);
-							msgPtr:=msg_IO_writing;
+							msgRes:=msg_IO_writing;
 						end;
 	end;
 	result:=IOResult;
@@ -39,8 +43,42 @@ begin
 		closeFile()
 	else
 	begin
-		result:=IO_OK;
-		putMultiText(msgPtr,0);
-		screen2video();
+		if IO_messages then
+		begin
+		  putMultiText(msgRes,0);
+		  screen2video();
+		end;
 	end;
+	IOErr:=result;
+end;
+
+function getBlock(var dest; size:word):boolean;
+begin
+	blockRead(f,dest,size);
+	IOErr:=IOResult;
+	result:=IOErr<>IO_OK;
+end;
+
+procedure push2IOBuf(data:pointer; size:word);
+begin
+	move(data,@IOBuf[IOOfs],size); inc(IOOfs,size);
+end;
+
+function putBlock(var dest; size:word):boolean;
+begin
+	blockWrite(f,dest,size);
+	IOErr:=IOResult;
+	result:=IOResult=1;
+end;
+
+function putIOBuf():boolean;
+begin
+	result:=putBlock(IOBuf,IOOfs);
+end;
+
+procedure IOError();
+begin
+	drawError(msg_IO_Error);
+	putValue(14,11,IOErr,3,0);
+	flashError();
 end;

@@ -1,3 +1,4 @@
+vis_tables
 visx_table
 ;	    C-- C#  D-- D#  E-- F-- F#  G-- G#  A-- A#  H--
 	dta 62, 66, 70, 74, 78, 86, 90, 94, 98,102,106,110

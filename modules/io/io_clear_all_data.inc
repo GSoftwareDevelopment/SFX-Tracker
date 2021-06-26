@@ -1,6 +1,5 @@
 procedure IO_clearAllData();
 begin
-	SFX_Off();
 	HEAP_TOP:=0;
 	fillchar(@_mem,HEAP_MEMORY_SIZE,$ff);
 	fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF);
@@ -20,5 +19,4 @@ begin
 	currentOct:=defaultPianoOctave;
 	song_beat:=defaultSongBeat;
 	song_lpb:=defaultSongTempo;
-	SFX_Start();
 end;

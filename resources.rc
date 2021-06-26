@@ -1,8 +1,6 @@
-DLI_COLOR_TABLE_ADDR rcasm 'resources/themes_colors.asm'
-VIS_TABLE_ADDR rcasm 'resources/vis_table.asm'
-RESOURCES_ADDR rcasm 'resources/app_resources.asm'
+;DLI_COLOR_TABLE_ADDR rcasm 'resources/themes_colors.asm'
+;VIS_TABLE_ADDR rcasm 'resources/vis_table.asm'
+RESOURCES_ADDR rcdata 'resources/resources.dat'
 
-VIDEO_PIANO_ADDR rcdata 'resources/keyboard.obj'
-LOGO_ADDR rcdata 'resources/sfx_logo.scr'
-DLIST_ADDR rcasm 'resources/dlist.asm'
-CHARSET_ADDR rcdata 'resources/sfxmm.fnt'
+;DLIST_ADDR rcasm 'resources/dlist.asm'
+;CHARSET_ADDR rcdata 'resources/sfxmm.fnt'

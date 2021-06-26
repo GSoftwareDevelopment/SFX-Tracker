@@ -10,6 +10,7 @@ end;
 
 procedure GSDScreen();
 begin
-	fillchar(@screen,20,$40);
+	clearTopMenu();
+	showAppSplash();
 	updateFreeMem();
 end;

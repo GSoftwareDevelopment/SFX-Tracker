@@ -11,13 +11,11 @@ uses SFX_Engine, sysutils, strings, gr2, ui, pmgraph;
 const
 {$i memory.inc}
 {$i const.inc}
+{$ifdef INCLUDE_RESOURCES}
 {$r resources.rc}
+{$endif}
 
 var
-	CHBAS:byte absolute 756;
-	KRPDEL:byte absolute $2d9;
-	KEYREP:byte absolute $2da;
-
 //	buffers
 
 	listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR; // universal list buffer array
@@ -27,7 +25,7 @@ var
 //	UI color themes
 
 	themesNames:array[0..0] of byte; // list of themes names
-	currentTheme:byte;
+	currentTheme:byte = 0;
 
 // heap
 
@@ -66,6 +64,8 @@ var
 	note_names:array[0..0] of byte;
 	octShift:array[0..0] of byte;
 
+	IO_preventSFX:boolean = false;
+	IO_messages:boolean = false;
 	f:file;
 
 // global access function and procedures
@@ -89,11 +89,21 @@ var
 
 procedure init();
 begin
-	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR); CHBAS:=CHARSET_PAGE;
-	PMGInit(PMG_BASE);
+{$ifndef INCLUDE_RESOURCES}
+	Resources_Load();
+{$endif}
 	Init_UI(RESOURCES_ADDR);
 
-	getTheme(0,PFCOLS); // set default theme color
+// load defaults
+	IO_messages:=false;
+
+	themesNames:=resptr[themes_names_list];
+	if not IOLoadDefaultTheme() then
+		moveRes(app_color_schemas,DLI_COLOR_TABLE_ADDR,5);
+
+	IO_clearAllData();
+
+	IOLoadDefaultNoteTable();
 
 // keyboard set
 	KRPDEL:=20;	KEYREP:=3;
@@ -105,26 +115,32 @@ begin
 
 // other resources set
 	note_names:=resptr[str_NoteNames];
-	themesNames:=resptr[themes_names_list];
 	octShift:=resptr[octaveShifts];
 
-	IO_clearAllData();
+	currentMenu:=0;
 
-	reset_pianoVis();
-	updatePiano();
-	SFX_Start();
-
-// load defaults
-	setFilename(defaultThemeFile,otherFile);
-	IOLoadTheme();
-	IOLoadDefaultNoteTable();
+	timer:=0; repeat until timer>100;
 
 // set defaults files
 	clearFilename(otherFile);
 	setFilename(defaultFileName,currentFile);
 	setFilename(defaultSearchPath,searchPath);
+	moveRes(app_vis_tables,VIS_TABLE_ADDR,58);
+	reset_pianoVis();
 
-	currentMenu:=0;
+	moveRes(app_charset,CHARSET_ADDR,512);
+	moveRes(app_dlist,DLIST_ADDR,$18);
+	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR); CHBAS:=CHARSET_PAGE;
+	PMGInit(PMG_BASE);
+	getTheme(currentTheme,PFCOLS); // set default theme color
+
+	showAppSplash();
+	moveRes(app_virtual_piano,VIDEO_PIANO_ADDR,40);
+	updatePiano();
+
+	SFX_Start();
+	IO_preventSFX:=true;
+	IO_messages:=true;
 end;
 
 begin

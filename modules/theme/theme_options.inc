@@ -1,9 +1,6 @@
 {$i modules/theme/theme_io.inc}
 
 procedure ThemeMenuOption(opt:byte);
-var
-	IORes:Byte;
-
 begin
 	exitThemeSelector(); DLIDone();
 
@@ -12,12 +9,14 @@ begin
 				clearModule(); // box(0,1,20,11,$40);
 				if messageBox(msg_Theme_Overwrite,color_choice,but_Theme_overwrite,12,2,1,key_Up,key_Down)=0 then
 				begin
-					setFilename(defaultThemeFile,otherFile);
-					IORes:=IOSaveTheme();
-					if IORes<>IO_OK then IOError(IORes);
+					IOSaveTheme(defaultThemeFile);
 				end;
 			end;
-		1: Theme_IO_Load();
+		1: begin
+				Theme_IO_Load();
+				if IOErr=IO_OK then
+					getTheme(currentTheme,PFCOLS);
+			end;
 	end;
 
 	ThemesScreen(); DLIInit();

@@ -1,7 +1,8 @@
 procedure SONG_Play();
 begin
 	SFX_PlaySONG(0);
-	reset_pianoVis(); keyClick:=false; PLYtm:=timer; PLYstate:=2;
+	reset_pianoVis(); // keyClick:=false;
+	PLYtm:=timer; PLYstate:=2;
 	repeat
 		updatePianoVis();
 		PlayFlash();

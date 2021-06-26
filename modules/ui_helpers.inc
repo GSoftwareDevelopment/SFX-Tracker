@@ -67,3 +67,93 @@ procedure clearModule();
 begin
 	fillchar(@moduleBar,220,0);
 end;
+
+procedure showAppSplash();
+begin
+	clearModule();
+	move(resptr[app_logo],pointer(LOGO_ADDR),140);
+end;
+
+procedure flashError();
+var
+	flashTM:byte;
+	flashState:boolean;
+
+begin
+	screen2video();
+	kbcode:=255; flashState:=false; flashTM:=timer;
+	repeat
+		if (timer-flashTM>=$10) then
+		begin
+			flashTM:=timer;
+			flashState:=not flashState;
+			colorHLine(0,11,20,3*byte(flashState));
+			screen2video();
+		end;
+	until kbcode<>255; kbcode:=255;
+	clearStatusBar();
+end;
+
+procedure drawError(msg:byte);
+begin
+	clearStatusBar();
+	putMultiText(msg,0);
+end;
+
+procedure showError(msg:byte);
+begin
+	drawError(msg);
+	flashError();
+end;
+
+procedure moveRes(resId:byte; addr:word; size:word);
+begin
+	move(resptr[resId],pointer(addr),size);
+end;
+
+procedure exit2DOS();
+begin
+	SFX_End();
+	halt;
+end;
+
+{$ifndef INCLUDE_RESOURCES}
+procedure GotoXY(x,y: byte); assembler;
+asm
+rowcrs	=	$54	; wiersz  kursora
+colcrs	=	$55	; (2) Kolumna kursora
+
+	ldy x
+	sty colcrs
+	mvy #$00 colcrs+1
+	ldy y
+	sty rowcrs
+end;
+
+procedure Resources_Load();
+var
+	ofs,readed:word;
+
+begin
+	assign(f,resourcesFile);
+	reset(f,1);
+	if IOResult=1 then
+	begin
+		ofs:=RESOURCES_ADDR;
+		repeat
+			blockRead(f,listBuf,1024,readed);
+			move(@listBuf,pointer(ofs),readed);
+			inc(ofs,readed);
+		until readed<>IO_BUFFER_ADDR;
+	end
+	else
+	begin
+		close(f);
+		writeLn('RESOURCES FILE NOT FOUND :(');
+		write('Press the key to return to DOS...');
+		repeat until kbcode<>255; kbcode:=255;
+		exit2DOS();
+	end;
+	close(f);
+end;
+{$endif}

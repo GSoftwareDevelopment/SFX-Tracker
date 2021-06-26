@@ -7,7 +7,7 @@ const
 var
 	DLIThemeCnt:byte absolute DLICount;
 	DLIColTab:array[0..6*5-1] of byte absolute DLI_COLOR_TABLE_ADDR;
-	NMIEN:word absolute $d40e;
+	NMIEN:byte absolute $d40e;
 	oldDLI:pointer;
 
 procedure DLI_theme;assembler;interrupt;

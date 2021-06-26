@@ -14,6 +14,7 @@ var
 	DLIST:word absolute 560;
 	VCOUNT:byte absolute $d40b;
 	PFCols:array[0..4] of byte absolute 708;
+	CHBAS:byte absolute 756;
 
 procedure initGraph(dlAddr,videoAddr,bufferAddr:word);
 procedure conv2ASCII(var s:string);
@@ -38,6 +39,8 @@ begin
 	DLIST:=dlAddr;
 	video:=pointer(videoAddr);
 	screen:=pointer(bufferAddr);
+	fillchar(@video,240,0);
+	fillchar(@screen,240,0);
 end;
 
 procedure conv2Internal;

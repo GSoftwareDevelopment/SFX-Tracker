@@ -1,10 +1,10 @@
-function IOSaveTheme():byte;
+procedure IOSaveTheme(var fn:string);
 var
 	writen:word;
 
 begin
-	result:=openFile(otherFile,file_write);
-	if result=IO_OK then
+	openFile(fn,file_write);
+	if IOErr=IO_OK then
 	begin
 		move(@section_theme,@IOBuf,5);
 		IOBuf[5]:=SFXMM_VER1_0;
@@ -12,21 +12,20 @@ begin
 		move(@DLIColTab,@IOBuf[7],30);
 		move(@themesNames,@IOBuf[37],72);
 		blockWrite(f,IOBuf,109,writen);
-		if (writen=109) then	result:=IO_OK;
+		if (writen=109) then	IOErr:=IO_OK;
 		closeFile();
-	end
-	else
-		result:=IOResult;
+	end;
+	if IOErr<>IO_OK then IOError();
 end;
 
-function IOLoadTheme():byte;
+procedure IOLoadTheme(var fn:string);
 var
 	readed:word;
 	fileVer:byte;
 
 begin
-	result:=openFile(otherFile,file_read);
-	if result=IO_OK then
+	openFile(fn,file_read);
+	if IOErr=IO_OK then
 	begin
 		blockRead(f,IOBuf,5,readed);
 		if (readed=5) and (compareTag(IOBuf,section_theme)) then
@@ -40,26 +39,29 @@ begin
 				begin
 					move(@IOBuf,@DLIColtab,30);
 					move(@IOBuf[30],@themesNames,72);
-					getTheme(currentTheme,PFCOLS);
-					result:=IO_OK;
+					IOErr:=IO_OK;
 				end
 				else
-					result:=IOResult;
+					IOErr:=IOResult;
 			end;
 		end
 		else
-			result:=error_badSectionTag;
+			IOErr:=error_badSectionTag;
 		closeFile();
 	end
 end;
 
-procedure Theme_IO_Load();
-var err:byte;
+function IOLoadDefaultTheme():boolean;
+begin
+	IOLoadTheme(defaultThemeFile);
+	result:=(IOErr=IO_OK);
+end;
 
+procedure Theme_IO_Load();
 begin
 	if IOPrompt(otherFile) then
 	begin
-		err:=IOLoadTheme();
-		if err<>IO_OK then IOError(err);
+		IOLoadTheme(otherFile);
+		if IOErr<>IO_OK then IOError();
 	end;
 end;

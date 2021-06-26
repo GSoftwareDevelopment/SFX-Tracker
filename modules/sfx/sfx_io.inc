@@ -1,7 +1,10 @@
 procedure SFX_IO_Load();
 begin
 	if IOPrompt(otherFile) then
+	begin
 		LoadData(otherFile,LOAD_SFX_DEF,currentSFX);
+		if IOErr<>IO_OK then IOError();
+	end;
 end;
 
 procedure SFX_IO_Save();
@@ -10,12 +13,10 @@ begin
 	begin
 		if openFile(otherFile,file_write)=IO_OK then
 		begin
-			if (not storeHDataInFile(section_SFX,SFXNameLength,currentSFX)) then
-				IOError(IOResult);
+			storeHDataInFile(section_SFX,SFXNameLength,currentSFX);
 			closeFile();
-		end
-		else
-			IOError(IOResult);
+		end;
+		if IOErr<>IO_OK then IOError();
 	end;
 end;
 

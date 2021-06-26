@@ -1,6 +1,3 @@
-; Here is place for your custom display list definition.
-; Handy constants are defined first:
-
 DL_BLANK1 = 0; // 1 blank line
 DL_BLANK2 = %00010000; // 2 blank lines
 DL_BLANK3 = %00100000; // 3 blank lines
@@ -32,12 +29,8 @@ DL_MODE_320x192G2 = $F;
 DL_JMP = %00000001; // Order to jump
 DL_JVB = %01000001; // Jump to begining
 
-; It's always useful to include you program global constants here
-    icl 'memory.inc'
+    icl '../memory.inc'
 
-; and declare display list itself
-
-; example (BASIC mode 0 + display list interrupt at top):
 dl_start
     :1 dta DL_BLANK4
     dta DL_MODE_20x12T5 + DL_LMS, A(VIDEO_ADDR)
@@ -53,6 +46,6 @@ dl_start
     dta DL_BLANK2
     dta DL_MODE_20x12T5
     dta DL_MODE_20x12T5
-    dta DL_JVB, a(dl_start)
+    dta DL_JVB, a(DLIST_ADDR)
 
 
