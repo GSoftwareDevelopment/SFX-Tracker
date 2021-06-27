@@ -10,7 +10,6 @@ const
    TAB_NameLength		= 8;
 
 {$i sfx_engine.conf.inc} // import SFX-Engine configuration
-{$r sfx_engine.rc}
 
 // SFX-Engine Constants
 
@@ -22,7 +21,6 @@ var
    SFXNoteSetOfs:byteArray absolute SFX_NOTE_SET_ADDR; //
    SFXPtr:wordArray absolute SFX_TABLE_ADDR;           // heap pointers to SFX definitions
    TABPtr:wordArray absolute TAB_TABLE_ADDR;           // heap pointera to TAB definitions
-// note_val:array[0..0] of byte;
 
    song_lpb:byte absolute SFX_REGISTERS+$00;
    SONG_Tick:byte absolute SFX_REGISTERS+$01;

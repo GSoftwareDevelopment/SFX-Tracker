@@ -378,3 +378,183 @@ Writing listing file...
 Writing object file...
 8697 lines of source assembled in 4 pass
 1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.64 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.63 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.63 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.63 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.62 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.62 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.63 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.63 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file
+Mad Pascal Compiler version 1.6.6 [2021/06/08] for 6502
+Compiling loader.pas
+loader.pas (2) Note: Local const 'SDLST' not used
+loader.pas (3) Note: Local const 'SDMCTL' not used
+15 lines compiled, 0.63 sec, 4991 tokens, 397 idents, 155 blocks, 5 types
+2 note(s) issued
+$R RCDATA  $02C4..$02C8 'sfxmm-colors.obj'
+$R RCDATA  $B800..$BBFF 'sfxmm-loader.fnt'
+$R RCDATA  $02F4..$02F4 'sfxmm-chars.obj'
+$R RCDATA  $BC20..$BC3F 'sfxmm-dlist.obj'
+$R RCDATA  $BD58..$BE97 'sfxmm-loader.obj'
+ZPAGE: $0080..$00D7
+RTLIB: $2000..$1FFF
+SYSTEM: $2030..$2033
+CODE: $2000..$2049
+DATA: $204C..$2057
+Writing listing file...
+Writing object file...
+8697 lines of source assembled in 4 pass
+1498 bytes written to the object file

@@ -1,262 +1,240 @@
 # SFX ENGINE
 
-TABLE OF CONTENT
-----------------------------------------------------
+[TOC]
 
-Hardware registers
----
-Important things  
-  - Custom SFX engine extensions  
-  - Modulator section
+## Rejestry sprzętowe
 
-Software registers
----
+W głównej procedurze silnika SFX, rejestry sprzętowe mają przypisaną konkretną funkcję:
 
-Zero page registers  
-  - SFX Tick-Loop registers  
-  - Temporary storage for hardware registers  
-Channels registers
+| Rejestr | Opis                                         |
+| :-----: | :------------------------------------------- |
+|    X    | aktualny offset kanału                       |
+|    Y    | offset w definicji SFX, TAB lub tablicy SONG |
+|    A    | Rejestr ogólnego przeznaczenia               |
 
-SFX_Engine UNIT
----
+### Ważne sprawy
 
-What it offers?  
-  - `INIT_SFXEngine`  
-  - `SetNoteTable`  
-  - `SFX_Start`  
-  - `SFX_ChannelOff`  
-  - `SFX_Off`  
-  - `SFX_Note`  
-  - `SFX_End`  
-  
-Engine Customization  
-  - Conditional Compilation Labels  
-    `SFX_SWITCH_ROM`  
-    `SFX_previewChannels`  
-    `USE_MODULATORS`  
-      `DFD_MOD`  
-      `LFD_NLM_MOD`  
-      `MFD`  
-      `HFD`  
-    ~~`USE_ALL_MODULATORS`~~  
-	`CALC_ABS_SFX_ADDR`
-  - Operation mode without modulator section
+#### Własne rozszerzenia silnika SFX
 
--------------------------------------------------------------------------
+Jeżeli chcesz rozszerzyć funkcjonalność silnika, musisz zadbać o przechowania wartości rejestrów sprzętowych, celem ich użycia. Do tego celu warto wykorzystać tymczasowe rejestry _regTemp i _regTemp2, które są ulokowane na zerowej stronie.
 
-## Hardware registers
+#### Sekcje modulatora
 
-In the SFX engine procedure, hardware registers are strictly assigned to specific functions.
+Tworząc własny rodzaj modulatora, warto pamiętać o parametrach wyjściowych sekcji.
 
-| Register | Description    |
-|:--------:|:---------------|
-| X        | channel offset |
-| Y        | SFX offset     |
-| A        | General data   |
+Musi ona zwracać wartość dzielnika częstotliwości w rejestrze A.
 
-### Important things
+## Rejestry programowe
 
-#### Custom SFX engine extensions
+### Rejestry na stronie zerowej
 
-If you want to use them, take care to store their state in the temporary _regX & _regY registers located on page zero before using them.
+#### Rejestry SFX Tick-Loop
 
-#### Modulator section
+Te rejestry używane są tylko na potrzeby pętli i przechowują informacje dotyczące aktualnie przetwarzanego dźwięku.
 
-If you want to create your own kind of modulator, you should keep in mind the output parameter.
+| Nazwa rejestru |  Adres  | Opis                                      |
+| :------------- | :-----: | :---------------------------------------- |
+| sfxPtr         | $F3,$F4 | wskaźnik do definicji SFX                 |
+| chnNoteOfs     |   $F5   | offset tablicy nut SFXa ($00,$40,$80,$C0) |
+| chnNote        |   $F6   | numer nuty                                |
+| chnFreq        |   $F7   | wartość dzielnika częstotliwości SFXa     |
 
-The section must returns a parameter in this register and this is the value of the frequency divider for the POKEY circuit (frequency).
+Poniższe rejestry są dostępne w zależności od zastosowanych warunków kompilacji silnika SFX.
 
--------------------------------------------------------------------------
-
-## Software registers
-
-### Zero page registers
-
-#### SFX Tick-Loop registers
-
-These registers are used Only in the _SFX Tick-Loop_ and store information about the currently playing channel.
-
-| Register name | ZP addr | Description                      |
-|:--------------|:-------:|:---------------------------------|
-| sfxPtr        | $F5,$F6 | SFX Pointer                      |
-| chnNote       | $F7     | SFX Note                         |
-| chnFreq       | $F8     | SFX Frequency                    |
-
-Below parameters can be accessed by using the [conditional compilation labels](./SFX-Engine.md#conditional-compilation-labels).
-
-| Register name | ZP addr | Description                  |
+| Nazwa rejestru | Adres | Opis               |
 |:--------------|:-------:|:-----------------------------|
-| chnMode       | $F9     | SFX modulation Mode              |
-| chnMod        | $FA     | SFX Modulator value*         |
-| chnCtrl       | $FB     | SFX distortion & volume      |         
+| chnMode       | $F8    | Tryb modulacji SFXa |
+| chnMod        | $F9    | Wartość modulacji* parametr MOD/VAL definicji |
+| chnCtrl       | $FA    | Wartość zniekształcenia i głośności |
 
-_*_ in most cases contains a function and a value. Usually the oldest bits of this parameter describe the function. The rest is the value.
+_*_ w większości przypadków zawiera funkcję oraz wartość. Przeważnie najstarsze bity określają funkcję, zaś reszta jest parametrem (patrz [Denicje MOD/VAL](./Moduators.md#definicje-mod-val) )
 
-#### Temporary storage for hardware registers
+#### Rejestry tymczasowe
 
-| Register name | ZP addr | Description                  |
-|:--------------|:-------:|:-----------------------------|
-| _regTemp      | $FC     | temporary store for reg A    |
+| Nazwa rejestru | Adres | Opis                                          |
+| :------------- | :---: | :-------------------------------------------- |
+| _regTemp       |  $FB  | wykorzystywany w pętli przetwarzania SFX      |
+| _regTemp2      |  $FC  | wykorzystywany w pętli przetwarzania TAB/SONG |
 
-### Channels registers
+### Rejestry kanałów
 
-This is an array that describes the state of all 4 channels that the SFX Engine supports.
+Jest to tablica opisująca stan wszystkich 4-ech kanałów, jakie wspiera silnik SFX.
 
-| Register name | relative addr | Description                  |
-|:--------------|:-------------:|:-----------------------------|
-| sfxPtr        | chnOfs+0      | SFX Pointer                  |
-| chnOfs        | chnOfs+2      | SFX Offset in SFX definition |
-| chnNote       | chnOfs+3      | SFX Note                     |
-| chnFreq       | chnOfs+4      | SFX Frequency                |
+| Nazwa rejestru | względny adres | opis                                      |
+| :------------- | :------------: | :---------------------------------------- |
+| sfxPtr         |    chnOfs+0    | Wskaźnik definicji SFXa                   |
+| chnNoteTabOfs  |    chnOfs+2    | Ofset dla tablicy nut przypisanej do SFXa |
+| chnOfs         |    chnOfs+3    | Ofset definicji SFXa                      |
+| chnNote        |    chnOfs+4    | aktualna wartość nuty                     |
+| chnFreq        |    chnOfs+5    | aktualna wartość dzielnika częstotliwości |
 
-Below parameters can be accessed by using the [conditional compilation labels](./SFX-Engine.md#conditional-compilation-labels).
+Poniższe rejestry są dostępne w zależności od zastosowanych warunków kompilacji silnika SFX.
 
-| Register name | relative addr | Description                  |
-|:--------------|:-------------:|:-----------------------------|
-| chnMode       | chnOfs+5      | SFX Modulation Mode          |
-| chnMod        | chnOfs+6      | SFX Fn & Modulator value     |
-| chnCtrl       | chnOfs+7      | SFX Distortion & Volume      |
+| Register name | relative addr | Description                                  |
+| :------------ | :-----------: | :------------------------------------------- |
+| chnMode       |   chnOfs+6    | aktualny tryb modulacji SFXa                 |
+| chnModVal     |   chnOfs+7    | aktualna wartość MOD/VAL definicji SFXa      |
+| chnCtrl       |   chnOfs+8    | aktualna wartość zniekształcenia i głośności |
+| trackOfs      |   chnOfs+10   | aktualny ofset ścieżki SONG                  |
+| tabPtr        |   chnOfs+12   | wskaźnik do definicji TABa                   |
+| tabOfs        |   chnOfs+14   | ofset definicji TABa (wskazuje wiersz TABa)  |
+| tabRep        |   chnOfs+15   | licznik pętli dla funkcji REPEAT             |
 
-The memory location for this array is determined by the `SFX_CHANNELS_ADDR` constant in the _INTERFACE_ SFX_ENGINE UNIT section
+Wymagane miejsce dla rejestrów: 64 bajty (dużo, ale w dowolnym miejscu pamięci RAM)
 
-__The required space is 32 bytes__.
+## Biblioteka MAD Pascal `SFX_Engine`
 
--------------------------------------------------------------------------
+### Stałe
 
-## SFX_Engine UNIT
+### Zmienne
 
-### What it offers?
+### Procedury i funkcje
 
 - __INIT_SFXEngine__
 
-`INIT_SFXEngine(_SFXModModes, _SFXList, _TABList, _SONGData:word);`
+  `INIT_SFXEngine();`
 
-Engine Initialization. Specify the memory map:
-
-`_SFXModModes` - an array of modulation modes for each SFX
-
-`_SFXList` - an array of pointers for SFX definitions*
-
-`_TABList` - an array of indicators (relative for now) for TAB definitions
-
-`_SONGData` - array of TAB layouts
-
-__Why relative values?__
-
-TODO: `CALC_ABS_ADDR`
-Because it still works with HEAP, and it operates on an array `array[0..0] of byte`, which it assigns (via `ABSOLUTE`) a place in memory.
-
-- __SetNoteTable__
-
-`SetNoteTable(_note_val:word);`
-
-Sets the memory location `_note_val` for the definition of the note table.
-Its layout is linear, i.e. 0 is note C-0, 1 is C#0, 2 is D-0, etc...
-Up to a maximum of 64 notes.
+​	Inicjacja silnika. Ustawia początkowe wartości dla POKEYa oraz rejestrów kanałów.
 
 - __SFX_Start__
 
-`SFX_Start();`
+  `SFX_Start();`
 
-Start the SFX engine.
+​	Włącza pracę silnika. Wykonuje procedurę SFX_Start oraz inicjuje przerwanie VBLANK.
 
 - __SFX_ChannelOff__
 
-`SFX_ChannelOff(channel:byte);`
+  `SFX_ChannelOff(channel:byte);`
 
-It turns off the current SFX playing in the specified channel.
+​	Wyłącza odtwarzanie SFXa w podanym kanale dźwiękowym.
 
 - __SFX_Off__
 
-`SFX_Off();`
+  `SFX_Off();`
 
-Here similar to `SFX_ChannelOff`, only for all channels.
-This routine is fired during SFX engine shutdown (procedure `SFX_End()`).
+  Wyłącza odtwarzanie we wszystkich kanałach dźwiękowych.
+
+  Ta procedura jest "odpalana" też przy wyłączaniu silnika SFX (procedura `SFX_End()`)
 
 - __SFX_Note__
 
-`SFX_Note(channel,note,SFXId:byte);`
+  `SFX_Note(channel,note,SFXId:byte);`
 
-`channel` - the channel on which SFX will be played
+  `channel` - kanał dźwiękowy na którym będzie grany SFX
 
-`note` - a note (see `SetNoteTable` note table initialization)
+  `note` - numer nuty (wartość od 0-63)
 
-`SFXId` - Index of the SFX definition.
+  `SFXId` - Index SFX (numer definicji SFX)
+
+  Odtwarza wybrany SFX w podanym kanale z częstotliwością podanej nuty.
+
+- **SFX_Freq**
+
+  `SFX_Freq(channel,freq,SFXId:byte);`
+
+  Procedura podobna w działaniu do `SFX_Note` z tą różnicą, że ustawia zadaną częstotliwość (dzielnik częstotliwości)
+
+- **SFX_SetTAB**
+
+  `SFX_SetTAB(channel,TABId:byte);`
+
+  Ustawia rejestry kanału `channel` do odtwarzania pojedynczego TABa.
+
+  Nie powoduje jego automatycznego odtwarzania o ile, nie jest już jakiś odtwarzany.
+
+  Wartość `TABId` powyżej 64 powoduje wyłączenie odtwarzania w danym kanale.
+
+- **SFX_PlayTAB**
+
+  `SFX_PlayTAB(channel,TABId:byte);`
+
+  Działanie procedury jest podobne do `SFX_SetTAB` z tą różnicą, że włącza odtwarzanie.
+
+- **SFX_PlaySong**
+
+  `SFX_PlaySONG(startPos:byte);`
+
+  Pozwala włączyć odtwarzanie z listy SONG od zadanej pozycji. 
 
 - __SFX_End__
 
 `SFX_End();`
 
-Disabling the SFX engine.
+Wyłącza pracę silnika SFX. Przywraca poprzedni wektor przerwania.
 
-## Engine Customization
+## Dostosowanie silnika SFX
 
-The __SFX-Engine__ allows you to customize your code to suit your needs. A number of compilation directives allow you to choose the features you want to use in your program.
+Konstrukcja SFX-Engine pozwala na dostosowanie do własnych potrzeb za pomocą dyrektyw kompilacji warunkowej. Pozwalają one na wybranie rozwiązań, które są wykorzystywane w programie, skracając kod wynikowy silnika.
 
-### Conditional Compilation Labels
+### Etykiety kompilacji warunkowej
 
 - `SFX_SWITCH_ROM`
 
-Defining this label allows access to the RAM "covered" by the ROM. The definition works with the ROMOFF label in __MAD Pascal__, which allows RAM to be used in this area.
+  Etykieta pozwala na swobodny dostęp do pamięci RAM "ukrytej" pod ROM-em. Współpracuje z etykietą `ROMOFF` dostępną z poziomu **MAD Pascala**, która zezwala na wykorzystanie tej pamięci.
 
 - `SFX_previewChannels`
 
-An option that generates a small amount of code, providing the ability to view the current state of the modulator and the distortion and volume values, by transferring from the main loop (_SFX_TICK_) the changes made by the engine to the channel registers.
+  Etykieta generuje niewielki kod, dający możliwość wglądu w aktualny stan modulatora oraz wartości zniekształceń i głośności. Przenosi on z głównej pętli (*SFX_TICK*) stan rejestrów do rejestrów kanałów.
 
-Additional information is placed in the `CHANNELS` table at offsets 6 and 7 of each channel (see at [Channels registers](./SFX-Engine.md#channels-registers)).
+  Dodatkowe informacje umieszczane są w rejestrach kanałów pod offsetami 6 oraz 7 każdego kanału.
 
-The absence of this definition, frees an additional two bytes on the null page.
+  Brak obecności tej etykiety, zwalnia dwa bajty ze strony zerowej z użytku przez silnik SFX.
 
-- `DONT_CALC_ABS_ADDR`& `DONT_CALC_SFX_NAMES`
+- `DONT_CALC_ABS_ADDR` & `DONT_CALC_SFX_NAMES`
 
-__Dose not__ generates code that calculates the correct address of an SFX/TAB definition by summing the following values:
-The dashboard is by default initialized with the relative addresses of the definitions.
-The SFX Music Maker file contains a name in the body of the SFX and TAB definitions to be bypassed when playback is initiated.
+  Użycie tych etykiet wyłącza przeliczanie adresów względnych na absolutne w silniku SFX.
 
-SFX name length = 12 bytes
-TAB name length = 8 bytes
+  Przeliczanie to odbywa się przez zsumowanie następujących wartości:
 
-The length of the definition name is __not taken into account__ when the `DONT_CALC_SFX_NAMES` label is defined.
+  - adres względny definicji (SFX/TAB)
+  - długość nazwy dla definicji. W przypadku SFX wartość ta wynosi 14 bajtów, dla TAB jest ona równa 8.
+  - adres bazowy definicji. Jest on określany stałą DATA_ADDR
 
-The correct address in the above situation would be:
-
-![math-SFX_address_calculate](./imgs/math-SFX_address_calculate.png)
-
-![math-TAB_address_calculate](./imgs/math-TAB_address_calculate.png)
+  Właściwy (absolutny) adres można przedstawić wzorami:
+  $$
+  SFX_{addr}=DATA_{addr}+SFX_{ptr}+SFX_{namelength}
+  $$
+  
+  $$
+  TAB_{addr}=DATA_{addr}+TAB_{ptr}+SFX_{namelength}
+  $$
+  
 
 - `SFX_SYNCAUDIOOUT`
 
-Because the execution time of the main SFX engine loop iteration can be perceptible by the human ear, the label generates code that synchronizes the Audio output.
+  Użycie tej etykiety powoduje zastosowanie buforu dla rejestrów POKEYa, którego zawartość jest wysyłana na zakończenie działania całej pętli silnika SFX.
 
-Before the information finally goes to the POKEY registers, it is stored in the Audio buffer (on the zero page). Once the information has been analyzed, the buffer content is directly transferred to POKEY.
+  Zalecane jest jego stosowanie, gdyż pętla może mieć różne czasy wykonywania, które mogą być odczuwalne dla ludzkiego ucha.
 
-The cost of using buffering is 8 bytes per zero page.
+  Koszt użycia to 8 bajtów na stronie zerowej i kilkanaście dodatkowych bajtów kodu.
+
+  
 
 - `USE_MODULATORS`
 
-This complex label Must be defined to select supported modulation modes. Its absence at compile time, causes [operation without modulator section](./#mode-operation-without-modulator-section)
+  Etykieta zezwalająca na selektywne zdefiniowanie modulatorów.
 
-No modulator section frees one byte on the zero page.
+  Brak definicji powoduje [tryb pracy bez sekcji modulatorów]().
 
-The presence of the following labels during compilation, create the corresponding code:
+  Użycie modulatorów zajmuje 1 bajt na stronie zerowej.
 
-  - `DFD_MOD` - Direct Frequency Divider Modulation section.	
-  - `LFD_NLM_MOD` - Low Frequency Divider/Note Level Modulator section	
-  - `MFD` - Middle Frequency Divider	
-  - `HFD` - High Frequency Divider
-	
-For more on modulation, see [Modulation types](./modval_EN.md)
+  Wraz z tą etykietą powinno się wybrać przynajmniej jedną sekcje modulatora, za pomocą definicji etykiet:
 
-- `USE_ALL_MODULATORS`
+  - `DFD_MOD`
+  - `LFD_NLM_MOD`
+  - `MFD_MOD`
+  - `HFD_MOD`
 
-Forces the use of all supported modulators, regardless of the state of the `USE_MODULATORS` declaration and its subordinates.
+### Tryb pracy bez sekcji modulatorów
 
-### Operation mode without modulator section
+To najprostsza wersja silnika SFX.
 
-This is the simplest possible version of the SFX engine.
+Definicja SFXa w tym trybie, zajmuje maksymalnie 127 bajtów (1 bajt na krok obwiedni) i opisuje tylko parametry dotyczące zniekształcenia (starszy nibbel bajtu) i głośności (młodszy nibbel bajtu).
 
-The SFX definition in this mode, occupies a maximum of 127 bytes and there is only one byte per step.
+Długość definicji zawarta jest w 6 młodszych bitach definicji rodzaju modulacji SFXa (tablica `SFXModModes`). 7 bit wykorzystany jest do wskazania wykorzystania tego trybu pracy.
 
-When operating without a modulator section, the length of the definition is contained in the `SFXModModes` modulation mode array. To use this mode of operation in the `SFXModModes` SFX array index, bit 7 must be set and the rest of the bits indicate length.
-
-> In modulation mode, the end of the SFX definition is checked during its "execution" and is determined by the SFX-STOP function, so it is not required to "keep" its length in a separate array. This solution minimizes memory usage, at the expense of having to pay special attention to the use of the `JUMP_TO` function, since there is no way to quickly check that the jump location does not exceed the definition limit - which can result in a program crash.
+> W trybach modulacji, koniec definicji SFXa sprawdzany jest w trakcie jego wykonywania i definiuje go funkcja SFX-STOP, stąd brak konieczności zapisywania długości definicji w trybach modulacji.
+>
+> Rozwiązanie to minimalizuje zużycie pamięci, jakie byłoby potrzebne na tablicę przechowującą długości definicji, jednak, wiąże się to ze **zwróceniem szczególnej uwagi** na wykorzystanie funkcji `JUMP TO`, gdyż nie ma możliwości szybkiego sprawdzenia zakresu skoku w trakcie jego odtwarzania przez silnik SFX.
+>
+> Wykonanie skoku poza obszar definicji SFXa może skutkować niekontrolowanym zachowaniem silnika, a nawet, zawieszeniem się komputera.

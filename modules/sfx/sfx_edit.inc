@@ -19,7 +19,7 @@ begin
 	repeat
 		if keyPressed then
 		begin
-			if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,section,3,6) then
+			if controlSelectionKeys(key,key_Up,key_Down,section,3,6) then
 			begin
 				section:=section or $10;
 				break;
@@ -36,7 +36,7 @@ begin
 			if (nibble=1) then v:=v shr 4 else v:=v and $0f;
 
 			// value change
-			if controlSelectionKeys(key,key_Down,Key_Up,v,0,15) then
+			if controlSelectionKeys(key,key_CTRL_Down,Key_CTRL_Up,v,0,15) then
 			begin
 				storeValue(v);
 				modified:=true;

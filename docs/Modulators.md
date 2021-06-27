@@ -1,3 +1,5 @@
+[TOC]
+
 # Rodzaje modulacji
 
 Jest to efekt wdrożenia inspiracji @marok, która pozwala na ustalenie dla pojedynczego SFXa w jaki sposób, będzie brana pod uwagę wartość MOD/VAL
@@ -42,8 +44,10 @@ Stała, maksymalna długość SFXa (128 punktów obwiedni)
 ### Dzielnik częstotliwości
 
 Jest to drugi parametr instrukcji SOUND w Basicu. Jest ona odpowiedzialna za wysokość generowanego przez POKEY dźwięku. Im ta wartość jest większa, tym częstotliwość jest niższa, zgodnie ze wzorem:
+$$
+f_{out}=\frac{POKEY_{freq}}{freq_{div}}
+$$
 
-![f_out=POKEY_freq/freq_div](./imgs/math-frequency_divider_formula.png)
 
 ~~~
 f_out - częstotliwość wyjścowa
@@ -54,8 +58,9 @@ freq_div - wartość dzielnika częstotliwości
 ### A dlaczego modulacja?
 
 Wartość dzielnika częstotliwości będzie ulegała zmianom, poprzez parametr MOD/VAL. W większości, modulacja ta odbywa się względnie, tzn. dla wartość bazowej określanej w TAB (niezależnie, czy będzie to nuta, czy też wartość bezpośrednia dzielnika) jej wartość jest zmieniana o wartość parametru MOD/VAL, która może przyjmować wartości dodatnie oraz ujemne. Ostatecznie, wartość wynikowa staje się wartością bazową.
-
-![base_freq=base_freq+MODVal](./imgs/math-modulation_formula.png)
+$$
+f_{base}=f_{base}+MOD_{val}
+$$
 
 ## Definicje MOD/VAL
 Dla poszczególnych rodzajów modulacji, istnieją różne formy jej zapisu i interpretacji. Najlepiej to przedstawi zapis binarny, gdzie wyraźnie widać, jakie bity odpowiadają za funkcje, a jakie za wartość.
@@ -104,45 +109,14 @@ I tak, dla:
 ### Zapis wartości ujemnej
 
 Wartość ujemna musi być liczbą przeciwną, tzn.
+$$
+Value_{opposite}=256-Value
+$$
 
-![math-opposite value](./imgs/math-opposite_value.png)
 
 Jest to wymagane, gdyż odejmowanie bazuje na dodawaniu liczb przeciwnych w modulo 256.
-
-![math-substraction by addition](./imgs/math-substraction_by_addition.png)
-
+$$
+result=(base_{value}+Value_{opposite})\ mod\ 256
+$$
 Odejmowanie to dodawanie przeciwnej liczby do wartości bazowej.
 Ośmiobitowy rejestr (z natury działa w modulo 256) ulega przepełnieniu, ale jest to ignorowane, a pozostała wartość w tym rejestrze jest mniejsza o wartości `Value`.
-
-## Modulacja w programie
-
-W module edycji SFX, wpisywanie wartości w sposób bezpośredni jest "nieco" kłopotliwe, stąd ułatwienie, które zostało zaczerpnięte z modułu edycji TAB.
-Po przejściu do edycji obwiedni SFXa, wyborze interesującej pozycji klawiszami strzałek __LEWO/PRAWO__ i naciśnięciu klawisza __RETURN__, zostanie otwarta lista dostępnych funkcji MOD/VAL.
-
-![Function List for HFD](./imgs/SFX-Edit_mode-Function_List_for_HFD.png)
-
-Lista ta, będzie się różnić w zależności od trybu modulacji (patrz pkt. Ustalanie rodzaju modulacji)
-
-Automatycznie zaznaczana jest opcja, która jest w miejscu kursora edycji. To ma na celu ułatwienie dokonywania zmian wartości aktualnej funkcji.
-
-Po wybraniu jednej z opcji, wyświetlony zostanie monit (w dolnej częsci ekranu - nad klawiaturą pianina) o podanie wartości dla wybranej funkcji - zakres tej wartości zostanie wyświetlony na ekranie.
-
-![Enter value for function](./imgs/SFX-Edit_mode-Enter_value_for_function.png)
-
-Po zaakceptowaniu klawiszem __RETURN__, program przetworzy wprowadzone informacje do wartości MOD/VAL.
-
-## Ustalenie rodzaju modulacji
-
-Tryb modulacji przedstawiony jest w lewym dolnym rogu ekranu edycji SFXa w postaci skrótu (pierwszych liter wyrazów)
-
-![Mod Mode for current SFX](./imgs/SFX-Edit_mode-Mod_Mode_for_current_SFX.png)
-
-Rodzaj modulacji można zmienić, wybierając __SFX->OPT->SET MOD MODE__.
-
-![SFX->OPT->SFX MOD Mode](./imgs/SFX-OPT-SFX_MOD_Mode.png) ![SFX->OPT->SFX MOD Modes List](./imgs/SFX-OPT-SFX_MOD_Mode_List.png)
-
-Pokaże się lista dostępnych trybów z których można wybierać, używając klawiszy strzałek __GÓRA/DÓŁ__ i akceptując klawiszem __RETURN__. Po otwarciu listy, zaznaczony zostanie aktualnie ustawiony tryb modulacji dla aktualnie edytowanego SFXa.
-
-## Podsumowanie
-
-Taka edycja nie jest najbardziej komfortowa dla bardzo złożonych SFXów, więc zapewne pojawi się program, którym będzie można to czynić w sposób bardziej przystępny wizualnie.

@@ -14,21 +14,21 @@ AUDIOBUF          = $E8      ; 8 bytes audio buffer for sync output
 
 SONG_LPB          = $F0      ; SONG Line Per Beat
 SONG_TICK_COUNTER = $F1      ; SONG tick counter
-_regTemp2			= $F3
-TABPtr            = $F4      ; TAB Pointer (2 bytes)
-TABNote           = $F7      ; TAB Note
-TABOrder          = $F8      ; TAB Order
+TABPtr            = $F3      ; TAB Pointer (2 bytes)
+TABNote           = $F6      ; TAB Note
+TABOrder          = $F7      ; TAB Order
 
-sfxPtr            = $F4      ; SFX Pointer (2 bytes)
-sfxNoteOfs        = $F6      ; SFX Note Table offset (1 byte)
-chnNote           = $F7      ; SFX Note
-chnFreq           = $F8      ; SFX Frequency
+sfxPtr            = $F3      ; SFX Pointer (2 bytes)
+sfxNoteOfs        = $F5      ; SFX Note Table offset (1 byte)
+chnNote           = $F6      ; SFX Note
+chnFreq           = $F7      ; SFX Frequency
 
-chnMode           = $F9      ; SFX Modulation Mode
-chnModVal         = $FA      ; SFX Modulator
-chnCtrl           = $FB      ; SFX Control (distortion & volume)
+chnMode           = $F8      ; SFX Modulation Mode
+chnModVal         = $F9      ; SFX Modulator
+chnCtrl           = $FA      ; SFX Control (distortion & volume)
 
-_regTemp          = $FC
+_regTemp          = $FB
+_regTemp2			= $FC
 
 
 ; CONSTANTS
