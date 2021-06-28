@@ -75,15 +75,22 @@ W trybie edycji SFXa, składowe `MOD/VAL` zawierają informacje sterujące dla s
 
 Lista ta, będzie się różnić w zależności od trybu modulacji.
 
-| Tryb        | DSD                                             | HFD                                             | MFD                                             | NLM                                             |
-| ----------- | :---------------------------------------------- | :---------------------------------------------- | :---------------------------------------------- | :---------------------------------------------- |
-| Pełna nazwa | Direct Set Divide                               | High Frequency Divider                          | Middle Frequency Divider                        | Note Level Modulator                            |
-| Funkcje     | ![](./imgs/SFX-Edit_mode-MOD Functions-DSD.png) | ![](./imgs/SFX-Edit_mode-MOD Functions-HFD.png) | ![](./imgs/SFX-Edit_mode-MOD Functions-MFD.png) | ![](./imgs/SFX-Edit_mode-MOD Functions-NLM.png) |
+| Tryb        | DSD               | HFD                    | MFD                      | NLM                  |
+| ----------- | :---------------- | :--------------------- | :----------------------- | :------------------- |
+| Pełna nazwa | Direct Set Divide | High Frequency Divider | Middle Frequency Divider | Note Level Modulator |
+| Funkcje     | `FREQ SET`        | `STOP SFX`             | `STOP SFX`               | `STOP SFX`           |
+|             | `BACK >`          | `FREQ SHIFT`           | `JUMP TO`                | `JUMP TO`            |
+|             | `< EXIT`          | `NOP`                  | `FREQ SHIFT`             | `FREQ SHIFT`         |
+|             |                   | `BACK >`               | `NOP`                    | `NOTE SHIFT`         |
+|             |                   | `< EXIT`               | `BACK >`                 | `NOP`                |
+|             |                   |                        | `< EXIT`                 | `BACK >`             |
+|             |                   |                        |                          | `< EXIT`             |
 
 Znaczenie poszczególnych funkcji jest następujące:
 
 - `FREQ SET` - ustawia wartość dzielnika częstotliwości w zakresie 0 do 255
 - `STOP SFX` - kończy przetwarzania SFXa
+- `JUMP TO` - wykonuje skok w obrębie SFXa (zapętla go)
 - `FREQ SHIFT` - zmienia względnie wartość dzielnika częstotliwości*
 - `NOTE SHIFT` - zmienia względnie nutę o ilość półtonów
 - `NOP` - No OPeration - brak operacji na SFXie
