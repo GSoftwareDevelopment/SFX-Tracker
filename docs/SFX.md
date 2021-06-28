@@ -51,7 +51,7 @@ Po prawej stronie paska menu SFX, widnieje obszar edycji. Znajdują się w nim:
 - składowe definicji `VOL`, `DST`, `MOD`, `VAL`. 
 - Linia informacyjna (rysunek poniżej) która zawiera:
 
-![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-Edit_mode_info_bar.png)
+![](./imgs/SFX-Edit_mode_info_bar.png)
 
 - `HFD` - tryb modulacji zastosowany dla SFXa
 - `000` - aktualna pozycja kursora edycji
@@ -75,10 +75,10 @@ W trybie edycji SFXa, składowe `MOD/VAL` zawierają informacje sterujące dla s
 
 Lista ta, będzie się różnić w zależności od trybu modulacji.
 
-| Tryb        | DSD                                                          | HFD                                                          | MFD                                                          | NLM                                                          |
-| ----------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| Pełna nazwa | Direct Set Divide                                            | High Frequency Divider                                       | Middle Frequency Divider                                     | Note Level Modulator                                         |
-| Funkcje     | ![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-Edit_mode-MOD Functions-DSD.png) | ![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-Edit_mode-MOD Functions-HFD.png) | ![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-Edit_mode-MOD Functions-MFD.png) | ![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-Edit_mode-MOD Functions-NLM.png) |
+| Tryb        | DSD                                             | HFD                                             | MFD                                             | NLM                                             |
+| ----------- | :---------------------------------------------- | :---------------------------------------------- | :---------------------------------------------- | :---------------------------------------------- |
+| Pełna nazwa | Direct Set Divide                               | High Frequency Divider                          | Middle Frequency Divider                        | Note Level Modulator                            |
+| Funkcje     | ![](./imgs/SFX-Edit_mode-MOD Functions-DSD.png) | ![](./imgs/SFX-Edit_mode-MOD Functions-HFD.png) | ![](./imgs/SFX-Edit_mode-MOD Functions-MFD.png) | ![](./imgs/SFX-Edit_mode-MOD Functions-NLM.png) |
 
 Znaczenie poszczególnych funkcji jest następujące:
 
@@ -96,7 +96,7 @@ Automatycznie zaznaczana jest opcja, która jest w miejscu kursora edycji i ma t
 
 Po wybraniu jednej z opcji, wyświetlony zostanie monit w linii statusu o podanie wartości dla wybranej funkcji - zakres tej wartości zostanie wyświetlony na ekranie.
 
-![Enter value for function](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-Edit_mode-Enter_value_for_function.png)
+![Enter value for function](./imgs/SFX-Edit_mode-Enter_value_for_function.png)
 
 Po zaakceptowaniu klawiszem __RETURN__, program przetworzy wprowadzone informacje do składowych `MOD/VAL`.
 
@@ -104,7 +104,7 @@ Po zaakceptowaniu klawiszem __RETURN__, program przetworzy wprowadzone informacj
 
 W tym trybie można przetestować stworzony dźwięk. Klawisze odpowiadające nutom rozłożone są na klawiaturze komputera zgodnie z poniższym rysunkiem:
 
-![Układ klawiszy nut na klawiaturze](/home/pebe/Projekty/SFX-Tracker/docs/imgs/Keyboard_Piano.png)
+![Układ klawiszy nut na klawiaturze](./imgs/Keyboard_Piano.png)
 
 Dodatkowo, za pomocą klawisza __TAB__ lub __SHIFT-TAB__ można zmieniać oktawę bazową, a naciskając klawisz __INVERS__ zmienimy tryb pracy pianina pomiędzy Single-Tone a Multi-Tone (bardziej kojarzony z Polifonią)
 
@@ -131,7 +131,7 @@ W pasku menu, pod skrótem `OPT`, ukryte są opcje związane z ustawieniami aktu
 
 `SET NAME`,  pozwala nadać nazwę dla aktualnie edytowanego SFXa. Nazwa może mieć maksymalnie 14 znaków. Nazwy nie podlegają weryfikacji pod kątem już istniejących (występujących) nazw.
 
-![Ustawienie nazwy SFXa](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-OPT-Set-Name-Edit.png)
+![Ustawienie nazwy SFXa](./imgs/SFX-OPT-Set-Name-Edit.png)
 
 ### SET NOTE TABLE
 
@@ -139,14 +139,14 @@ Każdej definicji SFX można przypisać jedną z czterech tablic nut (więcej o 
 
 Po wybraniu tej opcji, otworzy się lista z nazwami tablic.
 
-![Lista Tablic nut](./imgs/SFX-OPT-Set-Note-Table.png)![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-OPT-Set-Note-Table-List.png)
+![Lista Tablic nut](./imgs/SFX-OPT-Set-Note-Table.png)![](./imgs/SFX-OPT-Set-Note-Table-List.png)
 
 ### SET MOD MODE
 Podobnie jak tablice nut, dla każdego SFXa można przypisać tzw. *tryb modulacji* (więcej na ten temat w sekcji [Rodzaje modulacji](./Modulators.md))
 
 Po wejściu w opcję, otwiera się lista ze skrótami trybów.
 
-![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-OPT-SFX_MOD_Mode.png)![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-OPT-SFX_MOD_Mode_List.png)
+![](./imgs/SFX-OPT-SFX_MOD_Mode.png)![](./imgs/SFX-OPT-SFX_MOD_Mode_List.png)
 
 Po otwarciu listy, zaznaczony zostanie tryb modulacji, jaki jest ustawiony dla aktualnie edytowanego SFXa.
 
@@ -158,7 +158,7 @@ Ten moduł odpowiedzialny jest za dostosowanie tablic nut.
 
 > **Tablica nut** - to zestaw wartości opisujących częstotliwość (dzielnik częstotliwości) dla każdej nuty. Dzięki tablicom, można dostroić brzmienie dźwięku.
 
-![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-OPT-Edit_Note_Table.png)![Moduł Note Table Edit](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-OPT-Note_Table_Edit.png)
+![](./imgs/SFX-OPT-Edit_Note_Table.png)![Moduł Note Table Edit](./imgs/SFX-OPT-Note_Table_Edit.png)
 
 Po lewej stronie znajduje się pasek menu, a w nim:
 
@@ -184,7 +184,7 @@ Wyjście z trybu edycji następuje po naciśnięciu klawisza **ESC**
 
 #### Opcje Tablic nut
 
-![](/home/pebe/Projekty/SFX-Tracker/docs/imgs/SFX-OPT-Note_Table_Edit-OPT-Options_list.png)
+![](./imgs/SFX-OPT-Note_Table_Edit-OPT-Options_list.png)
 
 W menu `OPT` zawarte są opcje umożliwiające:
 
