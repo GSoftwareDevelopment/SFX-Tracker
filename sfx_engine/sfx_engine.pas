@@ -15,6 +15,11 @@ const
 
 {$i sfx_engine/sfx_engine_const.inc}
 
+NOTE_TABLE_ADDR		= NOTE_TABLE_PAGE*$100; // = NOTE_TABLE_ADDR								; predefined table of note frequency
+PREDEF_PURE_ADDR     = NOTE_TABLE_ADDR;      //
+PREDEF_BASS1_ADDR    = NOTE_TABLE_ADDR+$40;  //
+PREDEF_BASS2_ADDR    = NOTE_TABLE_ADDR+$80;  //
+
 var
    SONGData:byteArray absolute SONG_ADDR;              // table for SONG data
    SFXModMode:byteArray absolute SFX_MODE_SET_ADDR;    // indicates the type of modulation used in the SFX.
@@ -24,7 +29,6 @@ var
 
    song_lpb:byte absolute SFX_REGISTERS+$00;
    SONG_Tick:byte absolute SFX_REGISTERS+$01;
-	SONG_TrackPos:array[0..0] of byte absolute SFX_REGISTERS+$02;
 
    channels:array[0..63] of byte absolute SFX_CHANNELS_ADDR;
 	currentNoteTableOfs:byte;
