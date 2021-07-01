@@ -32,7 +32,7 @@ procedure updateTAB(showPos:boolean);
 var
 	scrOfs,i,_note,_fnsfx,noteOfs,noteOct,pos:byte;
 	ch,_beat,_nxt:byte;
-	realPos:word;
+	realPos,addr:word;
 
 begin
 	scrOfs:=44; //vadr[winYStart]+winXStart;
@@ -55,19 +55,29 @@ begin
 		else
 			if (_fnsfx and $c0=$00) then
 			begin // note
-				noteOct:=_note div 12; noteOfs:=(_note mod 12) shl 1;
+				if SFXModMode[_fnsfx]=3 then
+				begin
+					scrOfs:=scrOfs-1;
+					addr:=SFXPtr[_fnsfx];
+					conv2internalP2P(@_mem[addr],@screen[scrOfs],8);
+					scrOfs:=scrOfs+9;
+				end
+				else
+				begin
+					noteOct:=_note div 12; noteOfs:=(_note mod 12) shl 1;
 
-				// NOTE#
-				screen[scrOfs]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
-				screen[scrOfs+1]:=note_names[noteOfs];
-				scrOfs:=scrOfs+2;
-				if (noteOct<=9) then ch:=$10+noteOct else ch:=$0d; // hypen sign
-				screen[scrOfs]:=ch;
-				scrOfs:=scrOfs+2;
+					// NOTE#
+					screen[scrOfs]:=note_names[noteOfs]; noteOfs:=noteOfs+1;
+					screen[scrOfs+1]:=note_names[noteOfs];
+					scrOfs:=scrOfs+2;
+					if (noteOct<=9) then ch:=$10+noteOct else ch:=$0d; // hypen sign
+					screen[scrOfs]:=ch;
+					scrOfs:=scrOfs+2;
 
-				// SFX#
-				putValue(scrOfs,0,_fnsfx,2,0);
-				scrOfs:=scrOfs+4;
+					// SFX#
+					putValue(scrOfs,0,_fnsfx,2,0);
+					scrOfs:=scrOfs+4;
+				end;
 			end
 			else
 				if (_fnsfx and $c0=$40) then
