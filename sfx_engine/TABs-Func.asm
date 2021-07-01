@@ -1,25 +1,26 @@
 TAB_Function
 ; current order is in A register
-         cmp #$FF
+         cmp #$FF											; check TABEND function
          bne TAB_not_end
 TAB_FN_TABEnd
 ; in X reg - current channel offset
 
 			icl 'SONG.asm'
 
-         ldy #00					; set current TAB offset at the begining (zero)
+         ldy #00											; set current TAB offset at the begining (zero)
          jmp fetch_TAB_row
 
 TAB_not_end
-         cmp #$C0                               ;
+         cmp #$C0                               ; check REPEAT function
          beq TAB_FN_Blank_NoteOff
 
 TAB_FN_Loop
-         and #%00111111                         ; extract value from order
-         beq TAB_FN_JumpTo                      ; =0 its JUMP TO
-
+         and #%00111111                         ; extract value from order (repeat times)
+         beq fetch_next_tab_row                 ; =0 REPEAT zero times? :| Can't possible
+																; originally, it was a conditional jump `BNE TAB_FN_JumpTo`,
+																; which means, the TAB function JUMP TO
 TAB_FN_Repeat
-         sta _regTemp                           ; temporary store repeat value
+         sta _regTemp                           ; temporary store value from order (repeat value)
 
 ; check current loop
          lda SFX_CHANNELS_ADDR+_tabRep,x        ; get current repeat value
@@ -49,7 +50,7 @@ TAB_FN_JumpTo
 
 TAB_FN_Blank_NoteOff
          lda TABNote                            ; get row value
-         bpl TAB_FN_Blank                       ; check type
+         bpl TAB_FN_Blank                       ; check BLANK (positive value) or NOTE OFF (negative)
 
 TAB_FN_NoteOff
          lda #SFX_OFF                           ; turn off current SFX

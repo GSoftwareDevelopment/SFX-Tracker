@@ -22,6 +22,7 @@ CHARSET_ADDR			= CHARSET_PAGE*$100;				//  (512) character set definition
 
 EDIT_BUF1_ADDR			= $BE00;								//  (128)
 EDIT_BUF2_ADDR			= $BE80;								//  (128)
+EDIT_BUF3_ADDR			= $BF00;								//  (256)
 
 VIS_TABLE_ADDR			= $600;								//   (58) Table for piano visualisation :)
 DLI_COLOR_TABLE_ADDR = $63a;								//   (30) DLI Color table (30 bytes)

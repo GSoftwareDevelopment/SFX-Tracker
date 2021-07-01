@@ -16,12 +16,17 @@ var
 {$i modules/sfx/sfx_menubar.inc}
 
 procedure SFXLoop();
+	procedure update();
+	begin
+		updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
+	end;
+
 begin
 	getSFXData(currentSFX);
 	SFXDetermineLength();
 	updateSFXView();
 
-	updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
+	update();
 	screen2video();
 	modified:=false;
 	repeat
@@ -33,7 +38,7 @@ begin
 				key_ESC: break;
 				key_RETURN: SFXSelectMenuBar(section);
 			end;
-			updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
+			update();
 			screen2video();
 		end;
 	until false;

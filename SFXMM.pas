@@ -54,7 +54,7 @@ var
 	currentOct:byte;
 	currentTAB:byte;
 
-	song_beat:byte;
+	SONG_Beat:byte;
 
 	modified:boolean = false;
 
@@ -69,8 +69,8 @@ var
 	f:file;
 
 // global access function and procedures
-{$i units/heap_manage.inc}
 {$i modules/ui_helpers.inc}
+{$i units/heap_manage.inc}
 {$i modules/io/io_clear_all_data.inc}
 {$i modules/io/io_error.inc}
 {$i modules/io/io_tag_compare.inc}

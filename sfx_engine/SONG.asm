@@ -3,7 +3,7 @@
 ;
 TRACK_process
 			ldy SFX_CHANNELS_ADDR+_trackOfs,x    ; get SONG-Track offset
-			bpl process_TRACK_data
+			bpl process_TRACK_data					 ; y<128? track is playing
 			jmp no_TRACK_process                 ; exit from TRACK_process
 
  .print "SONG PLAYBACK START: ", *

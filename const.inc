@@ -38,6 +38,7 @@ width_menuIOOptions = 8;
 width_menuModType = 8;
 width_menuSFXFunc	= 12;
 width_menuTabFunc	= 12;
+width_menuSONGFunc= 12;
 width_fileList		= 20;
 width_filePath		= 20;
 
@@ -80,12 +81,14 @@ SFXLenY				= 10;
 	TABMenuOptions					= 3;
 	TABMenuOption_Back			= 2;
 
-	TABEditOptions					= 8;
-	TABEditOption_BackToEdit	= 6;
-	TABEditOption_BackToMenuBar= 7;
+	TABEditOptions					= 7;
+	TABEditOption_BackToEdit	= 5;
+	TABEditOption_BackToMenuBar= 6;
 
 	SONGMenuOptions				= 3;
 	SONGMenuOption_Back			= 2;
+
+	SONGEditOptions				= 8;
 	SONGEditOption_BackToEdit	= 6;
 	SONGEditOption_BackToMenuBar= 7;
 
@@ -228,6 +231,7 @@ SFXLenY				= 10;
 // PROGRAMM ERRORS
 
 	IO_OK								= 1;
+	IO_EOF							= 3;
 
 	error_badSectionTag			= 12;
 	error_badFileFormat			= 13;

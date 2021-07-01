@@ -6,13 +6,16 @@ var i,v:byte;
 
 	procedure storeValue(v:byte);
 	begin
+		i:=tab[at];
 		if (nibble=1) then
 		begin
 			v:=v shl 4;
-			tab[at]:=(tab[at] and $0f) or v;
+			tab[at]:=(i and $0f) or v;
 		end
 		else
-			tab[at]:=(tab[at] and $f0) or v;
+			tab[at]:=(i and $f0) or v;
+		SFXDetermineLength();
+		modified:=true;
 	end;
 
 begin
@@ -24,7 +27,7 @@ begin
 				section:=section or $10;
 				break;
 			end;
-			colorVLine(winXStart+cursorPos,winYStart,8,0);
+			// colorVLine(winXStart+cursorPos,winYStart,8,0);
 			case key of
 				key_ESC: break;
 				key_RETURN: if SFXEntryEdit then break;
@@ -37,22 +40,13 @@ begin
 
 			// value change
 			if controlSelectionKeys(key,key_CTRL_Down,Key_CTRL_Up,v,0,15) then
-			begin
-				storeValue(v);
-				modified:=true;
-			end
+				storeValue(v)
 			else
 			begin
 				i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
-				if (i<>255) then
-				begin
-					storeValue(i);
-					moveCursor(1,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift);
-					modified:=true;
-				end;
+				if (i<>255) then storeValue(i);
 			end;
 
-			SFXDetermineLength();
 			updateSFXView();
 			colorVLine(winXStart+cursorPos,winYStart,8,3);
 			screen2video();

@@ -27,7 +27,7 @@ var
    SFXPtr:wordArray absolute SFX_TABLE_ADDR;           // heap pointers to SFX definitions
    TABPtr:wordArray absolute TAB_TABLE_ADDR;           // heap pointera to TAB definitions
 
-   song_lpb:byte absolute SFX_REGISTERS+$00;
+   SONG_Tempo:byte absolute SFX_REGISTERS+$00;
    SONG_Tick:byte absolute SFX_REGISTERS+$01;
 
    channels:array[0..63] of byte absolute SFX_CHANNELS_ADDR;
@@ -246,6 +246,7 @@ procedure SFX_PlaySONG(startPos:byte);
 begin
 	SFX_Off();
    startPos:=startPos*4;
+
 	for __chn:=0 to 3 do
 	begin
 		__cOfs:=__chn*$10;

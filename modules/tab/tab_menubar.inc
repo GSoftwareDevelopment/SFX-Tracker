@@ -40,10 +40,6 @@ begin
 		1: TABEditLoop();
 		2: TAB_Play();
 		3: TAB_Options(TABMenuOption_Back);
-//		4: begin
-//				SFXList();
-//				updateTABSFX();
-//			end;
 	end;
 
 end;

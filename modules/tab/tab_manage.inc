@@ -39,20 +39,37 @@ begin
 	else
 		TABLen:=TAB_maxLength; // set maximum length od pattfrn definition
 
-	// cursorPos:=0; cursorShift:=0;
 	currentTAB:=nTAB;
 end;
 
 procedure TABDetermineLength();
-var v,len:byte;
+var
+	order,
+	_ord,
+	value,
+	len:byte;
 
 begin
-	len:=0;
-	// auto seek end of TAB definition
+	len:=0; TABRealLen:=0;
+	fillchar(@TAB_RealPos,256,$ff);
+
 	repeat
-		v:=TAB_fnSFX[len];
+		order:=TAB_fnSFX[len];
+		_ord:=order and $c0;
+		if (order<>$FF) then
+			if (order<TABFn_jump) or (_ord=$c0) then
+			begin
+				inc(TABRealLen);
+				TAB_RealPos[len]:=TABRealLen;
+			end
+			else
+				if (_ord=$80) then
+				begin
+					value:=TAB_notes[len];
+					inc(TABRealLen,(order-TABFn_jump)*(len-value));
+				end;
 		len:=len+1;
-	until (len=TAB_maxLength) or (v=TABFn_end) or (v=TABFn_jump);
+	until (len=TAB_maxLength) or (order=TABFn_end); // or (order=TABFn_jump);
 	TABLen:=len;
 end;
 
@@ -71,8 +88,6 @@ begin
 		// ... set TAB name as free
 		TABName[0]:=char(TABNameLength);
 		move(resptr[str_notDefined],@TABName[1],TABNameLength);
-//		fillchar(@screen[SFXNameX+vadr[SFXNumberY]],TABNameLength,$40);
-//		putText(SFXNameX,SFXNumberY,TABName,1);
 		exit;
 	end;
 

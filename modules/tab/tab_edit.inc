@@ -15,8 +15,13 @@ var
 		end;
 	end;
 
+	procedure drawCursor();
+	begin
+		colorHLine(winXStart,2+cursorPos,20-winXStart,3);
+	end;
+
 begin
-	colorHLine(winXStart,2+cursorPos,20-winXStart,3);
+	drawCursor();
 	screen2video();
 	reset_pianoVis();
 	cTAB:=currentTAB;
@@ -73,7 +78,7 @@ begin
 
 			//
 			updateTAB(true);
-			colorHLine(winXStart,2+cursorPos,20-winXStart,3);
+			drawCursor();
 			updateTABInfo();
 			screen2video();
 		end;

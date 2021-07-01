@@ -9,6 +9,7 @@ export PATH="$HOME/Atari/atari-tools-master:$PATH"
 projectname="SFXMM"
 imagefile="$projectname.ATR"
 dosdir="DOS25/"
+bsfile="bootsector.obj"
 
 function error() {
 	echo "! $1"
@@ -26,12 +27,12 @@ if [ ! -d $dosdir ]; then
 	error "DOS directory doesn't exist."
 fi
 
-if [ ! -f bootsector.obj ]; then
+if [ ! -f $bsfile ]; then
 	error "Bootsector file doesn't exist."
 fi
 
 echo "Creating '$projectname' image file..."
-atr $imagefile mkfs dos2.5 bootsector.obj
+atr $imagefile mkfs dos2.5 $bsfile
 if [ $? -ne 0 ]; then
 	break_link
 fi
@@ -59,5 +60,5 @@ fi
 
 cd ..
 
-echo "> Review of '$projectname' disk image"
-atr $imagefile ls -al
+# echo "> Review of '$projectname' disk image"
+# atr $imagefile ls -al

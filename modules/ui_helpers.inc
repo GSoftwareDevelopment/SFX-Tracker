@@ -12,7 +12,7 @@ begin
 	end;
 end;
 
-procedure controlEditKeys(key:byte; winSize:shortint; max:byte; var _pos,_shift:byte; pcKey,ncKey:byte);
+function controlEditKeys(key:byte; winSize:shortint; max:byte; var _pos,_shift:byte; prevKey,nextKey:byte):boolean;
 var step:shortint;
 
 begin
@@ -23,11 +23,12 @@ begin
 	end
 	else
 		step:=1;
-	if key=pcKey then
-		moveCursor(-step,winSize,max,_pos,_shift)
-	else
-		if key=ncKey then
-			moveCursor(step,winSize,max,_pos,_shift);
+	result:=(key=prevKey) or (key=nextKey);
+	if result then
+	begin
+		if key=prevKey then step:=-step;
+		moveCursor(step,winSize,max,_pos,_shift);
+	end;
 end;
 
 procedure clearListBuf();
@@ -116,44 +117,3 @@ begin
 	SFX_End();
 	halt;
 end;
-
-{$ifndef INCLUDE_RESOURCES}
-procedure GotoXY(x,y: byte); assembler;
-asm
-rowcrs	=	$54	; wiersz  kursora
-colcrs	=	$55	; (2) Kolumna kursora
-
-	ldy x
-	sty colcrs
-	mvy #$00 colcrs+1
-	ldy y
-	sty rowcrs
-end;
-
-procedure Resources_Load();
-var
-	ofs,readed:word;
-
-begin
-	assign(f,resourcesFile);
-	reset(f,1);
-	if IOResult=1 then
-	begin
-		ofs:=RESOURCES_ADDR;
-		repeat
-			blockRead(f,listBuf,1024,readed);
-			move(@listBuf,pointer(ofs),readed);
-			inc(ofs,readed);
-		until readed<>IO_BUFFER_ADDR;
-	end
-	else
-	begin
-		close(f);
-		writeLn('RESOURCES FILE NOT FOUND :(');
-		write('Press the key to return to DOS...');
-		repeat until kbcode<>255; kbcode:=255;
-		exit2DOS();
-	end;
-	close(f);
-end;
-{$endif}

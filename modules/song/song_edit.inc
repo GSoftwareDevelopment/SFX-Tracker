@@ -1,22 +1,28 @@
 procedure SONGEditLoop();
 var
-	_pos,SONGOfs,SONGAdr,maxCols,x,y:byte;
+	SONGRow,SONGAdr,maxCols,x,y:byte;
 	value:smallint;
 	nTab:byte;
 
-	procedure setCursor();
-	var
-	  order:byte;
-
+	procedure calcPos();
+	var _pos:byte;
 	begin
 		_pos:=SONGShift+SONGPos;
-		SONGOfs:=_pos*4;
+		SONGRow:=_pos*4;
 		x:=winSONGXStart; y:=2+SONGPos;
-		order:=SONGData[SONGOfs];
+		SONGAdr:=SONGRow+SONGChn;
+	end;
+
+	procedure drawCursor();
+	var
+	  w,order:byte;
+
+	begin
+		order:=SONGData[SONGRow];
 		if order=chnOrder_EndSong then
 		begin
 			SONGChn:=0; maxCols:=0;
-			colorHLine(x,y,8,3); // 8-hardcoded length of 'END-SONG'
+			w:=8; // 8 is length of 'END-SONG'
 		end
 		else
 		begin
@@ -30,9 +36,20 @@ var
 				maxCols:=3;
 			if SONGChn>maxCols then SONGChn:=maxCols;
 			x:=x+SONGChn*3;
-			colorHLine(x,y,2,3); // 8-hardcoded length of 'END-SONG'
+			w:=2;
 		end;
-		SONGAdr:=SONGOfs+SONGChn;
+		colorHLine(x,y,w,3);
+		SONGAdr:=SONGRow+SONGChn;
+	end;
+
+	function isRowOnOrder():boolean;
+	begin
+		result:=(SONGData[SONGRow] and chnOrder<>0);
+	end;
+
+	procedure clearRow();
+	begin
+		fillchar(@SONGData[SONGRow],4,chnBlank);
 	end;
 
 	procedure storeInSONGTab(value:shortint);
@@ -40,51 +57,65 @@ var
 		if SONGChn=0 then
 		begin
 			if (value<64) and (TABPtr[value]=$FFFF) then
-				showError(msg_UnknownDefinition)
+			begin showError(msg_UnknownDefinition); exit; end
 			else
-			begin
-				if (SONGData[SONGOfs] and chnOrder<>0) then
-					fillchar(@SONGData[SONGOfs],4,chnBlank);
-				SONGData[SONGAdr]:=value;
-			end;
+				if isRowOnOrder then clearRow();
 		end
 		else
 		begin
-			if (SONGData[SONGOfs] and chnOrder<>0) then
-				SONGData[SONGAdr]:=value
-			else
+			if not isRowOnOrder then
 				if (value<64) and (TABPtr[value]=$FFFF) then
-					showError(msg_UnknownDefinition)
-				else
-					SONGData[SONGAdr]:=value;
+				begin showError(msg_UnknownDefinition); exit; end;
 		end;
+		SONGData[SONGAdr]:=value
 	end;
 
 begin
 	updateSONG(false);
-	// colorHLine(winSONGXStart+SONGChn*3,2+SONGPos,2,3);
-	setCursor();
-	screen2video(); kbcode:=255;
+	calcPos();
+	drawCursor();
+	screen2video();
 	reset_pianoVis();
 	repeat
 		if keyPressed then
 		begin
-			controlSelectionKeys(key,key_LEFT,key_RIGHT,SONGChn,0,maxCols);
+			if	controlSelectionKeys(key,key_LEFT,key_RIGHT,SONGChn,0,maxCols) or
+				controlEditKeys(key,SONG_winHeight,SONG_maxLength,SONGPos,SONGShift,key_Up,key_Down) then
+			begin
+				calcPos();
+				nTab:=SONGData[SONGAdr];
+				clearStatusBar();
+				if not isRowOnOrder then
+					showTABInfo(nTAB)
+			end;
 
 			case key of
 				key_ESC: break;
-				key_SPACE: storeInSONGTab(chnBlank);
-				key_RETURN: if SONGEntryEdit(SONGOfs) then break;
-				KEY_CTRL_RETURN: begin
-											nTab:=SONGData[SONGAdr];
-											if nTab>=maxTABs then nTab:=0;
-											nTAB:=dataList(TABPtr,nTab,maxTABs,TABNameLength);
+				key_SPACE: begin
+					if isRowOnOrder then
+						clearRow()
+					else
+						storeInSONGTab(chnBlank);
+				end;
+				key_RETURN: if SONGEntryEdit(SONGRow) then break;
+				key_CTRL_RETURN: if not isRowOnOrder then
+										begin
+											if nTAB>=maxTABs then nTAB:=0;
+											nTAB:=dataList(TABPtr,nTAB,maxTABs,TABNameLength);
 											if (nTAB<maxTABs) then
-												storeInSONGTab(nTab);
+												storeInSONGTab(nTAB);
+										end;
+				key_CTRL_INSERT: begin
+											move(@SONGData[SONGRow],@SONGData[SONGRow+4],256-SONGRow);
+											clearRow();
+										end;
+				key_CTRL_DELETE: begin
+											move(@SONGData[SONGRow+4],@SONGData[SONGRow],256-SONGRow);
+											value:=SONGRow; SONGRow:=252;
+											clearRow();
+											SONGRow:=value;
 										end;
 			end;
-
-			controlEditKeys(key,SONG_winHeight,SONG_maxLength,SONGPos,SONGShift,key_Up,key_Down);
 
 			value:=keyScan(key,keys_alphaNum,keysRange_decNum);
 			if (value<>255) then
@@ -93,7 +124,8 @@ begin
 
 			//
 			updateSONG(false);
-			setCursor();
+			calcPos();
+			drawCursor();
 			screen2video();
 		end;
 		updatePianoVis();

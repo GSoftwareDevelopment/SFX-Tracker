@@ -2,6 +2,11 @@ procedure NoteTuneLoop();
 var
 	_pos,notePos,noteShift,noteVal,noteKey,noteOct:byte;
 
+	procedure drawCursor();
+	begin
+		colorVLine(tuneBarsPos+notePos,0,5,3);
+	end;
+
 begin
 	notePos:=0; _pos:=0;
 	noteOct:=currentOct;
@@ -9,7 +14,7 @@ begin
 
 	reset_pianoVis();
 	updateNoteTune(noteOct);
-	colorVLine(tuneBarsPos+notePos,0,5,3);
+	drawCursor();
 	screen2video();
 	repeat
 		if keypressed then
@@ -34,7 +39,7 @@ begin
 				definedNoteTune[_pos]:=noteVal;
 
 			updateNoteTune(noteOct);
-			colorVLine(tuneBarsPos+notePos,0,5,3);
+			drawCursor();
 			screen2video();
 		end;
 		updatePianoVis();

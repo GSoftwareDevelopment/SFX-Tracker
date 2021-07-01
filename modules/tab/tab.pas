@@ -1,8 +1,11 @@
 var
 	TAB_notes:array[0..TAB_maxLength-1] of byte absolute EDIT_BUF1_ADDR;
 	TAB_fnSFX:array[0..TAB_maxLength-1] of byte absolute EDIT_BUF2_ADDR;
+	TAB_RealPos:array[0..TAB_maxLength-1] of word absolute EDIT_BUF3_ADDR; // this table is used only in TAB view and its build by 'determineTABLen' procedure
 
 	TABLen:byte;
+	TABRealLen:word;
+
 	TABName:string[TABNameLength];
 
 {$i modules/tab/tab_view.inc}
@@ -13,13 +16,17 @@ var
 {$i modules/tab/tab_menubar.inc}
 
 procedure TABLoop();
+	procedure update();
+	begin
+		updateBar(menu_tabs,width_menuBar,section,color_choice,color_selected);
+	end;
+
 begin
 	getTABData(currentTAB);
 	TABDetermineLength();
 	updateTABInfo();
 	updateTAB(true);
-
-	updateBar(menu_tabs,width_menuBar,section,color_choice,color_selected);
+	update();
 	screen2video();
 	modified:=false;
 	repeat
@@ -31,7 +38,7 @@ begin
 				key_Left,key_Right: TABChangeMenuBarOpt(section);
 				key_RETURN: TABSelectMenuBar(section);
 			end;
-			updateBar(menu_tabs,width_menuBar,section,color_choice,color_selected);
+			update();
 			screen2video();
 		end;
 	until false;

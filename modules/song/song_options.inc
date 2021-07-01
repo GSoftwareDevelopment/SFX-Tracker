@@ -12,14 +12,14 @@ var
 
 begin
 	putMultiText(msg_SetTempoPrompt,0);
-	newTempo:=song_lpb;
+	newTempo:=SONG_Tempo;
 	if inputValue(11,9,3,newTempo,0,255,0,0) then
-		song_lpb:=byte(newTempo);
+		SONG_Tempo:=byte(newTempo);
 end;
 
 procedure SONG_Options(defaultOpt:byte);
 begin
-	strVal2Mem(resptr[val_menu_tempo],song_lpb,3,0);
+	strVal2Mem(resptr[val_menu_tempo],SONG_Tempo,3,0);
 	if optionsList(menu_SONG_options,width_menuOptions,SONGMenuOptions,defaultOpt,key_Up,key_Down) then
 		case defaultOpt of
 			0: setSONGName();

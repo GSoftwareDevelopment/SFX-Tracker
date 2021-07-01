@@ -8,7 +8,6 @@ begin
 	begin
 		getSFXData(nSFX);
 		SFXDetermineLength();
-		currentSFX:=nSFX;
 		result:=true;
 	end
 	else
@@ -54,8 +53,6 @@ begin
 				6: SFXEditLoop(SFX_modulate,0,modified);
 			end;
 		until section and $10=0;
-
-		colorVLine(winXStart+cursorPos,winYStart,8,0);
 	end;
 
 	if modified then

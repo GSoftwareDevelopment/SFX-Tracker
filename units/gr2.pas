@@ -166,44 +166,33 @@ end;
 
 procedure strVal2Mem(_dest:pointer; value:smallint; zeros,color:byte);
 var
-	ptr,a:byte;
+	ptr,a,v:byte;
 	dest:array[0..0] of byte;
+	base,step:smallint;
+
+	procedure digit();
+	begin
+		if (value>=base) then begin a:=5; value:=value-base; end else a:=0;
+		v:=4;
+		while value>=step do
+		begin
+			dec(base,step);
+			if (value>=base) then begin a:=a+v; value:=value-base; exit; end;
+			dec(v);
+		end;
+	end;
 
 begin
 	dest:=_dest;
 	ptr:=0; color:=colMask[color]+$10;
-	if (zeros=3) then begin
-		if (value>=200) then
-		begin
-			a:=2; value:=value-200;
-		end
-		else
-			if (value>=100) then
-			begin
-				a:=1; value:=value-100;
-			end
-			else
-				a:=0;
-		dest[ptr]:=color+a; ptr:=ptr+1;
-	end;
-	if (value>=50) then begin a:=5; value:=value-50; end else a:=0;
-	if (value>=40) then begin a:=a+4; value:=value-40; end
-	else
-		if (value>=30) then begin a:=a+3; value:=value-30; end
-		else
-			if (value>=20) then begin a:=a+2; value:=value-20; end
-			else
-				if (value>=10) then begin a:=a+1; value:=value-10; end;
-	dest[ptr]:=color+a; ptr:=ptr+1;
-	if (value>=5) then begin a:=5; value:=value-5; end else a:=0;
-	if (value>=4) then begin a:=a+4; value:=value-4; end
-	else
-		if (value>=3) then begin a:=a+3; value:=value-3; end
-		else
-			if (value>=2) then begin a:=a+2; value:=value-2; end
-			else
-				if (value>=1) then begin a:=a+1; value:=value-1; end;
-	dest[ptr]:=color+a;
+	base:=500; step:=100; digit();
+	if (zeros>=3) then begin dest[ptr]:=color+a; ptr:=ptr+1;	end;
+
+	base:=50; step:=10; digit();
+	if (zeros>=2) then begin dest[ptr]:=color+a; ptr:=ptr+1; end;
+
+	base:=5; step:=1; digit();
+	if (zeros>=1) then dest[ptr]:=color+a;
 end;
 
 procedure putValue;

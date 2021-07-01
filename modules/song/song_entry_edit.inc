@@ -5,7 +5,7 @@ var
 	procedure setTempo();
 	begin
 		SONGData[SONGOfs]:=chnOrder_Tempo;
-		SONGData[SONGOfs+1]:=song_lpb;
+		SONGData[SONGOfs+1]:=SONG_Tempo;
 		SONGChn:=1;
 	end;
 
@@ -26,7 +26,7 @@ var
 
 begin
 	opt:=SONGEditOption_BackToEdit;
-	if optionsList(menu_song_edit,width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down) then
+	if optionsList(menu_song_edit,width_menuSONGFunc,SONGEditOptions,opt,key_Up,key_Down) then
 	begin
 		if opt>=SONGEditOption_BackToEdit then exit(opt=SONGEditOption_BackToMenuBar);
 

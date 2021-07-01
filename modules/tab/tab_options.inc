@@ -16,6 +16,7 @@ begin
 	newBeat:=song_beat;
 	if inputValue(15,9,2,newBeat,1,32,0,0) then
 		song_beat:=byte(newBeat);
+	clearStatusBar();
 end;
 
 procedure TAB_Options(defaultOpt:byte);
@@ -26,7 +27,5 @@ begin
 			0: setTABName();
 			1: setBeatStep();
 		end;
-	box(4,2,16,9,0);
-	fillchar(@statusBar,20,0);
 	updateTAB(true);
 end;

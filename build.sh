@@ -2,21 +2,26 @@
 export PATH="$HOME/Atari/MadPascal:$PATH"
 MPBase="$HOME/Atari/MadPascal/base"
 ProjectBin="./bin/SFXMM"
+logfile="outmsg.log"
 
 function break_build() {
 	echo "!! Project not compiled"
-	cat outmsg.log
+	cat $logfile
 	exit 0
 }
 
+if [ -f $logfile ]; then
+	rm $logfile
+fi
+
 echo "> Compiling project loader..."
 cd loader
-mp loader.pas -o >> outmsg.log
+mp loader.pas -o >> $logfile
 if [ $? -ne 0 ]; then
 	break_build
 fi
 
-mads loader.a65 -x -i:$MPBase -o:../$ProjectBin/LOADER.XEX >> outmsg.log
+mads loader.a65 -x -i:$MPBase -o:../$ProjectBin/LOADER.XEX >> $logfile
 if [ $? -ne 0 ]; then
 	break_build
 fi
@@ -29,16 +34,16 @@ cd ..
 
 echo "> Compiling main project..."
 
-mp $1.pas -o $2 >> outmsg.log
+mp $1.pas -o -define:INCLUDE_RESOURCES >> $logfile
 if [ $? -ne 0 ]; then
 	break_build
 fi
-mads $1.a65 -x -i:$MPBase -o:$ProjectBin/$1.XEX >> outmsg.log
+mads $1.a65 -x -i:$MPBase -o:$ProjectBin/$1.XEX >> $logfile
 if [ $? -ne 0 ]; then
 	break_build
 fi
 
 echo "> Building ATR image..."
 cd bin
-./build.sh
+./build.sh >> $logfile
 cd ..

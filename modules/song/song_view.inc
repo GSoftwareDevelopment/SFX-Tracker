@@ -1,3 +1,21 @@
+procedure showTABInfo(nTAB:byte);
+var
+	addr:word;
+
+begin
+	if nTAB>=maxTABs then exit;
+	addr:=TABPtr[nTAB];
+	if addr=$FFFF then exit;
+
+	statusBar[0]:=$03;
+	putValue(1,11,nTAB,2,0);
+	statusBar[3]:=$1a;
+	conv2internalP2P(@_mem[addr],@statusBar[4],TABNameLength);
+	getTABData(nTAB);
+	TABDetermineLength();
+	putValue(17,11,TABRealLen,3,0);
+end;
+
 procedure updateSONG(indPos:boolean);
 var
 	i,chn,scrOfs,songOfs,_line,_pos:byte;

@@ -81,36 +81,27 @@ begin
 	_pos:=cursorShift+cursorPos;
 	_note:=TAB_notes[_pos];
 	_fnsfx:=TAB_fnSFX[_pos];
-	if (_fnsfx and $c0=$00) then
-		opt:=6				// note - default option is Back
+	if _fnsfx<TABFn_jump then
+		opt:=2
 	else
-		if (_fnsfx and $c0=$40) then
-			opt:=3			// frequency value
+		if _fnsfx<=TABFn_repeatMax then
+			opt:=1
 		else
-			if (_fnsfx and $40=$40) then
-			begin
-				if (_note and $80=TABFn_noteOff_param) then
-					opt:=4	// note off
-				else
-					opt:=5;	// blank
-			end
+			if _note=$FF then
+				opt:=0
 			else
-			begin
-				if _fnsfx and $3f=0 then
-					opt:=1	// jump to
+				if _note=$80 then
+					opt:=3
 				else
-					opt:=2;	// repeat
-			end;
+					opt:=4;
 
-	if (_fnsfx=TABFn_end) and (_note=TABFn_end_param) then
-		opt:=0;			// end-tab
 
 	if optionsList(menu_tab_edit,width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down) then
 	begin
 		case opt of
-			0: TABPutIn(_pos,TABFN_end_param,TABFN_end);// setEndTab();
-			4: TABPutIn(_pos,TABFn_noteOff_param,TABFn_noteOff);// setNoteOff();
-			5: TABPutIn(_pos,TABFn_blank_param,TABFn_blank);// setBlank();
+			0: TABPutIn(_pos,TABFN_end_param,TABFN_end);				// TAB-END
+			3: TABPutIn(_pos,TABFn_noteOff_param,TABFn_noteOff);	// NOTE OFF
+			4: TABPutIn(_pos,TABFn_blank_param,TABFn_blank);		// blank
 		end;
 		clearWorkarea();
 		updateTAB(true);
@@ -121,9 +112,9 @@ begin
 		clearStatusBar();
 		fillchar(@screen[49+vadr[cursorPos]],6,0);
 		case opt of
-			1: editJumpTo(_note);
-			2: editRepeat(_fnsfx,_note);
-			3: editNoteValue(_note);
+//			1: editJumpTo(_note);
+			1: editRepeat(_fnsfx,_note);
+			2: editNoteValue(_note);
 		end;
 		clearStatusBar();
 		result:=false;

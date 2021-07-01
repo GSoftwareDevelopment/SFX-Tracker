@@ -73,28 +73,30 @@ function dataList(var listPtr:wordArray; currentItem,maxItems,itemSize:byte):sho
 var
 	i,ch:byte;
 	adr,ofs:word;
+	tptr:pointer;
 
 begin
 	ofs:=0; itemSize:=itemSize+1;
-	fillchar(@listBuf,maxItems*itemSize,0);
+	clearListBuf();
 	for i:=0 to maxItems-1 do
 	begin
 		adr:=listPtr[i];
 		if (adr<>$ffff) then
 		begin
-			conv2internalP2P(@_mem[adr],@listBuf[ofs],itemSize);
+			tptr:=@_mem[adr];
 			ch:=$0a;
 		end
 		else
 		begin
-			conv2internalP2P(resptr[str_notDefined],@listBuf[ofs],itemSize);
+			tptr:=resptr[str_notDefined];
 			ch:=$00;
 		end;
-		ofs:=ofs+itemSize-1;
-		listBuf[ofs]:=ch; ofs:=ofs+1;
+		conv2internalP2P(tptr,@listBuf[ofs],itemSize);
+		ofs:=ofs+itemSize;
+		listBuf[ofs-1]:=ch;
 	end;
-	move(@screen[20],@tmpbuf,200);
+	move(@moduleBar,@tmpbuf,200);
 	box(0,2,20,9,$40);
 	result:=listChoice(1,2,itemSize,9,currentItem,listBuf,maxItems,true);
-	move(@tmpbuf,@screen[20],200);
+	move(@tmpbuf,@moduleBar,200);
 end;

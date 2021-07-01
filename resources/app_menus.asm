@@ -110,14 +110,13 @@ val_menu_beatStep
 					dta 255
 menu_tab_edit
 					dta  44,d'END TAB',255			; flag indicating the end of a TAB definition
-					dta  64,d'JUMP TO',255			; marker for absolute jump to line in current TAB
-					dta  84,d'REPEAT',255			; marker that defines a repeat n times from the pos position.
-					dta 104,d'NOTE VALUE',255		; flag specifying the value of the frequency divider for the played SFX
+					dta  64,d'REPEAT',255			; marker that defines a repeat n times from the pos position.
+					dta  84,d'NOTE VALUE',255		; flag specifying the value of the frequency divider for the played SFX
 															; (direct value to the POKEY register, not from the note table)
-					dta 124,d'NOTE OFF',255			; turn off note
-					dta 144,d'NOP',255				; blank entry - no operation
-					dta 164,d'BACK >',255			; back to TAB edit
-					dta 184,d'< EXIT',255			; back to TAB menu bar
+					dta 104,d'NOTE OFF',255			; turn off note
+					dta 124,d'NOP',255				; blank entry - no operation
+					dta 144,d'BACK >',255			; back to TAB edit
+					dta 164,d'< EXIT',255			; back to TAB menu bar
 					dta 255
 
 menu_GSD
