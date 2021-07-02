@@ -17,21 +17,17 @@ msg_IO_writing
 msg_IO_skipping
 					dta 220,d'SKIPPING...',255,255			; IO message for skipping - ony IO->DIR when page is changing
 msg_IO_Quit
-					dta 42,07,d'ARE YOU LEAVE?',06,255,255	; quit ask message
-but_IO_Quit
+					dta 23,d'ARE YOU LEAVE?',255,255	; quit ask message
+but_YesNo
+					dta 42,07,d'NO',255
 					dta 62,07,d'YES',255
-					dta 82,07,d'NO',255
 					dta 255
 msg_Theme_Overwrite
-					dta 44,07,d'OVERWRITE?',06,255
+					dta 25,d'OVERWRITE?',255
 					dta 142,d'THIS ACTION WILL',255
 					dta 163,d'OVERWRITE FILE',255
 					dta 184,d'DEFAULTH.EME',255
 					dta 202,d'ON THE DISKETTE!',255
-					dta 255
-but_Theme_Overwrite
-					dta 64,07,d'YES',255
-					dta 84,07,d'NO',255
 					dta 255
 msg_UnknownDefinition
 					;         01234567890123456789
@@ -60,3 +56,6 @@ msg_pianoTuneInfo
 					dta 44,d'OCTAVE',255
 					dta 54,d'012345',255
 					dta 255
+msg_newPrompt
+					;        12345678901234567890
+					dta 23,d'ARE YOU SURE?',255,255

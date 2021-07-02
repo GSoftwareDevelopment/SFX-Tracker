@@ -117,3 +117,9 @@ begin
 	SFX_End();
 	halt;
 end;
+
+function msgYesNo(msgID:byte):shortint;
+begin
+	fillchar(@moduleBar,20,$40);
+	result:=messageBox(msgID,color_choice,but_YesNo,16,2,0,key_Up,key_Down);
+end;

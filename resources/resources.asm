@@ -58,19 +58,20 @@ data_pointers_list
 	dta a(msg_IO_writing)		;42
 	dta a(msg_IO_skipping)		;43
 	dta a(msg_IO_Quit)			;44
-	dta a(but_IO_Quit)			;45
+	dta a(but_YesNo)				;45
 	dta a(msg_Theme_Overwrite)	;46
-	dta a(but_Theme_Overwrite)	;47
-	dta a(msg_UnknownDefinition);48
-	dta a(msg_SFX_ValuePrompt) ;49
-	dta a(msg_TAB_JumpToPrompt);50
-	dta a(msg_TAB_RepeatPrompt);51
-	dta a(msg_TAB_FreqPrompt)	;52
-	dta a(msg_TAB_SFXIdPrompt)	;53
-	dta a(msg_BeatStepPrompt)	;54
-	dta a(msg_SetTempoPrompt)	;55
-	dta a(msg_pianoTuneInfo)	;56
+	dta a(msg_UnknownDefinition);47
+	dta a(msg_SFX_ValuePrompt) ;48
+	dta a(msg_TAB_JumpToPrompt);49
+	dta a(msg_TAB_RepeatPrompt);50
+	dta a(msg_TAB_FreqPrompt)	;51
+	dta a(msg_TAB_SFXIdPrompt)	;52
+	dta a(msg_BeatStepPrompt)	;53
+	dta a(msg_SetTempoPrompt)	;54
+	dta a(msg_pianoTuneInfo)	;55
+	dta a(msg_newPrompt)			;56
 
+;app raw data
 	dta a(app_logo)				;57
 	dta a(app_virtual_piano)	;58
 

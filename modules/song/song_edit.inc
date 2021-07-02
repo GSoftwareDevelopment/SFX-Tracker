@@ -106,11 +106,11 @@ begin
 												storeInSONGTab(nTAB);
 										end;
 				key_CTRL_INSERT: begin
-											move(@SONGData[SONGRow],@SONGData[SONGRow+4],256-SONGRow);
+											move(@SONGData[SONGRow],@SONGData[SONGRow+4],252-SONGRow);
 											clearRow();
 										end;
 				key_CTRL_DELETE: begin
-											move(@SONGData[SONGRow+4],@SONGData[SONGRow],256-SONGRow);
+											move(@SONGData[SONGRow+4],@SONGData[SONGRow],252-SONGRow);
 											value:=SONGRow; SONGRow:=252;
 											clearRow();
 											SONGRow:=value;
