@@ -1,7 +1,7 @@
 ;
 ; Low Frequency Divider Modulator/Note Value Modulator
 LFD_NLM_mode
-         lda (sfxPtr),y          ; get modulate value
+         lda (dataPtr),y          ; get modulate value
          sta chnModVal           ; store in loop register
          bne decode_LFD_NLM      ; check modulation value
          jmp modMode_notDefined  ; if =0, means no modulation

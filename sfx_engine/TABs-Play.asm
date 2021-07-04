@@ -1,7 +1,7 @@
 ; TAB - PLAY NOTE
          sty _regTemp                           ; store current TAB offset
 
-; get note freq value
+; get SFX settings
          and #%00111111                         ; extract SFX Id from Order
          tay												; transfer SFX Id to Y register
          lda SFX_MODE_SET_ADDR,y                ; get modulator mode for SFX
@@ -59,13 +59,13 @@ TAB_FN_Note
          sta SFX_CHANNELS_ADDR+_chnNote,x
 .endif
 
-self_TABnoteAddr  lda NOTE_TABLE_ADDR,y         ; get note frequency value
+self_TABnoteAddr  lda NOTE_TABLE_ADDR,y         ; get note frequency value from SFX Note Table
          jmp TAB_FN_setFreq
 
 TAB_FN_Freq
-         lda TABNote
+         lda TABNote										; get note frequency from TAB row
 TAB_FN_setFreq
-         sta SFX_CHANNELS_ADDR+_chnFreq,x
+         sta SFX_CHANNELS_ADDR+_chnFreq,x			; store frequency in current channels register
          ldy _regTemp                           ; restore current TAB Offset
 
          jmp next_player_tick

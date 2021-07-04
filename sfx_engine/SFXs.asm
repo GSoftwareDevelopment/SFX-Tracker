@@ -55,9 +55,9 @@ restore_offset_and_continue_fetch
 
 continue_fetch
          lda SFX_CHANNELS_ADDR+_sfxPtrLo,x   ; get SFX pointer
-         sta sfxPtr
+         sta dataPtr
          lda SFX_CHANNELS_ADDR+_sfxPtrHi,x
-         sta sfxPtr+1
+         sta dataPtr+1
 
          lda SFX_CHANNELS_ADDR+_chnNote,x    ; get SFX note
          sta chnNote
@@ -82,14 +82,14 @@ setPokey
 .ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
          lda chnFreq
          sta AUDIOBUF,x
-         lda (sfxPtr),y
+         lda (dataPtr),y
          sta AUDIOBUF+1,x
 .else
 ; get current frequency
          lda chnFreq
          sta audf,x                          ; store direct to POKEY register
 ; get current distortion & volume
-         lda (sfxPtr),y                      ; get SFX distortion & volume definition
+         lda (dataPtr),y                     ; get SFX distortion & volume definition
          sta audc,x                          ; store direct to POKEY register
 .endif
 
@@ -101,6 +101,9 @@ setPokey
 
 next_SFX_Set
          iny                                 ; increase SFX offset
+			bne SFX_Set_Offset						; check if SFX is wrap
+			ldy #SFX_OFF								; set SFX to not play
+
 SFX_Set_Offset
          tya                                 ; tranfer current SFX offset to A register
          sta SFX_CHANNELS_ADDR+_chnOfs,x     ; store SFX offset in channel register

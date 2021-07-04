@@ -1,7 +1,7 @@
-TAB_Function
+check_TAB_Function
 ; current order is in A register
          cmp #$FF											; check TABEND function
-         bne TAB_not_end
+         bne check_TAB_Fn_REPEAT
 TAB_FN_TABEnd
 ; in X reg - current channel offset
 
@@ -10,7 +10,7 @@ TAB_FN_TABEnd
          ldy #00											; set current TAB offset at the begining (zero)
          jmp fetch_TAB_row
 
-TAB_not_end
+check_TAB_Fn_REPEAT
          cmp #$C0                               ; check REPEAT function
          beq TAB_FN_Blank_NoteOff
 
@@ -33,7 +33,7 @@ TAB_FN_ContinueLoop
 ; end of loop
 
          bne fetch_next_tab_row
-         jmp TRACK_process                      ; if TAB offset is wrap, process TRACK step
+         jmp SONG_process                      ; if TAB offset is wrap, process TRACK step
 
 fetch_next_tab_row
          jmp fetch_TAB_ROW                      ; fetch next TAB row

@@ -10,19 +10,19 @@ check_TAB_offset
 
 fetch_TAB_pointer
          lda SFX_CHANNELS_ADDR+_tabPtrLo,x      ; get TAB pointer
-         sta TABPtr
+         sta dataPtr
          lda SFX_CHANNELS_ADDR+_tabPtrHi,x
-         sta TABPtr+1
+         sta dataPtr+1
 
 fetch_TAB_row
-         lda (TABPtr),y                         ; get current TAB Note
+         lda (dataPtr),y                         ; get current TAB Note
          sta TABNote
          iny                                    ; shift TAB Offset to order value
-         lda (TABPtr),y                         ; get current TAB Order
+         lda (dataPtr),y                         ; get current TAB Order
          sta TABOrder
 
 ; Current TAB Order check
-         bmi TAB_Function                       ; check for function (7th bit indicates the function)
+         bmi check_TAB_Function                       ; check for function (7th bit indicates the function)
 
          icl 'TABs-Play.asm'
          icl 'TABs-Func.asm'
@@ -30,7 +30,7 @@ fetch_TAB_row
 next_player_tick
          iny
          bne store_TAB_offset                   ; if TAB offset is wrap?
-			jmp TRACK_process								; process TRACK step
+			jmp SONG_process								; process TRACK step
 
 store_TAB_offset
          tya

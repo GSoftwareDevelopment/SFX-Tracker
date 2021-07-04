@@ -3,7 +3,7 @@
 ; only for compatibility with the original SFX engine
 
 HFD_MODE
-         lda (sfxPtr),y          ; get modulate value
+         lda (dataPtr),y          ; get modulate value
          sta chnModVal
          bne decode_HFD          ; check modulation
          jmp modMode_notDefined  ; if 0, means no modulation

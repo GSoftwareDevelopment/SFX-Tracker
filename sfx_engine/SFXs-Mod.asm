@@ -34,7 +34,7 @@ check_DFD_Mod
 
 ;
 ; DFD - Direct Frequency Divider
-         lda (sfxPtr),y                      ; get MOD/VAL as frequency divider
+         lda (dataPtr),y                      ; get MOD/VAL as frequency divider
          jmp setChannelFreq
 
          ; In this modulation mode, given that the frequency is placed in the MOD/VAL value,

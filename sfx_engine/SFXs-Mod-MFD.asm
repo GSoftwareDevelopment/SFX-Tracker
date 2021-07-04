@@ -2,7 +2,7 @@
 ; MFD - Medium Frequency Divider Modulator
 
 MFD_mode
-         lda (sfxPtr),y          ; get modulate value
+         lda (dataPtr),y          ; get modulate value
          sta chnModVal
          bne decode_MFD          ; check modulation
          jmp modMode_notDefined  ; if 0, means no modulation
