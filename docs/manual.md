@@ -728,7 +728,7 @@ $D800
 
 | typ zmiennej | odwołanie do stałej |      |
 | ------------ | ------------------- | ---- |
-| byteArray    | SONG_ADDR           |      |
+| byteArray    | SONG_ADDR           | RW   |
 
 Tabela utworu SONG
 
@@ -736,7 +736,7 @@ Tabela utworu SONG
 
 | typ zmiennej | odwołanie do stałej |      |
 | ------------ | ------------------- | ---- |
-| byteArray    | SFX_MODE_SET_ADDR   |      |
+| byteArray    | SFX_MODE_SET_ADDR   | RW   |
 
 Tablica wskazująca na typ modulacji użyty w SFXach
 
@@ -744,37 +744,33 @@ Tablica wskazująca na typ modulacji użyty w SFXach
 
 | typ zmiennej | odwołanie do stałej |      |
 | ------------ | ------------------- | ---- |
-| byteArray    | SFX_NOTE_SET_ADDR   |      |
+| byteArray    | SFX_NOTE_SET_ADDR   | RW   |
 
 ##### `SFXPtr`
 
 | typ zmiennej | odwołanie do stałej |      |
 | ------------ | ------------------- | ---- |
-| wordArray    | SFX_TABLE_ADDR      |      |
+| wordArray    | SFX_TABLE_ADDR      | RW   |
 
-Tablica wskaźników definicji SFX.
+Tablica wskaźników definicji SFX zawierająca adresy <u>bezwzględne</u>.
 
-Wskaźniki te mogą być wartościami względnymi do `DATA_ADDRESS` 
-
-Dla tablicy wskazujących na konkretny adres w pamięci RAM, należy pamiętać, aby ustawić dyrektywę `DONT_CALC_ABS_ADDR`  Więcej w sekcji [Dyrektywa DONT_CALC_ABS_ADDR i DONT_CALC_SFX_NAMES](#dont-calc-abs-addr-&-dont-calc-sfx-names))
+Przed zmianą należy wyłączyć pracę silnika funkcją ``SFX_Off`` lub ``SFX_End``
 
 ##### `TABPtr`
 
 | typ zmiennej | odwołanie do stałej |      |
 | ------------ | ------------------- | ---- |
-| wordArray    | TAB_TABLE_ADDR      |      |
+| wordArray    | TAB_TABLE_ADDR      | RW   |
 
-Tablica wskaźników definicji TAB
+Tablica wskaźników definicji TAB zawierająca adres <u>bezwzględne</u>.
 
-Wskaźniki te mogą być wartościami względnymi do `DATA_ADDRESS` 
+Przed zmianą należy wyłączyć pracę silnika funkcją ``SFX_Off`` lub ``SFX_End``
 
-Dla tablicy wskazujących na konkretny adres w pamięci RAM, należy pamiętać, aby ustawić dyrektywę `DONT_CALC_ABS_ADDR`  Więcej w sekcji [Dyrektywa DONT_CALC_ABS_ADDR i DONT_CALC_SFX_NAMES](#dont-calc-abs-addr-&-dont-calc-sfx-names))
-
-##### `song_lpb`
+##### `song_tempo`
 
 | typ zmiennej | odwołanie do stałej |      |
 | ------------ | ------------------- | ---- |
-| byte         | SFX_REGISTERS+$00   |      |
+| byte         | SFX_REGISTERS+$00   | RW   |
 
 Zmienna określająca ilość __tików__ przypadających na jeden wiersz definicji TABa. Innymi słowy, reguluje prędkość odtwarzania TABa jak i utworu SONG.
 
@@ -792,7 +788,7 @@ Zmienna tylko do odczytu zawierająca **tik** odtwarzania TAB/SONG. Jest ona ust
 
 | typ zmiennej         | odwołanie do stałej |      |
 | -------------------- | ------------------- | ---- |
-| array[0..63] of byte | SFX_CHANNELS_ADDR   |      |
+| array[0..63] of byte | SFX_CHANNELS_ADDR   | RW   |
 
 Tablica rejestrów kanałów. Na każdy kanał przypada 16 bajtów informacji (patrz [Rejestry kanałów](#rejestry-kanałów))
 
@@ -800,7 +796,7 @@ Tablica rejestrów kanałów. Na każdy kanał przypada 16 bajtów informacji (p
 
 | typ zmiennej | odwołanie do stałej |      |
 | ------------ | ------------------- | ---- |
-| byte         | -                   |      |
+| byte         | -                   | RW   |
 
 Zmienna wykorzystywana w procedurze `SFX_Note`. 
 
@@ -846,13 +842,13 @@ Ta procedura jest "odpalana" też przy wyłączaniu silnika SFX (procedura `SFX_
 
 `SFXId` - Index SFX (numer definicji SFX)
 
-Odtwarza wybrany SFX w podanym kanale z częstotliwością podanej nuty.
+Odtwarza wybrany SFX w podanym kanale z częstotliwością podanej nuty. Dzielnik częstotliwości nuty pobierany jest z tablicy nut jaka jest przypisana do SFX lub za pośrednictwem zmiennej ``currentNoteTableOfs`` o ile ta jest ustawiona na wartość inną niż $FF
 
 ##### `SFX_Freq`
 
 `SFX_Freq(channel,freq,SFXId:byte);`
 
-Procedura podobna w działaniu do `SFX_Note` z tą różnicą, że ustawia zadaną częstotliwość (dzielnik częstotliwości)
+Procedura podobna w działaniu do `SFX_Note` z tą różnicą, że ustawia zadaną częstotliwość (dzielnik częstotliwości) dla odtwarzanego SFXa.
 
 ##### `SFX_SetTAB`
 
@@ -868,7 +864,7 @@ Wartość `TABId` powyżej 64 powoduje wyłączenie odtwarzania w danym kanale.
 
 `SFX_PlayTAB(channel,TABId:byte);`
 
-Działanie procedury jest podobne do `SFX_SetTAB` z tą różnicą, że włącza odtwarzanie.
+Działanie procedury jest podobne do `SFX_SetTAB` z tą różnicą, że włącza odtwarzanie jego zawartości.
 
 ##### `SFX_PlaySong`
 
@@ -900,25 +896,9 @@ Dodatkowe informacje umieszczane są w rejestrach kanałów pod offsetami 6 oraz
 
 Brak obecności tej etykiety, zwalnia dwa bajty ze strony zerowej z użytku przez silnik SFX.
 
-##### `DONT_CALC_ABS_ADDR` & `DONT_CALC_SFX_NAMES`
+##### ~~`DONT_CALC_ABS_ADDR` & `DONT_CALC_SFX_NAMES`~~
 
-Użycie tych etykiet wyłącza przeliczanie adresów względnych na absolutne w silniku SFX.
-
-Przeliczanie to odbywa się przez zsumowanie następujących wartości:
-
-- adres względny definicji (SFX/TAB)
-- długość nazwy dla definicji. W przypadku SFX wartość ta wynosi 14 bajtów, dla TAB jest ona równa 8.
-- adres bazowy definicji. Jest on określany stałą DATA_ADDR
-
-Właściwy (absolutny) adres można przedstawić wzorami:
-$$
-SFX_{addr}=DATA_{addr}+SFX_{ptr}+SFX_{namelength}
-$$
-
-
-$$
-TAB_{addr}=DATA_{addr}+TAB_{ptr}+SFX_{namelength}
-$$
+Opcja wycofana.
 
 ##### `SFX_SYNCAUDIOOUT`
 
@@ -990,16 +970,17 @@ Długość definicji zawarta jest w 6 młodszych bitach definicji rodzaju modula
 | numer SFXa                | sfxid     | 1            | od 0 do 63     |                                                              |
 | rodzaj modulacji MOD MODE | modMode   | 1            | od 0 do 3      |                                                              |
 | tablica nut               | noteTabId | 1            | od 0 do 3      |                                                              |
-| ilość danych              | len       | 2            |                |                                                              |
+| ilość danych              | len       | 2            |                | wraz z nazwą definicji                                       |
 | dane                      | data      | len          |                | dane zawierają również nazwę SFXa, na którą przypada zawsze 14 bajtów. |
 
 ### Sekcja Tablicy nut
 
-| Nazwa       |           | ilość bajtów |   wartość    | opis |
-| :---------- | --------- | :----------: | :----------: | ---- |
-| nagłówek    | header    |      5       | `$00,'NOTE'` |      |
-| tablica nut | noteTabId |      1       |  od 0 do 3   |      |
-| dane        | data      |      64      |              |      |
+| Nazwa          |           | ilość bajtów |   wartość    | opis |
+| :------------- | --------- | :----------: | :----------: | ---- |
+| nagłówek       | header    |      5       | `$00,'NOTE'` |      |
+| ID tablicy nut | noteTabId |      1       |  od 0 do 3   |      |
+| nazwa          | name      |      16      |              |      |
+| dane           | data      |      64      |              |      |
 
 ### Sekcja definicji TAB
 
@@ -1007,7 +988,7 @@ Długość definicji zawarta jest w 6 młodszych bitach definicji rodzaju modula
 | :----------- | ------ | :----------: | :-------------: | ------------------------------------------------------------ |
 | nagłówek     | header |      5       | `$00,$00,'SFX'` |                                                              |
 | numer TABa   | tabId  |      1       |   od 0 do 63    |                                                              |
-| ilość danych | len    |      2       |                 |                                                              |
+| ilość danych | len    |      2       |                 | wraz z nazwą definicji                                       |
 | dane         | data   |     len      |                 | zawierają także nazwę TABa na którą przypada zawsze 8 bajtów |
 
 ### Sekcja definicji SONG

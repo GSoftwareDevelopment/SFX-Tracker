@@ -151,14 +151,7 @@ begin
 		NoteTabOfs:=currentNoteTableOfs;
 	note_val:=pointer(NOTE_TABLE_ADDR+NoteTabOfs);
 
-{$ifndef DONT_CALC_ABS_ADDR}
-   SFXAddr:=SFXPtr[SFXId]+DATA_ADDR;
-{$ifndef DONT_CALC_SFX_NAMES}
-   SFXAddr:=SFXAddr+14; // skip first 14 bytes - length of SFX name
-{$endif}
-{$else}
    SFXAddr:=SFXPtr[SFXId];
-{$endif}
 
    __cOfs:=channel*$10;
 
@@ -178,14 +171,7 @@ var
    note,i:byte;
 
 begin
-{$ifndef DONT_CALC_ABS_ADDR}
-   SFXAddr:=SFXPtr[SFXId]+DATA_ADDR;
-{$ifndef DONT_CALC_SFX_NAMES}
-   SFXAddr:=SFXAddr+14; // skip first 14 bytes - length of SFX name
-{$endif}
-{$else}
    SFXAddr:=SFXPtr[SFXId];
-{$endif}
 
    __cOfs:=channel*$10;
 
@@ -207,16 +193,7 @@ var
 
 begin
 	if TABId<64 then
-	begin
-{$ifndef DONT_CALC_ABS_ADDR}
-   TABAddr:=TABPtr[TABId]+DATA_ADDR;
-{$ifndef DONT_CALC_SFX_NAMES}
-   TABAddr:=TABAddr+8; // skip first 8 bytes - length of TAB name
-{$endif}
-{$else}
-   TABAddr:=TABPtr[TABId];
-{$endif}
-	end
+		TABAddr:=TABPtr[TABId]
 	else
 	  TABAddr:=$FFFF;
 

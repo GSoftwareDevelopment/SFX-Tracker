@@ -10,7 +10,7 @@ begin
 	statusBar[0]:=$03;
 	putValue(1,11,nTAB,2,0);
 	statusBar[3]:=$1a;
-	conv2internalP2P(@_mem[addr],@statusBar[4],TABNameLength);
+	conv2internalP2P(pointer(addr-TABNameLength),@statusBar[4],TABNameLength);
 	getTABData(nTAB);
 	TABDetermineLength();
 	putValue(17,11,TABRealLen,3,0);

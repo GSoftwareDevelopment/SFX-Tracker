@@ -1,10 +1,10 @@
 procedure IO_clearAllData();
 begin
 	// Clear HEAP
-	HEAP_TOP:=0;
-	fillchar(@_mem,HEAP_MEMORY_SIZE,$FF);
-	fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF);
-	fillchar(@HEAP_PTR,256,$FF); // This will also delete the indicators for SFX and TABs
+	HEAP_TOP:=HEAP_MEMORY_ADDR; // reset heap start address
+	fillchar(pointer(HEAP_MEMORY_ADDR),HEAP_MEMORY_SIZE,$FF); // clear heap memory
+	fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF); // clear heap sizes table
+	fillchar(@HEAP_PTR,256,$FF); // This will also delete the indicators for SFXs and TABs
 
 	// Clear other data
 	fillchar(@SFXNoteSetOfs,maxSFXs,0);

@@ -57,32 +57,10 @@ set_TABId_in_Track
 			tax
 
 ; in the X register is an TAB ID offset of the TAB definition array
-.ifndef DONT_CALC_ABS_ADDR
-; calulate absolute address for TAB definition
-         lda TAB_TABLE_ADDR,x                  ; take low part of tab Pointer
-         clc
-         adc #<DATA_ADDR
-         sta dataPtr
-         lda TAB_TABLE_ADDR+1,x
-         adc #>DATA_ADDR
-         sta dataPtr+1
-
-.ifndef DONT_CALC_SFX_NAMES
-			lda dataPtr
-			clc
-         adc #TAB_NameLength                    ; incrase about TAB name length
-         sta dataPtr
-         bcc no_TAB_overflow
-         inc dataPtr+1
-no_TAB_overflow
-.endif
-
-.else
 			lda TAB_TABLE_ADDR,x						; get TAB Offset definition
 			sta dataPtr
 			lda TAB_TABLE_ADDR+1,x
 			sta dataPtr+1
-.endif
 
 			ldx _regTemp2	; restore channel register offset
 

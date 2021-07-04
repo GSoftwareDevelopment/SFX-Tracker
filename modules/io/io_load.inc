@@ -88,8 +88,8 @@ var
 		if IOErr>3 then exit;
 
 		dataAddr:=HEAP_TOP;
-		HEAP_PTR[id]:=dataAddr;
-		move(@IOBuf,@_mem[dataAddr],dataSize);			// store name and data from IO buffer to HEAP
+		HEAP_PTR[id]:=dataAddr+nameLength;	// pointer must indicate to definition (without name)
+		move(@IOBuf,pointer(dataAddr),dataSize);			// store name and data from IO buffer to HEAP
 		HEAP_TOP:=HEAP_TOP+dataSize;
 
 		// store data size in heap_sizes table

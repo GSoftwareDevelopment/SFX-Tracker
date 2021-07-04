@@ -16,10 +16,10 @@ begin
 		push2IOBuf(@noteTabId,1);
 	end;
 
-	dataAddr:=HEAP_PTR[id];	// get data address
-	dataSize:=_heap_sizes[id];
+	dataAddr:=HEAP_PTR[id]-nameLength;	// get data address with name
+	dataSize:=_heap_sizes[id]; // data length with name
 	push2IOBuf(@dataSize,2);
-	push2IOBuf(@_mem[dataAddr],dataSize);
+	push2IOBuf(pointer(dataAddr),dataSize);
 
 // write to disk
 	result:=putIOBuf;

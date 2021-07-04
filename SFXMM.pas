@@ -29,8 +29,7 @@ var
 
 // heap
 
-	HEAP_TOP:word; // memory occupied by heap
-	_mem:array[0..0] of byte absolute HEAP_MEMORY_ADDR;
+	HEAP_TOP:word;
 	HEAP_PTR:array[0..0] of word absolute HEAP_PTRLIST_ADDR;
 	_heap_sizes:array[0..0] of word absolute HEAP_SIZES_ADDR;
 

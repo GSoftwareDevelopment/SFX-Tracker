@@ -15,32 +15,11 @@
          asl @                                  ; multiply SFX Id by 2 to get offset in SFXPtr offset table
          tay
 
-; get SFX pointer offset from SFXPtr table and set in current channel
-.ifndef DONT_CALC_ABS_ADDR
-         lda SFX_TABLE_ADDR,y                   ; take low part of SFX Pointer
-         clc
-         adc #<DATA_ADDR
-         sta SFX_CHANNELS_ADDR+_SFXPtrLo,x
-         lda SFX_TABLE_ADDR+1,y
-         adc #>DATA_ADDR
-         sta SFX_CHANNELS_ADDR+_SFXPtrHi,x
-
-.ifndef DONT_CALC_SFX_NAMES
-			lda SFX_CHANNELS_ADDR+_SFXPtrLo,x
-			clc
-         adc #SFX_NameLength                    ; incrase about SFX name length
-         sta SFX_CHANNELS_ADDR+_SFXPtrLo,X
-         bcc no_SFX_overflow
-         inc SFX_CHANNELS_ADDR+_SFXPtrHi,x
-no_SFX_overflow
-.endif
-
-.else
+; get SFX pointer from SFXPtr table and set in current channel
          lda SFX_TABLE_ADDR,y
          sta SFX_CHANNELS_ADDR+_SFXPtrLo,x
          lda SFX_TABLE_ADDR+1,y
          sta SFX_CHANNELS_ADDR+_SFXPtrHi,x
-.endif
 
          lda #$00                               ; reset current SFX offset to the beginig of definition
          sta SFX_CHANNELS_ADDR+_chnOfs,x

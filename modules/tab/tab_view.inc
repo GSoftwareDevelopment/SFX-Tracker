@@ -17,7 +17,7 @@ begin
 	clearStatusBar();
 	addr:=SFXPtr[currentSFX];
 	if (addr<$ffff) then
-		tptr:=@_mem[addr]
+		tptr:=pointer(addr-SFXNameLength)
 	else
 		tptr:=resptr[str_notDefined];
 	conv2internalP2P(tptr,@statusBar[4],SFXNameLength);
@@ -35,7 +35,7 @@ var
 	realPos,addr:word;
 
 begin
-	scrOfs:=44; //vadr[winYStart]+winXStart;
+	scrOfs:=44;
 	if song_beat>1 then
 		_beat:=cursorShift mod song_beat;
 
@@ -58,8 +58,8 @@ begin
 				if SFXModMode[_fnsfx]=3 then
 				begin
 					scrOfs:=scrOfs-1;
-					addr:=SFXPtr[_fnsfx];
-					conv2internalP2P(@_mem[addr],@screen[scrOfs],8);
+					addr:=SFXPtr[_fnsfx]-SFXNameLength;
+					conv2internalP2P(pointer(addr),@screen[scrOfs],8);
 					scrOfs:=scrOfs+9;
 				end
 				else

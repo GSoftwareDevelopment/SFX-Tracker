@@ -1,12 +1,13 @@
 procedure heap_getData(addr,size:word; nameLength:byte; var name:string);
 begin
-	move(@_mem[addr],@name[1],nameLength);	// get name...
-	addr:=addr+nameLength; // move addr to begining of data set
-	// ... and determine its length
+	// get data name
+	move(pointer(addr-nameLength),@name[1],nameLength);
+	// and determine its length
 	while (nameLength>0) and (name[nameLength]=#0) do nameLength:=nameLength-1;
 	name[0]:=char(nameLength); // store detected name length
 
-	move(@_mem[addr],@tmpbuf,size);
+	// get data definition
+	move(pointer(addr),@tmpbuf,size);
 end;
 
 function heap_putData(size:word; nameLength:byte; var name:string):word;
@@ -14,16 +15,17 @@ var
 	addr:word;
 
 begin
-	addr:=HEAP_TOP; result:=addr;
-	//store name of TAB
-	fillchar(@_mem[addr],nameLength,0);
-	move(@name[1],@_mem[addr],length(name));
+	addr:=HEAP_TOP;
+	// store data name
+	fillchar(pointer(addr),nameLength,0);
+	move(@name[1],pointer(addr),length(name));
 
 	addr:=addr+nameLength; // incrase current heap address
+	result:=addr; // return definition address (without name)
 
-	// copy prepared data TAB to the heap
-	move(@tmpbuf,@_mem[addr],size);
-	HEAP_TOP:=HEAP_TOP+size+nameLength;
+	// copy prepared data to the heap
+	move(@tmpbuf,pointer(addr),size);
+	HEAP_TOP:=addr+size;
 end;
 
 procedure heap_release(addr,size:word);
@@ -36,7 +38,7 @@ begin
 		begin
 			for i:=0 to HEAP_ENTRIES-1 do
 				if (HEAP_PTR[I]<>$FFFF) and (HEAP_PTR[i]>=addr) then HEAP_PTR[i]:=HEAP_PTR[i]-size;
-			move(@_mem[addr+size],@_mem[addr],HEAP_TOP-(addr+size));
+			move(pointer(addr+size),pointer(addr),HEAP_TOP-(addr+size));
 		end;
 		HEAP_TOP:=HEAP_TOP-size;
 	end;
@@ -83,7 +85,7 @@ begin
 		adr:=listPtr[i];
 		if (adr<>$ffff) then
 		begin
-			tptr:=@_mem[adr];
+			tptr:=pointer(adr-itemSize+1);
 			ch:=$0a;
 		end
 		else
