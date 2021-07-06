@@ -101,7 +101,8 @@ sfx_engine_start
 
  .print "SFX-ENGINE START: ", *
 
-   icl 'sfx_engine/sfx_engine.asm'
+;   icl 'sfx_engine/sfx_engine.asm'
+	icl 'sfx_engine/sfx_engine_wo_include.asm'
 
  .print "SFX-ENGINE SIZE: ", *-sfx_engine_start
 
