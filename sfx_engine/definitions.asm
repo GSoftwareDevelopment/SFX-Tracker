@@ -12,24 +12,25 @@ audc        = $d201
 AUDIOBUF          = $E8      ; 8 bytes audio buffer for sync output
 .endif
 
-SONG_LPB          = $F0      ; SONG Line Per Beat
+SONG_TEMPO        = $F0      ; SONG Tempo
 SONG_TICK_COUNTER = $F1      ; SONG tick counter
+SONG_Ofs				= $F2		  ;
+SONG_Rep				= $F3		  ;
 
-dataPtr				= $F3		  ; SFX or TAB data pointer (2 bytes)
+dataPtr				= $F4		  ; SFX or TAB data pointer (2 bytes)
 
-TABNote           = $F6      ; TAB Note
 TABOrder          = $F7      ; TAB Order
+TABParam          = $F8      ; TAB Parameter (Note/Freq/Position)
 
-sfxNoteOfs        = $F5      ; SFX Note Table offset (1 byte)
-chnNote           = $F6      ; SFX Note
-chnFreq           = $F7      ; SFX Frequency
+sfxNoteOfs        = $F6      ; SFX Note Table offset (1 byte)
+chnNote           = $F7      ; SFX Note
+chnFreq           = $F8      ; SFX Frequency
 
-chnMode           = $F8      ; SFX Modulation Mode
-chnModVal         = $F9      ; SFX Modulator
-chnCtrl           = $FA      ; SFX Control (distortion & volume)
+chnMode           = $F9      ; SFX Modulation Mode
+chnModVal         = $FA      ; SFX Modulator
+chnCtrl           = $FB      ; SFX Control (distortion & volume)
 
-_regTemp          = $FB
-_regTemp2			= $FC
+_regTemp          = $FC
 
 
 ; CONSTANTS

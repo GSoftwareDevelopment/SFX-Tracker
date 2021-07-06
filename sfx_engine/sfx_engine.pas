@@ -29,6 +29,8 @@ var
 
    SONG_Tempo:byte absolute SFX_REGISTERS+$00;
    SONG_Tick:byte absolute SFX_REGISTERS+$01;
+	SONG_Ofs:byte absolute SFX_REGISTERS+$02;
+	SONG_RepCount:byte absolute SFX_REGISTERS+$03;
 
    channels:array[0..63] of byte absolute SFX_CHANNELS_ADDR;
 	currentNoteTableOfs:byte;
@@ -41,7 +43,7 @@ procedure SFX_Note(channel,note,SFXId:byte);
 procedure SFX_Freq(channel,freq,SFXId:byte);
 procedure SFX_SetTAB(channel,TABId:byte);
 procedure SFX_PlayTAB(channel,TABId:byte);
-procedure SFX_PlaySONG(startPos:byte);
+procedure SFX_PlaySONG(startPos,initTempo:byte);
 procedure SFX_End();
 
 implementation
@@ -67,27 +69,27 @@ begin
 	currentNoteTableOfs:=$FF;
 
    __cOfs:=0;
+   SONG_Ofs:=$FF;											// don't process SONG data
+
    repeat
-      channels[__cOfs+ _sfxPtrLo]:=$ff;   // SFX address lo
-      channels[__cOfs+ _sfxPtrHi]:=$ff;   // SFX address hi
-      channels[__cOfs+ _sfxNoteTabOfs]:=$00;  // SFX address lo
-      channels[__cOfs+ _chnOfs]:=$ff;  // SFX offset
-      channels[__cOfs+ _chnNote]:=$00; // SFX Note
-      channels[__cOfs+ _chnFreq]:=$00; // SFX frequency
-      channels[__cOfs+ _chnMode]:=$00; // SFX modulation Mode
+      channels[__cOfs+ _sfxPtrLo]:=$ff;			// SFX address lo
+      channels[__cOfs+ _sfxPtrHi]:=$ff; 			// SFX address hi
+      channels[__cOfs+ _sfxNoteTabOfs]:=$00;  	// SFX address lo
+      channels[__cOfs+ _chnOfs]:=$ff;  			// SFX offset
+      channels[__cOfs+ _chnNote]:=$00; 			// SFX Note
+      channels[__cOfs+ _chnFreq]:=$00; 			// SFX frequency
+      channels[__cOfs+ _chnMode]:=$00; 			// SFX modulation Mode
 
 {$IFDEF SFX_previewChannels}
-      channels[__cOfs+ _chnModVal]:=$00;  // SFX modulation Value
-      channels[__cOfs+ _chnCtrl]:=$00; // SFX distortion & volume
+      channels[__cOfs+ _chnModVal]:=$00;  		// SFX modulation Value
+      channels[__cOfs+ _chnCtrl]:=$00; 			// SFX distortion & volume
 {$ENDIF}
 
 {$IFDEF SFX_PLAYBACK}
-		channels[__cOfs+ _trackOfs]:=$ff;	// SONG Track offset
-
-      channels[__cOfs+ _tabPtrLo]:=$ff;   // TAB address lo
-      channels[__cOfs+ _tabPtrHi]:=$ff;   // TAB address hi
-      channels[__cOfs+ _tabOfs]:=$ff;  // TAB offset
-      channels[__cOfs+ _tabRep]:=$ff;  // TAB repeat counter
+      channels[__cOfs+ _tabPtrLo]:=$ff;   		// TAB address lo
+      channels[__cOfs+ _tabPtrHi]:=$ff;   		// TAB address hi
+      channels[__cOfs+ _tabOfs]:=$ff;  			// TAB offset
+      channels[__cOfs+ _tabRep]:=$ff;  			// TAB repeat counter
 {$ENDIF}
       __cOfs:=__cOfs+$10;
    until __cOfs=$40;
@@ -123,9 +125,7 @@ begin
    channels[__cOfs+ _chnOfs]:=$ff;		// SFX offset
 
 {$IFDEF SFX_PLAYBACK}
-	channels[__cOfs+ _trackOfs]:=$ff;	// SONG Track offset - don't process track information
-													//
-   channels[__cOfs+ _tabOfs]:=$ff;		// TAB offset
+   channels[__cOfs+ _tabOfs]:=$ff;		// disable TAB processing
 {$ENDIF}
 
    __cOfs:=1+channel*2;
@@ -135,6 +135,7 @@ end;
 procedure SFX_Off;
 begin
 	SONG_Tick:=$80;
+	SONG_Ofs:=$FF;
    for __chn:=0 to 3 do SFX_ChannelOff(__chn);
 end;
 
@@ -178,13 +179,13 @@ begin
    channels[__cOfs+ _sfxPtrLo]:=lo(SFXAddr);       // SFX address lo
    channels[__cOfs+ _sfxPtrHi]:=hi(SFXAddr);       // SFX address hi
    channels[__cOfs+ _sfxNoteTabOfs]:=$FF;          // SFX Note table address hi
-   channels[__cOfs+ _chnOfs]:=$00;                 // SFX offset
    note_val:=pointer(NOTE_TABLE_ADDR);
    for i:=0 to 63 do
       if freq<=note_val[i] then note:=i;
    channels[__cOfs+ _chnNote]:=note;               // SFX Note
    channels[__cOfs+ _chnFreq]:=freq;               // SFX frequency
    channels[__cOfs+ _chnMode]:=SFXModMode[SFXId];  // SFX modulation Mode
+   channels[__cOfs+ _chnOfs]:=$00;                 // SFX offset
 end;
 
 procedure SFX_SetTAB(channel,TABId:byte);
@@ -202,32 +203,31 @@ begin
    channels[__cOfs+ _tabPtrLo]:=lo(TABAddr);       // TAB address lo
    channels[__cOfs+ _tabPtrHi]:=hi(TABAddr);       // TAB address hi
    if TABAddr<$FFFF then
-   begin
-		channels[__cOfs+ _tabOfs]:=$00;              // TAB offset
-		channels[__cOfs+ _tabRep]:=$00;              // TAB repeat counter
-	end
+		TABId:=$00
 	else
-	begin
-		channels[__cOfs+ _tabOfs]:=$FF;              // TAB offset
-		channels[__cOfs+ _tabRep]:=$FF;              // TAB repeat counter
-	end;
+		TABId:=$FF;
+
+	channels[__cOfs+ _tabOfs]:=TABId;              // TAB offset
+	channels[__cOfs+ _tabRep]:=TABId;              // TAB repeat counter
 end;
 
 procedure SFX_PlayTAB(channel,TABId:byte);
 begin
+	SONG_Ofs:=$FF; // prevent SONG processing
 	SFX_SetTAB(channel,TABID);
    SONG_Tick:=$00;                                 // reset SONG tick counter - Play TAB
 end;
 
-procedure SFX_PlaySONG(startPos:byte);
+procedure SFX_PlaySONG;
 begin
 	SFX_Off();
    startPos:=startPos*4;
+   SONG_Ofs:=startPos;
+	SONG_Tempo:=initTempo;
 
 	for __chn:=0 to 3 do
 	begin
 		__cOfs:=__chn*$10;
-		channels[__cOfs+ _trackOfs]:=startPos;	// set SONG Track offset to startPos
 		SFX_SetTAB(__chn,SONGData[startPos]);
 		startPos:=startPos+1;
 	end;

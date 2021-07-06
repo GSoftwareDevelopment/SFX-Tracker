@@ -16,7 +16,7 @@ fetch_TAB_pointer
 
 fetch_TAB_row
          lda (dataPtr),y                         ; get current TAB Note
-         sta TABNote
+         sta TABParam
          iny                                    ; shift TAB Offset to order value
          lda (dataPtr),y                         ; get current TAB Order
          sta TABOrder
@@ -30,7 +30,7 @@ fetch_TAB_row
 next_player_tick
          iny
          bne store_TAB_offset                   ; if TAB offset is wrap?
-			jmp SONG_process								; process TRACK step
+			jmp TABFn_TAB_END								; process TRACK step
 
 store_TAB_offset
          tya

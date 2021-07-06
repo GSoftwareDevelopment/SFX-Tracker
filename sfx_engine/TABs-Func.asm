@@ -1,16 +1,21 @@
 check_TAB_Function
 ; current order is in A register
          cmp #$FF											; check TABEND function
-         bne check_TAB_Fn_REPEAT
-TAB_FN_TABEnd
-; in X reg - current channel offset
+         bne check_TABFn_REPEAT
 
-			icl 'SONG.asm'
+TABFn_TAB_END
 
-         ldy #00											; set current TAB offset at the begining (zero)
-         jmp fetch_TAB_row
+			lda SONG_Ofs    							; get current SONG offset
+			cmp #$FF										; If the offset points to a value other than $FF
+			beq play_TAB_again						;
 
-check_TAB_Fn_REPEAT
+			jmp SONG_process							; ...it means that SONG is played.
+
+play_TAB_again
+			ldy #0										; set TAB offset to begin
+			jmp fetch_TAB_row
+
+check_TABFn_REPEAT
          cmp #$C0                               ; check REPEAT function
          beq TAB_FN_Blank_NoteOff
 
@@ -43,13 +48,13 @@ TAB_FN_RepeatSet
          sta SFX_CHANNELS_ADDR+_tabRep,x
 
 TAB_FN_JumpTo
-         lda TABNote                            ; set jump position
+         lda TABParam                            ; set jump position
          asl @                                  ; multiply by 2 to get TAB offest
          tay                                    ; store in TAB offset register
          jmp fetch_TAB_row                      ; get new TAB line
 
 TAB_FN_Blank_NoteOff
-         lda TABNote                            ; get row value
+         lda TABParam                            ; get row value
          bpl TAB_FN_Blank                       ; check BLANK (positive value) or NOTE OFF (negative)
 
 TAB_FN_NoteOff
@@ -62,24 +67,7 @@ TAB_FN_NoteOff
          sta SFX_CHANNELS_ADDR+_chnCtrl,x
 .endif
 
-turn_off_Audio_channel
-         stx _regTemp
-         txa                                 ; transfer channel offset (X reg) to A reg
-         lsr @                               ; divide channel offset by 8
-         lsr @                               ; to calculate AUDIO offset
-         lsr @
-         tax                                 ; set AUDIO offset in X register
-
-         lda #$00                            ; silent Audio channel
-
-.ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
-         sta AUDIOBUF+1,x
-.else
-         sta audc,x                          ; store direct to POKEY register
-.endif
-
-         ldx _regTemp                        ; restore current channel offset
-
+			jsr turn_off_Audio_channel
          jmp next_player_tick
 
 TAB_FN_Blank

@@ -18,7 +18,7 @@
          dec SONG_TICK_COUNTER
          bpl dont_reset_tick_counter
 ; reset tick counter
-         lda SONG_LPB                           ; otherwise, set SONG_TICK as SONG_LPB
+         lda SONG_TEMPO                         ; otherwise, set SONG_TICK as SONG_TEMPO
          sta SONG_TICK_COUNTER
 .endif
 
@@ -70,3 +70,55 @@ audio_loop
          plr
          jmp xitvbl
          rts
+
+;
+; input: X register - channel offset from main loop (means, multiply by 8, means $00, $10, $20, $30)
+turn_off_Audio_channel
+         stx _regTemp
+         txa                                 ; transfer channel offset (X reg) to A reg
+         lsr @                               ; divide channel offset by 8
+         lsr @                               ; to calculate AUDIO offset
+         lsr @
+         tax                                 ; set AUDIO offset in X register
+
+         lda #$00                            ; silent Audio channel
+
+.ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
+         sta AUDIOBUF+1,x
+.else
+         sta audc,x                          ; store direct to POKEY register
+.endif
+
+         ldx _regTemp                        ; restore current channel offset
+         rts
+
+;
+; subroutine to process SONG entry
+
+			icl 'SONG.asm'
+
+;
+; subroutine for reset all tracks
+
+reset_all_tracks
+			ldx #$30
+
+reset_TRACKS
+			lda #$FF										; disable the playback...
+			sta SFX_CHANNELS_ADDR+_tabOfs,x		; ... of TABs
+         sta SFX_CHANNELS_ADDR+_chnOfs,x		; ... and SFXs
+
+.ifdef MAIN.@DEFINES.SFX_previewChannels
+			lda #00
+         sta SFX_CHANNELS_ADDR+_chnCtrl,x
+.endif
+
+			jsr turn_off_Audio_channel
+
+			txa											; change current channel
+			sec
+			sbc #$10
+			tax
+			bpl reset_TRACKS
+
+			rts

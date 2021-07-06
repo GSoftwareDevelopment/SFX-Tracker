@@ -15,9 +15,9 @@
          asl @                                  ; multiply SFX Id by 2 to get offset in SFXPtr offset table
          tay
 
-; get SFX pointer from SFXPtr table and set in current channel
-         lda SFX_TABLE_ADDR,y
-         sta SFX_CHANNELS_ADDR+_SFXPtrLo,x
+
+         lda SFX_TABLE_ADDR,y							; get SFX pointer from SFXPtr table and
+         sta SFX_CHANNELS_ADDR+_SFXPtrLo,x		; set in current channel
          lda SFX_TABLE_ADDR+1,y
          sta SFX_CHANNELS_ADDR+_SFXPtrHi,x
 
@@ -26,23 +26,24 @@
 
 ; get Note frequency divider from NOTE_TABLE
 
-         lda TABOrder                           ; get TAB Note value
-         cmp #FN_NOTE_FREQ                      ; check for Note or Frequency Divider Set
+         lda TABOrder                           ; get SFX note type from TAB order
+         cmp #FN_NOTE_FREQ                      ; check type of note (Note numer or Frequency Divider Set)
          bpl TAB_FN_Freq                        ; <64 its Note Set
 
 TAB_FN_Note
-         ldy TABNote
+         ldy TABParam
 
 .ifdef MAIN.@DEFINES.SFX_previewChannels
          tya
          sta SFX_CHANNELS_ADDR+_chnNote,x
 .endif
 
-self_TABnoteAddr  lda NOTE_TABLE_ADDR,y         ; get note frequency value from SFX Note Table
+self_TABnoteAddr
+			lda NOTE_TABLE_ADDR,y         			; get note frequency value from SFX Note Table
          jmp TAB_FN_setFreq
 
 TAB_FN_Freq
-         lda TABNote										; get note frequency from TAB row
+         lda TABParam										; get note frequency from TAB row
 TAB_FN_setFreq
          sta SFX_CHANNELS_ADDR+_chnFreq,x			; store frequency in current channels register
          ldy _regTemp                           ; restore current TAB Offset

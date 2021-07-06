@@ -49,7 +49,7 @@ tunePianoPos		= 186;
 winXStart			= 4;
 winYStart			= 2;
 
-winSONGXStart		= 7;
+winSONGXStart		= 8;
 
 SFX_winWidth		= 16;
 TAB_winHeight		= 9;
@@ -119,15 +119,15 @@ SFXLenY				= 10;
 // SONG FUNCTIONS (ORDERS)
 
 //	in any channels
-//	%00xxxxx - set TAB#id in channel
+//	chnPlayTab        = %000xxxxx;  // set TAB#id in channel
 	chnBlank				= %01000000; // blank (No operation)
 	chnOff				= %01111111; // off channel
 
 //	only in first channel			  params in next channels
 	chnOrder				= %10000000;
-	chnOrder_Tempo		= %10000000; // %00000xxx - set tempo; x - line pre beat 0-9
+	chnOrder_Tempo		= %10000000; // %xxxxxxxx - set tempo; x - line pre beat 0-255
 	chnOrder_JumpTo	= %10000010; // %00xxxxxx - JUMP TO SONG position; x - position 0-63
-	chnOrder_Repeat	= %10000100; // %00xxxxxx - REPEAT; x - repeat times 0-63
+	chnOrder_Repeat	= %10000100; // %00xxxxxx - REPEAT; x - repeat times 0-63; %00xxxxxx - JUMP TO SONG position; x - position 0-63
 	chnOrder_EndSong	= %11111111; // END SONG
 
 //
