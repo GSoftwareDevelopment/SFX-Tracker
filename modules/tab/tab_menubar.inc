@@ -1,45 +1,45 @@
 function TABList():boolean;
 var
-	nTAB:shortint;
+   nTAB:shortint;
 
 begin
-	nTAB:=dataList(TABPtr,currentTAB,maxTABs,TABNameLength);
-	if (nTAB<>-1) and (nTAB<>currentTAB) then
-	begin
-		getTABData(nTAB);
-		TABDetermineLength();
-		result:=true;
-	end
-	else
-		result:=false;
+   nTAB:=dataList(TABPtr,currentTAB,maxTABs,TABNameLength);
+   if (nTAB<>-1) and (nTAB<>currentTAB) then
+   begin
+      getTABData(nTAB);
+      TABDetermineLength();
+      result:=true;
+   end
+   else
+      result:=false;
 end;
 
 procedure TABChangeMenuBarOpt(section:byte);
 begin
-	case section of
-		0: begin
-				controlSelectionKeys(key,key_Left,key_Right,currentTAB,0,maxTABs-1);
-				modified:=false;
-				getTABData(currentTAB);
-				TABDetermineLength();
-				updateTABInfo();
-				updateTAB(true);
-			end;
-	end;
+   case section of
+      0: begin
+            controlSelectionKeys(key,key_Left,key_Right,currentTAB,0,maxTABs-1);
+            modified:=false;
+            getTABData(currentTAB);
+            TABDetermineLength();
+            updateTABInfo();
+            updateTAB(true);
+         end;
+   end;
 end;
 
 procedure TABSelectMenuBar(section:byte);
 begin
-	case section of
-		0: if TABList then
-			begin
-				updateTAB(true);
-				updateTABInfo();
-				modified:=false;
-			end;
-		1: TABEditLoop();
-		2: TAB_Play();
-		3: TAB_Options(TABMenuOption_Back);
-	end;
+   case section of
+      0: if TABList then
+         begin
+            updateTAB(true);
+            updateTABInfo();
+            modified:=false;
+         end;
+      1: TABEditLoop();
+      2: TAB_Play();
+      3: TAB_Options(TABMenuOption_Back);
+   end;
 
 end;

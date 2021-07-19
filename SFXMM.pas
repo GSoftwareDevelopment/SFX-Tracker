@@ -71,7 +71,6 @@ var
 {$i modules/ui_helpers.inc}
 {$i units/heap_manage.inc}
 {$i modules/io/io_clear_all_data.inc}
-{$i modules/io/io_error.inc}
 {$i modules/io/io_tag_compare.inc}
 {$i modules/io/io_manage.inc}
 {$i modules/io/io_options.inc}

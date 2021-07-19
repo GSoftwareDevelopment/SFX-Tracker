@@ -2,57 +2,57 @@
 
 procedure SFXEditLoop(var tab:byteArray; nibble:byte);
 var i,v:byte;
-	at:byte;
+   at:byte;
 
-	procedure storeValue(v:byte);
-	begin
-		i:=tab[at];
-		if (nibble=1) then
-		begin
-			v:=v shl 4;
-			i:=i and $0f;
-		end
-		else
-			i:=i and $f0;
-		tab[at]:=i or v;
-		SFXDetermineLength();
-		modified:=true;
-	end;
+   procedure storeValue(v:byte);
+   begin
+      i:=tab[at];
+      if (nibble=1) then
+      begin
+         v:=v shl 4;
+         i:=i and $0f;
+      end
+      else
+         i:=i and $f0;
+      tab[at]:=i or v;
+      SFXDetermineLength();
+      modified:=true;
+   end;
 
 begin
-	repeat
-		if keyPressed then
-		begin
-			if controlSelectionKeys(key,key_Up,key_Down,section,3,6) then
-			begin
-				section:=section or $10;
-				break;
-			end;
+   repeat
+      if keyPressed then
+      begin
+         if controlSelectionKeys(key,key_Up,key_Down,section,3,6) then
+         begin
+            section:=section or $10;
+            break;
+         end;
 
-			case key of
-				key_ESC: break;
-				key_RETURN: if SFXEntryEdit then break;
-			end;
+         case key of
+            key_ESC: break;
+            key_RETURN: if SFXEntryEdit then break;
+         end;
 
-			controlEditKeys(key,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift,key_Left,key_Right);
+         controlEditKeys(key,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift,key_Left,key_Right);
 
-			at:=cursorShift+cursorPos;
-			v:=tab[at];
-			if (nibble=1) then v:=v shr 4 else v:=v and $0f;
+         at:=cursorShift+cursorPos;
+         v:=tab[at];
+         if (nibble=1) then v:=v shr 4 else v:=v and $0f;
 
-			// value change
-			if controlSelectionKeys(key,key_CTRL_Down,Key_CTRL_Up,v,0,15) then
-				storeValue(v)
-			else
-			begin
-				i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
-				if (i<>255) then storeValue(i);
-			end;
+         // value change
+         if controlSelectionKeys(key,key_CTRL_Down,Key_CTRL_Up,v,0,15) then
+            storeValue(v)
+         else
+         begin
+            i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
+            if (i<>255) then storeValue(i);
+         end;
 
-			updateSFXView();
-			colorVLine(winXStart+cursorPos,winYStart,8,3);
-			screen2video();
-		end;
-	until false;
+         updateSFXView();
+         colorVLine(winXStart+cursorPos,winYStart,8,3);
+         screen2video();
+      end;
+   until false;
 end;
 

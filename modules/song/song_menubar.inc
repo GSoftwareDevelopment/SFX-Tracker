@@ -3,9 +3,9 @@
 
 procedure SONGSelectMenuBar(section:byte);
 begin
-	case section of
-		0: SONGEditLoop();
-		1: SONG_Play(0);
-		2: SONG_Options(SONGMenuOption_Back);
-	end;
+   case section of
+      0: SONGEditLoop();
+      1: SONG_Play(0);
+      2: SONG_Options(SONGMenuOption_Back);
+   end;
 end;

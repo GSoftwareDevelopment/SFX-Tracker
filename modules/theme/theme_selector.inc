@@ -4,20 +4,20 @@
 
 procedure theme_selector();
 var
-	nTheme:shortint;
+   nTheme:shortint;
 
 begin
-	ThemesScreen(); DLIInit();
+   ThemesScreen(); DLIInit();
 
-	repeat
-		nTheme:=listChoice(7,2,12,8,currentTheme,themesNames,7,false);
-		if nTheme=-1 then break;
-		if nTheme<6 then
-			getTheme(nTheme,PFCOLS)
-		else
-			ThemeMenuOption(nTheme-6);
-	until false;
+   repeat
+      nTheme:=listChoice(7,2,12,8,currentTheme,themesNames,7,false);
+      if nTheme=-1 then break;
+      if nTheme<6 then
+         getTheme(nTheme,PFCOLS)
+      else
+         ThemeMenuOption(nTheme-6);
+   until false;
 
-	exitThemeSelector(); DLIDone();
-	showAppSplash();
+   exitThemeSelector(); DLIDone();
+   showAppSplash();
 end;
