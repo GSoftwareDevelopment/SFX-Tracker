@@ -8,7 +8,7 @@ begin
 	fillchar(@SFX_vol_dist,SFX_maxLength,0);
 	fillchar(@SFX_modulate,SFX_maxLength,0);
 
-	size:=getData(nSFX,SFXNameLength,SFXName);
+	size:=heap_getData(nSFX,SFXNameLength,SFXName);
 	if size>0 then
 	begin
 		sfxLen:=0;
@@ -47,17 +47,15 @@ end;
 
 procedure storeSFXData(nSFX:byte);
 var
-	ofs,len:word;
-	i:byte;
+	size:word;
+	ofs,i:byte;
 
 begin
-	heap_release(SFXPtr[nSFX],_heap_sizes[nSFX]);
+	heap_release(nSFX,SFXNameLength);
 
 	// if length of stored SFX is equal zero...
 	if (sfxLen=0) then
 	begin
-		SFXPtr[nSFX]:=$ffff;	_heap_sizes[nSFX]:=0;
-
 		// set current name to "Not defined"
 		SFXName[0]:=char(SFXNameLength);
 		move(resptr[str_notDefined],@SFXName[1],SFXNameLength);
@@ -71,9 +69,7 @@ begin
 		tmpbuf[ofs]:=SFX_modulate[i]; ofs:=ofs+1;
 		tmpbuf[ofs]:=SFX_vol_dist[i]; ofs:=ofs+1;
 	end;
-	len:=sfxLen shl 1; // multiply SFX length by two, becouse, for one entry is 2 bytes info
+	size:=sfxLen shl 1; // multiply SFX length by two, becouse, for one entry is 2 bytes info
 
-	SFXPtr[nSFX]:=heap_putData(len,SFXNameLength,SFXName);
-
-	_heap_sizes[nSFX]:=SFXNameLength+len;
+	heap_putData(nSFX,size,SFXNameLength,SFXName);
 end;

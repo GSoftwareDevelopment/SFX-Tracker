@@ -1,5 +1,7 @@
 var
-	noteSetId:byte;
+	noteSetId,
+	currentNoteTableOfs,
+	oldSFXNoteTable:byte;
 	definedNoteTune:array[0..0] of byte;
 
 {$i modules/notetune/notetune_view.inc}
@@ -12,6 +14,7 @@ var
 
 begin
 	currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
+	oldSFXNoteTable:=currentNoteTableOfs;
 	noteSetId:=currentNoteTableOfs shr 6;
 	opt:=0;
 	repeat
@@ -27,5 +30,6 @@ begin
 		else
 			break;
 	until false;
-	currentNoteTableOfs:=$FF;
+//	currentNoteTableOfs:=$FF;
+	SFXNoteSetOfs[currentSFX]:=oldSFXNoteTable;
 end;

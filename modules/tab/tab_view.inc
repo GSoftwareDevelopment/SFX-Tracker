@@ -154,4 +154,10 @@ begin
 	screen[32]:=$06;
 
 	menuBar(menu_tabs,width_menuBar,1);
+
+	getTABData(currentTAB);
+	TABDetermineLength();
+	updateTABInfo();
+	updateTAB(true);
+
 end;

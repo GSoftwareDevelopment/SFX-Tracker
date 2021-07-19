@@ -9,6 +9,7 @@ SONGFn_SetTempo
 			lda SONG_Addr+1,y							; get function parameter; tempo value
 			sta SONG_TEMPO
 
+			tya
 			jmp process_next_SONG_row
 
 check_SONGFn_Repeat
@@ -65,8 +66,10 @@ check_SONGFn_SONG_END
 			sta SONG_TICK_COUNTER
 
 			jsr reset_all_tracks
+
 			jmp end_tick
 
 SONGFn_notRecognized
 			sty SONG_Ofs
+			tya
 			jmp process_next_SONG_row

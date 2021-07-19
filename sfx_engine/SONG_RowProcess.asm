@@ -11,18 +11,7 @@ set_TABId_in_Track
 ; TAB index is in the A registry
 			sty _regTemp								; store current SONG offset in temporary register
 
-			asl @                               ; multiply TAB index by 2 to get offset in TABPtr table
-			tay
-
-; in the X register is an TAB ID offset of the TAB definition array
-			lda TAB_TABLE_ADDR,y						; get TAB definition address from TABPtr table
-			sta SFX_CHANNELS_ADDR+_tabPtrLo,x	; and set it in channels registers
-			lda TAB_TABLE_ADDR+1,y
-			sta SFX_CHANNELS_ADDR+_tabPtrHi,x
-
-			lda #$00										; reset TAB offset and repeat counter
-			sta SFX_CHANNELS_ADDR+_tabOfs,x
-			sta SFX_CHANNELS_ADDR+_tabRep,x
+			jsr SFX_setTABinChannel
 
 			ldy _regTemp								; restore SONG offset
 
@@ -70,11 +59,10 @@ process_next_track
 			tax
 
 			cmp #$40
-			beq restart_SFX_tick
+			beq SONG_EndRowProcess
 
 			lda SONG_ADDR,y							; get track data
 			jmp set_SONG_track
 
-restart_SFX_tick
-			jmp tick_start
-
+SONG_EndRowProcess
+			rts

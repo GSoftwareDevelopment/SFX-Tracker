@@ -1,6 +1,6 @@
 {$i modules/sfx/sfx_entry_edit.inc}
 
-function SFXEditLoop(var tab:byteArray; nibble:byte; var modified:boolean):shortint;
+procedure SFXEditLoop(var tab:byteArray; nibble:byte);
 var i,v:byte;
 	at:byte;
 
@@ -10,10 +10,11 @@ var i,v:byte;
 		if (nibble=1) then
 		begin
 			v:=v shl 4;
-			tab[at]:=(i and $0f) or v;
+			i:=i and $0f;
 		end
 		else
-			tab[at]:=(i and $f0) or v;
+			i:=i and $f0;
+		tab[at]:=i or v;
 		SFXDetermineLength();
 		modified:=true;
 	end;
@@ -27,11 +28,12 @@ begin
 				section:=section or $10;
 				break;
 			end;
-			// colorVLine(winXStart+cursorPos,winYStart,8,0);
+
 			case key of
 				key_ESC: break;
 				key_RETURN: if SFXEntryEdit then break;
 			end;
+
 			controlEditKeys(key,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift,key_Left,key_Right);
 
 			at:=cursorShift+cursorPos;

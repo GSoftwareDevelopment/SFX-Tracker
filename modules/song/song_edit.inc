@@ -13,6 +13,11 @@ var
 		SONGAdr:=SONGRow+SONGChn;
 	end;
 
+	function isRowOnOrder():boolean;
+	begin
+		result:=(SONGData[SONGRow] and chnOrder<>0);
+	end;
+
 	procedure drawCursor();
 	var
 	  w,order:byte;
@@ -40,11 +45,11 @@ var
 		end;
 		colorHLine(x,y,w,3);
 		SONGAdr:=SONGRow+SONGChn;
-	end;
 
-	function isRowOnOrder():boolean;
-	begin
-		result:=(SONGData[SONGRow] and chnOrder<>0);
+		nTab:=SONGData[SONGAdr];
+		clearStatusBar();
+		if not isRowOnOrder then
+			showTABInfo(nTAB)
 	end;
 
 	procedure clearRow();
@@ -83,11 +88,9 @@ begin
 				controlEditKeys(key,SONG_winHeight,SONG_maxLength,SONGPos,SONGShift,key_Up,key_Down) then
 			begin
 				calcPos();
-				nTab:=SONGData[SONGAdr];
-				clearStatusBar();
-				if not isRowOnOrder then
-					showTABInfo(nTAB)
 			end;
+
+			if key=138 (* CTRL+P *) then SONG_Play(SONGRow);
 
 			case key of
 				key_ESC: break;
@@ -115,6 +118,11 @@ begin
 											clearRow();
 											SONGRow:=value;
 										end;
+				key_SHIFT_RETURN: begin
+											TABScreen();
+											TABEditLoop();
+											SONGScreen();
+										end;
 			end;
 
 			value:=keyScan(key,keys_alphaNum,keysRange_decNum);
@@ -128,7 +136,6 @@ begin
 			drawCursor();
 			screen2video();
 		end;
-		updatePianoVis();
 	until false;
 	reset_pianoVis();
 	updateSONG(true);

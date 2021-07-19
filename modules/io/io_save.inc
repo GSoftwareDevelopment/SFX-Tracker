@@ -17,7 +17,7 @@ begin
 	end;
 
 	dataAddr:=HEAP_PTR[id]-nameLength;	// get data address with name
-	dataSize:=_heap_sizes[id]; // data length with name
+	dataSize:=_heap_sizes[id]+nameLength; // data length with name
 	push2IOBuf(@dataSize,2);
 	push2IOBuf(pointer(dataAddr),dataSize);
 

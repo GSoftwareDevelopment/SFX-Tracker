@@ -9,7 +9,8 @@ TABFn_TAB_END
 			cmp #$FF										; If the offset points to a value other than $FF
 			beq play_TAB_again						;
 
-			jmp SONG_process							; ...it means that SONG is played.
+			jsr SONG_process							; ...it means that SONG is played.
+			jmp tick_start
 
 play_TAB_again
 			ldy #0										; set TAB offset to begin
@@ -38,7 +39,8 @@ TAB_FN_ContinueLoop
 ; end of loop
 
          bne fetch_next_tab_row
-         jmp SONG_process                      ; if TAB offset is wrap, process TRACK step
+         jsr SONG_process                      ; if TAB offset is wrap, process TRACK step
+			jmp tick_start
 
 fetch_next_tab_row
          jmp fetch_TAB_ROW                      ; fetch next TAB row

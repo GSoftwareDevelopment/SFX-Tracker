@@ -25,7 +25,7 @@ begin
 	fillchar(@TAB_notes,TAB_maxLength,$00);
 	fillchar(@TAB_fnSFX,TAB_maxLength,$c0);
 
-	size:=getData(64+nTAB,TABNameLength,TABName);
+	size:=heap_getData(64+nTAB,TABNameLength,TABName);
 	if size>0 then
 	begin
 		TABLen:=0; // set current TAB length to zero (0)
@@ -42,6 +42,15 @@ begin
 	currentTAB:=nTAB;
 end;
 
+function TABEmptyCheck():boolean;
+var i:byte;
+
+begin
+	i:=0;
+	while (i<TAB_maxLength) and (TAB_fnSFX[i]=TABFn_blank) and (TAB_notes[i]=$00) do i:=i+1;
+	result:=(i=TAB_maxLength);
+end;
+
 procedure TABDetermineLength();
 var
 	order,
@@ -52,39 +61,39 @@ var
 begin
 	len:=0; TABRealLen:=0;
 	fillchar(@TAB_RealPos,256,$ff);
-
-	repeat
-		order:=TAB_fnSFX[len];
-		_ord:=order and $c0;
-		if (order<>$FF) then
-			if (order<TABFn_jump) or (_ord=$c0) then
-			begin
-				inc(TABRealLen);
-				TAB_RealPos[len]:=TABRealLen;
-			end
-			else
-				if (_ord=$80) then
+	if not TABEmptyCheck then
+		repeat
+			order:=TAB_fnSFX[len];
+			_ord:=order and $c0;
+			if (order<>$FF) then
+				if (order<TABFn_jump) or (_ord=$c0) then
 				begin
-					value:=TAB_notes[len];
-					inc(TABRealLen,(order-TABFn_jump)*(len-value));
-				end;
-		len:=len+1;
-	until (len=TAB_maxLength) or (order=TABFn_end); // or (order=TABFn_jump);
+					inc(TABRealLen);
+					TAB_RealPos[len]:=TABRealLen;
+				end
+				else
+					if (_ord=$80) then
+					begin
+						value:=TAB_notes[len];
+						inc(TABRealLen,(order-TABFn_jump)*(len-value));
+					end;
+			len:=len+1;
+		until (len=TAB_maxLength) or (order=TABFn_end); // or (order=TABFn_jump);
 	TABLen:=len;
 end;
 
 procedure storeTABData(nTAB:byte);
 var
-	ofs,len:word;
-	i:byte;
+	ofs,size:word;
+	i,hid:byte;
 
 begin
-	heap_release(TABPtr[nTAB],_heap_sizes[64+nTAB]);
+	hid:=64+nTab;
+	heap_release(hid,TABNameLength);
 
 	// if length of stored TAB is equal zero...
 	if (TABLen=0) then
 	begin
-		TABPtr[nTAB]:=$ffff;	_heap_sizes[64+nTAB]:=0;
 		// ... set TAB name as free
 		TABName[0]:=char(TABNameLength);
 		move(resptr[str_notDefined],@TABName[1],TABNameLength);
@@ -98,9 +107,7 @@ begin
 		tmpbuf[ofs]:=TAB_notes[i]; ofs:=ofs+1;
 		tmpbuf[ofs]:=TAB_fnSFX[i]; ofs:=ofs+1;
 	end;
-	len:=TABLen shl 1; // multiply TAB length by two, becouse, for one entry is 2 bytes info
+	size:=TABLen shl 1; // multiply TAB length by two, becouse, for one entry is 2 bytes info
 
-	TABPtr[nTAB]:=heap_putData(len,TABNameLength,TABName);
-
-	_heap_sizes[64+nTAB]:=TABNameLength+len;
+	heap_putData(hid,size,TABNameLength,TABName);
 end;

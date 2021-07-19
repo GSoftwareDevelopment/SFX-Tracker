@@ -8,8 +8,8 @@ var
 
 	TABName:string[TABNameLength];
 
-{$i modules/tab/tab_view.inc}
 {$i modules/tab/tab_manage.inc}
+{$i modules/tab/tab_view.inc}
 {$i modules/tab/tab_play.inc}
 {$i modules/tab/tab_edit.inc}
 {$i modules/tab/tab_options.inc}
@@ -22,10 +22,6 @@ procedure TABLoop();
 	end;
 
 begin
-	getTABData(currentTAB);
-	TABDetermineLength();
-	updateTABInfo();
-	updateTAB(true);
 	update();
 	screen2video();
 	modified:=false;

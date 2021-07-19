@@ -14,17 +14,14 @@ begin
 		result:=false;
 end;
 
-procedure SFXChangeMenuBarOpt(section:byte);
+procedure SFXMenuBarChange();
 begin
-	if (section=0) then
+	if controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1) then
 	begin
-		if controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1) then
-		begin
-			getSFXData(currentSFX);
-			SFXDetermineLength();
-			updateSFXView();
-			modified:=false;
-		end;
+		getSFXData(currentSFX);
+		SFXDetermineLength();
+		updateSFXView();
+		modified:=false;
 	end;
 end;
 
@@ -47,10 +44,10 @@ begin
 			updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
 			screen2video();
 			case section of
-				3: SFXEditLoop(SFX_vol_dist,0,modified);
-				4: SFXEditLoop(SFX_vol_dist,1,modified);
-				5: SFXEditLoop(SFX_modulate,1,modified);
-				6: SFXEditLoop(SFX_modulate,0,modified);
+				3: SFXEditLoop(SFX_vol_dist,0);
+				4: SFXEditLoop(SFX_vol_dist,1);
+				5: SFXEditLoop(SFX_modulate,1);
+				6: SFXEditLoop(SFX_modulate,0);
 			end;
 		until section and $10=0;
 	end;

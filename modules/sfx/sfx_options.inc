@@ -4,8 +4,8 @@ procedure setSFXNoteTable();
 begin
 	currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
 	NoteTune_sets();
-	SFXNoteSetOfs[currentSFX]:=currentNoteTableOfs;
-	currentNoteTableOfs:=$FF;
+//	SFXNoteSetOfs[currentSFX]:=currentNoteTableOfs;
+//	currentNoteTableOfs:=$FF;
 end;
 
 procedure setSFXName();

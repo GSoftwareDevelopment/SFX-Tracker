@@ -1,7 +1,7 @@
-xitvbl      = $e462
-sysvbv      = $e45c
 audf        = $d200
 audc        = $d201
+audctl		= $D208
+skctl			= $D20F
 
 ; CONSTANTS - offsets in channels registers table
 

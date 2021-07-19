@@ -2,18 +2,8 @@ procedure TAB_Play();
 var
 	oldCurPos,oldCurShift:byte;
 
-begin
-	if TABPtr[currentTAB]=$FFFF then
+	procedure updateTabView();
 	begin
-		showError(msg_UnknownDefinition);
-		exit;
-	end;
-	oldCurPos:=cursorPos; oldCurShift:=cursorShift;
-	reset_pianoVis(); keyClick:=false; PLYtm:=timer; PLYstate:=2;
-	SFX_PlayTAB(0,currentTAB);
-	repeat
-		updatePianoVis();
-
 		cursorPos:=channels[_tabOfs] shr 1;
 		if (cursorPos>4) then
 		begin
@@ -32,19 +22,33 @@ begin
 
 		updateTAB(true);
 		colorHLine(winXStart,2+cursorPos,16,3);
+	end;
+
+begin
+	if TABPtr[currentTAB]=$FFFF then
+	begin
+		showError(msg_UnknownDefinition);
+		exit;
+	end;
+	oldCurPos:=cursorPos; oldCurShift:=cursorShift;
+	reset_pianoVis(); keyClick:=false; PLYtm:=timer; PLYstate:=2;
+	SFX_PlayTAB(0,currentTAB);
+	repeat
+		updatePianoVis();
 
 		if keyPressed then
 		begin
+			case key of
+				key_ESC: break;
+				key_SPACE: SFX_ChannelOff(2);
+			end;
 			if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
 				updateTABSFX();
 			pianoKeyScan(2);
-
-			case key of
-				key_ESC: break;
-			end;
 		end;
 		if (timer-ScreenTm)>0 then
 		begin
+			updateTabView();
 			ScreenTm:=timer;
 			PlayFlash();
 			move(@screen,@video,240);

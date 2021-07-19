@@ -33,8 +33,8 @@ begin
 		if keyPressed then
 		begin
 			controlSelectionKeys(key,key_Up,key_Down,section,0,7);
+			if section=0 then SFXMenuBarChange();
 			case key of
-				key_Left,key_Right: SFXChangeMenuBarOpt(section);
 				key_ESC: break;
 				key_RETURN: SFXSelectMenuBar(section);
 			end;

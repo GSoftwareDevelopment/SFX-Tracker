@@ -4,7 +4,7 @@ program SFXMM;
 
 {$DEFINE ROMOFF}
 
-uses SFX_Engine, sysutils, strings, gr2, ui, pmgraph;
+uses SFX_API, sysutils, strings, gr2, ui, pmgraph;
 {$I-}
 {$i types.inc}
 
@@ -118,15 +118,13 @@ begin
 
 	currentMenu:=0;
 
-	timer:=0; repeat until timer>100;
+//	timer:=0; repeat until timer>100;
 
 // set defaults files
 	clearFilename(otherFile);
 	setFilename(defaultFileName,currentFile);
 	setFilename(defaultSearchPath,searchPath);
 	moveRes(app_vis_tables,VIS_TABLE_ADDR,58);
-	reset_pianoVis();
-
 	moveRes(app_charset,CHARSET_ADDR,512);
 	moveRes(app_dlist,DLIST_ADDR,$18);
 	initGraph(DLIST_ADDR,VIDEO_ADDR,SCREEN_BUFFER_ADDR); CHBAS:=CHARSET_PAGE;
@@ -135,6 +133,7 @@ begin
 
 	showAppSplash();
 	moveRes(app_virtual_piano,VIDEO_PIANO_ADDR,40);
+	reset_pianoVis();
 	updatePiano();
 
 	SFX_Start();

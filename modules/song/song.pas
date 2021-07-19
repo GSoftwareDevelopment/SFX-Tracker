@@ -1,7 +1,6 @@
 
 {$i modules/song/song_view.inc}
 {$i modules/song/song_entry_edit.inc}
-{$i modules/song/song_edit.inc}
 {$i modules/song/song_options.inc}
 {$i modules/song/song_menubar.inc}
 

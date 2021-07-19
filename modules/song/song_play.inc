@@ -1,11 +1,8 @@
-procedure SONG_Play();
-var
-	oldTempo:byte;
-
+procedure SONG_Play(startPos:byte);
 begin
-	oldTempo:=SONG_Tempo;
-	SFX_PlaySONG(0,SONG_Tempo);
-	reset_pianoVis(); // keyClick:=false;
+	SFX_PlaySONG(startPos);
+	// SFX_PlaySONG(startPos,SONG_Tempo);
+	reset_pianoVis(); keyClick:=false;
 	PLYtm:=timer; PLYstate:=2;
 	repeat
 		updatePianoVis();
@@ -25,8 +22,8 @@ begin
 			move(@screen,@video,240);
 		end;
 	until SONG_Tick>$80;
-	SFX_Off(); keyClick:=true;
+	SFX_Off(); keyClick:=true; key:=TKeys($ff);
 	reset_pianoVis();
-	SONG_Tempo:=oldTempo;
+	// SONG_Tempo:=oldTempo;
 	clearStatusBar();
 end;

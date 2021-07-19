@@ -19,6 +19,7 @@ begin
 		currentNoteTableOfs:=NOTE_TABLE_ADDR+noteSetId*64
 	else
 		currentNoteTableOfs:=SFXNoteSetOfs[currentSFX];
+	SFXNoteSetOfs[currentSFX]:=currentNoteTableOfs;
 	noteSetId:=currentNoteTableOfs shr 6;
 end;
 
