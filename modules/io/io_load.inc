@@ -7,7 +7,7 @@ procedure LoadData(var filename:string; mode:byte; destId:byte);
  *)
 
 var
-   readed,sum:word;
+   sum:word;
 
    version:byte;
    nameLen:byte;
@@ -19,7 +19,7 @@ var
 
       sum:=0;
       if getByte(version) then exit;
-      _readNoteTabData:=version>SFXMM_VER1_0;
+      _readNoteTabData:=version>=SFXMM_VER1_1;
 
       if getByte(nameLen) then exit;
       if (nameLen=SONGNameLength) then
@@ -101,6 +101,9 @@ var
       dataSize:word;
 
    begin
+		if version=SFXMM_VER1_2 then
+			if getByte(SONG_Tempo) then exit;
+
       if getBlock(dataSize,2) then exit; // read data size
       if dataSize>256 then begin IOErr:=error_badFileFormat; exit; end;
 

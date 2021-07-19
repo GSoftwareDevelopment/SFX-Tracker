@@ -50,6 +50,7 @@ var
 begin
    IOOfs:=0;
    push2IOBuf(@section_SONG,5);
+   push2IOBuf(@SONG_Tempo,1);
    dataSize:=$100;
    push2IOBuf(@dataSize,2);
    push2IOBuf(@SONGData,dataSize);
@@ -66,7 +67,7 @@ begin
    IOOfs:=0;
    // prepare main section data
    push2IOBuf(@section_main,5);
-   i:=SFXMM_VER1_1; push2IOBuf(@i,1);
+   i:=SFXMM_VER1_2; push2IOBuf(@i,1);
    i:=SONGNameLength; push2IOBuf(@i,1);
    push2IOBuf(@SONGTitle[1],SONGNameLength);
    if not putIOBuf then exit(false);

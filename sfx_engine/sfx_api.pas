@@ -6,9 +6,6 @@ type
    wordArray=array[0..0] of word;
 
 const
-   SFX_NameLength    = 14;
-   TAB_NameLength    = 8;
-
 {$i sfx_engine.conf.inc} // import SFX-Engine configuration
 
 // SFX-Engine Constants
@@ -27,7 +24,7 @@ var
    SONG_Ofs:byte absolute SFX_REGISTERS+$02;
    SONG_RepCount:byte absolute SFX_REGISTERS+$03;
 
-   channels:array[0..63] of byte absolute SFX_CHANNELS_ADDR;
+   channels:array[0..0] of byte absolute SFX_CHANNELS_ADDR;
 
 procedure INIT_SFXEngine(); Assembler;
 procedure SFX_Start();
@@ -43,16 +40,6 @@ implementation
 var
    NMIEN:byte absolute $D40E;
    oldVBL:pointer;
-{$IFNDEF SFX_SYNCAUDIOOUT}
-   AUDIO:array[0..0] of byte absolute $D200;
-{$ELSE}
-   AUDIO:array[0..0] of byte absolute AUDIO_BUFFER_ADDR;
-{$ENDIF}
-   AUDCTL:byte absolute $D208;
-   SKCTL:byte absolute $D20F;
-
-   __chn:byte;
-   __cOfs:byte;
 
 procedure INIT_SFXEngine; Assembler;
 asm
@@ -141,7 +128,7 @@ end;
 procedure SFX_PlayTab; Assembler;
 asm
    lda #$FF
-   sta SONG_Ofs
+   sta SONG_Tick
 
    lda channel
    asl @

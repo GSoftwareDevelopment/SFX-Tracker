@@ -1,6 +1,7 @@
 // SFX Music Maker basic setup
 SFXMM_VER1_0      = $10;
 SFXMM_VER1_1      = $11;
+SFXMM_VER1_2		= $12;
 
 FILEPATHMaxLength = 127;
 

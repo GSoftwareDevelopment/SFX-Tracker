@@ -573,7 +573,202 @@ Ośmiobitowy rejestr (z natury działa w modulo 256) ulega przepełnieniu (co je
 
 # SFX ENGINE
 
-W tej sekcji opisane są rejestry sprzętowe oraz programowe wykorzystywane przez silnik SFX, jak i dostosowanie silnika do własnych potrzeb.
+## Jądro silnika
+
+To kod na który składają się:
+
+- tablica skoków
+
+  zawiera listę podstawowych procedur funkcjonalnych silnika
+
+- kod wykonywalny silnika
+
+  W trakcie kompilacji można ustawić adres bazowy, jednak kod <u>nie jest relokowalny</u>.
+
+### Tablica skoków
+
+Wywołanie procedur odbywa się poprzez skok `JSR ` pod adres bazowy jądra silnika z offsetem (co trzy bajty). Do procedur przekazywane są parametry za pośrednictwem rejestrów sprzętowych (A,X,Y oraz rejestr flag) 
+
+ Dla przykładu, wywołanie procedury `SFX_PLAY_NOTE` (odtwarzającej SFX) w assemblerze to:
+
+```assembly
+; ustawienie parametrów procedury
+   ldx #$00					; kanał 1
+   ldy #$00					; SFX #0
+   lda #5					; nuta 5 (E-0)
+   clc         				; flaga Carry skasowana - rejest A zawiera indeks nuty
+   
+; wywołanie procedury jądra
+   jsr SFXEngine+6			; SFXEngine zawiera adres bazowy
+   							; pod którym znajduje się jądro silnika
+   
+
+```
+
+Można też pominąć tablicę skoków, wykorzystując etykietę:
+
+```assembly
+; wywołanie procedury jądra
+	jsr SFX_PLAY_NOTE
+```
+
+
+
+#### SFX_INIT (offset +0)
+
+Procedura inicjująca silnik SFX. Ustawia rejestry wykorzystywane przez silnik na wartości początkowe.
+**Procedura nie inicjuje przerwania VBLANC.**
+
+**Brak parametrów wejścowych**
+
+
+
+#### SFX_MAIN_TICK (offset +3)
+
+Główna procedura przetwarzająca dane. Należy ją "podpiąć" pod przerwanie VBLANK (we własnym zakresie). Przed uruchomieniem, konieczne jest zainicjowanie silnika procedurą `SFX_INIT`
+
+**Brak paramertów wejściowych**
+
+Przykładowa inicjacja przerwania:
+
+```assembly
+	lda #$00				; wyłączenie obsługi przerwania VBLANK
+	sta NMIEN
+
+	lda VVBLKD				; zapamiętanie wektora przerwania
+	sta OLDVBL
+	lda VVBLKD+1
+	sta OLDVBL+1
+
+	lda <SFX_MAIN_TICK		; ustawienie wekrora przerwania
+	sta VVBLKD
+	lda >SFX_MAIN_TICK
+	sta VVBLKD+1
+
+	lda #$40				; włączenie obsługi przerwania VBLANK
+	sta NMIEN
+```
+
+
+
+#### SFX_PLAY_NOTE (offset +6)
+
+Odtwarza zdefiniowany SFX na podanym kanale dźwiękowym o zadanej wysokości dźwięku.
+
+Wysokość dźwięku określić można na dwa sposoby: poprzez nutę oraz używając dzielnika częstotliwości. Wyboru sposobu dokonuje się odpowiednio, kasując lub ustawiając flagę C (Carry - przepełnienia) przed wywołaniem procedury.
+
+**Parametry wejściowe**
+
+| Rejestr | Opis                                                         |
+| ------- | ------------------------------------------------------------ |
+| X       | offset rejestru kanału                                       |
+| Y       | indeks definicji SFXa                                        |
+| A       | wysokość dźwięku                                             |
+| flaga C | 0 - rejestr A wskazuje na nutę<br />1 - rejestr A wskazuje na dzielnik częstotliwości |
+
+**Przykład wywołania:** podany jest na początku sekcji "Tablica skoków"
+
+#### SFX_PLAY_TAB (offset +9)
+
+Ustawia rejestry wybranego kanału na odtwarzanie wybraneg TABa, jednak nie powoduje jego automatycznego odtwarzenia, chyba, że jest odtwarzany już utwór (SONG)
+
+**Parametry wejściowe:**
+
+| Rejestr | Opis                   |
+| ------- | ---------------------- |
+| X       | offset rejestru kanału |
+| A       | indeks definicji TABa  |
+
+**Przykład wywołana procedury wraz z odtworzeniem TABa**:
+
+```assembly
+   lda #$FF			; zatrzymanie przetwarzania utworu (TAB/SONG)
+   sta SONG_Tick
+
+   ldX #$10			; kanał 2
+   lda #2			; TAB #2
+
+   jsr SFXEngine+9	; wywołanie procedury SFX_PLAY_TAB
+
+   lda #$00			; wznowienie przetwarzania utworu (TAB/SONG)
+   sta SONG_Tick
+```
+
+
+
+#### SFX_PLAY_SONG (offset +12)
+
+Włącza odtwarzanie utworu (SONG) od wskazanego miejsca.
+
+**Parametry wejściowe:**
+
+| Rejestr | Opis                                                         |
+| ------- | ------------------------------------------------------------ |
+| Y       | offset początku utworu.<br />Aby wskazać prawidłowy wiersz utworu, należy go pomnożyć przez 4! |
+
+**Przykład wywołania:**
+
+```assembly
+	ldy #0				; pierwszy wiersz SONG
+	jsr SFXEngine+12
+```
+
+
+
+#### SFX_OFF_CHANNEL (offset +15)
+
+Wyłącza przetwarzanie SFX oraz TAB w określonym kanale.
+
+**Parametry wejściowe:**
+
+| Rejestr | Opis                   |
+| ------- | ---------------------- |
+| X       | offset rejestru kanału |
+
+**Przykład wywołania:**
+
+```assembly
+	ldx #$20			; trzeci kanał
+	jsr SFXEngine+15
+```
+
+
+
+#### SFX_OFF_ALL (offset +18)
+
+Wyłącza przetwarzanie we wszystkich kanałach SFX, TAB oraz SONG.
+
+**Brak parametrów wejściowych.**
+
+**Przykład wywołania**
+
+```assembly
+	jsr SFXEngine+18
+```
+
+
+
+## Wykorzystanie pamięci przez silnik SFX
+
+|                                                              |          **hex** |         **dec** |
+| ------------------------------------------------------------ | ---------------: | --------------: |
+| **Kod silnika**                                              |         **036C** |         **876** |
+| **Pamięć robocza**:<br />*Rejestry wykorzystywane przez silnik.* |          **154** |         **340** |
+| Strona zerowa<br />- bufor synchronizacji audio<br />- rejestry robocze | <br />08<br />0C | <br />8<br />12 |
+| Rejestry kanałów                                             |               40 |              64 |
+| **Pamięć stała**:<br />*Tablice definiujące parametry odtwarzanych dźwięków oraz melodii.* |                  |                 |
+| _*_ Tablice nut<br />*4 definiowane tablice po 64 nuty*      |             0100 |             256 |
+| _**_ SFXy (bez obwiedni)<br />na każdą definicję (wskaźnik, tryb modulacji, tablica nut) |         <br />04 |         <br />4 |
+| _**_ TABy (bez danych)<br />na każdą definicję (wskaźnik)    |         <br />02 |         <br />2 |
+| _**_ SONG<br />na każdy wiersz                               |               04 |               4 |
+| **API dla MadPascal (code)**                                 |         **00C2** |         **192** |
+| Zmienne API<br />*każda zmienna deklarowna jest przez `absolute`* |            **0** |           **0** |
+
+_*_ wymagane wyrównanie do pełnej strony;
+
+_**_  nie jest wymagane wyrównanie do strony, jednak należy się liczyć z dodatkowymi cyklami przy granicy stron
+
+
 
 ## Rejestry sprzętowe
 
@@ -589,7 +784,7 @@ W głównej procedurze silnika SFX, rejestry sprzętowe mają przypisaną konkre
 
 #### Własne rozszerzenia silnika SFX
 
-Jeżeli chcesz rozszerzyć funkcjonalność silnika, musisz zadbać o przechowania wartości rejestrów sprzętowych, celem ich użycia. Do tego celu warto wykorzystać tymczasowe rejestry _regTemp i _regTemp2, które są ulokowane na zerowej stronie.
+Jeżeli chcesz rozszerzyć funkcjonalność silnika, musisz zadbać o przechowanie wartości rejestrów sprzętowych, przed ich użyciem.
 
 #### Sekcje modulatora
 
@@ -600,16 +795,18 @@ Musi ona zwracać wartość dzielnika częstotliwości w rejestrze A.
 
 ### Rejestry na stronie zerowej
 
-#### Rejestry SFX Tick-Loop
+Te rejestry używane są na potrzeby głównej pętli przerwania i przechowują tymczasowe informacje dotyczące aktualnie przetwarzanego dźwięku SFX, TABa lub SONG.
 
-Te rejestry używane są tylko na potrzeby pętli i przechowują informacje dotyczące aktualnie przetwarzanego dźwięku.
-
-| Nazwa rejestru |  Adres  | Opis                                      |
-| :------------- | :-----: | :---------------------------------------- |
-| sfxPtr         | $F3,$F4 | wskaźnik do definicji SFX                 |
-| chnNoteOfs     |   $F5   | offset tablicy nut SFXa ($00,$40,$80,$C0) |
-| chnNote        |   $F6   | numer nuty                                |
-| chnFreq        |   $F7   | wartość dzielnika częstotliwości SFXa     |
+| Nazwa rejestru        |  Adres  | Opis                                                         |
+| :-------------------- | :-----: | :----------------------------------------------------------- |
+| SONG_TEMPO            |   $F0   | aktualne tempo przetwarzania wierszy TAB                     |
+| SONG_TICK_COUNTER     |   $F1   | licznik                                                      |
+| SONG_Ofs              |   $F2   | aktualny ofset w definicji SONG                              |
+| SONG_Rep              |   $F3   | licznik pętli REPEAT dla SONG                                |
+| dataPtr               | $F3,$F4 | wskaźnik do definicji SFX lub TAB                            |
+| chnNoteOfs            |   $F5   | offset tablicy nut SFXa ($00,$40,$80,$C0)                    |
+| chnNote<br />TABOrder |   $F6   | numer nuty<br />rozkaz wiersza TAB*                          |
+| chnFreq<br />TABParam |   $F7   | wartość dzielnika częstotliwości SFXa<br />parametr wiersza TAB |
 
 Poniższe rejestry są dostępne w zależności od zastosowanych warunków kompilacji silnika SFX.
 
@@ -623,10 +820,9 @@ _*_ w większości przypadków zawiera funkcję oraz wartość. Przeważnie najs
 
 #### Rejestry tymczasowe
 
-| Nazwa rejestru | Adres | Opis                                          |
-| :------------- | :---: | :-------------------------------------------- |
-| _regTemp       |  $FB  | wykorzystywany w pętli przetwarzania SFX      |
-| _regTemp2      |  $FC  | wykorzystywany w pętli przetwarzania TAB/SONG |
+| Nazwa rejestru | Adres | Opis                                     |
+| :------------- | :---: | :--------------------------------------- |
+| _regTemp       |  $FB  | wykorzystywany w pętli przetwarzania SFX |
 
 ### Rejestry kanałów
 
@@ -660,10 +856,6 @@ Wymagane miejsce dla rejestrów: 64 bajty (dużo, ale w dowolnym miejscu pamięc
 
 ## Stałe
 
-### `SFX_NameLength`
-
-### `TAB_NameLength`
-
 ### Plik konfiguracyjny `sfx_engine.conf.inc`
 
 Plik ten jest wymagany, aby skompilować bibliotekę `SFX_Engine` i powinien być umieszczony w głównym katalogu programu. Zawarte w nim informacje, pozwalają określić sposób kompilacji (patrz sekcja [Etykiety kompilacji warunkowej](#etykiety-kompilacji-warunkowej)) oraz określić adresy dla rejestrów oraz danych.
@@ -672,85 +864,91 @@ Plik ten jest wymagany, aby skompilować bibliotekę `SFX_Engine` i powinien by�
 
 ##### `AUDIO_BUFFER_ADDR`
 
-$E8
+8 bajtów bufora audio, pozwalającego synchronicznie odtwarzać dźwięki POKEYa.
+
+Preferowana alokacja: na stronie zerowej
 
 ##### `SFX_REGISTERS`
 
-$F0
+12 bajtów rejestrów roboczych głównej pętli silnika.
+
+Obszar intensywnie wykorzystywany przez pętlę główną silnika
+
+Preferowana alokacja: na stronie zerowej
 
 ##### `SFX_CHANNELS_ADDR`
 
-$6C0
+64 bajty przechowujące informacje dla kanałó dźwiękowych.
+
+Preferowana alokacja: dowolne miejsce w obrębie jednej strony*
 
 ##### `SONG_ADDR`
 
-table of SONG definition
+Adres bazowy definicji utworu (SONG)
 
-$CB00
+Preferowana alokacja: dowolne miejsce w obrębie jednej strony*
 
 ##### `SFX_MODE_SET_ADDR`
 
-table of SFX modes
+Adres bazowy tablicy ustawień rodzaju modulacji dla SFXów
 
-$CC00
+**Preferowana alokacja:** dowolne miejsce w obrębie jednej strony*
 
 ##### `SFX_NOTE_SET_ADDR`
 
-table of SFX note table presets
+Adres absolutny tablicy ustawień dla SFX odpowiadający wykorzystanym tablicą nut
 
-$CC80
+**Preferowana alokacja:** dowolne miejsce w obrębie jednej strony*
 
 ##### `NOTE_TABLE_PAGE`
 
-tables of note frequency
+Strona pamięci dla tablic definicji nut.
 
-$CD;
+Na jej podstawie wyliczana jest stała `NOTE_TABLE_ADDR`
 
 ##### `SFX_TABLE_ADDR`
 
-list for SFX definitions
+Adres bazowy tablicy wskaźników definicji obwiedni SFXów
 
-$CE00
+**Preferowana alokacja:** dowolne miejsce w obrębie jednej strony*
 
 ##### `TAB_TABLE_ADDR`
 
-list for TAB definitions
+Adres bazowy tablicy wskaźników definicji TABów
 
-##### `DATA_ADDR`
+**Preferowana alokacja:** dowolne miejsce w obrębie jednej strony*
 
-data address
-
-$D800
+_*_ odwołania przekraczające granice strony będą generowały dodatkowe cykle zegarowe w głównej pętli silnika
 
 ## Zmienne
 
 ##### `SONGData`
 
-| typ zmiennej | odwołanie do stałej |      |
-| ------------ | ------------------- | ---- |
-| byteArray    | SONG_ADDR           | RW   |
+| typ zmiennej  | odwołanie do stałej |      |
+| ------------- | ------------------- | ---- |
+| array of byte | SONG_ADDR           | RW   |
 
 Tabela utworu SONG
 
 ##### `SFXModMode`
 
-| typ zmiennej | odwołanie do stałej |      |
-| ------------ | ------------------- | ---- |
-| byteArray    | SFX_MODE_SET_ADDR   | RW   |
+| typ zmiennej  | odwołanie do stałej |      |
+| ------------- | ------------------- | ---- |
+| array of byte | SFX_MODE_SET_ADDR   | RW   |
 
 Tablica wskazująca na typ modulacji użyty w SFXach
 
 ##### `SFXNoteSetOfs`
 
-| typ zmiennej | odwołanie do stałej |      |
-| ------------ | ------------------- | ---- |
-| byteArray    | SFX_NOTE_SET_ADDR   | RW   |
+| typ zmiennej  | odwołanie do stałej |      |
+| ------------- | ------------------- | ---- |
+| array of byte | SFX_NOTE_SET_ADDR   | RW   |
 
 ##### `SFXPtr`
 
-| typ zmiennej | odwołanie do stałej |      |
-| ------------ | ------------------- | ---- |
-| wordArray    | SFX_TABLE_ADDR      | RW   |
+| typ zmiennej  | odwołanie do stałej |      |
+| ------------- | ------------------- | ---- |
+| array of word | SFX_TABLE_ADDR      | RW   |
 
 Tablica wskaźników definicji SFX zawierająca adresy <u>bezwzględne</u>.
 
@@ -758,15 +956,15 @@ Przed zmianą należy wyłączyć pracę silnika funkcją ``SFX_Off`` lub ``SFX_
 
 ##### `TABPtr`
 
-| typ zmiennej | odwołanie do stałej |      |
-| ------------ | ------------------- | ---- |
-| wordArray    | TAB_TABLE_ADDR      | RW   |
+| typ zmiennej  | odwołanie do stałej |      |
+| ------------- | ------------------- | ---- |
+| array of word | TAB_TABLE_ADDR      | RW   |
 
 Tablica wskaźników definicji TAB zawierająca adres <u>bezwzględne</u>.
 
 Przed zmianą należy wyłączyć pracę silnika funkcją ``SFX_Off`` lub ``SFX_End``
 
-##### `song_tempo`
+##### `SONG_Tempo`
 
 | typ zmiennej | odwołanie do stałej |      |
 | ------------ | ------------------- | ---- |
@@ -778,31 +976,39 @@ Im wartość większa, tym wolniejsze odtwarzanie.
 
 ##### `SONG_Tick`
 
-| typ zmiennej | odwołanie do stałej |                  |
-| ------------ | ------------------- | ---------------- |
-| byte         | SFX_REGISTERS+$01   | tylko do odczytu |
+| typ zmiennej | odwołanie do stałej |                   |
+| ------------ | ------------------- | ----------------- |
+| byte         | SFX_REGISTERS+$01   | tylko do odczytu* |
 
 Zmienna tylko do odczytu zawierająca **tik** odtwarzania TAB/SONG. Jest ona ustawiana przez silnik SFX.
 
+##### `SONG_Ofs`
+
+| typ zmiennej | odwołanie do stałej |                   |
+| ------------ | ------------------- | ----------------- |
+| byte         | SFX_REGISTERS+$03   | tylko do odczytu* |
+
+Przechowuje aktualny offset wzglęgem początku definicji utworu. Aby uzyskać wiersz SONG, należy tą wartość podzielić przez 4.
+
+##### `SONG_RepCount`
+
+| typ zmiennej | odwołanie do stałej |                   |
+| ------------ | ------------------- | ----------------- |
+| byte         | SFX_REGISTERS+$03   | tylko do odczytu* |
+
+Zmienna tylko do odczytu zawierająca **tik** odtwarzania TAB/SONG. Jest ona ustawiana przez silnik SFX.
+
+##### 
+
 ##### `channels`
 
-| typ zmiennej         | odwołanie do stałej |      |
-| -------------------- | ------------------- | ---- |
-| array[0..63] of byte | SFX_CHANNELS_ADDR   | RW   |
+| typ zmiennej  | odwołanie do stałej |      |
+| ------------- | ------------------- | ---- |
+| array of byte | SFX_CHANNELS_ADDR   | RW   |
 
 Tablica rejestrów kanałów. Na każdy kanał przypada 16 bajtów informacji (patrz [Rejestry kanałów](#rejestry-kanałów))
 
-##### `currentNoteTableOfs`
-
-| typ zmiennej | odwołanie do stałej |      |
-| ------------ | ------------------- | ---- |
-| byte         | -                   | RW   |
-
-Zmienna wykorzystywana w procedurze `SFX_Note`. 
-
-Jej ustawienie na wartości: $00, $40, $80, $C0 pozwala wymusić na procedurze `SFX_Note` użycie określonej tablicy nut.
-
-Wartością domyślną jest $FF - funkcja pobiera wtedy informacje z tablicy `SFXNoteSetOfs`
+_*_ zmiana wartości może spowodować nie określone zachowanie silnika SFX mogące prowadzić nawet do zawieszenia komputera
 
 ## Procedury i funkcje
 
@@ -850,21 +1056,11 @@ Odtwarza wybrany SFX w podanym kanale z częstotliwością podanej nuty. Dzielni
 
 Procedura podobna w działaniu do `SFX_Note` z tą różnicą, że ustawia zadaną częstotliwość (dzielnik częstotliwości) dla odtwarzanego SFXa.
 
-##### `SFX_SetTAB`
-
-`SFX_SetTAB(channel,TABId:byte);`
-
-Ustawia rejestry kanału `channel` do odtwarzania pojedynczego TABa.
-
-Nie powoduje jego automatycznego odtwarzania o ile, nie jest już jakiś odtwarzany.
-
-Wartość `TABId` powyżej 64 powoduje wyłączenie odtwarzania w danym kanale.
-
 ##### `SFX_PlayTAB`
 
 `SFX_PlayTAB(channel,TABId:byte);`
 
-Działanie procedury jest podobne do `SFX_SetTAB` z tą różnicą, że włącza odtwarzanie jego zawartości.
+Pozwala odtworzyć pojedynczą definicję TAB
 
 ##### `SFX_PlaySong`
 
@@ -880,7 +1076,7 @@ Wyłącza pracę silnika SFX. Przywraca poprzedni wektor przerwania.
 
 ## Dostosowanie silnika SFX
 
-Konstrukcja SFX-Engine pozwala na dostosowanie do własnych potrzeb za pomocą dyrektyw kompilacji warunkowej. Pozwalają one na wybranie rozwiązań, które są wykorzystywane w programie, skracając kod wynikowy silnika.
+Konstrukcja SFX-Engine pozwala na dostosowanie do własnych potrzeb za pomocą dyrektyw kompilacji warunkowej. Pozwalają one na wybranie rozwiązań, pod kątem ich wykorzystania w programie, skracając kod wynikowy silnika.
 
 ### Etykiety kompilacji warunkowej
 
@@ -895,10 +1091,6 @@ Etykieta generuje niewielki kod, dający możliwość wglądu w aktualny stan mo
 Dodatkowe informacje umieszczane są w rejestrach kanałów pod offsetami 6 oraz 7 każdego kanału.
 
 Brak obecności tej etykiety, zwalnia dwa bajty ze strony zerowej z użytku przez silnik SFX.
-
-##### ~~`DONT_CALC_ABS_ADDR` & `DONT_CALC_SFX_NAMES`~~
-
-Opcja wycofana.
 
 ##### `SFX_SYNCAUDIOOUT`
 
@@ -951,7 +1143,7 @@ Długość definicji zawarta jest w 6 młodszych bitach definicji rodzaju modula
 | Nazwa          |           | ilość bajtów | wartość | opis                   |
 | -------------- | --------- | :----------: | :-----: | ---------------------- |
 | nagłówek       | header    |      5       | `SFXMM` |                        |
-| wersja         | version   |      1       |   $11   | $11 oznacza wersję 1.1 |
+| wersja         | version   |      1       |   $12   | $12 oznacza wersję 1.2 |
 | długość tytułu | title_len |      1       |   32    |                        |
 | tytuł          | title     |      32      |         |                        |
 
@@ -993,9 +1185,10 @@ Długość definicji zawarta jest w 6 młodszych bitach definicji rodzaju modula
 
 ### Sekcja definicji SONG
 
-|              |        |      |              |      |
-| ------------ | ------ | ---- | ------------ | ---- |
-| nagłówek     | header | 5    | `$00,'SONG'` |      |
-| ilość danych | len    | 2    |              |      |
-| dane         | data   | len  |              |      |
-|              |        |      |              |      |
+| Nazwa        |            | ilość bajtów | wartość      | opis |
+| ------------ | ---------- | ------------ | ------------ | ---- |
+| nagłówek     | header     | 5            | `$00,'SONG'` |      |
+| tempo        | SONG_Tempo | 1            |              |      |
+| ilość danych | len        | 2            |              |      |
+| dane         | data       | len          |              |      |
+|              |            |              |              |      |
