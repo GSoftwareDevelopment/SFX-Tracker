@@ -2,28 +2,28 @@ Unit HEAP;
 
 interface
 const
-	HEAP_ENTRIES			= 128;
+   HEAP_ENTRIES         = 128;
 (*
 {$IFNDEF ROMOFF}
-	HEAP_BOTTOM_ADDRESS  = $B400;
-	HEAP_MEMORY_SIZE		= $2800;
+   HEAP_BOTTOM_ADDRESS  = $B400;
+   HEAP_MEMORY_SIZE     = $2800;
 
-	HEAP_DATA_ADDR			= HEAP_BOTTOM_ADDRESS - HEAP_MEMORY_SIZE - HEAP_ENTRIES * 4;
-	HEAP_OFFSETS_ADDR		= HEAP_DATA_ADDR;
-	HEAP_SIZES_ADDR		= HEAP_DATA_ADDR + HEAP_ENTRIES * 2;
-	HEAP_MEMORY_ADDR		= HEAP_DATA_ADDR + HEAP_ENTRIES * 4;
+   HEAP_DATA_ADDR       = HEAP_BOTTOM_ADDRESS - HEAP_MEMORY_SIZE - HEAP_ENTRIES * 4;
+   HEAP_OFFSETS_ADDR    = HEAP_DATA_ADDR;
+   HEAP_SIZES_ADDR      = HEAP_DATA_ADDR + HEAP_ENTRIES * 2;
+   HEAP_MEMORY_ADDR     = HEAP_DATA_ADDR + HEAP_ENTRIES * 4;
 {$ELSE}
 *)
-	HEAP_MEMORY_SIZE		= $27F9;
-	HEAP_OFFSETS_ADDR		= $CC00;
-	HEAP_SIZES_ADDR		= HEAP_OFFSETS_ADDR + HEAP_ENTRIES*2;
-	HEAP_MEMORY_ADDR		= $D800;
+   HEAP_MEMORY_SIZE     = $27F9;
+   HEAP_OFFSETS_ADDR    = $CC00;
+   HEAP_SIZES_ADDR      = HEAP_OFFSETS_ADDR + HEAP_ENTRIES*2;
+   HEAP_MEMORY_ADDR     = $D800;
 (*
 {$ENDIF}
 *)
 var
-	HEAP_TOP:word; // memory occupied by heap
-	_mem:array[0..0] of byte absolute HEAP_MEMORY_ADDR;
+   HEAP_TOP:word; // memory occupied by heap
+   _mem:array[0..0] of byte absolute HEAP_MEMORY_ADDR;
 
 procedure HEAP_Init();
 function HEAP_Allocate(size:word):word;
@@ -34,87 +34,87 @@ function HEAP_FreeMem():word;
 
 implementation
 var
-	_heap_offsets:array[0..0] of word absolute HEAP_OFFSETS_ADDR;
-	_heap_sizes:array[0..0] of word absolute HEAP_SIZES_ADDR;
+   _heap_offsets:array[0..0] of word absolute HEAP_OFFSETS_ADDR;
+   _heap_sizes:array[0..0] of word absolute HEAP_SIZES_ADDR;
 
 function HEAP_Allocate(size:word):word;
 var
-	i,_heap_entry:word;
+   i,_heap_entry:word;
 
 begin
-	if (size=0) or (size>HEAP_MEMORY_SIZE) then
-	begin
-		result:=$ffff; exit;
-	end;
-	// find first free entry in heap_pointers list
-	for i:=0 to HEAP_ENTRIES-1 do
-		if (_heap_offsets[i]=$ffff) then
-			_heap_entry:=i;
+   if (size=0) or (size>HEAP_MEMORY_SIZE) then
+   begin
+      result:=$ffff; exit;
+   end;
+   // find first free entry in heap_pointers list
+   for i:=0 to HEAP_ENTRIES-1 do
+      if (_heap_offsets[i]=$ffff) then
+         _heap_entry:=i;
 
-	// store HEAP_TOP in entry
-	_heap_offsets[_heap_entry]:=HEAP_TOP;
-	// store reserved size
-	_heap_sizes[_heap_entry]:=size;
+   // store HEAP_TOP in entry
+   _heap_offsets[_heap_entry]:=HEAP_TOP;
+   // store reserved size
+   _heap_sizes[_heap_entry]:=size;
 
-	// return heap entry
-	result:=_heap_entry;
+   // return heap entry
+   result:=_heap_entry;
 
-	// incrace HEAP_TOP
-	HEAP_TOP:=HEAP_TOP+size;
+   // incrace HEAP_TOP
+   HEAP_TOP:=HEAP_TOP+size;
 end;
 
 function HEAP_GetAddr(hptr:word):word;
 begin
-	if (hptr<>$ffff) then
-		result:=_heap_offsets[hptr]
-	else
-		result:=$ffff;
+   if (hptr<>$ffff) then
+      result:=_heap_offsets[hptr]
+   else
+      result:=$ffff;
 end;
 
 function HEAP_GetSize(hptr:word):word;
 begin
-	if (hptr<>$ffff) then
-		result:=_heap_sizes[hptr]
-	else
-		result:=0;
+   if (hptr<>$ffff) then
+      result:=_heap_sizes[hptr]
+   else
+      result:=0;
 end;
 
 procedure HEAP_Release(hptr:word);
 var
-	c,adr,size:word;
+   c,adr,size:word;
 
 begin
-	// get entry address
-	adr:=_heap_offsets[hptr];
-	size:=_heap_sizes[hptr];
-	// keep from releasing the free pointer
-	if (adr=$ffff) then exit;
+   // get entry address
+   adr:=_heap_offsets[hptr];
+   size:=_heap_sizes[hptr];
+   // keep from releasing the free pointer
+   if (adr=$ffff) then exit;
 
-	if (adr+size<HEAP_TOP) then
-	begin
-		// search the heap for addresses greater than or equal to the pointer to be released (its address)
-		for c:=0 to HEAP_ENTRIES-1 do
-			if (_heap_offsets[c]>=adr) then
-				_heap_offsets[c]:=_heap_offsets[c]-size;
-	// shift heap move data up the heap, freeing up heap memory
-		move(@_mem[adr+size],@_mem[adr],size);
-	end;
+   if (adr+size<HEAP_TOP) then
+   begin
+      // search the heap for addresses greater than or equal to the pointer to be released (its address)
+      for c:=0 to HEAP_ENTRIES-1 do
+         if (_heap_offsets[c]>=adr) then
+            _heap_offsets[c]:=_heap_offsets[c]-size;
+   // shift heap move data up the heap, freeing up heap memory
+      move(@_mem[adr+size],@_mem[adr],size);
+   end;
 
-	_heap_offsets[hptr]:=$ffff;
-	HEAP_TOP:=HEAP_TOP-size;
+   _heap_offsets[hptr]:=$ffff;
+   HEAP_TOP:=HEAP_TOP-size;
 end;
 
 function HEAP_FreeMem:word;
 begin
-	result:=HEAP_MEMORY_SIZE-HEAP_TOP;
+   result:=HEAP_MEMORY_SIZE-HEAP_TOP;
 end;
 
 procedure HEAP_Init;
 begin
-	HEAP_TOP:=0;
-	fillchar(@_mem,HEAP_MEMORY_SIZE,$ff);
-	fillchar(@_heap_offsets,HEAP_ENTRIES*2,$FF);
-	fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF);
+   HEAP_TOP:=0;
+   fillchar(@_mem,HEAP_MEMORY_SIZE,$ff);
+   fillchar(@_heap_offsets,HEAP_ENTRIES*2,$FF);
+   fillchar(@_heap_sizes,HEAP_ENTRIES*2,$FF);
 end;
 
 end.
