@@ -30,7 +30,7 @@ fetch_TAB_row
 next_player_tick
          iny
          bne store_TAB_offset                   ; if TAB offset is wrap?
-			jmp TABFn_TAB_END								; process TRACK step
+         jmp TABFn_TAB_END                      ; process TRACK step
 
 store_TAB_offset
          tya

@@ -7,7 +7,7 @@ type
 
 const
    SFX_NameLength    = 14;
-   TAB_NameLength		= 8;
+   TAB_NameLength    = 8;
 
 {$i sfx_engine.conf.inc} // import SFX-Engine configuration
 
@@ -24,8 +24,8 @@ var
 
    SONG_Tempo:byte absolute SFX_REGISTERS+$00;
    SONG_Tick:byte absolute SFX_REGISTERS+$01;
-	SONG_Ofs:byte absolute SFX_REGISTERS+$02;
-	SONG_RepCount:byte absolute SFX_REGISTERS+$03;
+   SONG_Ofs:byte absolute SFX_REGISTERS+$02;
+   SONG_RepCount:byte absolute SFX_REGISTERS+$03;
 
    channels:array[0..63] of byte absolute SFX_CHANNELS_ADDR;
 
@@ -77,8 +77,8 @@ sysvbv      = $e45c
 .endif
 .endif
 
-			jsr INIT_SFXEngine.SFX_MAIN_TICK
-;			jsr INIT_SFXEngine+3
+         jsr INIT_SFXEngine.SFX_MAIN_TICK
+;        jsr INIT_SFXEngine+3
 
 .ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
 .ifdef MAIN.@DEFINES.ROMOFF
@@ -87,92 +87,92 @@ sysvbv      = $e45c
 .endif
          plr
          jmp xitvbl
-			rts
+         rts
 end;
 
 procedure SFX_Start;
 begin
-	INIT_SFXEngine();
-	NMIEN:=%00000000;
-	GetIntVec(iVBL, oldVBL);
-	SetIntVec(iVBL, @SFX_tick);
-	NMIEN:=%01000000;
+   INIT_SFXEngine();
+   NMIEN:=%00000000;
+   GetIntVec(iVBL, oldVBL);
+   SetIntVec(iVBL, @SFX_tick);
+   NMIEN:=%01000000;
 end;
 
 procedure SFX_ChannelOff; Assembler;
 asm
-	tay
-	jsr INIT_SFXEngine.SFX_OFF_CHANNEL
+   tay
+   jsr INIT_SFXEngine.SFX_OFF_CHANNEL
 end;
 
 procedure SFX_Off; Assembler;
 asm
-	jsr INIT_SFXEngine.SFX_OFF_ALL
+   jsr INIT_SFXEngine.SFX_OFF_ALL
 end;
 
 procedure SFX_Note; Assembler;
 asm
-	lda channel
-	asl @
-	asl @
-	asl @
-	asl @
-	tax
-	ldy SFXId
-	lda note
-	clc			; accu has note index
-	jsr INIT_SFXEngine.SFX_PLAY_NOTE
+   lda channel
+   asl @
+   asl @
+   asl @
+   asl @
+   tax
+   ldy SFXId
+   lda note
+   clc         ; accu has note index
+   jsr INIT_SFXEngine.SFX_PLAY_NOTE
 end;
 
 procedure SFX_Freq; Assembler;
 asm
-	lda channel
-	asl @
-	asl @
-	asl @
-	asl @
-	tax
-	ldy SFXId
-	lda freq
-	sec			; accu has frequency value
-	jsr INIT_SFXEngine.SFX_PLAY_NOTE
+   lda channel
+   asl @
+   asl @
+   asl @
+   asl @
+   tax
+   ldy SFXId
+   lda freq
+   sec         ; accu has frequency value
+   jsr INIT_SFXEngine.SFX_PLAY_NOTE
 end;
 
 procedure SFX_PlayTab; Assembler;
 asm
-	lda #$FF
-	sta SONG_Ofs
+   lda #$FF
+   sta SONG_Ofs
 
-	lda channel
-	asl @
-	asl @
-	asl @
-	asl @
-	tax
-	lda TABId
+   lda channel
+   asl @
+   asl @
+   asl @
+   asl @
+   tax
+   lda TABId
 
-	jsr INIT_SFXEngine.SFX_PLAY_TAB
+   jsr INIT_SFXEngine.SFX_PLAY_TAB
 
-	lda #$00
-	sta SONG_Tick
+   lda #$00
+   sta SONG_Tick
 end;
 
 procedure SFX_PlaySONG; Assembler;
 asm
-	tay
-	jsr INIT_SFXEngine.SFX_PLAY_SONG
+   tay
+   jsr INIT_SFXEngine.SFX_PLAY_SONG
 end;
 
 procedure SFX_End;
 begin
-	SFX_Off();
-	if oldVBL<>nil then
-	begin
-		NMIEN:=%00000000;
-		SetIntVec(iVBL, oldVBL);
-		NMIEN:=%01000000;
-		oldVBL:=nil;
-	end;
+   SFX_Off();
+   if oldVBL<>nil then
+   begin
+      NMIEN:=%00000000;
+      SetIntVec(iVBL, oldVBL);
+      NMIEN:=%01000000;
+      oldVBL:=nil;
+   end;
 end;
 
 end.

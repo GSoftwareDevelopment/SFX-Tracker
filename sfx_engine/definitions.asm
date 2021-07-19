@@ -1,7 +1,7 @@
 audf        = $d200
 audc        = $d201
-audctl		= $D208
-skctl			= $D20F
+audctl      = $D208
+skctl       = $D20F
 
 ; CONSTANTS - offsets in channels registers table
 
@@ -14,10 +14,10 @@ AUDIOBUF          = $E8      ; 8 bytes audio buffer for sync output
 
 SONG_TEMPO        = $F0      ; SONG Tempo
 SONG_TICK_COUNTER = $F1      ; SONG tick counter
-SONG_Ofs				= $F2		  ;
-SONG_Rep				= $F3		  ;
+SONG_Ofs          = $F2      ;
+SONG_Rep          = $F3      ;
 
-dataPtr				= $F4		  ; SFX or TAB data pointer (2 bytes)
+dataPtr           = $F4      ; SFX or TAB data pointer (2 bytes)
 
 TABOrder          = $F7      ; TAB Order
 TABParam          = $F8      ; TAB Parameter (Note/Freq/Position)
@@ -51,8 +51,8 @@ MODMODE_MFD       = 1
 MODMODE_HFD       = 0
 MODMODE_RELATIVE  = %1000
 
-trkBlank				= %01000000 // blank (No operation)
-trkOff				= %01111111
+trkBlank          = %01000000 // blank (No operation)
+trkOff            = %01111111
 trkOrd_SetTempo   = %10000000
 trkOrd_JumpTo     = %10000010
 trkOrd_Repeat     = %10000100

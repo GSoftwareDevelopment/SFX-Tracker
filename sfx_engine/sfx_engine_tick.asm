@@ -1,8 +1,8 @@
 .ifdef MAIN.@DEFINES.SFX_PLAYBACK
 ; SONG CLOCK CONTROL
 
-			lda SONG_TICK_COUNTER
-			bmi dont_reset_tick_counter				; if SONG_TICK>=128 then don't countdown
+         lda SONG_TICK_COUNTER
+         bmi dont_reset_tick_counter            ; if SONG_TICK>=128 then don't countdown
          dec SONG_TICK_COUNTER
          bpl dont_reset_tick_counter
 ; reset tick counter

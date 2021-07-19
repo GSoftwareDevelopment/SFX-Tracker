@@ -12,15 +12,15 @@
 {$DEFINE SFX_PLAYBACK}           // Enable SONG/TAB playback support
 
 AUDIO_BUFFER_ADDR = $E8;
-SFX_REGISTERS		= $F0;
+SFX_REGISTERS     = $F0;
 
 SFX_CHANNELS_ADDR = $6C0;
 SONG_ADDR         = $CB00;                // table of SONG definition
 SFX_MODE_SET_ADDR = $CC00;                // table of SFX modes
 SFX_NOTE_SET_ADDR = $CC80;                // table of SFX note table presets
 
-NOTE_TABLE_PAGE	= $CD;
-NOTE_TABLE_ADDR	= NOTE_TABLE_PAGE*$100; // = NOTE_TABLE_ADDR								; predefined table of note frequency
+NOTE_TABLE_PAGE   = $CD;
+NOTE_TABLE_ADDR   = NOTE_TABLE_PAGE*$100; // = NOTE_TABLE_ADDR                      ; predefined table of note frequency
 
 SFX_TABLE_ADDR    = $CE00;                // list for SFX definitions
 TAB_TABLE_ADDR    = SFX_TABLE_ADDR+$0080; // list for TAB definitions

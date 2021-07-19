@@ -1,20 +1,20 @@
 check_TAB_Function
 ; current order is in A register
-         cmp #$FF											; check TABEND function
+         cmp #$FF                               ; check TABEND function
          bne check_TABFn_REPEAT
 
 TABFn_TAB_END
 
-			lda SONG_Ofs    							; get current SONG offset
-			cmp #$FF										; If the offset points to a value other than $FF
-			beq play_TAB_again						;
+         lda SONG_Ofs                        ; get current SONG offset
+         cmp #$FF                            ; If the offset points to a value other than $FF
+         beq play_TAB_again                  ;
 
-			jsr SONG_process							; ...it means that SONG is played.
-			jmp tick_start
+         jsr SONG_process                    ; ...it means that SONG is played.
+         jmp tick_start
 
 play_TAB_again
-			ldy #0										; set TAB offset to begin
-			jmp fetch_TAB_row
+         ldy #0                              ; set TAB offset to begin
+         jmp fetch_TAB_row
 
 check_TABFn_REPEAT
          cmp #$C0                               ; check REPEAT function
@@ -23,8 +23,8 @@ check_TABFn_REPEAT
 TAB_FN_Loop
          and #%00111111                         ; extract value from order (repeat times)
          beq fetch_next_tab_row                 ; =0 REPEAT zero times? :| Can't possible
-																; originally, it was a conditional jump `BNE TAB_FN_JumpTo`,
-																; which means, the TAB function JUMP TO
+                                                ; originally, it was a conditional jump `BNE TAB_FN_JumpTo`,
+                                                ; which means, the TAB function JUMP TO
 TAB_FN_Repeat
          sta _regTemp                           ; temporary store value from order (repeat value)
 
@@ -40,7 +40,7 @@ TAB_FN_ContinueLoop
 
          bne fetch_next_tab_row
          jsr SONG_process                      ; if TAB offset is wrap, process TRACK step
-			jmp tick_start
+         jmp tick_start
 
 fetch_next_tab_row
          jmp fetch_TAB_ROW                      ; fetch next TAB row
@@ -69,7 +69,7 @@ TAB_FN_NoteOff
          sta SFX_CHANNELS_ADDR+_chnCtrl,x
 .endif
 
-			jsr turn_off_Audio_channel
+         jsr turn_off_Audio_channel
          jmp next_player_tick
 
 TAB_FN_Blank

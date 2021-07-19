@@ -101,8 +101,8 @@ setPokey
 
 next_SFX_Set
          iny                                 ; increase SFX offset
-			bne SFX_Set_Offset						; check if SFX is wrap
-			ldy #SFX_OFF								; set SFX to not play
+         bne SFX_Set_Offset                  ; check if SFX is wrap
+         ldy #SFX_OFF                        ; set SFX to not play
 
 SFX_Set_Offset
          tya                                 ; tranfer current SFX offset to A register

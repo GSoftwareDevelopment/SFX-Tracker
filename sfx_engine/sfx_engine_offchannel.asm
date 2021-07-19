@@ -4,12 +4,12 @@
 ; input:
 ; x - channel offset ($00, $10, $20, $30)
 
-			lda #$FF										; disable processing...
-			sta SFX_CHANNELS_ADDR+_tabOfs,x		; ... of TABs
-         sta SFX_CHANNELS_ADDR+_chnOfs,x		; ... and SFXs
+         lda #$FF                            ; disable processing...
+         sta SFX_CHANNELS_ADDR+_tabOfs,x     ; ... of TABs
+         sta SFX_CHANNELS_ADDR+_chnOfs,x     ; ... and SFXs
 
 .ifdef MAIN.@DEFINES.SFX_previewChannels
-			lda #00
+         lda #00
          sta SFX_CHANNELS_ADDR+_chnCtrl,x
 .endif
 

@@ -21,11 +21,11 @@ modulators
 ;
 
          lda chnMode
-			bpl check_DFD_Mod							; check 7 bit
-			jmp setPokey								; is set means no modulator mode (not supported by SFXMM)
-															; The definition data does not contain MOD/VAL information.
-															; Only distortion and volume.
-															; Definition length is specified in SFX's MOD_MODE (bits 6 to 0)
+         bpl check_DFD_Mod                   ; check 7 bit
+         jmp setPokey                        ; is set means no modulator mode (not supported by SFXMM)
+                                             ; The definition data does not contain MOD/VAL information.
+                                             ; Only distortion and volume.
+                                             ; Definition length is specified in SFX's MOD_MODE (bits 6 to 0)
 
 check_DFD_Mod
 .ifdef MAIN.@DEFINES.DFD_MOD // .or .def MAIN.@DEFINES.USE_ALL_MODULATORS
@@ -39,19 +39,19 @@ check_DFD_Mod
 
          ; In this modulation mode, given that the frequency is placed in the MOD/VAL value,
          ; there is no concept of note or SFX frequency.
-			; This mode is useful for sound synthesis.
-			; The end of the definition cannot be marked, hence SFX in this mode should have
-			; a full length of 128 bytes.
-			; The definition is looped!
+         ; This mode is useful for sound synthesis.
+         ; The end of the definition cannot be marked, hence SFX in this mode should have
+         ; a full length of 128 bytes.
+         ; The definition is looped!
 .endif
 
-			; !!! Note on LFD_NLM, MFD and HFD modes !!!
-			;
-			; It is important that the definition has an ending placed in MOD/VAL,
-			; and its value has the 7th bit set.
-			;
-			; EXTREME CAUTION should be exercised when jumping as it is not controlled.
-			; This can lead to undesired behavior or even hanging of the computer!
+         ; !!! Note on LFD_NLM, MFD and HFD modes !!!
+         ;
+         ; It is important that the definition has an ending placed in MOD/VAL,
+         ; and its value has the 7th bit set.
+         ;
+         ; EXTREME CAUTION should be exercised when jumping as it is not controlled.
+         ; This can lead to undesired behavior or even hanging of the computer!
 
 check_LFD_NLM_Mod
 .ifdef MAIN.@DEFINES.LFD_NLM_MOD // .or .def MAIN.@DEFINES.USE_ALL_MODULATORS
