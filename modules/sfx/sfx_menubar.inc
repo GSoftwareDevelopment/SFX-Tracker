@@ -1,17 +1,12 @@
-function SFXList():boolean;
+procedure SFXList();
 var
    nSFX:shortint;
 
 begin
    nSFX:=dataList(SFXPtr,currentSFX,maxSFXs,SFXNameLength);
-   if (nSFX<>-1) and (nSFX<>currentSFX) then
-   begin
-      getSFXData(nSFX);
-      SFXDetermineLength();
-      result:=true;
-   end
-   else
-      result:=false;
+   if (nSFX=-1) then nSFX:=currentSFX;
+	getSFXData(nSFX);
+	SFXScreen();
 end;
 
 procedure SFXMenuBarChange();
@@ -30,7 +25,7 @@ end;
 procedure SFXSelectMenuBar(var section:byte);
 begin
    case section of
-      0: if SFXList then modified:=false;
+      0: SFXList();
       1: section:=3;
       2: SFX_Piano();
       7: SFX_Options(SFXMenuOption_Back);
@@ -38,11 +33,9 @@ begin
 
    if (section>=3) and (section<=6) then
    begin
-      colorVLine(winXStart+cursorPos,winYStart,8,3);
       repeat
          section:=section and $f;
          updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
-         screen2video();
          case section of
             3: SFXEditLoop(SFX_vol_dist,0);
             4: SFXEditLoop(SFX_vol_dist,1);

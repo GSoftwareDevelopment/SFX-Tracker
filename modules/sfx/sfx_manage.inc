@@ -5,8 +5,7 @@ var
 
 begin
    // clear local structure of SFX
-   fillchar(@SFX_vol_dist,SFX_maxLength,0);
-   fillchar(@SFX_modulate,SFX_maxLength,0);
+	ClearEditBufs(true);
 
    size:=heap_getData(nSFX,SFXNameLength,SFXName);
    if size>0 then
@@ -14,8 +13,8 @@ begin
       sfxLen:=0;
       ofs:=0;
       repeat
-         SFX_modulate[sfxLen]:=tmpbuf[ofs]; ofs:=ofs+1;
-         SFX_vol_dist[sfxLen]:=tmpbuf[ofs]; ofs:=ofs+1;
+         SFX_modulate[sfxLen]:=heapStoreBuf[ofs]; ofs:=ofs+1;
+         SFX_vol_dist[sfxLen]:=heapStoreBuf[ofs]; ofs:=ofs+1;
          sfxLen:=sfxLen+1; size:=size-2;
       until  (sfxLen=SFX_maxLength) or (size=0);
    end
@@ -66,8 +65,8 @@ begin
    ofs:=0;
    for i:=0 to sfxLen-1 do
    begin
-      tmpbuf[ofs]:=SFX_modulate[i]; ofs:=ofs+1;
-      tmpbuf[ofs]:=SFX_vol_dist[i]; ofs:=ofs+1;
+      heapStoreBuf[ofs]:=SFX_modulate[i]; ofs:=ofs+1;
+      heapStoreBuf[ofs]:=SFX_vol_dist[i]; ofs:=ofs+1;
    end;
    size:=sfxLen shl 1; // multiply SFX length by two, becouse, for one entry is 2 bytes info
 

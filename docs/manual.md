@@ -2,9 +2,7 @@
 
 To program na 8-bitowe komputery ATARI pozwalający tworzyć melodie, które później można wykorzystać w innych produkcjach.
 
-Do odtwarzania dźwięków oraz melodi, wykorzystany jest autorski silnik dźwiękowy o nazwie **SFX-Engine**, którego głównym założeniem jest:
-
-Jak największa elastyczność w dostosowaniu przez użytkownika przy zachowaniu optymalnej wydajności.
+Do odtwarzania dźwięków oraz melodi, wykorzystany jest autorski silnik dźwiękowy o nazwie **SFX-Engine**
 
 ## INSTRUKCJA OBSŁUGI PROGRAMU
 
@@ -149,6 +147,10 @@ Aby ustawić żądaną wartość składowej, można posłużyć się dwoma metod
 
 Przemieszczanie kursora edycji odbywa się za pomocą klawiszy strzałek __LEWO/PRAWO__ i w ten sposób przemieszamy kursor o jedną pozycję (stosownie do kierunku).
 Jest też możliwość szybkiego przemieszczania się w obrębie definicji. W tym celu należy nacisnąć dodatkowo klawisz __CONTROL__ wraz z kierunkiem przemieszczenia. Pozycja kursora będzie ulegała zmianie (stosownie do kierunku) o szerokość ekranu, tj. 16 punktów definicji SFXa widocznych na ekranie edycji.
+
+*[dodano w wersji RC2]* W trybie edycji można też zmieniać aktualnie edytowany SFX, bez konieczności wychodzenia. W tym celu, należy przytrzymać klawisz **SHIFT** i użyć strzałek **LEWO/PRAWO**.
+
+*[dodano w wersji RC2]* Kombinacje klawiszy **CONTROL** oraz **X/C/V** pozwalają korzystać ze schowka, więcej na ten temat w sekcji [Schowek](#schowek)
 
 #### Menu funkcji modulacji
 
@@ -347,11 +349,25 @@ Wprowadzanie nut odbywa się za pośrednictwem wirtualnego pianina, którego zas
 
 Klawiszami strzałek **LEWO/PRAWO** można zmienić aktualnie używany SFX, a informacja o nim ukaże się w linii statusu (nad wizualizacją pianina)
 
-Trzymając **CONTROL** i używając strzałek **LEWO/PRAWO** można przełączać aktualnie edytowany TAB, a **CONTROL+RETURN** pozwala wybrać z listy TAB do edycji.
+*[Zmiana w wersji RC2]* Trzymając **SHIFT** i używając strzałek **LEWO/PRAWO** można przełączać aktualnie edytowany TAB, a **SHIFT+RETURN** pozwala wybrać z listy TAB do edycji.
 
 Klawisz **RETURN** otwiera menu **Funkcji TAB** opisane w następnej sekcji.
 
+*[Dodano w wersji RC2]* Klawisze **CONTROL+P** pozwalają odtworzyć zawartość TABa od miejsca w którym znajduje się kursor.
+
+*[dodano w wersji RC2]* Kombinacje klawiszy **CONTROL** oraz **X/C/V** pozwalają korzystać ze schowka, więcej na ten temat w sekcji [Schowek](#schowek)
+
 Wyjście z edycji umożliwia klawisz **ESC**
+
+## Odtwarzanie TABa
+
+Opcja `PLY` pozwala na odtworzenie zawartości aktualnego TABa.
+
+W trakcie jego grania, użytkownik może również używać [wirtualnego pianina](#tryb-pianina), jednak w tym trybie nie będzie funkcjonować polifonia.
+
+Wybranie opcji `PLY` z menu bocznego odtworzy TAB od początku w niekończącej się pętli. Aby przerwać odtwarzanie, wystarczy wcisnąć sklawisz **ESC**.
+
+*[Dodano w wersji RC2*] W trybie edycji TABa, naciśnięcie klawiszy **CONTROL+P** pozwoli odtworzyć zawartość TABa od miejsca w którym znajduje się kursor edycji.
 
 ## Funkcje TAB
 
@@ -361,9 +377,9 @@ Każdy TAB może być definiowany z użyciem następujących funkcji:
 
 - nuty - to raczej nie ulega wątpliwości, najważniejsza funkcja w TABie :D
 - `TABEND` - pozwala na zakończenie TABa w dowolnym miejscu
-- `JUMP TO` - funkcja skoku bezpośredniego
 - `REPEAT` - funkcja powtórzenia
 - `NOTE VALUE` - tą funkcją też można tworzyć melodię, jednak jej zapis to wartość dzielnika częstotliwości i jest dziesiętny.
+- `NOTE OFF` - wyłączenie odtwarzania SFXa
 - `NOP` (No OPeration) - po prostu brak operacji.
 
  ![TAB-Functions_list](./imgs/TAB-Functions_list.png)
@@ -387,23 +403,11 @@ Tak wygląda w zapisie:
 
 Jak widać na powyższym obrazku, długość (oznaczona w prawym górnym rogu) jest ustawiona na 5 wierszy, to powoduje, że TAB w pamięci zajmuje tylko 10 bajtów (po dwa bajty na linię) a nie 256 - w przypadku nie zastosowania `TABEND`.
 
-#### JUMP TO
-
-Jedna z dwóch funkcji pozwalających na zapętlenie TABa.
-
-Funkcja `JUMP TO` wykonuje skok do podanej pozycji w TABie. Takie zapętlenie będzie wykonywane bez końca.
-
-Tak wygląda w zapisie:
-
-![TAB-Functions_JUMP_TO](./imgs/TAB-Functions_JUMP_TO.png)
-
-Po wybraniu tej funkcji, użytkownik zostanie poproszony o podanie numeru wiersza skoku.
-
 #### REPEAT
 
-Kolejna funkcja służąca do zapętlania.
+Funkcja służąca do zapętlania.
 
-Tym razem, `REPEAT` poprzez fakt, że oprócz miejsca skoku, zawiera dodatkowy parametr określający ilość powtórzeń, powtarzać będzie "blok" żądaną ilość razy, po czym przejdzie dalej.
+`REPEAT` poprzez fakt, że oprócz miejsca skoku, zawiera dodatkowy parametr określający ilość powtórzeń, powtarzać będzie "blok" żądaną ilość razy, po czym przejdzie dalej.
 
 Wygląd w zapisie:
 
@@ -434,11 +438,41 @@ Wybór tej funkcji, powoduje monit o podanie dwóch wartości:
 
 Funkcja bezparametrowa. Powoduje wyłączenie aktualnie odtwarzanego SFXa.
 
+TO DO: brak zdjęć
 
+
+
+# Schowek
+
+*[dodano w wersji RC2]*
+
+> Każdy dobrze wie, jak pomocne bywa Kopiuj-Wklej. SFXMM też posiada taką funkcjonalność
+
+Obsługa schowka działa <u>tylko w trybie edycji</u> SFXów oraz TABów i pozwala na przenoszenie lub kopiowanie całych definicji (tzn. że nie można skopiować fragmentu SFXa czy też TABa).
+
+Zastosowna jest klawiszologia znana z komputerów PC/MAC, gdzie za operacje na schowku odpowiedzialne są następujące kombinacje klawiszy:
+
+- **CONTROL+C** - kopiuje aktualnie edytowany SFX/TAB do schowka
+- **CONTROL+V** - wkleja zawartość schowka do aktualnie edytowanego SFXa/TABa
+- **CONTROL+X** - kopiuje edytowany SFX/TAB do schowka, kasując zawartość aktualnego SFXa/TABa
+
+> Starałem się zabezpieczyć program przed możliwością skopiowania, np. definicji SFXa do TABa, ale kto wie... może komuś się (jakimś cudem) udać taka "sztuczka"
+
+Każda operacja na schowku jest sygnalizowana komunikatem w pasku statusu. Jeżeli schowek jest pusty, zostanie to ogłoszone komunikatem:
+
+**EMPTY CLIPBOARD**
+
+lub jeśli zawiera treść z innego modułu, pojawi się monit:
+
+**BAD CLIPBOARD DATA**
+
+
+
+**UWAGA!** Dane w schowku ulegną skasowaniu przy korzystaniu z operacji IO
 
 # Moduł SONG
 
-
+TO DO
 
 # Rodzaje modulacji
 
@@ -569,13 +603,31 @@ $$
 Odejmowanie to dodawanie przeciwnej liczby do wartości bazowej.
 Ośmiobitowy rejestr (z natury działa w modulo 256) ulega przepełnieniu (co jest to ignorowane) a pozostała wartość w tym rejestrze jest wynikiem.
 
+---
 
 
-# SFX ENGINE
+
+# Szczegóły techniczne SFX ENGINE
+
+**SFX Engine** jest autorskim silnikiem muzycznym, którego głównym założeniem jest:
+
+*Jak największa elastyczność w dostosowaniu przez użytkownika przy zachowaniu optymalnej wydajności.*
+
+Napisany w całości w assemblerze dla procesorów 6502.
+
+W tej części zapoznasz się z budową silnika oraz ze sposobami implementacji (API dla MadPascala), dzięki którym będziesz w stanie wykorzystać go we własnych programach.
+
+Jeśli coś jest nie jasne dla Ciebie, napisz do mnie, postaram się wytłumaczyć i ewentualnie wprowadzić zmiany w dokumentacji.
+
+> e-mail: ghostsoftwaredevelopment(at)gmail.com
+>
+> github: GSoftwareDevelopment/SFX-Tracker
+
+
 
 ## Jądro silnika
 
-To kod na który składają się:
+Szczegóły techniczneTo kod na który składają się:
 
 - tablica skoków
 
@@ -584,6 +636,8 @@ To kod na który składają się:
 - kod wykonywalny silnika
 
   W trakcie kompilacji można ustawić adres bazowy, jednak kod <u>nie jest relokowalny</u>.
+
+
 
 ### Tablica skoków
 
@@ -685,7 +739,7 @@ Ustawia rejestry wybranego kanału na odtwarzanie wybraneg TABa, jednak nie powo
    lda #$FF			; zatrzymanie przetwarzania utworu (TAB/SONG)
    sta SONG_Tick
 
-   ldX #$10			; kanał 2
+   ldx #$10			; kanał 2
    lda #2			; TAB #2
 
    jsr SFXEngine+9	; wywołanie procedury SFX_PLAY_TAB
@@ -1132,6 +1186,8 @@ Długość definicji zawarta jest w 6 młodszych bitach definicji rodzaju modula
 
 
 # FORMAT PLIKU SMM
+
+Opis formatu pliku z utworem stworzonym pod **SFX Music Maker** dla wersji RC2.
 
 ## Założenia formatu pliku:
 

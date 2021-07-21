@@ -1,17 +1,14 @@
-function TABList():boolean;
+procedure TABList();
 var
    nTAB:shortint;
 
 begin
    nTAB:=dataList(TABPtr,currentTAB,maxTABs,TABNameLength);
-   if (nTAB<>-1) and (nTAB<>currentTAB) then
-   begin
-      getTABData(nTAB);
-      TABDetermineLength();
-      result:=true;
-   end
-   else
-      result:=false;
+   if (nTAB=-1) then nTAB:=currentTAB;
+
+	getTABData(nTAB);
+	TABDetermineLength();
+//   modified:=false;
 end;
 
 procedure TABChangeMenuBarOpt(section:byte);
@@ -19,11 +16,7 @@ begin
    case section of
       0: begin
             controlSelectionKeys(key,key_Left,key_Right,currentTAB,0,maxTABs-1);
-            modified:=false;
-            getTABData(currentTAB);
-            TABDetermineLength();
-            updateTABInfo();
-            updateTAB(true);
+            TABScreen();
          end;
    end;
 end;
@@ -31,15 +24,10 @@ end;
 procedure TABSelectMenuBar(section:byte);
 begin
    case section of
-      0: if TABList then
-         begin
-            updateTAB(true);
-            updateTABInfo();
-            modified:=false;
-         end;
+      0: TABList();
       1: TABEditLoop();
-      2: TAB_Play();
+      2: TAB_Play(0);
       3: TAB_Options(TABMenuOption_Back);
    end;
-
+	TABScreen();
 end;

@@ -15,6 +15,7 @@ reset_all_tracks
          ldx #$30
 
 reset_TRACKS
+			sec
          jsr SFX_OFF_CHANNEL
 
          txa                                 ; change current channel

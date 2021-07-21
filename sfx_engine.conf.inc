@@ -25,6 +25,4 @@ NOTE_TABLE_ADDR   = NOTE_TABLE_PAGE*$100; // = NOTE_TABLE_ADDR                  
 SFX_TABLE_ADDR    = $CE00;                // list for SFX definitions
 TAB_TABLE_ADDR    = SFX_TABLE_ADDR+$0080; // list for TAB definitions
 
-DATA_ADDR         = $D800;                // data address
-
 

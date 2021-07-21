@@ -16,15 +16,7 @@ var
 {$i modules/tab/tab_menubar.inc}
 
 procedure TABLoop();
-   procedure update();
-   begin
-      updateBar(menu_tabs,width_menuBar,section,color_choice,color_selected);
-   end;
-
 begin
-   update();
-   screen2video();
-   modified:=false;
    repeat
       if keyPressed then
       begin
@@ -34,7 +26,7 @@ begin
             key_Left,key_Right: TABChangeMenuBarOpt(section);
             key_RETURN: TABSelectMenuBar(section);
          end;
-         update();
+         updateTABBar();
          screen2video();
       end;
    until false;
@@ -42,7 +34,7 @@ end;
 
 procedure TABModule();
 begin
-   section:=0; cursorPos:=0; cursorShift:=0;
+   section:=0; cursorPos:=0; cursorShift:=0; modified:=false;
    TABScreen();
    TABLoop();
 end;

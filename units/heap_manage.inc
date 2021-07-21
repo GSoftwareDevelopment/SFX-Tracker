@@ -14,7 +14,7 @@ begin
       while (nameLength>0) and (name[nameLength]=#0) do nameLength:=nameLength-1;
       name[0]:=char(nameLength); // store detected name length
       // get data definition
-      move(pointer(addr),@tmpbuf,size);
+      move(pointer(addr),@heapStoreBuf,size);
 
       result:=size;
    end
@@ -38,7 +38,7 @@ begin
    HEAP_PTR[hid]:=HEAP_TOP;
    _heap_sizes[hid]:=size;
 
-   move(@tmpbuf,pointer(HEAP_TOP),size);  // copy prepared data to the heap
+   move(@heapStoreBuf,pointer(HEAP_TOP),size);  // copy prepared data to the heap
 
    inc(HEAP_TOP,size);                    // set HEAP_TOP to the end of stored data
 end;
@@ -102,8 +102,6 @@ begin
       ofs:=ofs+itemSize;
       listBuf[ofs-1]:=ch;
    end;
-   move(@moduleBar,@tmpbuf,200);
    box(0,2,20,9,$40);
    result:=listChoice(1,2,itemSize,9,currentItem,listBuf,maxItems,true);
-   move(@tmpbuf,@moduleBar,200);
 end;

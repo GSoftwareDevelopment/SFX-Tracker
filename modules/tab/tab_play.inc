@@ -1,6 +1,4 @@
-procedure TAB_Play();
-var
-   oldCurPos,oldCurShift:byte;
+procedure TAB_Play(startPos:byte);
 
    procedure updateTabView();
    begin
@@ -30,9 +28,9 @@ begin
       showError(msg_UnknownDefinition);
       exit;
    end;
-   oldCurPos:=cursorPos; oldCurShift:=cursorShift;
-   reset_pianoVis(); keyClick:=false; PLYtm:=timer; PLYstate:=2;
+   reset_pianoVis(); keyClick:=false; PLYtm:=timer; PLYstate:=0;
    SFX_PlayTAB(0,currentTAB);
+   channels[$00+_tabOfs]:=startPos;
    repeat
       updatePianoVis();
 
@@ -54,7 +52,8 @@ begin
          move(@screen,@video,240);
       end;
    until false;
-   SFX_Off(); keyClick:=true;
+   PLYtm:=0; PLYstate:=2; PlayFlash();
+   SFX_Off(); keyClick:=true; key:=TKeys($FF);
    reset_pianoVis();
    updateTAB(true);
 end;

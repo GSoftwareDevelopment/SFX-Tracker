@@ -88,7 +88,12 @@ end;
 
 procedure SFX_ChannelOff; Assembler;
 asm
-   tay
+	asl @
+	asl @
+	asl @
+	asl @
+   tax
+   clc
    jsr INIT_SFXEngine.SFX_OFF_CHANNEL
 end;
 

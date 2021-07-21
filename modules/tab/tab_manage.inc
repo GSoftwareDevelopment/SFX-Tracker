@@ -22,17 +22,15 @@ var
 
 begin
    // clear local structure of TAB
-   fillchar(@TAB_notes,TAB_maxLength,$00);
-   fillchar(@TAB_fnSFX,TAB_maxLength,$c0);
-
+	ClearEditBufs(false);
    size:=heap_getData(64+nTAB,TABNameLength,TABName);
    if size>0 then
    begin
       TABLen:=0; // set current TAB length to zero (0)
       ofs:=0;
       repeat
-         TAB_notes[TABLen]:=tmpbuf[ofs]; ofs:=ofs+1;
-         TAB_fnSFX[TABLen]:=tmpbuf[ofs]; ofs:=ofs+1;
+         TAB_notes[TABLen]:=heapStoreBuf[ofs]; ofs:=ofs+1;
+         TAB_fnSFX[TABLen]:=heapStoreBuf[ofs]; ofs:=ofs+1;
          TABLen:=TABLen+1; size:=size-2;
       until (TABLen=TAB_maxLength) or (size=0);
    end
@@ -104,8 +102,8 @@ begin
    ofs:=0;
    for i:=0 to TABLen-1 do
    begin
-      tmpbuf[ofs]:=TAB_notes[i]; ofs:=ofs+1;
-      tmpbuf[ofs]:=TAB_fnSFX[i]; ofs:=ofs+1;
+      heapStoreBuf[ofs]:=TAB_notes[i]; ofs:=ofs+1;
+      heapStoreBuf[ofs]:=TAB_fnSFX[i]; ofs:=ofs+1;
    end;
    size:=TABLen shl 1; // multiply TAB length by two, becouse, for one entry is 2 bytes info
 

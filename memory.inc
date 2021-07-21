@@ -38,4 +38,4 @@ HEAP_MEMORY_SIZE     = $27F9;
 
 HEAP_PTRLIST_ADDR    = $CE00; // general table of pointers on the heap
 HEAP_SIZES_ADDR      = $CF00; // table of data sizes on the heap
-HEAP_MEMORY_ADDR     = $D800; // = DATA_ADDR                            ; heap - main data memory
+HEAP_MEMORY_ADDR     = $D800; // heap - main data memory

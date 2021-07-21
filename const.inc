@@ -146,7 +146,7 @@ SFXLenY           = 10;
    base_menus                 = 0;
    base_strings               = 20;
    base_messages              = 36;
-   base_appdata               = 57;
+   base_appdata               = 61;
 
    menu_top                   = base_menus+0;
    menu_sfx                   = base_menus+1;
@@ -213,6 +213,10 @@ SFXLenY           = 10;
    msg_SetTempoPrompt         = base_messages+18;
    msg_pianoTuneInfo          = base_messages+19;
    msg_newPrompt              = base_messages+20;
+	msg_ClipboardBadData			= base_messages+21;
+	msg_ClipboardEmpty			= base_messages+22;
+	msg_ClipboardCopied			= base_messages+23;
+	msg_ClipboardPasted			= base_messages+24;
 
    app_logo                   = base_appdata+0;
    app_virtual_piano          = base_appdata+1;

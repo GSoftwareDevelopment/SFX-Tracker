@@ -1,3 +1,8 @@
+procedure updateTABBar();
+begin
+	updateBar(menu_tabs,width_menuBar,section,color_choice,color_selected);
+end;
+
 procedure updateTABInfo();
 begin
    putValue(1,1,currentTAB,2,1);
@@ -151,5 +156,7 @@ begin
    TABDetermineLength();
    updateTABInfo();
    updateTAB(true);
+   updateTABBar();
 
+	screen2video();
 end;

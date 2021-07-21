@@ -16,21 +16,32 @@ type
       key_INVERS = 39,
       key_TAB = 44,
       key_BackSpc = 52,
-      key_INSERT = 55,
       key_CAPS = 60,
+      key_SHIFT_Left = 70,
+      key_SHIFT_Right = 71,
       key_SHIFT_RETURN = 76,
+      key_SHIFT_Up = 78,
+      key_SHIFt_Down = 79,
       key_SHIFT_TAB = 108,
+		key_SHIFT_DELETE = 116,
+		key_SHIFT_CLEAR = 118,
+      key_SHIFT_INSERT = 119,
+
       key_CTRL_Left = 134,
       key_CTRL_Right = 135,
       key_CTRL_RETURN = 140,
       key_CTRL_Up = 142,
       key_CTRL_Down = 143,
+      key_CTRL_V = 144,
+      key_CTRL_C = 146,
+      key_CTRL_X = 150,
       key_CTRL_BackSpc = 180,
       key_CTRL_DELETE = 180,
+		key_CTRL_CLEAR = 182,
       key_CTRL_INSERT = 183,
 
-      key_SHIFT_Up = 206,
-      key_SHIFT_Down = 207
+      key_CTRL_SHIFT_Up = 206,
+      key_CTRL_SHIFT_Down = 207
 );
 
 const

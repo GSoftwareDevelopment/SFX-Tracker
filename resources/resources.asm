@@ -70,10 +70,14 @@ data_pointers_list
 	dta a(msg_SetTempoPrompt)	;54
 	dta a(msg_pianoTuneInfo)	;55
 	dta a(msg_newPrompt)			;56
+	dta a(msg_ClipboardBadData);57
+	dta a(msg_ClipboardEmpty)  ;58
+	dta a(msg_ClipboardCopied) ;59
+	dta a(msg_ClipboardPasted) ;60
 
 ;app raw data
-	dta a(app_logo)				;57
-	dta a(app_virtual_piano)	;58
+	dta a(app_logo)				;61
+	dta a(app_virtual_piano)	;62
 
 	dta a(dl_start)
 	dta a(DLI_color_schemas)

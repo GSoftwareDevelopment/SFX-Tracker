@@ -1,8 +1,17 @@
 {$i modules/sfx/sfx_entry_edit.inc}
 
 procedure SFXEditLoop(var tab:byteArray; nibble:byte);
-var i,v:byte;
+var i,v,scrofs,cSFX:byte;
    at:byte;
+
+	procedure updateCursor();
+	begin
+		scrofs:=winXStart+cursorPos+vadr[winYStart];
+		colorVLine(scrofs,0,8,3);
+		inc(scrofs,vadr[1+section]);
+		i:=screen[scrofs];
+		screen[scrofs]:=i and $3f or $80;
+	end;
 
    procedure storeValue(v:byte);
    begin
@@ -20,6 +29,8 @@ var i,v:byte;
    end;
 
 begin
+	updateCursor(); screen2video();
+	cSFX:=currentSFX;
    repeat
       if keyPressed then
       begin
@@ -29,9 +40,24 @@ begin
             break;
          end;
 
+         if controlSelectionKeys(key,key_SHIFT_LEFT,key_SHIFT_RIGHT,cSFX,0,maxSFXs-1) then
+         begin										// change the currently edited SFX
+				if modified then
+				begin
+					// store SFX set after edit leave, if its modified
+					storeSFXData(currentSFX);
+					modified:=false;
+				end;
+				getSFXData(cSFX);
+				SFXDetermineLength();
+			end;
+
          case key of
             key_ESC: break;
             key_RETURN: if SFXEntryEdit then break;
+            key_CTRL_X: Cut2Clipboard(true,SFXLen);
+            key_CTRL_C: Copy2Clipboard(true,SFXLen);
+            key_CTRL_V: PasteClipboard(true);
          end;
 
          controlEditKeys(key,SFX_winWidth,SFX_maxLength,cursorPos,cursorShift,key_Left,key_Right);
@@ -49,8 +75,9 @@ begin
             if (i<>255) then storeValue(i);
          end;
 
+			if modified then SFXDetermineLength();
          updateSFXView();
-         colorVLine(winXStart+cursorPos,winYStart,8,3);
+         updateCursor();
          screen2video();
       end;
    until false;

@@ -5,7 +5,9 @@
 ; x - channel offset ($00, $10, $20, $30)
 
          lda #$FF                            ; disable processing...
+         bcc off_only_sfx
          sta SFX_CHANNELS_ADDR+_tabOfs,x     ; ... of TABs
+off_only_sfx
          sta SFX_CHANNELS_ADDR+_chnOfs,x     ; ... and SFXs
 
 .ifdef MAIN.@DEFINES.SFX_previewChannels

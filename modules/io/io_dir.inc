@@ -78,7 +78,7 @@ begin
    begin
       IOErr:=IOResult; IOError();
    end;
-   FindClose(f);
+   FindClose(f); IOOfs:=0;
    clearStatusBar();
    SFX_Start();
    result:=filesCount;

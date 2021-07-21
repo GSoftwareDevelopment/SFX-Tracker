@@ -30,7 +30,6 @@ msg_Theme_Overwrite
                dta 202,d'ON THE DISKETTE!',255
                dta 255
 msg_UnknownDefinition
-               ;         01234567890123456789
                dta 221,d'UNKNOWN DEFINITION',255,255
 msg_SFX_ValuePrompt
                dta 220,d'VAL:____   ',6,d'________',255,255
@@ -57,5 +56,14 @@ msg_pianoTuneInfo
                dta 54,d'012345',255
                dta 255
 msg_newPrompt
-               ;        12345678901234567890
                dta 23,d'ARE YOU SURE?',255,255
+
+msg_ClipboardBadData
+               ;        12345678901234567890
+					dta 221,d'BAD CLIPBOARD DATA',255,255
+msg_ClipboardEmpty
+					dta 221,d'CLIPBOARD IS EMPTY',255,255
+msg_ClipboardCopied
+					dta 227,d'COPIED',255,255
+msg_ClipboardPasted
+					dta 227,d'PASTED',255,255

@@ -19,8 +19,7 @@ var
 // buffers
 
    listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR; // universal list buffer array
-   tmpbuf:array[0..255] of byte absolute IO_BUFFER_ADDR;
-   IOBuf:array[0..IO_BUFFER_SIZE-1] of byte absolute IO_BUFFER_ADDR;
+   IOBuf:array[0..0] of byte absolute IO_BUFFER_ADDR; // buffer for IO and Copy/Paste operations (clipboard)
 
 // UI color themes
 
@@ -32,7 +31,7 @@ var
    HEAP_TOP:word;
    HEAP_PTR:array[0..0] of word absolute HEAP_PTRLIST_ADDR;
    _heap_sizes:array[0..0] of word absolute HEAP_SIZES_ADDR;
-
+	heapStoreBuf:array[0..0] of byte absolute EDIT_BUF3_ADDR;
 //
 
    SONGTitle:string[SONGNameLength];
@@ -71,11 +70,12 @@ var
 {$i modules/ui_helpers.inc}
 {$i units/heap_manage.inc}
 {$i modules/io/io_clear_all_data.inc}
-{$i modules/io/io_tag_compare.inc}
+// {$i modules/io/io_tag_compare.inc}
 {$i modules/io/io_manage.inc}
 {$i modules/io/io_options.inc}
 {$i modules/io/io_dir.inc}
 {$i modules/vis_piano.inc}
+{$i modules/clipboard.inc}
 
 // modules
 {$i modules/gsd/gsd.pas}

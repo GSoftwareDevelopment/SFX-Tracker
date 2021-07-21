@@ -2,6 +2,16 @@ var
    IOErr:byte;
    IOOfs,IOLength:word;
 
+function compareTag(var srcTag,dstTag:TTag):boolean;
+var
+   i:byte;
+
+begin
+   i:=0;
+   while (i<5) and (srcTag[i]=dstTag[i]) do i:=i+1;
+   result:=(i=5);
+end;
+
 procedure clearFilename(var dest:string);
 begin
    fillchar(@dest,FILEPATHMaxLength+1,0);
@@ -16,7 +26,7 @@ end;
 procedure closeFile();
 begin
    if IO_messages then clearStatusBar();
-   close(f);
+   close(f); IOOfs:=0;
    if IO_preventSFX then SFX_Start();
 end;
 
@@ -43,6 +53,7 @@ begin
       closeFile()
    else
    begin
+		IOOfs:=0;
       if IO_messages then
       begin
         putMultiText(msgRes,0);
@@ -79,6 +90,16 @@ end;
 function putIOBuf():boolean;
 begin
    result:=putBlock(IOBuf,IOOfs);
+end;
+
+function IOBufGetByte:byte;
+begin
+	result:=IOBuf[IOOfs]; inc(IOOfs);
+end;
+
+procedure IOBufGetBlock(dest:pointer; size:byte);
+begin
+	move(@IOBuf[IOOfs],dest,size); inc(IOOfs,size);
 end;
 
 procedure IOError();
