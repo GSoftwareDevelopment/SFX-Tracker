@@ -21,19 +21,27 @@ Do prawidłowej pracy wymagany jest:
 
 Program można też uruchomić na emulatorze tego mikrokomputera. Do tego celu wymagany jest obraz dysketki oraz zainstalowany i skonfigurowany program emulatora.
 
+
+
 # Uruchomienie
 
 ## Prawdziwy sprzęt
 
-TO DO
+*TO DO: Opis dla różnych, najpopularniejszych urządzeń dostępnych obecnie dla Atari: natywna stacja dysków; SIO2SD; FujiNET; inne.*
+
+
 
 ## Emulator
 
-TO DO
+*TO DO: Opis jak uruchomić pod emulatorami Altirra, Atari800Win, Atari800;*
+
+
 
 # Podstawy obsługi
 
 Pisząc SFXMM dążyłem przede wszystkim do prostej i czytelnej obsługi. Stąd moduły są do siebie podobne w wyglądzie jak i obsłudze.
+
+
 
 ## Sterowanie
 
@@ -43,7 +51,11 @@ Z opcji można wyjść używając klawisz **ESC**.
 
 W listach można się szybko przemieszczać o ilości elementów listy widocznych na ekranie, trzymając klawisz **CONTROL** oraz używając klawiszy strzałek.
 
+
+
 # Moduł GSD
+
+*TO DO może Jakiś wstępniak?*
 
 
 
@@ -51,7 +63,9 @@ W listach można się szybko przemieszczać o ilości elementów listy widocznyc
 
 W tym miejscu można wybrać schemat kolorystyczny z listy sześciu domyślnie wczytanych przy uruchamianiu programu. Lista schematów mieści się w pliku `DEFAULTH.EME`.
 
-TO DO
+*TO DO Zdjęcie.*
+
+
 
 ### SAVE DEFAULT
 
@@ -59,25 +73,37 @@ Zapisuje aktualny zestaw tematów wraz z aktualnie wybranym na urządzeniu zewn�
 
 Zapis odbywa się do pliku o nazwie `DEFAULTH.EME` . Użytkownik zostanie poproszony o potwierdzenie nadpisania tego pliku.
 
+
+
 ### LOAD THEME
 
 Pozwala wczytać zestaw tematów kolorystycznych z urządzenia zewnętrznego.
 
+
+
 # Moduł IO
 
-TO DO
+*TO DO*
+
+
 
 ## LOAD/SAVE
 
-TO DO
+*TO DO*
+
+
 
 ## NEW
 
-TO DO
+*TO DO*
+
+
 
 ## QUIT
 
-TO DO
+*TO DO*
+
+
 
 # Moduł SFX
 
@@ -87,6 +113,8 @@ TO DO
 > Początki Music Makera sięgają silnika SFX, który powstał na potrzeby udźwiękowienia gry pisanej w Turbo Basicu. To właśnie tu powstała "zupa pierwotna", która ewoluowała do SFX Music Maker.
 
 Popularnie nazywane Instrumentem, jednak jest to po prostu efekt dźwiękowy, a dokładniej, szereg definicji składających się na końcowy efekt, jakim jest słyszany dźwięk, czyli SFX.
+
+
 
 ## Jak powstaje SFX?
 
@@ -100,11 +128,15 @@ Każdy z nich, opisuje jeden krok obwiedni SFXa (patrz rysunek poniżej) Tych kr
 
 ![SFX-Envelope](./imgs/SFX-Envelope.png)
 
+
+
 ## Tworzenie SFXa
 
 W menu głównym, widnieje opcja `SFX`. Jest to moduł odpowiadający za tworzenie dzięków.
 
 Po wybraniu tej opcji otwiera się widok edytora.
+
+
 
 ### Menu modułu SFX
 
@@ -119,6 +151,8 @@ Obok numeru SFXa znajduje się jego nazwa. Poniżej tej opcji umieszczone są ko
 - `PLY` - przejście do trybu pianina
 - `VOL`, `DST`, `MOD`, `VAL` - pozwalają szybko przejść do edycji składowej SFXa
 - `OPT` - zawiera opcje konfiguracyjne SFXa
+
+
 
 ### Obszar edycji
 
@@ -136,6 +170,8 @@ Po prawej stronie paska menu SFX, widnieje obszar edycji. Znajdują się w nim:
 - `000` - aktualna pozycja kursora edycji
 - `128` - długości definicji SFXa
 
+
+
 ## Tryb edycji SFX
 
 Po przejściu do trybu edycji, rzeczą na którą należy zwrócić uwagę przy wprowadzaniu zmian, jest aktualnie wybrana składowa edycji, tzn: `VOL`, `DST`, `MOD`, `VAL`. Zmianę składowej można dokonać naciskając klawisze strzałek __GÓRA/DÓŁ__.
@@ -151,6 +187,8 @@ Jest też możliwość szybkiego przemieszczania się w obrębie definicji. W ty
 *[dodano w wersji RC2]* W trybie edycji można też zmieniać aktualnie edytowany SFX, bez konieczności wychodzenia. W tym celu, należy przytrzymać klawisz **SHIFT** i użyć strzałek **LEWO/PRAWO**.
 
 *[dodano w wersji RC2]* Kombinacje klawiszy **CONTROL** oraz **X/C/V** pozwalają korzystać ze schowka, więcej na ten temat w sekcji [Schowek](#schowek)
+
+
 
 #### Menu funkcji modulacji
 
@@ -190,6 +228,8 @@ Po wybraniu jednej z opcji, wyświetlony zostanie monit w linii statusu o podani
 
 Po zaakceptowaniu klawiszem __RETURN__, program przetworzy wprowadzone informacje do składowych `MOD/VAL`.
 
+
+
 ## Tryb pianina
 
 W tym trybie można przetestować stworzony dźwięk. Klawisze odpowiadające nutom rozłożone są na klawiaturze komputera zgodnie z poniższym rysunkiem:
@@ -204,6 +244,8 @@ Aktualny tryb oznaczony jest literą `S` lub `M` po lewej stronie wizualizacji p
 
 Wyjście z trybu pianina następuje po naciśnięciu klawisza __ESC__
 
+
+
 ## Opcje SFX
 
 W pasku menu, pod skrótem `OPT`, ukryte są opcje związane z ustawieniami aktualnie edytowanego SFXa.
@@ -217,11 +259,15 @@ W pasku menu, pod skrótem `OPT`, ukryte są opcje związane z ustawieniami aktu
 - `EDIT NOTE TABLE` - otwiera moduł edycji tablic nut (patrz sekcja [Edycja Tablic Nut](#Edycja-Tablic-Nut))
 - `IO >` - operacje dyskowe
 
+
+
 ### SET NAME
 
 `SET NAME`,  pozwala nadać nazwę dla aktualnie edytowanego SFXa. Nazwa może mieć maksymalnie 14 znaków. Nazwy nie podlegają weryfikacji pod kątem już istniejących (występujących) nazw.
 
 ![Ustawienie nazwy SFXa](./imgs/SFX-OPT-Set-Name-Edit.png)
+
+
 
 ### SET NOTE TABLE
 
@@ -230,6 +276,8 @@ Każdej definicji SFX można przypisać jedną z czterech tablic nut (więcej o 
 Po wybraniu tej opcji, otworzy się lista z nazwami tablic.
 
 ![Lista Tablic nut](./imgs/SFX-OPT-Set-Note-Table.png)![](./imgs/SFX-OPT-Set-Note-Table-List.png)
+
+
 
 ### SET MOD MODE
 
@@ -242,6 +290,8 @@ Po wejściu w opcję, otwiera się lista ze skrótami trybów.
 Po otwarciu listy, zaznaczony zostanie tryb modulacji, jaki jest ustawiony dla aktualnie edytowanego SFXa.
 
 > **UWAGA!** Zmiana trybu nie konwertuje definicji SFXa do wybranego trybu. **Należy wykonać ją samodzielnie.** Odtworzenie niedostosowanego SFXa może prowadzić do nieokreślonego zachowania się programu, <u>włącznie z jego zawieszeniem</u>.
+
+
 
 ### Edycja Tablic Nut
 
@@ -256,6 +306,8 @@ Po lewej stronie znajduje się pasek menu, a w nim:
 - `SET` - wybór edytowanej tablicy nut
 - `>>>` - przejście do trybu edycji
 - `OPT` - opcje modułu
+
+
 
 #### Tryb edycji Tablic Nut
 
@@ -273,6 +325,8 @@ Strojenie odbywa się za pomocą klawiszy strzałek **GÓRA/DÓŁ** - przy zmian
 
 Wyjście z trybu edycji następuje po naciśnięciu klawisza **ESC**
 
+
+
 #### Opcje Tablic nut
 
 ![](./imgs/SFX-OPT-Note_Table_Edit-OPT-Options_list.png)
@@ -283,13 +337,21 @@ W menu `OPT` zawarte są opcje umożliwiające:
 - `< BACK` - wyjście z opcji
 - `IO` - operacje dyskowe `LOAD` oraz `SAVE` pozwalające odpowiednio: wczytać lub zapisać definicję tablicy nut, wykorzystując do tego celu urządzenie zewnętrznę. Postępowanie w przypadku użycia tych opcji jest dokładnie takie samo jak dla opcji `SFX->IO`
 
+
+
 ### IO
+
+*TO DO: też by się przydał jakiś wstępniak. może jakiś screen?*
+
+
 
 #### LOAD
 
 Pozwala wczytać definicję SFXa z urządzenia zewnętrznego. W tym celu, należy podać nazwę urządzenia oraz nazwę pliku, zawierającą definicję, np. `D:PIANO.SFX`
 
 Nazwę można też wybrać z katalogu dysku, do którego dostęp uzyskamy wpisując nazwę urządzenia, np: `D:`. Można też wprowadzić znaki uniwersalne (tzw. wildcards) które pozwolą zawęzić listę do, np. konkretnych rozszerzeń, np. `D:*.SFX`, `D:A*.*`, itp.
+
+
 
 #### SAVE
 
@@ -300,6 +362,8 @@ Pozwala zapisać zdefiniowany SFX na urządzeniu zewnętrznym. Zasady postępowa
 # Moduł TAB
 
 W świecie trackerów, znane jako *Pattern* i pełnią dokładnie tą samą funkcję. Zawierają nuty i instrukcje opisujące jedną ścieżkę dźwiękową utworu. Dzięki takiemu podejściu, utwór może być bardziej skomplikowany i jednocześnie zajmować mniej miejsca.
+
+
 
 ## Cechy charakterystyczne dla TABów
 
@@ -315,6 +379,8 @@ Inną cechą, której nie spotkałem w innych, znanych mi programach typu Tracke
 
 Szerszy opis funkcji TAB znajdziesz w sekcji [Funkcje TAB](#funkcje-tab)
 
+
+
 ## Co piszczy w module TAB?
 
 **SFX Music Maker**, pozwala na zdefiniowanie do 64 niepowtarzalnych TABów, z których każdy możesz nazwać, aby się nie pogubić :F
@@ -322,6 +388,8 @@ Szerszy opis funkcji TAB znajdziesz w sekcji [Funkcje TAB](#funkcje-tab)
 Widok modułu TAB jest bardzo prosty i przedstawia się następująco:
 
 ![TAB->Module view](./imgs/TAB-Module_view.png)
+
+*TODO: zaktualizować zdjęcie i opis do wersji RC2*
 
 Po lewej stronie ekranu widnieje pasek menu, a w nim, pierwszą pozycją jest numer aktualnie wybranego TABa i tuż obok, jest jego nazwa. Zaraz za nazwą, jest informacja o długości aktualnego TABa.
 
@@ -333,12 +401,16 @@ Pod numerem TABa, są następujące opcje:
 
 Przemieszczanie pomiędzy poszczególnymi opcjami menu, odbywa się za pomocą klawiszy strzałek __GÓRA/DÓŁ__, a wyboru opcji dokonasz klawiszem __RETURN__.
 
+
+
 ## Lista TABów
 
 Będąc kursorem na numerze aktualnego TABa (pasek menu TAB), klawiszami strzałek __LEWO/PRAWO__ można zmieniać numer, jednocześnie mając podgląd na fragment definicji TABa w obszarze edycji.
 
 Naciskając klawisz __RETURN__ pokazana zostanie lista wszystkich TABów, wraz z nazwami. Gwiazdką obok nazwy zostaną oznaczone te TABy, które zawierają treść. 
 Wyboru dokonasz przemieszczając się klawiszami strzałek __GÓRA/DÓŁ__. Akceptacja wyboru odbywa się klawiszem __RETURN__.
+
+
 
 ## Edycja TABów
 
@@ -359,6 +431,8 @@ Klawisz **RETURN** otwiera menu **Funkcji TAB** opisane w następnej sekcji.
 
 Wyjście z edycji umożliwia klawisz **ESC**
 
+
+
 ## Odtwarzanie TABa
 
 Opcja `PLY` pozwala na odtworzenie zawartości aktualnego TABa.
@@ -368,6 +442,8 @@ W trakcie jego grania, użytkownik może również używać [wirtualnego pianina
 Wybranie opcji `PLY` z menu bocznego odtworzy TAB od początku w niekończącej się pętli. Aby przerwać odtwarzanie, wystarczy wcisnąć sklawisz **ESC**.
 
 *[Dodano w wersji RC2*] W trybie edycji TABa, naciśnięcie klawiszy **CONTROL+P** pozwoli odtworzyć zawartość TABa od miejsca w którym znajduje się kursor edycji.
+
+
 
 ## Funkcje TAB
 
@@ -384,6 +460,10 @@ Każdy TAB może być definiowany z użyciem następujących funkcji:
 
  ![TAB-Functions_list](./imgs/TAB-Functions_list.png)
 
+*TO DO: Zaktualizować zdjęcie do wersji RC2*
+
+
+
 ### Wprowadzanie funkcji
 
 Aby móc wstawić funkcję TABa, naciśnij __RETURN__, będąc w trybie edycji. Pokaże się lista dostępnych opcji, a aktualnie wybrana, będzie opcją spod kursora. Więc, aby szybko zmienić parametry funkcj,i wystarczy dwa razy wcisnąć __RETURN__.
@@ -391,6 +471,8 @@ Aby móc wstawić funkcję TABa, naciśnij __RETURN__, będąc w trybie edycji. 
 Akceptując wprowadzenie funkcji, która wymaga podania parametru/ów, użytkownik będzie informowany w linii statusu o tym, jaką wartość ma wprowadzić oraz o zakresie tej wartości.
 
 Podanie wartości spoza zakresu, skutkuje ponowieniem wprowadzenia. Klawisz **ESC** anuluje wprowadzanie funkcji.
+
+
 
 #### TABEND
 
@@ -401,7 +483,11 @@ Tak wygląda w zapisie:
 
 ![TAB-Functions_ENDTAB](./imgs/TAB-Functions_ENDTAB.png)
 
+*TO DO: Zaktualizować zdjęcie do wersji RC2*
+
 Jak widać na powyższym obrazku, długość (oznaczona w prawym górnym rogu) jest ustawiona na 5 wierszy, to powoduje, że TAB w pamięci zajmuje tylko 10 bajtów (po dwa bajty na linię) a nie 256 - w przypadku nie zastosowania `TABEND`.
+
+
 
 #### REPEAT
 
@@ -413,10 +499,14 @@ Wygląd w zapisie:
 
 ![TAB-Functions_REPEAT](./imgs/TAB-Functions_REPEAT.png)
 
+*TO DO: Zaktualizować zdjęcie do wersji RC2*
+
 Po wybraniu funkcji, poproszony zostaniesz najpierw o:
 
 - podanie ilości powtórzeń
 - miejsca skoku
+
+
 
 #### NOTE VALUE
 
@@ -427,12 +517,16 @@ Pozwala to na "dostrajanie fałszujących dżwięków" lub wręcz specjalne fał
 
 ![TAB-Functions_NOTE_VALUE](./imgs/TAB-Functions_NOTE_VALUE.png)
 
+*TO DO: Zaktualizować zdjęcie do wersji RC2*
+
 Ułatwieniem w dostrajaniu jest to, że jeżeli zastosujemy tą funkcję na wierszu w której jest zapisana nuta, zostanie automatycznie podana wartość dzielnika częstotliwości odpowiadająca nucie (wartość z tabeli nut użytego SFXa), którą ostatecznie można skorygować.
 
 Wybór tej funkcji, powoduje monit o podanie dwóch wartości:
 
 - wartość dzielnika częstotliwości
 - numer SFXa
+
+
 
 #### NOTE OFF
 
@@ -468,11 +562,19 @@ lub jeśli zawiera treść z innego modułu, pojawi się monit:
 
 
 
+---
+
 **UWAGA!** Dane w schowku ulegną skasowaniu przy korzystaniu z operacji IO
+
+---
+
+
 
 # Moduł SONG
 
-TO DO
+*TO DO*
+
+
 
 # Rodzaje modulacji
 
@@ -485,6 +587,8 @@ Obrałem ten kierunek i utworzyłem definicje czterech trybów:
 - *LFD/NLM - Low Frequency Divider/Note Level Modulation*
 - *DSD - Direct Set Divider*
 
+
+
 ## Co one oznaczają?
 
 ### HFD - High Frequency Divider
@@ -493,11 +597,15 @@ Szerokie spektrum modulacji dzielnika częstotliwości w zakresie +/-127.
 Nie ma możliwości zapętlenia SFXa  
 Pełna zgodność wsteczna z pierwotnym silnikiem SFX
 
+
+
 ### MFD - Middle Frequency Divider
 
 Średnie spektrum modulacji.  
 Zakres modulacji +/-64 od podstawy dźwięku  
 Możliwość zapętlenia SFXa
+
+
 
 ### LFD - Low Frequency Divider
 
@@ -505,11 +613,15 @@ Niskie spektrum modulacji.
 Zakres modulacji +/-32 od podstawy dźwięku.  
 Możliwość zapętlenia SFXa
 
+
+
 ### NLM - Note Level Modulation
 
 Modulacja na poziomie nuty (pół tonów)  
 Zakres modulacji +/-32 pół tony w odniesieniu do nuty bazowej (tej umieszczonej w TABie)  
 Możliwość zapętlenia SFX
+
+
 
 ### DSD - Direct Set Divider
 
@@ -517,6 +629,8 @@ Bezpośrednia wartość dzielnika częstotliwości.
 Zakres od 0 do 255  
 Brak możliwości zapętlenia.  
 Stała, maksymalna długość SFXa (128 punktów obwiedni)
+
+
 
 ## Co kryje się pod pojęciami: dzielnik częstotliwości oraz modulacja?
 
@@ -536,12 +650,16 @@ POKEY_freq - wartość podstawy częstotliwości pracy POKEYa (danego kanału)
 freq_div - wartość dzielnika częstotliwości
 ~~~
 
+
+
 ### Modulacja
 
 Wartość dzielnika częstotliwości będzie ulegała zmianom, poprzez parametr `MOD/VAL`. W większości, modulacja ta odbywa się względnie, tzn. dla wartość bazowej określanej w TAB (niezależnie, czy będzie to nuta, czy też wartość bezpośrednia dzielnika) jej wartość jest zmieniana o wartość parametru `MOD/VAL`, która może przyjmować wartości dodatnie oraz ujemne. Ostatecznie, wartość wynikowa staje się wartością bazową.
 $$
 f_{base}=f_{base}+MOD_{val}
 $$
+
+
 
 ## Funkcje MOD/VAL
 
@@ -558,6 +676,8 @@ I tak, dla:
 %10000000 - koniec definicji SFX (End Of SFX)
 ~~~
 
+
+
 ### Middle Frequency Divider
 
 ~~~
@@ -567,6 +687,8 @@ I tak, dla:
 %1xxxxxxx - skok do pozycji określonej w bitach 'x' (w obrębie SFXa)
 %10000000 - koniec definicji SFX
 ~~~
+
+
 
 ### Low Frequency Divider/Note Level Modulation
 
@@ -580,11 +702,15 @@ I tak, dla:
 %10000000 - koniec definicji SFX
 ~~~
 
+
+
 ### Direct Set Divider
 
 ~~~
 %xxxxxxxx - wartość bezpośrednia rejestru dzielnika częstotliwości
 ~~~
+
+
 
 ## Ważne rzeczy
 
@@ -722,6 +848,8 @@ Wysokość dźwięku określić można na dwa sposoby: poprzez nutę oraz używa
 
 **Przykład wywołania:** podany jest na początku sekcji "Tablica skoków"
 
+
+
 #### SFX_PLAY_TAB (offset +9)
 
 Ustawia rejestry wybranego kanału na odtwarzanie wybraneg TABa, jednak nie powoduje jego automatycznego odtwarzenia, chyba, że jest odtwarzany już utwór (SONG)
@@ -834,6 +962,8 @@ W głównej procedurze silnika SFX, rejestry sprzętowe mają przypisaną konkre
 |    Y    | offset w definicji SFX, TAB lub tablicy SONG |
 |    A    | Rejestr ogólnego przeznaczenia               |
 
+
+
 ### Ważne sprawy
 
 #### Własne rozszerzenia silnika SFX
@@ -844,6 +974,8 @@ Jeżeli chcesz rozszerzyć funkcjonalność silnika, musisz zadbać o przechowan
 
 Tworząc własny rodzaj modulatora, warto pamiętać o parametrach wyjściowych sekcji.
 Musi ona zwracać wartość dzielnika częstotliwości w rejestrze A.
+
+
 
 ## Rejestry programowe
 
@@ -872,11 +1004,15 @@ Poniższe rejestry są dostępne w zależności od zastosowanych warunków kompi
 
 _*_ w większości przypadków zawiera funkcję oraz wartość. Przeważnie najstarsze bity określają funkcję, zaś reszta jest parametrem (patrz [Denicje MOD/VAL](#definicje-mod-val) )
 
+
+
 #### Rejestry tymczasowe
 
 | Nazwa rejestru | Adres | Opis                                     |
 | :------------- | :---: | :--------------------------------------- |
 | _regTemp       |  $FB  | wykorzystywany w pętli przetwarzania SFX |
+
+
 
 ### Rejestry kanałów
 
@@ -906,13 +1042,15 @@ Wymagane miejsce dla rejestrów: 64 bajty (dużo, ale w dowolnym miejscu pamięc
 
 
 
-# Biblioteka `SFX_Engine` dla MAD Pascal
+# API `SFX_Engine` dla MAD Pascal
 
 ## Stałe
 
 ### Plik konfiguracyjny `sfx_engine.conf.inc`
 
 Plik ten jest wymagany, aby skompilować bibliotekę `SFX_Engine` i powinien być umieszczony w głównym katalogu programu. Zawarte w nim informacje, pozwalają określić sposób kompilacji (patrz sekcja [Etykiety kompilacji warunkowej](#etykiety-kompilacji-warunkowej)) oraz określić adresy dla rejestrów oraz danych.
+
+
 
 #### Stałe pliku konfiguracyjnego
 
@@ -973,6 +1111,8 @@ Adres bazowy tablicy wskaźników definicji TABów
 **Preferowana alokacja:** dowolne miejsce w obrębie jednej strony*
 
 _*_ odwołania przekraczające granice strony będą generowały dodatkowe cykle zegarowe w głównej pętli silnika
+
+
 
 ## Zmienne
 
@@ -1052,8 +1192,6 @@ Przechowuje aktualny offset wzglęgem początku definicji utworu. Aby uzyskać w
 
 Zmienna tylko do odczytu zawierająca **tik** odtwarzania TAB/SONG. Jest ona ustawiana przez silnik SFX.
 
-##### 
-
 ##### `channels`
 
 | typ zmiennej  | odwołanie do stałej |      |
@@ -1063,6 +1201,8 @@ Zmienna tylko do odczytu zawierająca **tik** odtwarzania TAB/SONG. Jest ona ust
 Tablica rejestrów kanałów. Na każdy kanał przypada 16 bajtów informacji (patrz [Rejestry kanałów](#rejestry-kanałów))
 
 _*_ zmiana wartości może spowodować nie określone zachowanie silnika SFX mogące prowadzić nawet do zawieszenia komputera
+
+
 
 ## Procedury i funkcje
 
@@ -1128,15 +1268,21 @@ Pozwala włączyć odtwarzanie z listy SONG od zadanej pozycji.
 
 Wyłącza pracę silnika SFX. Przywraca poprzedni wektor przerwania.
 
+
+
 ## Dostosowanie silnika SFX
 
 Konstrukcja SFX-Engine pozwala na dostosowanie do własnych potrzeb za pomocą dyrektyw kompilacji warunkowej. Pozwalają one na wybranie rozwiązań, pod kątem ich wykorzystania w programie, skracając kod wynikowy silnika.
+
+
 
 ### Etykiety kompilacji warunkowej
 
 ##### `SFX_SWITCH_ROM`
 
 Etykieta pozwala na swobodny dostęp do pamięci RAM "ukrytej" pod ROM-em. Współpracuje z etykietą `ROMOFF` dostępną z poziomu **MAD Pascala**, która zezwala na wykorzystanie tej pamięci.
+
+
 
 ##### `SFX_previewChannels`
 
@@ -1146,6 +1292,8 @@ Dodatkowe informacje umieszczane są w rejestrach kanałów pod offsetami 6 oraz
 
 Brak obecności tej etykiety, zwalnia dwa bajty ze strony zerowej z użytku przez silnik SFX.
 
+
+
 ##### `SFX_SYNCAUDIOOUT`
 
 Użycie tej etykiety powoduje zastosowanie buforu dla rejestrów POKEYa, którego zawartość jest wysyłana na zakończenie działania całej pętli silnika SFX.
@@ -1153,6 +1301,8 @@ Użycie tej etykiety powoduje zastosowanie buforu dla rejestrów POKEYa, któreg
 Zalecane jest jego stosowanie, gdyż pętla może mieć różne czasy wykonywania, które mogą być odczuwalne dla ludzkiego ucha.
 
 Koszt użycia to 8 bajtów na stronie zerowej i kilkanaście dodatkowych bajtów kodu.
+
+
 
 ##### `USE_MODULATORS`
 
@@ -1168,6 +1318,8 @@ Wraz z tą etykietą powinno się wybrać przynajmniej jedną sekcje modulatora,
 - `LFD_NLM_MOD`
 - `MFD_MOD`
 - `HFD_MOD`
+
+
 
 ### Tryb pracy bez sekcji modulatorów
 
@@ -1189,10 +1341,14 @@ Długość definicji zawarta jest w 6 młodszych bitach definicji rodzaju modula
 
 Opis formatu pliku z utworem stworzonym pod **SFX Music Maker** dla wersji RC2.
 
+
+
 ## Założenia formatu pliku:
 
 - Podział na sekcje, gdzie każda posiada 5-cio bajtowy, unikatowy nagłówek
 - Kolejność ułożenia bloków nie może mieć znaczenia
+
+
 
 ### Sekcja główna
 
@@ -1210,6 +1366,8 @@ Opis formatu pliku z utworem stworzonym pod **SFX Music Maker** dla wersji RC2.
 - ilość bajtów przypadających na tytuł (stała `SONGNameLength`)
 - tytuł: `SONGNameLength` bajtów
 
+
+
 ### Sekcja definicji SFX
 
 | Nazwa                     |           | ilość bajtów | wartość        | opis                                                         |
@@ -1221,6 +1379,8 @@ Opis formatu pliku z utworem stworzonym pod **SFX Music Maker** dla wersji RC2.
 | ilość danych              | len       | 2            |                | wraz z nazwą definicji                                       |
 | dane                      | data      | len          |                | dane zawierają również nazwę SFXa, na którą przypada zawsze 14 bajtów. |
 
+
+
 ### Sekcja Tablicy nut
 
 | Nazwa          |           | ilość bajtów |   wartość    | opis |
@@ -1229,6 +1389,8 @@ Opis formatu pliku z utworem stworzonym pod **SFX Music Maker** dla wersji RC2.
 | ID tablicy nut | noteTabId |      1       |  od 0 do 3   |      |
 | nazwa          | name      |      16      |              |      |
 | dane           | data      |      64      |              |      |
+
+
 
 ### Sekcja definicji TAB
 
@@ -1239,6 +1401,8 @@ Opis formatu pliku z utworem stworzonym pod **SFX Music Maker** dla wersji RC2.
 | ilość danych | len    |      2       |                 | wraz z nazwą definicji                                       |
 | dane         | data   |     len      |                 | zawierają także nazwę TABa na którą przypada zawsze 8 bajtów |
 
+
+
 ### Sekcja definicji SONG
 
 | Nazwa        |            | ilość bajtów | wartość      | opis |
@@ -1248,3 +1412,9 @@ Opis formatu pliku z utworem stworzonym pod **SFX Music Maker** dla wersji RC2.
 | ilość danych | len        | 2            |              |      |
 | dane         | data       | len          |              |      |
 |              |            |              |              |      |
+
+
+
+# Podziękowania
+
+TO DO
