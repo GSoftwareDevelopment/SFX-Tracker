@@ -56,10 +56,12 @@ procedure SFX_tick(); Assembler; Interrupt;
 asm
 xitvbl      = $e462
 sysvbv      = $e45c
+wsync			= $d40a;
 
          phr
 
 			lda #$06
+			sta wsync
 			sta $D01a
 
 .ifdef MAIN.@DEFINES.SFX_SWITCH_ROM

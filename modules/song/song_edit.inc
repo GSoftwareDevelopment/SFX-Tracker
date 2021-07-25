@@ -57,29 +57,48 @@ var
       fillchar(@SONGData[SONGRow],4,chnBlank);
    end;
 
+	function editTAB(nTAB:byte):boolean;
+	begin
+		currentTAB:=nTAB;
+		TABScreen();
+		TABEditLoop();
+		SONGScreen();
+		result:=TABPtr[nTAB]<>$FFFF;
+	end;
+
    procedure storeInSONGTab(value:shortint);
+   var
+		setVal:boolean;
+
    begin
-      if SONGChn=0 then
-      begin
-         if (value<64) and (TABPtr[value]=$FFFF) then
-         begin showError(msg_UnknownDefinition); exit; end
-         else
-            if isRowOnOrder then clearRow();
-      end
-      else
-      begin
-         if not isRowOnOrder then
-            if (value<64) and (TABPtr[value]=$FFFF) then
-            begin showError(msg_UnknownDefinition); exit; end;
-      end;
-      SONGData[SONGAdr]:=value
+		setVal:=true;
+		if not isRowOnOrder then
+		begin
+			if (value<64) and (TABPtr[value]=$FFFF) then setVal:=editTAB(value);
+		end
+		else
+		begin
+			if (SONGChn=0) then
+			begin
+				if (value<64) and (TABPtr[value]=$FFFF) then
+					setVal:=editTAB(value);
+				if setVal then clearRow();
+			end;
+		end;
+
+		if setVal then SONGData[SONGAdr]:=value
    end;
 
+	procedure updateScreen();
+	begin
+		updateSONG(false);
+		calcPos();
+		drawCursor();
+		screen2video();
+	end;
+
 begin
-   updateSONG(false);
-   calcPos();
-   drawCursor();
-   screen2video();
+	updateScreen();
    reset_pianoVis();
    repeat
       if keyPressed then
@@ -119,10 +138,10 @@ begin
                                  clearRow();
                                  SONGRow:=value;
                               end;
-            key_SHIFT_RETURN: begin
-                                 TABScreen();
-                                 TABEditLoop();
-                                 SONGScreen();
+            key_SHIFT_RETURN: if not isRowOnOrder then
+                              begin
+											value:=SONGData[SONGAdr];
+                                 if value<63 then editTAB(value);
                               end;
          end;
 
@@ -132,10 +151,7 @@ begin
                storeInSONGTab(value);
 
          //
-         updateSONG(false);
-         calcPos();
-         drawCursor();
-         screen2video();
+			updateScreen();
       end;
    until false;
    reset_pianoVis();

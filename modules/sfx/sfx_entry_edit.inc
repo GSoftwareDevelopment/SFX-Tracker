@@ -14,6 +14,13 @@ var
 		a:byte;
 
 	begin
+		a:=SFX_modulate[_pos] and (minusBase-1);
+		if _SFXMode=0 then
+		begin
+		  if a>128 then v:=a-256 else v:=a;
+		end
+		else
+			if a>=max then a:=v-minusBase;
 		putMultiText(msg_SFX_ValuePrompt,0);
 		putValue(13,11,abs(min),3,0);
 		putValue(17,11,max,3,0);
