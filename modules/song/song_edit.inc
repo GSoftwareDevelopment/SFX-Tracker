@@ -105,6 +105,7 @@ begin
                               begin
                                  if nTAB>=maxTABs then nTAB:=0;
                                  nTAB:=dataList(TABPtr,nTAB,maxTABs,TABNameLength);
+                                 SONGScreen();
                                  if (nTAB<maxTABs) then
                                     storeInSONGTab(nTAB);
                               end;

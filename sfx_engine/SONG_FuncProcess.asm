@@ -51,10 +51,10 @@ SONGFn_JumpTo
          asl @
          tay                                 ; move calculated value to SONG offset register
 
-; before making the jump, it is necessary to turn off all tracks
-; as if they were playing from the beginning.
+; ~~before making the jump, it is necessary to turn off all tracks~~
+; ~~as if they were playing from the beginning.~~
 
-         jsr reset_all_tracks
+;~~         jsr reset_all_tracks~~
 
          jmp process_SONG_row_data           ;
 

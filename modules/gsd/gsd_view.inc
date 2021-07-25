@@ -11,5 +11,5 @@ procedure GSDScreen();
 begin
    clearTopMenu();
    showAppSplash();
-   updateFreeMem();
+//   updateFreeMem();
 end;

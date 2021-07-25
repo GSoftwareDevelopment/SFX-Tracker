@@ -17,6 +17,7 @@ begin
    oldSFXNoteTable:=currentNoteTableOfs;
    noteSetId:=currentNoteTableOfs shr 6;
    opt:=0;
+   set2General_Charset();
    repeat
       NoteTuneRedraw();
       if optionsList(menu_note_tune,width_menuBar,TUNEMenu,opt,key_Up,key_Down) then

@@ -29,6 +29,7 @@ begin
    update();
    screen2video();
    modified:=false;
+   set2SFX_Charset();
    repeat
       if keyPressed then
       begin
@@ -38,10 +39,12 @@ begin
             key_ESC: break;
             key_RETURN: SFXSelectMenuBar(section);
          end;
+			set2SFX_Charset();
          update();
          screen2video();
       end;
    until false;
+   set2General_Charset();
 end;
 
 procedure SFXModule();

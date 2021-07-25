@@ -59,7 +59,6 @@ msg_newPrompt
                dta 23,d'ARE YOU SURE?',255,255
 
 msg_ClipboardBadData
-               ;        12345678901234567890
 					dta 221,d'BAD CLIPBOARD DATA',255,255
 msg_ClipboardEmpty
 					dta 221,d'CLIPBOARD IS EMPTY',255,255
@@ -67,3 +66,12 @@ msg_ClipboardCopied
 					dta 227,d'COPIED',255,255
 msg_ClipboardPasted
 					dta 227,d'PASTED',255,255
+
+msg_mem_stats
+               ;        01234567890123456789
+					dta  61,d'RAW DATA',255
+					dta  81,d'SFX_______________',255
+					dta 101,d'TAB_______________',255
+					dta 141,d'TOTAL_____________',255
+					dta 181,d'FREE______________',255
+					dta 255

@@ -58,6 +58,10 @@ xitvbl      = $e462
 sysvbv      = $e45c
 
          phr
+
+			lda #$06
+			sta $D01a
+
 .ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
 .ifdef MAIN.@DEFINES.ROMOFF
          dec $D301                           ; turn off ROM
@@ -72,6 +76,10 @@ sysvbv      = $e45c
          inc $D301                           ; turn on ROM
 .endif
 .endif
+
+			lda #$00
+			sta $D01a
+
          plr
          jmp xitvbl
          rts

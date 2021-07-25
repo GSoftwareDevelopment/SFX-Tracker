@@ -68,6 +68,11 @@ begin
    fillchar(@moduleBar,220,0);
 end;
 
+procedure setWorkarea();
+begin
+   box(0,2,20,9,$40);
+end;
+
 procedure showAppSplash();
 begin
    clearModule();
@@ -121,4 +126,17 @@ function msgYesNo(msgID:byte):shortint;
 begin
    fillchar(@moduleBar,20,$40);
    result:=messageBox(msgID,color_choice,but_YesNo,16,2,0,key_Up,key_Down);
+end;
+
+procedure set2SFX_Charset();
+begin
+	moveRes(chr_NoteShUp,CHARSET_ADDR+96,8);
+	moveRes(chr_NoteShDn,CHARSET_ADDR+216,8);
+	moveRes(chr_FreqShUp,CHARSET_ADDR+232,8);
+	moveRes(chr_FreqShDn,CHARSET_ADDR+256,8);
+end;
+
+procedure set2General_Charset();
+begin
+	moveRes(app_charset,CHARSET_ADDR,512);
 end;

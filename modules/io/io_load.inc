@@ -7,7 +7,7 @@ procedure LoadData(var filename:string; mode:byte; destId:byte);
  *)
 
 var
-   sum:word;
+//   sum:word;
 
    version:byte;
    nameLen:byte;
@@ -17,7 +17,7 @@ var
    begin
       IO_clearAllData();
 
-      sum:=0;
+//      sum:=0;
       if getByte(version) then exit;
       _readNoteTabData:=version>=SFXMM_VER1_1;
 
@@ -55,37 +55,35 @@ var
       dataSize,dataAddr:word;
 
    begin
-      sum:=0;
-      if (mode=LOAD_SFX_DEF) then
-         id:=destId
-      else
-         if getByte(id) then exit;  // read ID
+//      sum:=0;
+      if getByte(id) then exit;  // read ID
+      if (mode=LOAD_SFX_DEF) then id:=destId;
 
       if (isSFX) then
       begin
 //       putValue(17,11,id,3,0); // debug
-         if id>maxSFXs-1 then begin IOErr:=error_badFileFormat; exit; end;
+         if id>maxSFXs-1 then begin IOErr:=error_badFileFormat+error_inSFXDef+error_indexOutOfRange; exit; end;
          if getByte(_sfxMode) then exit;  // read SFX Modulation Type
-         if _sfxMode>3 then begin IOErr:=error_badFileFormat; exit; end;
+         if _sfxMode>3 then begin IOErr:=error_badFileFormat+error_inSFXDef+error_incorrectModMode; exit; end;
          SFXModMode[id]:=_sfxMode;
-         if _readNoteTabData then
-         begin
-            if getByte(_sfxNoteTabOfs) then exit;  // read SFX Modulation Type
-            if _sfxNoteTabOfs>3 then begin IOErr:=error_badFileFormat; exit; end;
+//         if _readNoteTabData then
+//         begin
+            if getByte(_sfxNoteTabOfs) then exit;  // read SFX note table index
+            if _sfxNoteTabOfs>3 then begin IOErr:=error_badFileFormat+error_inSFXDef+error_incorrectNoteTab; exit; end;
             SFXNoteSetOfs[id]:=_sfxNoteTabOfs shl 6;
-         end;
+//         end;
       end
       else
       begin
 //       putValue(17,11,id-64,3,0); // debug
-         if id-64>maxTABs-1 then begin IOErr:=error_badFileFormat; exit; end;
+         if id-64>maxTABs-1 then begin IOErr:=error_badFileFormat+error_inTABDef+error_indexOutOfRange; exit; end;
       end;
 
       if getBlock(dataSize,2) then exit; // read data size
-      if dataSize>256+nameLength then begin IOErr:=error_badFileFormat; exit; end;
+      if dataSize>256+nameLength then begin IOErr:=error_badFileFormat+error_blockSizeTooBig; exit; end;
 
       getBlock(IOBuf,dataSize);           // read data
-      if IOErr>3 then exit;
+      if dataSize<>IOLength then exit;
 
       dataAddr:=HEAP_TOP;
       HEAP_PTR[id]:=dataAddr+nameLength;  // pointer must indicate direct to definition (without name)
@@ -119,17 +117,17 @@ begin
    openFile(filename,file_read);
    while IOErr=IO_OK do
    begin
-      getBlock(IOBuf,5); // get tag
-      if (IOErr=IO_OK) then
+      // get tag
+      if (not getBlock(IOBuf,5)) then
       begin
-//       conv2internalP2P(@IOBuf,@statusBar[11],5); // debug
+//         conv2internalP2P(@IOBuf,@statusBar[11],5); // debug
          if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_main)) then
             loadMain()
          else
             if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_NOTE)) then
                loadNoteTab()
             else
-               if ((mode=LOAD_ALL_DATA) or (mode=LOAD_NOTE_DEF)) and (compareTag(IOBuf,section_SFX)) then
+               if ((mode=LOAD_ALL_DATA) or (mode=LOAD_SFX_DEF)) and (compareTag(IOBuf,section_SFX)) then
                   loadDefinition(true,SFXNameLength)
                else
                   if (mode=LOAD_ALL_DATA) and (compareTag(IOBuf,section_TAB)) then
@@ -142,7 +140,7 @@ begin
       end
       else
          IOErr:=error_badFileFormat;
-//    move(@screen,@video,240); // debug - put screen buffer to video without wait4screen
+//      move(@screen,@video,240); // debug - put screen buffer to video without wait4screen
    end;
    closeFile();
 end;

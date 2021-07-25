@@ -1,5 +1,5 @@
 PFCOLS rcdata 'sfxmm-colors.obj'
-CHARSET_ADDR rcdata 'sfxmm-loader_rc2.fnt'
+CHARSET_ADDR rcdata 'sfxmm-loader.fnt'
 CHBAS rcdata 'sfxmm-chars.obj'
 DLIST_ADDR rcdata 'sfxmm-dlist.obj'
 SCREEN_ADDR rcdata 'sfxmm-loader.obj'

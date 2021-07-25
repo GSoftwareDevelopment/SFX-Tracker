@@ -3,7 +3,8 @@ begin
    if IOPrompt(otherFile) then
    begin
       LoadData(otherFile,LOAD_SFX_DEF,currentSFX);
-      if IOErr<>IO_OK then IOError();
+      if IOErr<>3 then IOError();
+		getSFXData(currentSFX);
    end;
 end;
 

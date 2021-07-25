@@ -144,9 +144,9 @@ SFXLenY           = 10;
 // RESOURCES IDS
 
    base_menus                 = 0;
-   base_strings               = 20;
-   base_messages              = 36;
-   base_appdata               = 61;
+   base_strings               = 21;
+   base_messages              = 37;
+   base_appdata               = 63;
 
    menu_top                   = base_menus+0;
    menu_sfx                   = base_menus+1;
@@ -172,6 +172,7 @@ SFXLenY           = 10;
    menu_Song_options          = base_menus+17;
    menu_Song_edit             = base_menus+18;
    menu_IO                    = base_menus+19;
+	menu_settings					= base_menus+20;
 
    str_notDefined             = base_strings+0;
    str_IO_nextPage            = base_strings+1;
@@ -217,6 +218,7 @@ SFXLenY           = 10;
 	msg_ClipboardEmpty			= base_messages+22;
 	msg_ClipboardCopied			= base_messages+23;
 	msg_ClipboardPasted			= base_messages+24;
+	msg_mem_stats					= base_messages+25;
 
    app_logo                   = base_appdata+0;
    app_virtual_piano          = base_appdata+1;
@@ -225,6 +227,11 @@ SFXLenY           = 10;
    app_color_schemas          = base_appdata+3;
    app_vis_tables             = base_appdata+4;
    app_charset                = base_appdata+5;
+
+	chr_NoteShUp					= base_appdata+6;
+	chr_NoteShDn					= base_appdata+7;
+	chr_FreqShUp					= base_appdata+8;
+	chr_FreqShDn					= base_appdata+9;
 
 //
 // FILE OPEN MODES
@@ -239,7 +246,14 @@ SFXLenY           = 10;
    IO_EOF                     = 3;
 
    error_badSectionTag        = 12;
-   error_badFileFormat        = 13;
+   error_badFileFormat        = %01000000;
+   error_inSFXDef					= %00010000;
+   error_inTABDef					= %00100000;
+//   error_in
+	error_indexOutOfRange		= %00000001;
+	error_incorrectModMode		= %00000010;
+	error_incorrectNoteTab		= %00000011;
+	error_blockSizeTooBig		= %00000100;
 
 //
 // LOAD MODES

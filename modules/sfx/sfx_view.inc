@@ -1,7 +1,7 @@
 procedure updateSFXView();
 var
-   scrOfs,i,v,ch:byte;
-   pos,_v:byte;
+   scrOfs,i,v,ch,fnCh:byte;
+   MOD_Mode,pos,_v:byte;
 
    procedure putVal(v:byte); register;
    begin
@@ -13,6 +13,7 @@ var
 
 begin
    i:=0; pos:=cursorShift;
+   MOD_Mode:=SFXModMode[currentSFX];
    while (i<SFX_winWidth) do
    begin
       scrOfs:=40+winXStart+i;
@@ -52,17 +53,39 @@ begin
 
    // SFX_modulate
       _v:=SFX_modulate[pos];
+(*
+		case MOD_Mode of
+			0: begin // HFD
+					if _v=$80 then
+						fnCh:=$09 // stop sign
+					else
+						if _v<$80 then
+							fnCh:=$1d // freq shift up
+						else
+							fnCh:=$20; // freq shift down
+					_v:=_v and $7f;
+				end;
+			1: begin // MFD
+				end;
+			2: begin // LFD/NLM
+				end;
+			3: begin // DFD
+				end;
+      end;
+*)
       if _v>0 then
       begin
          ch:=(_v shr 4);   putVal(ch);
          scrOfs:=scrOfs+20;
          ch:=(_v and $0f); putVal(ch);
+//         scrOfs:=scrOfs+20; screen[scrOfs]:=fnCh;
       end
       else
       begin
          ch:=byte('-'~);
          screen[scrOfs]:=ch;
          screen[scrOfs+20]:=ch;
+//         screen[scrOfs+40]:=ch;
       end;
 
       if (pos>=SFXLen) then
@@ -72,18 +95,32 @@ begin
       i:=i+1;
    end;
 
+	// show SFX number
    putValue(SFXNumberX,SFXNumberY,currentSFX,2,1);
 
+	// show SFX name
    fillchar(@moduleBar[4],16,$40);
    putASCIIText(SFXNameX,SFXNameY,SFXName,color_choice);
 
-   fillchar(@screen[204],16,0);
-   putValue(SFXCurPosX,SFXCurPosY,cursorShift+cursorPos,3,0);
-   screen[SFXCurPosX+3+vadr[SFXCurPosY]]:=byte('/'~);
-   putValue(SFXLenX,SFXLenY,sfxLen,3,0);
+	// show edit status
+	clearStatusBar();
+	putValue(233,0,cursorShift+cursorPos,3,0);
+	screen[236]:=byte('/'~);
+	putValue(237,0,sfxLen,3,0);
 
-   v:=SFXModMode[currentSFX]; i:=1+(v*5);
-   move(pointer(word(resptr[menu_sfx_mode])+i),@screen[204],3);
+   i:=1+(MOD_Mode*5);
+   move(pointer(word(resptr[menu_sfx_mode])+i),@screen[220],3);
+
+   v:=SFXNoteSetOfs[currentSFX] shr 6;
+   screen[224]:=$21+v;
+
+   // fillchar(@screen[204],16,0);
+   // putValue(SFXCurPosX,SFXCurPosY,cursorShift+cursorPos,3,0);
+   // screen[SFXCurPosX+3+vadr[SFXCurPosY]]:=byte('/'~);
+   // putValue(SFXLenX,SFXLenY,sfxLen,3,0);
+
+   // v:=SFXModMode[currentSFX]; i:=1+(v*5);
+   // move(pointer(word(resptr[menu_sfx_mode])+i),@screen[204],3);
 
    updatePiano();
 end;

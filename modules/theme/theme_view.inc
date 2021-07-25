@@ -27,7 +27,7 @@ var
    POfs:word;
 
 begin
-   clearModule();
+   setWorkarea();
    prepareThemeList();
 
    PMGClear();

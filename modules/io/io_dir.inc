@@ -177,6 +177,7 @@ begin
          end
          else
          begin
+				set2General_Charset();
             fillchar(@FName,16,255);
             move(@promptFile,@searchPath,FILEPATHMaxLength+1);
             if IODirLoop(FName) then
