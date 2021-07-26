@@ -31,6 +31,6 @@ begin
       else
          break;
    until false;
-
+	set2SFX_Charset();
    SFXNoteSetOfs[currentSFX]:=oldSFXNoteTable;
 end;

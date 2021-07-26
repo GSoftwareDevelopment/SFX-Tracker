@@ -27,5 +27,6 @@ begin
       0:SFX_IO_Load();
       1:SFX_IO_Save();
    end;
+	set2SFX_Charset();
    SFXScreen();
 end;

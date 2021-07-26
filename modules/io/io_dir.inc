@@ -98,6 +98,7 @@ var
    end;
 
 begin
+	set2General_Charset();
    listStart:=0; listPage:=0;
    repeat
       filesCount:=IOReadDir(searchPath,listStart);
@@ -177,7 +178,6 @@ begin
          end
          else
          begin
-				set2General_Charset();
             fillchar(@FName,16,255);
             move(@promptFile,@searchPath,FILEPATHMaxLength+1);
             if IODirLoop(FName) then

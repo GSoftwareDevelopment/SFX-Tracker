@@ -39,57 +39,58 @@ data_pointers_list
 	dta a(scan_to_scr)			;27
 	dta a(scan_key_codes)		;28
 	dta a(scan_piano_codes)		;29
+	dta a(shortcutSFX)			;30
 
-	dta a(val_menu_beatStep)	;30
-	dta a(val_menu_tempo)		;31
+	dta a(val_menu_beatStep)	;31
+	dta a(val_menu_tempo)		;32
 
-	dta a(octaveShifts)        ;32
-	dta a(pianoTuneOdd)			;33
-	dta a(pianoTuneEven)			;34
-	dta a(tuneIndChars)			;35
+	dta a(octaveShifts)        ;33
+	dta a(pianoTuneOdd)			;34
+	dta a(pianoTuneEven)			;35
+	dta a(tuneIndChars)			;36
 
-	dta a(themes_names_list)	;36
+	dta a(themes_names_list)	;37
 
 ;message boxes
-	dta a(msg_IO_DirPrompt)		;37
-	dta a(msg_IO_SavePrompt)	;38
-	dta a(msg_IO_LoadPrompt)	;39
-	dta a(msg_IO_noFiles)		;40
-	dta a(msg_IO_error)			;41
-	dta a(msg_IO_reading)		;42
-	dta a(msg_IO_writing)		;43
-	dta a(msg_IO_skipping)		;44
-	dta a(msg_IO_Quit)			;45
-	dta a(but_YesNo)				;46
-	dta a(msg_Theme_Overwrite)	;47
-	dta a(msg_UnknownDefinition);48
-	dta a(msg_SFX_ValuePrompt) ;49
-	dta a(msg_TAB_JumpToPrompt);50
-	dta a(msg_TAB_RepeatPrompt);51
-	dta a(msg_TAB_FreqPrompt)	;52
-	dta a(msg_TAB_SFXIdPrompt)	;53
-	dta a(msg_BeatStepPrompt)	;54
-	dta a(msg_SetTempoPrompt)	;55
-	dta a(msg_pianoTuneInfo)	;56
-	dta a(msg_newPrompt)			;57
-	dta a(msg_ClipboardBadData);58
-	dta a(msg_ClipboardEmpty)  ;59
-	dta a(msg_ClipboardCopied) ;60
-	dta a(msg_ClipboardPasted) ;61
-	dta a(msg_mem_stats)       ;62
+	dta a(msg_IO_DirPrompt)		;38
+	dta a(msg_IO_SavePrompt)	;39
+	dta a(msg_IO_LoadPrompt)	;40
+	dta a(msg_IO_noFiles)		;41
+	dta a(msg_IO_error)			;42
+	dta a(msg_IO_reading)		;43
+	dta a(msg_IO_writing)		;44
+	dta a(msg_IO_skipping)		;45
+	dta a(msg_IO_Quit)			;46
+	dta a(but_YesNo)				;47
+	dta a(msg_Theme_Overwrite)	;48
+	dta a(msg_UnknownDefinition);49
+	dta a(msg_SFX_ValuePrompt) ;50
+	dta a(msg_TAB_JumpToPrompt);51
+	dta a(msg_TAB_RepeatPrompt);52
+	dta a(msg_TAB_FreqPrompt)	;53
+	dta a(msg_TAB_SFXIdPrompt)	;54
+	dta a(msg_BeatStepPrompt)	;55
+	dta a(msg_SetTempoPrompt)	;56
+	dta a(msg_pianoTuneInfo)	;57
+	dta a(msg_newPrompt)			;58
+	dta a(msg_ClipboardBadData);59
+	dta a(msg_ClipboardEmpty)  ;60
+	dta a(msg_ClipboardCopied) ;61
+	dta a(msg_ClipboardPasted) ;62
+	dta a(msg_mem_stats)       ;63
 
 ;app raw data
-	dta a(app_logo)				;63
-	dta a(app_virtual_piano)	;64
+	dta a(app_logo)				;64
+	dta a(app_virtual_piano)	;65
 
-	dta a(dl_start)
-	dta a(DLI_color_schemas)
-	dta a(vis_tables)
-	dta a(charset)
-	dta a(chr_NoteShUp)
-	dta a(chr_NoteShDn)
-	dta a(chr_FreqShUp)
-	dta a(chr_FreqShDn)
+	dta a(dl_start)				;66
+	dta a(DLI_color_schemas)	;67
+	dta a(vis_tables)				;68
+	dta a(charset)					;69
+	dta a(chr_NoteShUp)			;70
+	dta a(chr_NoteShDn)			;71
+	dta a(chr_FreqShUp)			;72
+	dta a(chr_FreqShDn)			;73
 
 	icl 'app_menus.asm'
 	icl 'app_strings.asm'

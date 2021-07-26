@@ -20,6 +20,16 @@ var
       colorHLine(winXStart,2+cursorPos,20-winXStart,3);
    end;
 
+	procedure setShortcutSFX(SFXKey:byte);
+	begin
+		i:=SFX_shortcut[SFXKey];
+		if i<>255 then
+		begin
+			currentSFX:=i; nSFX:=i;
+			updateTABSFX();
+		end;
+	end;
+
 begin
    drawCursor();
    screen2video();
@@ -29,6 +39,8 @@ begin
       if keyPressed then
       begin
          _pos:=cursorShift+cursorPos;
+  			i:=controlSFXKeys; if i<>255 then setShortcutSFX(i);
+
          if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
             updateTABSFX();					// change the current SFX
          if controlSelectionKeys(key,key_SHIFT_LEFT,key_SHIFT_RIGHT,cTAB,0,maxTABs-1) then

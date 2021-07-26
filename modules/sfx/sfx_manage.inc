@@ -1,3 +1,11 @@
+function SFXshortcutExist(excludeSC,nSFX:byte):byte;
+var i:byte;
+
+begin
+	result:=255;
+	for i:=0 to 9 do if (i<>excludeSC) and (SFX_shortcut[i]=nSFX) then result:=i;
+end;
+
 procedure getSFXData(nSFX:byte);
 var
    size:word;

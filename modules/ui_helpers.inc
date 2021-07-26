@@ -11,6 +11,14 @@ begin
    end;
 end;
 
+function controlSFXKeys():byte;
+begin
+	if (key and $40=$40) then
+		result:=keyScan(key and $3f,keys_alphaNum,keysRange_decNum)
+	else
+		result:=255;
+end;
+
 function controlEditKeys(key:byte; winSize:shortint; max:byte; var _pos,_shift:byte; prevKey,nextKey:byte):boolean;
 var step:shortint;
 

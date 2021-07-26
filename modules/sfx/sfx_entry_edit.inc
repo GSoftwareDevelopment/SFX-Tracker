@@ -14,13 +14,13 @@ var
 		a:byte;
 
 	begin
-		a:=SFX_modulate[_pos] and (minusBase-1);
+		a:=_mod and (minusBase-1);
 		if _SFXMode=0 then
 		begin
 		  if a>128 then v:=a-256 else v:=a;
 		end
 		else
-			if a>=max then a:=v-minusBase;
+			if a>=max then v:=a-minusBase else v:=a;
 		putMultiText(msg_SFX_ValuePrompt,0);
 		putValue(13,11,abs(min),3,0);
 		putValue(17,11,max,3,0);
@@ -53,7 +53,7 @@ begin
 * %10000000  0  - end of SFX definition
 *)
 
-            opt:=1;
+            if _mod=$80 then opt:=0 else opt:=1;
             if optionsList(menu_HFD_mode,width_menuSFXFunc,5,opt,key_Up,key_Down) then
                case opt of
                   0: putModValue($80);
@@ -72,7 +72,19 @@ begin
 * %1xxxxxxx  1  - jump to position x in SFX definition
 * %10000000  0  - end of sfx definition
 *)
-            opt:=2;
+				if _mod<>0 then
+				begin
+					if _mod and $80=0 then
+						opt:=2
+					else
+						if _mod=$80 then
+							opt:=0
+						else
+							opt:=1;
+				end
+				else
+					opt:=2;
+
             if optionsList(menu_MFD_mode,width_menuSFXFunc,6,opt,key_Up,key_Down) then
                case opt of
                   0: putModValue($80);
@@ -94,7 +106,20 @@ begin
 * %1xxxxxxx  1  - jump to position x in SFX definition
 * %10000000  0  - end of sfx definition
 *)
-            opt:=3;
+				if _mod<>0 then
+					if _mod and $80=0 then
+					begin
+						if _mod and $40=0 then
+							opt:=2
+						else
+							opt:=3;
+					end
+					else
+						if _mod=$80 then
+							opt:=0
+						else
+							opt:=1;
+
             if optionsList(menu_LFD_NLM_mode,width_menuSFXFunc,7,opt,key_Up,key_Down) then
                case opt of
                   0: putModValue($80);

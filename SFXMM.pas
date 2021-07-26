@@ -61,6 +61,7 @@ var
    moduleBar:array[0..0] of byte absolute MODULE_ADDR;
    note_names:array[0..0] of byte;
    octShift:array[0..0] of byte;
+	SFX_shortcut:array[0..0] of byte;
 
    IO_preventSFX:boolean = false;
    IO_messages:boolean = false;
@@ -112,6 +113,7 @@ begin
    keys_notes:=resptr[scan_piano_codes];
 
 // other resources set
+	SFX_shortcut:=resptr[shortcutSFX];
    note_names:=resptr[str_NoteNames];
    octShift:=resptr[octaveShifts];
 
@@ -145,6 +147,12 @@ begin
    repeat
       clearTopMenu();
       if optionsList(menu_top,width_menuTop,5,currentMenu,key_Left,key_Right) then
+      begin
+			if currentMenu=2 then
+				set2SFX_Charset()
+			else
+				set2General_Charset();
+
          case currentMenu of
             0: GSDModule();
             1: IOModule();
@@ -152,6 +160,7 @@ begin
             3: TABModule();
             4: SONGModule();
          end;
+      end;
       uncolorWorkarea();
    until false;
 end.

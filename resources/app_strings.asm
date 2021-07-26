@@ -48,6 +48,9 @@ scan_piano_codes
 ;                  Q  2  W  3  E  R  5  T  6  Y  7  U  I  9  O  0  P
                dta 47,30,46,26,42,40,29,45,27,43,51,11,13,48, 8,50,10
 
+shortcutSFX ;
+					dta 0,1,2,3,4,5,6,7,8,9
+
 octaveShifts
                dta 0,12,24,36,48,60
 pianoTuneOdd

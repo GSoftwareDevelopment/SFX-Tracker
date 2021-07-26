@@ -7,8 +7,9 @@ var i,v,scrofs,cSFX:byte;
 	procedure updateCursor();
 	begin
 		scrofs:=winXStart+cursorPos+vadr[winYStart];
-		colorVLine(scrofs,0,8,3);
+		colorVLine(scrofs,0,9,3);
 		inc(scrofs,vadr[1+section]);
+		if section>4 then inc(scrofs,20);
 		i:=screen[scrofs];
 		screen[scrofs]:=i and $3f or $80;
 	end;
@@ -27,6 +28,14 @@ var i,v,scrofs,cSFX:byte;
       SFXDetermineLength();
       modified:=true;
    end;
+
+	procedure setShortcut2currentSFX(SFXKey:byte);
+	begin
+		i:=SFXshortcutExist(SFXKey,currentSFX); if i<>255 then SFX_shortcut[i]:=255;
+		v:=SFX_shortcut[SFXKey];
+		if (v<>currentSFX) then v:=currentSFX else v:=255;
+		SFX_shortcut[SFXKey]:=v;
+	end;
 
 begin
 	updateCursor(); screen2video();
@@ -74,6 +83,8 @@ begin
             i:=keyScan(key,keys_alphaNum,keysRange_hexNum);
             if (i<>255) then storeValue(i);
          end;
+
+			i:=controlSFXKeys; if i<>255 then setShortcut2currentSFX(i);
 
 			if modified then SFXDetermineLength();
          updateSFXView();
