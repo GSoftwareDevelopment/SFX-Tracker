@@ -4,6 +4,7 @@ procedure TABEditLoop();
 var
    _pos,i,cTAB:byte;
    nSFX:shortint;
+	editState:boolean;
 
 	procedure TABputIn(_note,_fn:byte);
 	begin
@@ -34,7 +35,12 @@ var
 
    procedure drawCursor();
    begin
-      __scrOfs:=vadr[2+cursorPos]+winXStart; colorHLine(16,3);
+      __scrOfs:=vadr[2+cursorPos]+winXStart;
+      if editState then
+			colorHLine(16,3)
+		else
+			colorHLine(16,1);
+      screen2video();
    end;
 
 	procedure setShortcutSFX(SFXKey:byte);
@@ -48,10 +54,9 @@ var
 	end;
 
 begin
-   drawCursor();
-   screen2video();
    reset_pianoVis();
-   cTAB:=currentTAB;
+   cTAB:=currentTAB; editState:=true;
+   drawCursor();
    repeat
       if keyPressed then
       begin
@@ -75,7 +80,13 @@ begin
 			end;
 
          case key of
-            key_ESC: break;
+            key_ESC, key_BackSpc: break;
+				key_SPACE: SFX_ChannelOff(0); // turn off SFX
+            key_CAPS: begin
+                         editState:=not editState;
+                         saveIfModified();
+                         TABDetermineLength();
+                      end;
             key_CTRL_RETURN:begin			// list of SFXs
                updateTABSFX();
                nSFX:=dataList(SFXPtr,currentSFX,maxSFXs,SFXNameLength);
@@ -84,21 +95,6 @@ begin
                TABScreen();
                updateTABSFX();
             end;
-            key_CTRL_INSERT: begin			// insert row in TAB
-               TABdblMove(0,1);
-               TABputIn(TABFn_blank_param,TABFn_blank);
-            end;
-            key_CTRL_DELETE: begin			// delete row from TAB
-               TABdblMove(1,0);
-               _pos:=127; TABputIn(TABFn_blank_param,TABFn_blank);
-            end;
-            key_SPACE: begin					// clear row (put blank entry)
-               SFX_ChannelOff(0);
-               TABputIn(TABFn_blank_param,TABFn_blank);
-               moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
-            end;
-            key_RETURN: if TABEntryEdit then break;	// call TAB functions list
-
             key_CTRL_X: Cut2Clipboard(false,TABLen);
             key_CTRL_C: Copy2Clipboard(false,TABLen);
             key_CTRL_V: PasteClipboard(false);
@@ -106,20 +102,41 @@ begin
 
          controlEditKeys(key,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift,key_Up,key_Down);
 
-         i:=pianoKeyScan(0);
-         if i<>255 then
-         begin											// write note in TAB
-            TABputIn(i,currentSFX);
-            moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
-         end;
+			if editState then
+			begin
+				case key of
+					key_CTRL_INSERT: begin			// insert row in TAB
+						TABdblMove(0,1);
+						TABputIn(TABFn_blank_param,TABFn_blank);
+					end;
+					key_CTRL_DELETE: begin			// delete row from TAB
+						TABdblMove(1,0);
+						_pos:=127; TABputIn(TABFn_blank_param,TABFn_blank);
+					end;
+					key_SPACE: begin					// clear row (put blank entry)
+						SFX_ChannelOff(0);
+						TABputIn(TABFn_blank_param,TABFn_blank);
+						moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
+					end;
+					key_RETURN: if TABEntryEdit then break;	// call TAB functions list
+				end;
+			end;
 
-         if modified then TABDetermineLength();
+			i:=pianoKeyScan(0);
+			if i<>255 then
+			begin
+				if editState then
+				begin// write note in TAB
+					TABputIn(i,currentSFX);
+					moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
+				end;
+			end;
 
+			if modified then TABDetermineLength();
          //
          updateTAB(true);
-         drawCursor();
          updateTABInfo();
-         screen2video();
+         drawCursor();
       end;
       updatePianoVis();
    until false;

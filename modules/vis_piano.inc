@@ -28,7 +28,7 @@ function pianoKeyScan(playChn:byte):byte;
 begin
    if controlSelectionKeys(key,key_SHIFT_TAB,key_TAB,currentOct,0,3) then
       updatePiano();
-   result:=keyScan(key,keys_notes,34);
+   result:=keyScan(key and $3f,keys_notes,34);
    if result<>255 then
    begin
       if SFXPtr[currentSFX]=$FFFF then

@@ -42,7 +42,7 @@ begin
          if section=0 then SFXMenuBarChange();
 
          case key of
-            key_ESC: break;
+            key_ESC, key_BackSpc: break;
             key_RETURN: SFXSelectMenuBar(section);
          end;
 

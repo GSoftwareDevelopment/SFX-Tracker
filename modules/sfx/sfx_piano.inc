@@ -16,7 +16,7 @@ begin
       begin
          SFXMenuBarChange();
          case key of
-            key_ESC: break;
+            key_ESC, key_BackSpc: break;
             key_INVERS: begin multiChnMode:=not multiChnMode; updatePiano(); end;
             key_SPACE: SFX_Off();
          end;

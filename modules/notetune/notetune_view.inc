@@ -68,7 +68,7 @@ begin
    menuBar(menu_note_tune,width_menuBar,-1,1,0);
    fillchar(@moduleBar[4],16,$40);
    noteSetId:=currentNoteTableOfs shr 6;
-   __scrOfs:=44; putNText(pointer(word(resptr[menu_NoteDef])+4+noteSetId*16),1);
+   __scrOfs:=24; putNText(pointer(word(resptr[menu_NoteDef])+4+noteSetId*16),1);
    updateNoteTune(currentOct);
    NoteTunePiano();
 end;

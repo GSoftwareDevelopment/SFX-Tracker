@@ -342,43 +342,7 @@ begin
       inc(__scrOfs,20); dec(height);
    end;
 end;
-(*
-procedure updateBar;
-var
-   i,j,v:byte;
-   dataOfs,col:byte;
-   data:byteArray;
 
-begin
-   data:=resptr[bar];
-   canChoiceColor:=colMask[canChoiceColor];
-   choicedColor:=colMask[choicedColor];
-   dataOfs:=0; i:=0; width:=width-1;
-   while (data[dataOfs]<>255) do
-   begin
-      if (i=currentSel) then
-         col:=choicedColor
-      else
-         col:=canChoiceColor;
-
-      __scrOfs:=data[dataOfs]; inc(dataOfs);
-      for j:=0 to width do
-      begin
-         if (data[dataOfs]=255) then // entry end
-         begin
-            if (width=255) then break
-         end
-         else
-            inc(dataOfs);
-
-         v:=screen[__scrOfs] and $3f;
-         screen[__scrOfs]:=col+v;
-         inc(__scrOfs);
-      end;
-      inc(i); inc(dataOfs);
-   end;
-end;
-*)
 procedure menuBar;
 var
    opt,j,v,col:byte;
@@ -429,7 +393,7 @@ begin
       begin
          controlSelectionKeys(key,pckey,ncKey,currentOpt,0,opts);
          case key of
-            key_ESC: begin result:=false; break; end;
+            key_ESC, key_BackSpc: begin result:=false; break; end;
             key_RETURN: begin result:=true; break; end;
          end;
 			menuBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
@@ -503,7 +467,7 @@ begin
                moveCursor(-1,height,listSize,listPos,listShift);
             key_Down:
                moveCursor(+1,height,listSize,listPos,listShift);
-            key_ESC: begin
+            key_ESC, key_BackSpc: begin
                result:=-1;
                break;
             end;

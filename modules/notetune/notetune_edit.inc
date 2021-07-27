@@ -20,7 +20,7 @@ begin
       if keypressed then
       begin
          case key of
-            key_ESC: break;
+            key_ESC, key_BackSpc: break;
          end;
 
          if not controlSelectionKeys(key,key_Left,key_Right,_pos,0,63) then

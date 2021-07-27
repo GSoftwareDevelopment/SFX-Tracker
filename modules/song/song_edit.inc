@@ -112,7 +112,7 @@ begin
          if key=138 (* CTRL+P *) then SONG_Play(SONGRow);
 
          case key of
-            key_ESC: break;
+            key_ESC, key_BackSpc: break;
             key_SPACE: begin
                if isRowOnOrder then
                   clearRow()

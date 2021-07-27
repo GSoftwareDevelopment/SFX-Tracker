@@ -58,7 +58,7 @@ begin
 			i:=controlSFXShortcutKeys; if i<>255 then setShortcut2currentSFX(i);
 
          case key of
-            key_ESC: break;
+            key_ESC, key_BackSpc: break;
             key_RETURN: if SFXEntryEdit then break;
             key_CTRL_X: Cut2Clipboard(true,SFXLen);
             key_CTRL_C: Copy2Clipboard(true,SFXLen);
