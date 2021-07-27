@@ -19,7 +19,7 @@ procedure TAB_Play(startPos:byte);
          cursorShift:=0;
 
       updateTAB(true);
-      colorHLine(winXStart,2+cursorPos,16,3);
+      __scrOfs:=vadr[2+cursorPos]+winXStart; colorHLine(16,3);
    end;
 
 begin

@@ -16,9 +16,13 @@ var
 {$i modules/sfx/sfx_menubar.inc}
 
 procedure SFXLoop();
+var
+	i:byte;
+
    procedure update();
    begin
-      updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
+		menuBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
+		screen2video();
    end;
 
 begin
@@ -27,19 +31,22 @@ begin
    updateSFXView();
 
    update();
-   screen2video();
    modified:=false;
    repeat
       if keyPressed then
       begin
          controlSelectionKeys(key,key_Up,key_Down,section,0,7);
+
+			i:=controlSFXShortcutKeys; if i<>255 then begin setShortcut2currentSFX(i); updateSFXView(); end;
+
          if section=0 then SFXMenuBarChange();
+
          case key of
             key_ESC: break;
             key_RETURN: SFXSelectMenuBar(section);
          end;
+
          update();
-         screen2video();
       end;
    until false;
 end;

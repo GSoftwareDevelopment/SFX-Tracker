@@ -7,17 +7,39 @@ begin
    begin
       PLYtm:=timer;
       PLYstate:=2-PLYstate;
-      colorHLine(60,0,4,1+PLYstate);
+      __scrOfs:=60; colorHLine(4,1+PLYstate);
    end;
 end;
 
-function controlSFXKeys():byte;
+function controlSFXShortcutKeys():byte;
 begin
 	if (key and $40=$40) then
 		result:=keyScan(key and $3f,keys_alphaNum,keysRange_decNum)
 	else
 		result:=255;
 end;
+
+//
+
+function SFXshortcutExist(excludeSC,nSFX:byte):byte;
+var i:byte;
+
+begin
+	result:=255;
+	for i:=0 to 9 do if (i<>excludeSC) and (SFX_shortcut[i]=nSFX) then result:=i;
+end;
+
+function setShortcut2currentSFX(SFXKey:byte):byte;
+var i:byte;
+
+begin
+	i:=SFXshortcutExist(SFXKey,currentSFX); if i<>255 then SFX_shortcut[i]:=255;
+	result:=SFX_shortcut[SFXKey];
+	if (result<>currentSFX) then result:=currentSFX else result:=255;
+	SFX_shortcut[SFXKey]:=result;
+end;
+
+//
 
 function controlEditKeys(key:byte; winSize:shortint; max:byte; var _pos,_shift:byte; prevKey,nextKey:byte):boolean;
 var step:shortint;
@@ -47,8 +69,8 @@ procedure uncolorWorkarea();
 var i:byte;
 
 begin
-   for i:=1 to 11 do
-      colorHLine(0,i,20,0);
+	__scrOfs:=20;
+   i:=10; while i>0 do begin colorHLine(20,0); dec(i); end;
 end;
 
 procedure clearTopMenu();
@@ -58,7 +80,7 @@ end;
 
 procedure clearWorkarea();
 begin
-   box(4,2,16,9,0);
+   __scrOfs:=44; box(16,9,0);
 end;
 
 procedure clearStatusBar();
@@ -78,7 +100,7 @@ end;
 
 procedure setWorkarea();
 begin
-   box(0,2,20,9,$40);
+   __scrOfs:=40; box(20,9,$40);
 end;
 
 procedure showAppSplash();
@@ -100,7 +122,7 @@ begin
       begin
          flashTM:=timer;
          flashState:=not flashState;
-         colorHLine(0,11,20,3*byte(flashState));
+         __scrOfs:=220; colorHLine(20,3*byte(flashState));
          screen2video();
       end;
    until kbcode<>255; kbcode:=255;
@@ -137,14 +159,64 @@ begin
 end;
 
 procedure set2SFX_Charset();
+
+	procedure copyChar(resId:byte; addr:word);
+	begin
+		moveRes(resId,CHARSET_ADDR+addr,8);
+	end;
+
 begin
-	moveRes(chr_NoteShUp,CHARSET_ADDR+96,8);
-	moveRes(chr_NoteShDn,CHARSET_ADDR+216,8);
-	moveRes(chr_FreqShUp,CHARSET_ADDR+232,8);
-	moveRes(chr_FreqShDn,CHARSET_ADDR+256,8);
+	copyChar(chr_NoteShUp,96);
+	copyChar(chr_NoteShDn,216);
+	copyChar(chr_FreqShUp,232);
+	copyChar(chr_FreqShDn,256);
 end;
 
 procedure set2General_Charset();
 begin
 	moveRes(app_charset,CHARSET_ADDR,512);
+end;
+
+function dataList(var listPtr:wordArray; currentItem,maxItems,itemSize:byte):shortint;
+var
+   i,ch,lis:byte;
+   adr,ofs:word;
+   tptr:pointer;
+	isSFX:boolean;
+
+begin
+	isSFX:=lo(word(@listPtr))=$00;
+
+   ofs:=0; lis:=itemSize+1;
+   if isSFX then inc(lis);
+   clearListBuf();
+   for i:=0 to maxItems-1 do
+   begin
+      adr:=listPtr[i];
+      if (adr<>$ffff) then
+      begin
+         tptr:=pointer(adr-itemSize);
+         ch:=$0a;
+      end
+      else
+      begin
+         tptr:=resptr[str_notDefined];
+         ch:=$00;
+      end;
+      listBuf[ofs]:=ch;
+      conv2internalP2P(tptr,@listBuf[ofs+1],itemSize);
+      ofs:=ofs+lis;
+
+		if isSFX then
+		begin
+			ch:=SFXshortcutExist(255,i);
+			if ch<>255 then
+				ch:=$50+ch
+			else
+				ch:=$00;
+			listBuf[ofs-1]:=ch;
+		end;
+   end;
+   setWorkarea();
+   result:=listChoice(1,2,lis,9,currentItem,listBuf,maxItems,true);
 end;

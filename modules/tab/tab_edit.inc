@@ -5,6 +5,23 @@ var
    _pos,i,cTAB:byte;
    nSFX:shortint;
 
+	procedure TABputIn(_note,_fn:byte);
+	begin
+		TAB_notes[_pos]:=_note;
+		TAB_fnSFX[_pos]:=_fn;
+		modified:=true;
+	end;
+
+	procedure TABdblMove(ofsSrc,ofsDest:byte);
+	var len:byte;
+
+	begin
+		len:=127-_pos;
+		ofsSrc:=_pos+ofsSrc; ofsDest:=_pos+ofsdest;
+		move(@TAB_notes[ofsSrc],@TAB_notes[ofsDest],len);
+		move(@TAB_fnSFX[ofsSrc],@TAB_fnsfx[ofsDest],len);
+	end;
+
    procedure saveIfModified();
    begin
       if modified then
@@ -17,7 +34,7 @@ var
 
    procedure drawCursor();
    begin
-      colorHLine(winXStart,2+cursorPos,20-winXStart,3);
+      __scrOfs:=vadr[2+cursorPos]+winXStart; colorHLine(16,3);
    end;
 
 	procedure setShortcutSFX(SFXKey:byte);
@@ -39,7 +56,7 @@ begin
       if keyPressed then
       begin
          _pos:=cursorShift+cursorPos;
-  			i:=controlSFXKeys; if i<>255 then setShortcutSFX(i);
+  			i:=controlSFXShortcutKeys; if i<>255 then setShortcutSFX(i);
 
          if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
             updateTABSFX();					// change the current SFX
@@ -68,18 +85,16 @@ begin
                updateTABSFX();
             end;
             key_CTRL_INSERT: begin			// insert row in TAB
-               i:=127-_pos;
-               TABdblMove(_pos,0,1);
-               TABputIn(_pos,TABFn_blank_param,TABFn_blank);
+               TABdblMove(0,1);
+               TABputIn(TABFn_blank_param,TABFn_blank);
             end;
             key_CTRL_DELETE: begin			// delete row from TAB
-               i:=127-_pos;
-               TABdblMove(_pos,1,0);
-               TABputIn(127,TABFn_blank_param,TABFn_blank);
+               TABdblMove(1,0);
+               _pos:=127; TABputIn(TABFn_blank_param,TABFn_blank);
             end;
             key_SPACE: begin					// clear row (put blank entry)
                SFX_ChannelOff(0);
-               TABputIn(_pos,TABFn_blank_param,TABFn_blank);
+               TABputIn(TABFn_blank_param,TABFn_blank);
                moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
             end;
             key_RETURN: if TABEntryEdit then break;	// call TAB functions list
@@ -94,7 +109,7 @@ begin
          i:=pianoKeyScan(0);
          if i<>255 then
          begin											// write note in TAB
-            TABputIn(_pos,i,currentSFX);
+            TABputIn(i,currentSFX);
             moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
          end;
 

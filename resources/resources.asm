@@ -30,8 +30,8 @@ data_pointers_list
 
 ;strings
 	dta a(str_notDefined)		;21
-	dta a(str_IO_nextPage)		;22
-	dta a(str_IO_prevPage)		;23
+	dta a(str_IO_Page)			;22
+	dta a(str_NoYes)				;23
 	dta a(str_NoteNames)			;24
 	dta a(str_EndSONGOrder)		;25
 	dta a(wild_allFiles)			;26

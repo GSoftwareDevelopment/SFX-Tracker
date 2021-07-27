@@ -1,9 +1,15 @@
 procedure SFXMM_Settings();
 var
-	opt:byte;
+	opt,i:byte;
 
 begin
-	setWorkarea(); opt:=0;
+	setWorkarea();
+	opt:=sfxmm_config;
+	for i:=0 to 2 do
+	begin
+
+	end;
+	opt:=0;
 	repeat
 		if optionsList(menu_settings,width_menuTop,4,opt,key_Up,key_Down) then
 		begin

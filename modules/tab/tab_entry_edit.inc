@@ -2,19 +2,28 @@ function TABEntryEdit():boolean;
 var _note,_fnsfx,_pos:byte;
    opt:byte;
 
+	procedure putIn(_not,_fn:byte);
+	begin
+		TAB_notes[_pos]:=_not;
+		TAB_fnSFX[_pos]:=_fn;
+      _note:=_not;
+      _fnsfx:=_fn;
+		modified:=true;
+	end;
+
    procedure editJumpTo(jumpPos:byte);
    var
       v:smallint;
 
    begin
       putMultiText(msg_TAB_JumpToPrompt,0);
-      putValue(17,11,_pos-1,3,0);
+      __scrOfs:=237; putValue(_pos-1,3,0);
       v:=jumpPos;
       if (_fnsfx<>TABFn_jump) then v:=0;
       if inputValue(winXStart+8,2+cursorPos,3,v,0,_pos-1,0,color_selected) then
       begin
          jumpPos:=byte(v);
-         TABPutIn(_pos,jumpPos,TABFN_jump);
+         putIn(jumpPos,TABFN_jump);
       end;
    end;
 
@@ -70,7 +79,7 @@ var _note,_fnsfx,_pos:byte;
                exit;
             end;
 
-            TABPutIn(_pos,value,byte(v) or TABFn_freq);
+            putIn(value,byte(v) or TABFn_freq);
          end;
       end;
    end;
@@ -99,16 +108,14 @@ begin
    if optionsList(menu_tab_edit,width_menuTABFunc,TABEditOptions,opt,key_Up,key_Down) then
    begin
       case opt of
-         0: TABPutIn(_pos,TABFN_end_param,TABFN_end);          // TAB-END
-         3: TABPutIn(_pos,TABFn_noteOff_param,TABFn_noteOff);  // NOTE OFF
-         4: TABPutIn(_pos,TABFn_blank_param,TABFn_blank);      // blank
+         0: putIn(TABFN_end_param,TABFN_end);          // TAB-END
+         3: putIn(TABFn_noteOff_param,TABFn_noteOff);  // NOTE OFF
+         4: putIn(TABFn_blank_param,TABFn_blank);      // blank
       end;
       clearWorkarea();
       updateTAB(true);
       if opt>=TABEditOption_BackToEdit then exit(opt=TABEditOption_BackToMenuBar);
 
-      _note:=TAB_notes[_pos];
-      _fnsfx:=TAB_fnSFX[_pos];
       clearStatusBar();
       fillchar(@screen[49+vadr[cursorPos]],6,0);
       case opt of

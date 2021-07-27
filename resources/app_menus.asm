@@ -13,7 +13,7 @@ menu_top
                dta 255
 
 menu_sfx
-               dta  20,d'#',255        ; current SFX (number)
+               dta  20,d'#  ',255        ; current SFX (number)
                dta  40,d'>>>',255      ; edit SFX
                dta  60,d'PLY',255      ; play SFX
                dta 120,d'VOL',255      ; edit SFX Volume
@@ -95,7 +95,7 @@ menu_DFD_mode
 
 
 menu_tabs
-               dta  20,d'#',255              ; current TAB (number)
+               dta  20,d'#  ',255              ; current TAB (number)
                dta  40,d'>>>',255            ; edit current TAB
                dta  60,d'PLY',255            ; play current TAB
                dta 200,d'OPT',255            ; TAB options

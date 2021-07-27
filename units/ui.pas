@@ -77,8 +77,8 @@ function inputLongText(x,y,width:byte; maxLen:byte; var s:string; colEdit,colOut
 function inputValue(x,y,width:byte; var v:smallint; min,max:smallint; colEdit,colOut:byte):boolean;
 procedure putMultiText(multitext:byte; bgColor:byte);
 procedure VBar(x,y,width,height,col:byte);
-procedure updateBar(bar:byte; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
-procedure menuBar(bar:byte; width,bgColor:byte);
+// procedure updateBar(bar:byte; width:byte; currentSel:shortint; canChoiceColor,choicedColor:byte);
+procedure menuBar(bar:byte; width:byte; currentSel:shortint; bgColor,selColor:byte);
 function optionsList(optTabs:byte; optWidth:byte; opts:byte; var currentOpt:byte; pcKey,ncKey:byte):boolean;
 function listChoice(x,y,width,height,defaultPos:byte; listPtr:pointer; listSize:byte; showCount:boolean):shortint;
 function messageBox(msgPtr:byte; msgColor:byte; menuPtr:byte; menuWidth,menuOpts:byte; defaultOpt:byte; pcKey,ncKey:byte):shortint;
@@ -159,7 +159,7 @@ begin
          if (_pos<0) then
             _pos:=0
          else
-            curPos:=oversize;
+            curPos:=oversize-1;
    end
    else
       if (_pos<0) then
@@ -191,11 +191,6 @@ begin
          curPos:=_pos
 end;
 
-function inputText:boolean;
-begin
-   result:=inputLongText(x,y,width,width,s,colEdit,colOut);
-end;
-
 function inputLongText:boolean;
 var
    buf:byteArray absolute $400; // use IO buffer for temporary input strage
@@ -207,12 +202,19 @@ var
 
    procedure updateTextLine();
    begin
+		__scrOfs:=scrOfs;
       move(@buf[shiftX],@screen[scrOfs],width);
       if width<20 then
-         colorHLine(x,y,width+1,colEdit)
+         colorHLine(width+1,colEdit)
       else
-         colorHLine(x,y,width,colEdit)
+         colorHLine(width,colEdit)
    end;
+
+	procedure drawCursor();
+	begin
+		__scrOfs:=scrOfs+curX;
+		screen[__scrOfs]:=screen[__scrOfs] xor $C0;
+	end;
 
 begin
    len:=length(s);
@@ -235,8 +237,7 @@ begin
       if keyPressed then
       begin
          ofs:=shiftX+curX;
-         // screen[scrOfs+curX]:=buf[ofs] or colEdit;
-         if curState then screen[scrOfs+curX]:=screen[scrOfs+curX] xor $C0;
+         if curState then drawCursor();
          case key of
             key_ESC: begin result:=false; break; end;
             key_RETURN: begin result:=true; break; end;
@@ -281,7 +282,7 @@ begin
       begin
          ctm:=timer;
          curState:=not curState;
-         screen[scrOfs+curX]:=screen[scrOfs+curX] xor $C0;
+         drawCursor();
       end;
       if (timer<>stm) then
       begin
@@ -298,8 +299,13 @@ begin
    end
    else
       conv2internalP2P(@s[1],@screen[scrOfs],width);
-   colorHLine(x,y,width,colOut);
+   __scrOfs:=vadr[y]+x; colorHLine(width,colOut);
    kbcode:=255;
+end;
+
+function inputText:boolean;
+begin
+   result:=inputLongText(x,y,width,width,s,colEdit,colOut);
 end;
 
 function inputValue:boolean;
@@ -319,59 +325,28 @@ begin
    until err=0;
    result:=true;
 end;
-(*
-procedure putMultiText;
-var
-   v:byte;
-   dataOfs:byte;
-   scrOfs:word;
-   data:array[0..0] of byte;
-
-begin
-   data:=bar;
-   bgColor:=colMask[bgColor];
-   dataOfs:=0;
-   while (data[dataOfs]<>255) do
-   begin
-      scrOfs:=data[dataOfs]; dataOfs:=dataOfs+1; // get screen offset
-      repeat
-         v:=data[dataOfs];
-         if (v=255) then break; // entry end
-
-         screen[scrOfs]:=bgColor+v;
-         scrOfs:=scrOfs+1;
-         dataOfs:=dataOfs+1;
-      until false;
-
-      dataOfs:=dataOfs+1;
-   end;
-end;
-*)
 
 procedure putMultiText;
 begin
-   menuBar(multitext,0,bgColor);
+   menuBar(multitext,0,-1,bgColor,bgColor);
 end;
 
 procedure VBar;
-var ofs:byte;
-
 begin
    col:=colMask[col]; width:=width-1;
-   ofs:=x+vadr[y];
+   setPos(x,y);
    while height>0 do
    begin
-      fillchar(@screen[ofs],width,col);
-      screen[ofs+width]:=$06+col;
-      ofs:=ofs+20; height:=height-1;
+      fillchar(@screen[__scrOfs],width,col);
+      screen[__scrOfs+width]:=$06+col;
+      inc(__scrOfs,20); dec(height);
    end;
 end;
-
+(*
 procedure updateBar;
 var
    i,j,v:byte;
    dataOfs,col:byte;
-   scrOfs:word;
    data:byteArray;
 
 begin
@@ -386,7 +361,7 @@ begin
       else
          col:=canChoiceColor;
 
-      scrOfs:=data[dataOfs]; dataOfs:=dataOfs+1;
+      __scrOfs:=data[dataOfs]; inc(dataOfs);
       for j:=0 to width do
       begin
          if (data[dataOfs]=255) then // entry end
@@ -394,30 +369,34 @@ begin
             if (width=255) then break
          end
          else
-            dataOfs:=dataOfs+1;
+            inc(dataOfs);
 
-         v:=screen[scrOfs] and $3f;
-         screen[scrOfs]:=col+v;
-         scrOfs:=scrOfs+1;
+         v:=screen[__scrOfs] and $3f;
+         screen[__scrOfs]:=col+v;
+         inc(__scrOfs);
       end;
-      i:=i+1; dataOfs:=dataOfs+1;
+      inc(i); inc(dataOfs);
    end;
 end;
-
+*)
 procedure menuBar;
 var
-   j,v:byte;
+   opt,j,v,col:byte;
    dataOfs:byte;
-   scrOfs:word;
    data:byteArray;
 
 begin
    data:=resptr[bar];
-   bgColor:=colMask[bgColor];
-   dataOfs:=0; width:=width-1;
+   bgColor:=colMask[bgColor]; selColor:=colMask[selColor];
+   dataOfs:=0; width:=width-1; opt:=0;
    while (data[dataOfs]<>255) do
    begin
-      scrOfs:=data[dataOfs]; dataOfs:=dataOfs+1;
+		if (opt=currentSel) then
+         col:=selColor
+      else
+         col:=bgColor;
+
+      __scrOfs:=data[dataOfs]; inc(dataOfs);
       for j:=0 to width-1 do
       begin
          v:=data[dataOfs];
@@ -427,23 +406,23 @@ begin
             v:=0;
          end
          else
-            dataOfs:=dataOfs+1;
+            inc(dataOfs);
 
-         screen[scrOfs]:=bgColor+v;
-         scrOfs:=scrOfs+1;
+         screen[__scrOfs]:=col+v;
+         inc(__scrOfs);
       end;
       if (width<>255) then
-         screen[scrOfs]:=bgColor+$06;
+         screen[__scrOfs]:=col+$06;
 
-      dataOfs:=dataOfs+1;
+      inc(dataOfs); inc(opt);
    end;
 end;
 
 function optionsList:boolean;
 begin
    opts:=opts-1;
-   menuBar(optTabs,optWidth,color_choice);
-   updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
+   menuBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
+//   updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
    screen2video();
    repeat
       if keyPressed then
@@ -453,7 +432,8 @@ begin
             key_ESC: begin result:=false; break; end;
             key_RETURN: begin result:=true; break; end;
          end;
-         updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
+			menuBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
+//         updateBar(optTabs,optWidth,currentOpt,color_choice,color_selected);
          screen2video();
       end;
    until false;
@@ -463,30 +443,38 @@ function listChoice:shortint;
 var
    listShift,listPos:byte;
    listData:array[0..0] of byte;
+	ofs:word;
 
-   procedure listEntry(ey,n:byte);
-   var
-      scrOfs:byte;
-      ofs:word;
-
+   procedure drawCursor();
    begin
-      ofs:=n*width;
-      scrOfs:=vadr[ey]+x;
-      if showCount then
-      begin
-         putValue(x,ey,n,2,1);
-         scrOfs:=scrOfs+3;
-      end;
-
-      move(@listData[ofs],@screen[scrOfs],width);
-      colorHLine(x,ey,width+4*byte(showCount),1);
+		setPos(x,y+listPos); colorHLine(width+2*byte(showCount),3);
    end;
 
    procedure updateList();
-   var i:byte;
+   var i,n:byte;
 
    begin
-      for i:=0 to height-1 do listEntry(y+i,listShift+i);
+		n:=listShift;
+      ofs:=n*width;
+      setPos(x,y);
+      for i:=0 to height-1 do
+      begin
+			if showCount then
+			begin
+				putValue(n,2,1);
+				screen[__scrOfs]:=$40;
+			end;
+
+			move(@listData[ofs],@screen[__scrOfs],width);
+			inc(ofs,width); inc(n);
+			colorHLine(width,1);
+			if showCount then
+				inc(__scrOfs,18-width)
+			else
+				inc(__scrOfs,20-width);
+		end;
+		drawCursor();
+		screen2video();
    end;
 
 begin
@@ -499,15 +487,10 @@ begin
       listPos:=defaultPos-listShift;
    end;
    updateList();
-
-   colorHLine(x,y+listPos,width+3*byte(showCount),3);
    kbcode:=255;
-   screen2video();
-
    repeat
       if keyPressed then
       begin
-         colorHLine(x,y+listPos,width+3*byte(showCount),1);
          case key of
             key_CTRL_Up:begin
                moveCursor(-height,height,listSize,listPos,listShift);
@@ -530,8 +513,6 @@ begin
             end;
          end;
          updateList();
-         colorHLine(x,y+listPos,width+3*byte(showCount),3);
-         screen2video();
       end;
    until false;
 end;

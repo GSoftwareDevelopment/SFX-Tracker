@@ -71,37 +71,3 @@ begin
       _heap_sizes[hid]:=$FFFF;
    end;
 end;
-
-//
-//
-//
-
-function dataList(var listPtr:wordArray; currentItem,maxItems,itemSize:byte):shortint;
-var
-   i,ch:byte;
-   adr,ofs:word;
-   tptr:pointer;
-
-begin
-   ofs:=0; itemSize:=itemSize+1;
-   clearListBuf();
-   for i:=0 to maxItems-1 do
-   begin
-      adr:=listPtr[i];
-      if (adr<>$ffff) then
-      begin
-         tptr:=pointer(adr-itemSize+1);
-         ch:=$0a;
-      end
-      else
-      begin
-         tptr:=resptr[str_notDefined];
-         ch:=$00;
-      end;
-      conv2internalP2P(tptr,@listBuf[ofs],itemSize);
-      ofs:=ofs+itemSize;
-      listBuf[ofs-1]:=ch;
-   end;
-   box(0,2,20,9,$40);
-   result:=listChoice(1,2,itemSize,9,currentItem,listBuf,maxItems,true);
-end;

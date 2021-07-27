@@ -4,7 +4,7 @@ var
 
    procedure drawCursor();
    begin
-      colorVLine(tuneBarsPos+notePos,0,5,3);
+      __scrOfs:=tuneBarsPos+notePos; colorVLine(5,3);
    end;
 
 begin

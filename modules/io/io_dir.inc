@@ -20,7 +20,7 @@ begin
    begin
       if (startRead>0) then
       begin
-         move(resptr[str_IO_prevPage],@listBuf[listOfs],8); // hardcoded length of string!!!
+         move(resptr[str_IO_Page],@listBuf[listOfs],8); // hardcoded length of string!!!
          filesCount:=filesCount+1; listOfs:=listOfs+width_fileList;
          putMultiText(msg_IO_Skipping,0);
          screen2video();
@@ -67,12 +67,12 @@ begin
       begin
          if (filesCount=IO_pageLimit) then
          begin
-            move(resptr[str_IO_nextPage],@listBuf[listOfs],8); // hardcoded length of string!!!
+            move(pointer(word(resptr[str_IO_Page])+4),@listBuf[listOfs],8); // hardcoded length of string!!!
             filesCount:=filesCount+1;
          end
       end
-      else
-         if filesCount>0 then filesCount:=filesCount-1;
+//      else
+//         if filesCount>0 then filesCount:=filesCount-1;
    end;
    if (filesCount<=IO_pageLimit) and (IOResult<>136) then
    begin
@@ -94,7 +94,7 @@ var
 
    procedure updateListPage();
    begin
-      putValue(17,11,listPage+1,3,0);
+      __scrOfs:=237; putValue(listPage+1,3,0);
    end;
 
 begin

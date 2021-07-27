@@ -1,20 +1,3 @@
-procedure TABputIn(_pos:byte; _note,_fn:byte);
-begin
-   TAB_notes[_pos]:=_note;
-   TAB_fnSFX[_pos]:=_fn;
-   modified:=true;
-end;
-
-procedure TABdblMove(_pos,ofsSrc,ofsDest:byte);
-var len:byte;
-
-begin
-   len:=127-_pos;
-   ofsSrc:=_pos+ofsSrc; ofsDest:=_pos+ofsdest;
-   move(@TAB_notes[ofsSrc],@TAB_notes[ofsDest],len);
-   move(@TAB_fnSFX[ofsSrc],@TAB_fnsfx[ofsDest],len);
-end;
-
 procedure getTABData(nTAB:byte);
 var
    size:word;

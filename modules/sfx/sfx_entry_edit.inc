@@ -21,10 +21,13 @@ var
 		end
 		else
 			if a>=max then v:=a-minusBase else v:=a;
+
 		putMultiText(msg_SFX_ValuePrompt,0);
-		putValue(13,11,abs(min),3,0);
-		putValue(17,11,max,3,0);
-		if (min<0) then screen[232]:=$0d else screen[232]:=$00;
+
+		__scrOfs:=233; if (min<0) then putChar($0d) (* - *) else putChar($00); (* + *)
+		putValue(abs(min),3,0);
+		__scrOfs:=237; putValue(max,3,0);
+
 		if inputValue(4,11,4,v,min,max,0,0) then
 		begin
 			if v<0 then
@@ -35,7 +38,7 @@ var
 			putModValue(a);
 			modified:=true;
 		end;
-		fillchar(@screen[220],20,0);
+		clearStatusBar();
 	end;
 
 begin

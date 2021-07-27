@@ -43,7 +43,7 @@ var
          x:=x+SONGChn*3;
          w:=2;
       end;
-      colorHLine(x,y,w,3);
+      __scrOfs:=vadr[y]+x; colorHLine(w,3);
       SONGAdr:=SONGRow+SONGChn;
 
       nTab:=SONGData[SONGAdr];

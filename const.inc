@@ -175,8 +175,8 @@ SFXLenY           = 10;
 	menu_settings					= base_menus+20;
 
    str_notDefined             = base_strings+0;
-   str_IO_nextPage            = base_strings+1;
-   str_IO_prevPage            = base_strings+2;
+   str_IO_Page                = base_strings+1;
+   str_NoYes                  = base_strings+2;
    str_NoteNames              = base_strings+3;
    str_EndSONGOrder           = base_strings+4;
    wild_allFiles              = base_strings+5;

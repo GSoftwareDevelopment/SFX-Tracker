@@ -1,17 +1,19 @@
 {$i modules/sfx/sfx_entry_edit.inc}
 
 procedure SFXEditLoop(var tab:byteArray; nibble:byte);
-var i,v,scrofs,cSFX:byte;
+var i,v,cSFX:byte;
    at:byte;
 
 	procedure updateCursor();
 	begin
-		scrofs:=winXStart+cursorPos+vadr[winYStart];
-		colorVLine(scrofs,0,9,3);
-		inc(scrofs,vadr[1+section]);
-		if section>4 then inc(scrofs,20);
-		i:=screen[scrofs];
-		screen[scrofs]:=i and $3f or $80;
+		i:=winXStart+cursorPos;
+		__scrofs:=i+vadr[winYStart];
+		colorVLine(9,3);
+		__scrofs:=i+vadr[3+section];
+		if section>4 then inc(__scrofs,20);
+		i:=screen[__scrofs];
+		screen[__scrofs]:=i and $3f or $80;
+      screen2video();
 	end;
 
    procedure storeValue(v:byte);
@@ -29,16 +31,8 @@ var i,v,scrofs,cSFX:byte;
       modified:=true;
    end;
 
-	procedure setShortcut2currentSFX(SFXKey:byte);
-	begin
-		i:=SFXshortcutExist(SFXKey,currentSFX); if i<>255 then SFX_shortcut[i]:=255;
-		v:=SFX_shortcut[SFXKey];
-		if (v<>currentSFX) then v:=currentSFX else v:=255;
-		SFX_shortcut[SFXKey]:=v;
-	end;
-
 begin
-	updateCursor(); screen2video();
+	updateCursor();
 	cSFX:=currentSFX;
    repeat
       if keyPressed then
@@ -60,6 +54,8 @@ begin
 				getSFXData(cSFX);
 				SFXDetermineLength();
 			end;
+
+			i:=controlSFXShortcutKeys; if i<>255 then setShortcut2currentSFX(i);
 
          case key of
             key_ESC: break;
@@ -84,12 +80,9 @@ begin
             if (i<>255) then storeValue(i);
          end;
 
-			i:=controlSFXKeys; if i<>255 then setShortcut2currentSFX(i);
-
 			if modified then SFXDetermineLength();
          updateSFXView();
          updateCursor();
-         screen2video();
       end;
    until false;
 end;

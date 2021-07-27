@@ -35,7 +35,7 @@ begin
    begin
       repeat
          section:=section and $f;
-         updateBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
+			menuBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
          case section of
             3: SFXEditLoop(SFX_vol_dist,0);
             4: SFXEditLoop(SFX_vol_dist,1);

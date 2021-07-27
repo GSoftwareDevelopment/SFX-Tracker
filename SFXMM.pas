@@ -16,6 +16,12 @@ const
 {$endif}
 
 var
+	// $00000cba
+	// c - key click
+	// b - piano roll
+	// a - tab follow
+	sfxmm_config:byte = %111;
+
 // buffers
 
    listBuf:array[0..0] of byte absolute LIST_BUFFER_ADDR; // universal list buffer array
@@ -71,7 +77,6 @@ var
 {$i modules/ui_helpers.inc}
 {$i units/heap_manage.inc}
 {$i modules/io/io_clear_all_data.inc}
-// {$i modules/io/io_tag_compare.inc}
 {$i modules/io/io_manage.inc}
 {$i modules/io/io_options.inc}
 {$i modules/io/io_dir.inc}
