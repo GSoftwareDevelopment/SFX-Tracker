@@ -51,6 +51,7 @@ var
 			currentSFX:=i; nSFX:=i;
 			updateTABSFX();
 		end;
+		key:=TKeys(255); // clear keyboard state; prevent to play/write note (under key 2,3,5,6,7,9,0) in TAB
 	end;
 
 begin

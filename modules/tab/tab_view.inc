@@ -163,6 +163,4 @@ begin
    updateTABInfo();
    updateTAB(true);
    updateTABBar();
-
-	screen2video();
 end;

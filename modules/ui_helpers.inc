@@ -219,4 +219,6 @@ begin
    end;
    setWorkarea();
    result:=listChoice(1,2,lis,9,currentItem,listBuf,maxItems,true);
+   PMGClear(); // prevent to draw mess in PMG
+   key:=TKeys(255); // clear keyboard state
 end;

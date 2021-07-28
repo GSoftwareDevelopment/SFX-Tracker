@@ -36,5 +36,6 @@ procedure TABModule();
 begin
    section:=0; cursorPos:=0; cursorShift:=0; modified:=false;
    TABScreen();
+	screen2video();
    TABLoop();
 end;
