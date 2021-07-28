@@ -1,4 +1,5 @@
 procedure TAB_Play(startPos:byte);
+var i:byte;
 
    procedure updateTabView();
    begin
@@ -22,6 +23,17 @@ procedure TAB_Play(startPos:byte);
       __scrOfs:=vadr[2+cursorPos]+winXStart; colorHLine(16,3);
    end;
 
+	procedure setShortcutSFX(SFXKey:byte);
+	begin
+		i:=SFX_shortcut[SFXKey];
+		if i<>255 then
+		begin
+			currentSFX:=i;
+			updateTABSFX();
+		end;
+		key:=TKeys(255); // clear keyboard state; prevent to play/write note (under key 2,3,5,6,7,9,0) in TAB
+	end;
+
 begin
    if TABPtr[currentTAB]=$FFFF then
    begin
@@ -40,6 +52,9 @@ begin
             key_ESC: break;
             key_SPACE: SFX_ChannelOff(2);
          end;
+
+         i:=controlSFXShortcutKeys; if i<>255 then setShortcutSFX(i);
+
          if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
             updateTABSFX();
          pianoKeyScan(2);
