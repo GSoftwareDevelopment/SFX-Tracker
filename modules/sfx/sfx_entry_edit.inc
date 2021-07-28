@@ -20,11 +20,11 @@ var
 		  if a>128 then v:=a-256 else v:=a;
 		end
 		else
-			if a>=max then v:=a-minusBase else v:=a;
+			if a>max then v:=a-minusBase else v:=a;
 
 		putMultiText(msg_SFX_ValuePrompt,0);
 
-		__scrOfs:=233; if (min<0) then putChar($0d) (* - *) else putChar($00); (* + *)
+		__scrOfs:=232; if (min<0) then putChar($0d) (* - *) else putChar($00); (* + *)
 		putValue(abs(min),3,0);
 		__scrOfs:=237; putValue(max,3,0);
 
