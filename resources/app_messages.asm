@@ -68,10 +68,15 @@ msg_ClipboardPasted
 					dta 227,d'PASTED',255,255
 
 msg_mem_stats
-               ;        01234567890123456789
 					dta  61,d'RAW DATA',255
-					dta  81,d'SFX_______________',255
-					dta 101,d'TAB_______________',255
-					dta 141,d'TOTAL_____________',255
-					dta 181,d'FREE______________',255
+					dta  81,d'SFX',255
+					dta 101,d'TAB',255
+					dta 141,d'TOTAL',255
+					dta 181,d'FREE',255
 					dta 255
+
+msg_SFX_FastKey_Assigned
+               ;         01234567890123456789
+					dta 220,d'FAST KEY _ > SFX# __',255,255
+msg_SFX_FastKey_Cleared
+					dta 220,d'FAST KEY _ - CLEARED',255,255

@@ -10,7 +10,7 @@ begin
    ThemesScreen(); DLIInit();
 
    repeat
-      nTheme:=listChoice(7,2,12,8,currentTheme,themesNames,7,false);
+      nTheme:=listChoice(7,2,12,8,currentTheme,themesNames,8,false);
       if nTheme=-1 then break;
       if nTheme<6 then
          getTheme(nTheme,PFCOLS)

@@ -144,8 +144,8 @@ SFXLenY           = 10;
 // RESOURCES IDS
 
    base_menus                 = 0;
-   base_strings               = 21;
-   base_messages              = 38;
+   base_strings               = 20;
+   base_messages              = 36;
    base_appdata               = 64;
 
    menu_top                   = base_menus+0;
@@ -176,24 +176,23 @@ SFXLenY           = 10;
 
    str_notDefined             = base_strings+0;
    str_IO_Page                = base_strings+1;
-   str_NoYes                  = base_strings+2;
-   str_NoteNames              = base_strings+3;
-   str_EndSONGOrder           = base_strings+4;
-   wild_allFiles              = base_strings+5;
+   str_NoteNames              = base_strings+2;
+   str_EndSONGOrder           = base_strings+3;
+   wild_allFiles              = base_strings+4;
 
-   scan_to_scr                = base_strings+6;
-   scan_key_codes             = base_strings+7;
-   scan_piano_codes           = base_strings+8;
-   shortcutSFX						= base_strings+9;
+   scan_to_scr                = base_strings+5;
+   scan_key_codes             = base_strings+6;
+   scan_piano_codes           = base_strings+7;
+   shortcutSFX						= base_strings+8;
 
-   val_menu_beatStep          = base_strings+10;
-   val_menu_tempo             = base_strings+11;
+   val_menu_beatStep          = base_strings+9;
+   val_menu_tempo             = base_strings+10;
 
-   octaveShifts               = base_strings+12;
-   pianoTuneOdd               = base_strings+13;
-   pianoTuneEven              = base_strings+14;
-   tuneIndChars               = base_strings+15;
-   themes_names_list          = base_strings+16;
+   octaveShifts               = base_strings+11;
+   pianoTuneOdd               = base_strings+12;
+   pianoTuneEven              = base_strings+13;
+   tuneIndChars               = base_strings+14;
+   themes_names_list          = base_strings+15;
 
    msg_IO_DirPrompt           = base_messages+0;
    msg_IO_SavePrompt          = base_messages+1;
@@ -221,6 +220,8 @@ SFXLenY           = 10;
 	msg_ClipboardCopied			= base_messages+23;
 	msg_ClipboardPasted			= base_messages+24;
 	msg_mem_stats					= base_messages+25;
+	msg_SFX_FastKey_Assigned	= base_messages+26;
+	msg_SFX_FastKey_Cleared		= base_messages+27;
 
    app_logo                   = base_appdata+0;
    app_virtual_piano          = base_appdata+1;

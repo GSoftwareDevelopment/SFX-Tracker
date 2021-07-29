@@ -121,9 +121,8 @@ menu_tab_edit
 
 menu_GSD
                dta 0,d'<',255                ; back to main menu
-               dta 2,d'SETS',255             ; settings
-               dta 7,d'THEME',255            ; theme selector
-               dta 13,d'MEM',255             ; memory statistics
+               dta 2,d'THEME',255            ; theme selector
+               dta 8,d'MEM',255             ; memory statistics
                dta 255
 
 ;
@@ -169,10 +168,3 @@ menu_IO
                dta 12,d'NEW',255             ;
                dta 16,d'QUIT',255            ; quit to dos
                dta 255
-
-menu_settings
-					dta  61,d'KEY CLICK',255
-					dta  81,d'PIANO ROLL',255
-					dta 101,d'TAB FOLLOW',255
-					dta 141,d'< EXIT',255
-					dta 255

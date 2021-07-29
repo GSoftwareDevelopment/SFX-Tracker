@@ -37,7 +37,14 @@ begin
       begin
          controlSelectionKeys(key,key_Up,key_Down,section,0,7);
 
-			i:=controlSFXShortcutKeys; if i<>255 then begin setShortcut2currentSFX(i); updateSFXView(); end;
+			i:=controlSFXShortcutKeys;
+			if i<>255 then
+			begin
+				setShortcut2currentSFX(i);
+// TIP: uncomment below lines to active status bar info about assigned fast key
+//				updateSFXView();
+//				SFXshortcutMessage(i);
+			end;
 
          if section=0 then SFXMenuBarChange();
 

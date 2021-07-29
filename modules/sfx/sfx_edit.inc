@@ -55,7 +55,15 @@ begin
 				SFXDetermineLength();
 			end;
 
-			i:=controlSFXShortcutKeys; if i<>255 then setShortcut2currentSFX(i);
+			i:=controlSFXShortcutKeys;
+			if i<>255 then begin
+				setShortcut2currentSFX(i);
+// TIP: uncomment below lines to active status bar info about assigned fast key
+//				updateSFXView();
+//				SFXshortcutMessage(i);
+//				updateCursor();
+//				continue;
+			end;
 
          case key of
             key_ESC, key_BackSpc: break;

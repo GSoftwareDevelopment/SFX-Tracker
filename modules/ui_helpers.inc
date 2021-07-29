@@ -11,36 +11,6 @@ begin
    end;
 end;
 
-function controlSFXShortcutKeys():byte;
-begin
-	if (key and $40=$40) then
-		result:=keyScan(key and $3f,keys_alphaNum,keysRange_decNum)
-	else
-		result:=255;
-end;
-
-//
-
-function SFXshortcutExist(excludeSC,nSFX:byte):byte;
-var i:byte;
-
-begin
-	result:=255;
-	for i:=0 to 9 do if (i<>excludeSC) and (SFX_shortcut[i]=nSFX) then result:=i;
-end;
-
-function setShortcut2currentSFX(SFXKey:byte):byte;
-var i:byte;
-
-begin
-	i:=SFXshortcutExist(SFXKey,currentSFX); if i<>255 then SFX_shortcut[i]:=255;
-	result:=SFX_shortcut[SFXKey];
-	if (result<>currentSFX) then result:=currentSFX else result:=255;
-	SFX_shortcut[SFXKey]:=result;
-end;
-
-//
-
 function controlEditKeys(key:byte; winSize:shortint; max:byte; var _pos,_shift:byte; prevKey,nextKey:byte):boolean;
 var step:shortint;
 
@@ -175,6 +145,53 @@ end;
 procedure set2General_Charset();
 begin
 	moveRes(app_charset,CHARSET_ADDR,512);
+end;
+
+function controlSFXShortcutKeys():byte;
+begin
+	if (key and $40=$40) then
+		result:=keyScan(key and $3f,keys_alphaNum,keysRange_decNum)
+	else
+		result:=255;
+end;
+
+//
+
+function SFXshortcutExist(excludeSC,nSFX:byte):byte;
+var i:byte;
+
+begin
+	result:=255;
+	for i:=0 to 9 do if (i<>excludeSC) and (SFX_shortcut[i]=nSFX) then result:=i;
+end;
+
+function setShortcut2currentSFX(SFXKey:byte):byte;
+var i:byte;
+
+begin
+	i:=SFXshortcutExist(SFXKey,currentSFX); if i<>255 then SFX_shortcut[i]:=255;
+	result:=SFX_shortcut[SFXKey];
+	if (result<>currentSFX) then result:=currentSFX else result:=255;
+	SFX_shortcut[SFXKey]:=result;
+end;
+
+procedure SFXshortcutMessage(SFXKey:byte);
+var
+	nSFX:byte;
+
+begin
+	nSFX:=SFX_shortcut[SFXKey];
+	if nSFX<>255 then
+	begin
+		drawError(msg_SFX_FastKey_Assigned);
+		__scrOfs:=238; putValue(nSFX,2,0);
+	end
+	else
+	begin
+		drawError(msg_SFX_FastKey_Cleared);
+	end;
+	__scrOfs:=229; putValue(SFXKey,1,0);
+	screen2video();
 end;
 
 function dataList(var listPtr:wordArray; currentItem,maxItems,itemSize:byte):shortint;
