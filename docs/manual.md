@@ -1035,7 +1035,7 @@ Poniższe rejestry są dostępne w zależności od zastosowanych warunków kompi
 | chnCtrl       |   chnOfs+8    | aktualna wartość zniekształcenia i głośności |
 | trackOfs      |   chnOfs+10   | aktualny ofset ścieżki SONG                  |
 | tabPtr        |   chnOfs+12   | wskaźnik do definicji TABa                   |
-| tabOfs        |   chnOfs+14   | ofset definicji TABa (wskazuje wiersz TABa)  |
+| tabRow        |   chnOfs+14   | wiersz definicji TABa                        |
 | tabRep        |   chnOfs+15   | licznik pętli dla funkcji REPEAT             |
 
 Wymagane miejsce dla rejestrów: 64 bajty (dużo, ale w dowolnym miejscu pamięci RAM)
