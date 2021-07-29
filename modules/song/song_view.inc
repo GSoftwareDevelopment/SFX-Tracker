@@ -126,7 +126,7 @@ begin
       pos:=channels[chn+_tabOfs];
       if pos<>$ff then
       begin
-         pos:=pos shr 1;
+//         pos:=pos shr 1;
          putHexValue(pos,0);
       end
       else

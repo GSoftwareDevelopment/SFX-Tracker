@@ -77,7 +77,7 @@ begin
 			if key=138 (* CTRL+P *) then
 			begin
 				saveIfModified();
-				TAB_Play(_pos shl 1);
+				TAB_Play(_pos); // (_pos shl 1);
 			end;
 
          case key of

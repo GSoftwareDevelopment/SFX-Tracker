@@ -38,19 +38,19 @@ TAB_FN_ContinueLoop
 
 ; end of loop
 
-         bne fetch_next_tab_row
-         jsr SONG_process                      ; if TAB offset is wrap, process TRACK step
+         bne fetch_next_TAB_row
+         jsr SONG_process                       ; if TAB offset is wrap, process TRACK step
          jmp tick_start
 
-fetch_next_tab_row
-         jmp fetch_TAB_ROW                      ; fetch next TAB row
+fetch_next_TAB_row
+         jmp fetch_TAB_row                      ; fetch next TAB row
 
 TAB_FN_RepeatSet
          lda _regTemp
          sta SFX_CHANNELS_ADDR+_tabRep,x
 
 TAB_FN_JumpTo
-         lda TABParam                            ; set jump position
+         lda TABParam                           ; set jump position
          asl @                                  ; multiply by 2 to get TAB offest
          tay                                    ; store in TAB offset register
          jmp fetch_TAB_row                      ; get new TAB line

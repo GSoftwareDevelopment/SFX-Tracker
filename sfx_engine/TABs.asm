@@ -1,15 +1,23 @@
 ; TAB PLAY ROUTINE
 ;
 TAB_set
-         ldy SFX_CHANNELS_ADDR+_tabOfs,x        ; get TAB offset
+			lda SFX_CHANNELS_ADDR+_tabOfs,x         ; get TAB row
 
 check_TAB_offset
-         cpy #TAB_OFF                           ; check TAB offset
-         bne fetch_TAB_pointer
+         cmp #TAB_OFF                           ; check TAB offset
+         bne check_end_of_TAB
          jmp end_player_tick                    ; $ff = no Tab; end Play routine for this channel
 
+check_end_of_TAB
+			cmp #$80
+			bne fetch_TAB_pointer
+			jmp TABFn_TAB_END
+
 fetch_TAB_pointer
-         lda SFX_CHANNELS_ADDR+_tabPtrLo,x      ; get TAB pointer
+			asl @                                   ; multiply by 2 to get offset
+			tay                                     ; store in Y register
+
+         lda SFX_CHANNELS_ADDR+_tabPtrLo,x       ; get TAB pointer
          sta dataPtr
          lda SFX_CHANNELS_ADDR+_tabPtrHi,x
          sta dataPtr+1
@@ -17,7 +25,7 @@ fetch_TAB_pointer
 fetch_TAB_row
          lda (dataPtr),y                         ; get current TAB Note
          sta TABParam
-         iny                                    ; shift TAB Offset to order value
+         iny                                     ; shift TAB Offset to order value
          lda (dataPtr),y                         ; get current TAB Order
          sta TABOrder
 
@@ -29,9 +37,8 @@ fetch_TAB_row
 
 next_player_tick
          iny
-         bne store_TAB_offset                   ; if TAB offset is wrap?
-         jmp TABFn_TAB_END                      ; process TRACK step
 
 store_TAB_offset
          tya
-         sta SFX_CHANNELS_ADDR+_tabOfs,x        ; store current TAB offset in Channels register
+         lsr @                                  ; divide offest by 2 to get TAB row
+         sta SFX_CHANNELS_ADDR+_tabOfs,x        ; store current TAB row in Channels register
