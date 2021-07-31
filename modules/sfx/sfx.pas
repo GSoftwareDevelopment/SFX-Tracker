@@ -35,7 +35,7 @@ begin
    repeat
       if keyPressed then
       begin
-         controlSelectionKeys(key,key_Up,key_Down,section,0,7);
+         controlSelectionKeys(key_Up,key_Down,section,0,7);
 
 			i:=controlSFXShortcutKeys;
 			if i<>255 then
@@ -49,13 +49,12 @@ begin
          if section=0 then SFXMenuBarChange();
 
          case key of
-            key_ESC, key_BackSpc: break;
             key_RETURN: SFXSelectMenuBar(section);
          end;
 
          update();
       end;
-   until false;
+   until checkEscape;
 end;
 
 procedure SFXModule();

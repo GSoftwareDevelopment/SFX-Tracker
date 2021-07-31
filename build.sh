@@ -34,7 +34,8 @@ cd ..
 
 echo "> Compiling main project..."
 
-mp $1.pas -o -define:INCLUDE_RESOURCES >> $logfile
+#mp $1.pas -o -define:INCLUDE_RESOURCES >> $logfile
+mp $1.pas -o >> $logfile
 if [ $? -ne 0 ]; then
 	break_build
 fi

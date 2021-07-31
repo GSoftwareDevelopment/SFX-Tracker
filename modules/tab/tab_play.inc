@@ -49,13 +49,11 @@ begin
       if keyPressed then
       begin
          case key of
-            key_ESC: break;
             key_SPACE: SFX_ChannelOff(2);
          end;
 
          i:=controlSFXShortcutKeys; if i<>255 then setShortcutSFX(i);
-
-         if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
+         if controlSelectionKeys(key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
             updateTABSFX();
          pianoKeyScan(2);
       end;
@@ -66,7 +64,7 @@ begin
          PlayFlash();
          move(@screen,@video,240);
       end;
-   until false;
+   until checkEscape;
    PLYtm:=0; PLYstate:=2; PlayFlash();
    SFX_Off(); keyClick:=true; key:=TKeys($FF);
    reset_pianoVis();

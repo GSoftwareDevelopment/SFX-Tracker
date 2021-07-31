@@ -64,9 +64,9 @@ begin
          _pos:=cursorShift+cursorPos;
   			i:=controlSFXShortcutKeys; if i<>255 then setShortcutSFX(i);
 
-         if controlSelectionKeys(key,key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
+         if controlSelectionKeys(key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
             updateTABSFX();					// change the current SFX
-         if controlSelectionKeys(key,key_SHIFT_LEFT,key_SHIFT_RIGHT,cTAB,0,maxTABs-1) then
+         if controlSelectionKeys(key_SHIFT_LEFT,key_SHIFT_RIGHT,cTAB,0,maxTABs-1) then
          begin										// change the currently edited TAB
             saveIfModified();
             currentTab:=cTab;
@@ -80,8 +80,8 @@ begin
 				TAB_Play(_pos); // (_pos shl 1);
 			end;
 
+
          case key of
-            key_ESC, key_BackSpc: break;
 				key_SPACE: SFX_ChannelOff(0); // turn off SFX
             key_CAPS: begin
                          editState:=not editState;
@@ -101,7 +101,7 @@ begin
             key_CTRL_V: PasteClipboard(false);
          end;
 
-         controlEditKeys(key,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift,key_Up,key_Down);
+         controlEditKeys(TAB_winHeight,TAB_maxLength,cursorPos,cursorShift,key_Up,key_Down);
 
 			if editState then
 			begin
@@ -115,7 +115,6 @@ begin
 						_pos:=127; TABputIn(TABFn_blank_param,TABFn_blank);
 					end;
 					key_SPACE: begin					// clear row (put blank entry)
-						SFX_ChannelOff(0);
 						TABputIn(TABFn_blank_param,TABFn_blank);
 						moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 					end;
@@ -140,7 +139,7 @@ begin
          drawCursor();
       end;
       updatePianoVis();
-   until false;
+   until checkEscape;
    updateTAB(true);
    SFX_Off();
    saveIfModified();

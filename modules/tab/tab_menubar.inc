@@ -15,7 +15,7 @@ procedure TABChangeMenuBarOpt(section:byte);
 begin
    case section of
       0: begin
-            controlSelectionKeys(key,key_Left,key_Right,currentTAB,0,maxTABs-1);
+            controlSelectionKeys(key_Left,key_Right,currentTAB,0,maxTABs-1);
             TABScreen();
          end;
    end;

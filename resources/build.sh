@@ -6,5 +6,5 @@ if [ $? -ne 0 ]; then
 	break_build
 fi
 
-# cp resources.dat ../bin/SFXMM/SFXMM.RES
+cp resources.dat ../bin/SFXMM/SFXMM.RES
 

@@ -769,7 +769,7 @@ Szczegóły techniczneTo kod na który składają się:
 
 Wywołanie procedur odbywa się poprzez skok `JSR ` pod adres bazowy jądra silnika z offsetem (co trzy bajty). Do procedur przekazywane są parametry za pośrednictwem rejestrów sprzętowych (A,X,Y oraz rejestr flag) 
 
- Dla przykładu, wywołanie procedury `SFX_PLAY_NOTE` (odtwarzającej SFX) w assemblerze to:
+ Dla przykładu, wywołanie procedury `SFX_PLAY_NOTE` (odtwarzającej SFX) w assemblerze wygląda następująco:
 
 ```assembly
 ; ustawienie parametrów procedury
@@ -780,14 +780,17 @@ Wywołanie procedur odbywa się poprzez skok `JSR ` pod adres bazowy jądra siln
    
 ; wywołanie procedury jądra
    jsr SFXEngine+6			; SFXEngine zawiera adres bazowy
-   							; pod którym znajduje się jądro silnika
-   
+   							; pod którym znajduje się SFX-Engine
+   							; a +6 jest offsetem dla procedury SFX_PLAY_NOTE
 
 ```
 
 Można też pominąć tablicę skoków, wykorzystując etykietę:
 
 ```assembly
+.
+.
+.
 ; wywołanie procedury jądra
 	jsr SFX_PLAY_NOTE
 ```
@@ -805,11 +808,19 @@ Procedura inicjująca silnik SFX. Ustawia rejestry wykorzystywane przez silnik n
 
 #### SFX_MAIN_TICK (offset +3)
 
-Główna procedura przetwarzająca dane. Należy ją "podpiąć" pod przerwanie VBLANK (we własnym zakresie). Przed uruchomieniem, konieczne jest zainicjowanie silnika procedurą `SFX_INIT`
+Główna procedura przetwarzająca dane. Należy ją "podpiąć" pod przerwanie **VBLANK** lub **DLI** (we własnym zakresie). Przed uruchomieniem, konieczne jest zainicjowanie silnika procedurą `SFX_INIT`. 
+
+---
+
+**UWAGA!** Niezainicjowanie może spowodować nieokreślone zachowanie **SFX-Engine**, a nawet, zawieszenie komputera.
+
+---
 
 **Brak paramertów wejściowych**
 
-Przykładowa inicjacja przerwania:
+##### Inicjacja dla przerwania VBLANK
+
+Poniższy kod w assemblerze przedstawia sam proces podpięcia procedury `SFX_MAIN_TICK` do przerwania **VBLANK**, które to przerwanie wywoływane jest 50 razy na sekundę (dla systemu TV-PAL). Kod nie inicjuje **silnika SFX** (nie wywołuje procedury `SFX_INIT`)
 
 ```assembly
 	lda #$00				; wyłączenie obsługi przerwania VBLANK
@@ -820,14 +831,96 @@ Przykładowa inicjacja przerwania:
 	lda VVBLKD+1
 	sta OLDVBL+1
 
-	lda <SFX_MAIN_TICK		; ustawienie wekrora przerwania
+	lda <SFX_VBL			; ustawienie wekrora przerwania
 	sta VVBLKD
-	lda >SFX_MAIN_TICK
+	lda >SFX_VBL
 	sta VVBLKD+1
 
 	lda #$40				; włączenie obsługi przerwania VBLANK
 	sta NMIEN
 ```
+
+Procedura `SFX_VBL` jest *wrapperem* dla głównej procedury `SFX_MAIN_TICK` gdyż, dla przerwań **VBLANK** wymagane jest zachowanie rejestrów sprzętowych i późniejsze ich odtworzenie oraz dość specyficzne wyjście z przerwania.
+
+~~~assembly
+	pha
+	txa
+	pha
+	tya
+	pha
+	
+	jsr SFX_MAIN_TICK
+	
+	pla
+	tay
+	pla
+	tax
+	pla
+	
+	jmp XITVBL
+~~~
+
+
+
+##### Inicjacja dla przerwania DLI
+
+Ten proces jest bardziej rozbudowany, gdyż oprócz podpięcia procedury `SFX_MAIN_TICK` do przerwania **DLI**, wymaga ustawienia w **Display List** wywołania tego przerwania, poprzez ustawienie 7-go bitu w definicji linii obrazu.
+
+~~~assembly
+dl_start
+    :1 dta DL_BLANK4 + DL_DLI 	; <-- cztry puste linie scanningowe
+    							;     i ustawiane wywołanie przerwania DLI
+    							
+    dta DL_MODE_40x24T5 + DL_LMS, A(VIDEO_ADDR) ; <-- tu zaczyna się właściwe rysowanie obrazu
+    :23 dta DL_MODE_40x24T5
+    dta DL_JVB, a(DLIST_ADDR) ; <-- konie definicji Display List
+~~~
+
+Przykładowy kod tworzy ekran dla trybu graficznego 4 **Antica** (40x24 znaki w 5 kolorach). Wywołanie przerwania **DLI** następuje w tuż po wyświetleniu czterech pustych linii scanningowych.
+
+Przy tak zdefiniowanej **Display List**, można przystąpić do podpięcia procedury obsługi przerwania dla procedury `SFX_MAIN_TICK`
+
+~~~assembly
+	lda #$00		; \ wyłaczenie obsługi przerwania DLI
+	sta NMIEN		; / na czas ustawiania wektora przerwania
+
+	lda <SFX_DLI	; \
+	sta VDSLST		; | ustawienie wekrora przerwania dli
+	lda >SFX_DLI	; |
+	sta VVSLST+1	; /
+
+	lda #$C0		; \ włączenie obsługi przerwania DLI
+	sta NMIEN		; /
+~~~
+
+Procedura `SFX_DLI`  (podobnie jak w przypadku podpinania pod przerwanie **VBLANK**) jest *wrapperem* dla głównej procedury `SFX_MAIN_TICK` gdyż, wymagane jest zapamiętanie rejestrów sprzętowych procesora po wywołaniu przerwania i przywrócenie ich przy zakończeniu oraz wyjście z przerwania za pomocą rozkazu `RTI`
+
+~~~assembly
+SFX_DLI
+	pha
+	txa
+	pha
+	tya
+	pha
+	
+	jsr SFX_MAIN_TICK
+	
+	pla
+	tay
+	pla
+	tax
+	pla
+	
+	rti
+~~~
+
+
+
+**Sztuczka**
+
+Możliwe jest wywołanie procedury `SFX_DLI` kilkukrotnie w trakcie rysowania ekranu. W tym celu, należy w **Display List** stawić wywołanie przerwania **DLI** w odstępach przynajmniej 5 linii dla trybu Antica 4.
+
+Należy się wówczas liczyć z tym, że system zostanie znacznie obciążony, jednak daje to szersze możliwości pod względem odtwarzanych dźwięków przez **SFX-Engine**. W odpowiednio dobranych warunkach (patrz [Dostosowanie silnika SFX](#dostosowanie-silnika-sfx)) można uzyskać efekty syntezy dźwięku.
 
 
 

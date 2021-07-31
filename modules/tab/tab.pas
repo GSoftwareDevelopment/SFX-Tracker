@@ -20,16 +20,15 @@ begin
    repeat
       if keyPressed then
       begin
-         controlSelectionKeys(key,key_Up,key_Down,section,0,3);
+         controlSelectionKeys(key_Up,key_Down,section,0,3);
          case key of
-            key_ESC: break;
             key_Left,key_Right: TABChangeMenuBarOpt(section);
             key_RETURN: TABSelectMenuBar(section);
          end;
          updateTABBar();
          screen2video();
       end;
-   until false;
+   until checkEscape;
 end;
 
 procedure TABModule();

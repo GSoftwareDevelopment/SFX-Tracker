@@ -11,23 +11,27 @@ begin
    end;
 end;
 
-function controlEditKeys(key:byte; winSize:shortint; max:byte; var _pos,_shift:byte; prevKey,nextKey:byte):boolean;
+function controlEditKeys(winSize:shortint; max:byte; var _pos,_shift:byte; prevKey,nextKey:byte):boolean;
 var step:shortint;
+	okey:TKeys;
 
 begin
-   if (key and $80=$80) then
+	okey:=key;
+   if (* keyCTRL *) (key and $80=$80) then
    begin
-      key:=key and $7f;
+		key:=key and $7f;
       step:=winSize;
    end
    else
       step:=1;
+//   result:=(ckey=prevKey) or (ckey=nextKey);
    result:=(key=prevKey) or (key=nextKey);
    if result then
    begin
-      if key=prevKey then step:=-step;
+      if key=prevKey (*ckey=prevKey*) then step:=-step;
       moveCursor(step,winSize,max,_pos,_shift);
    end;
+   key:=okey;
 end;
 
 procedure clearListBuf();
@@ -150,7 +154,11 @@ end;
 function controlSFXShortcutKeys():byte;
 begin
 	if (key and $40=$40) then
-		result:=keyScan(key and $3f,keys_alphaNum,keysRange_decNum)
+	begin
+		key:=key and $3f;
+		result:=keyScan(keys_alphaNum,keysRange_decNum);
+		key:=key or $40;
+	end
 	else
 		result:=255;
 end;

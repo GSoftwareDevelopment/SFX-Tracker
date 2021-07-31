@@ -16,7 +16,6 @@ begin
       begin
          SFXMenuBarChange();
          case key of
-            key_ESC, key_BackSpc: break;
             key_INVERS: begin multiChnMode:=not multiChnMode; updatePiano(); end;
             key_SPACE: SFX_Off();
          end;
@@ -30,7 +29,7 @@ begin
          PlayFlash();
          move(@screen,@video,240);
       end;
-   until false;
+   until checkEscape;
    SFX_Off(); keyClick:=true;
    reset_pianoVis();
 end;

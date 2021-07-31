@@ -19,11 +19,7 @@ begin
    repeat
       if keypressed then
       begin
-         case key of
-            key_ESC, key_BackSpc: break;
-         end;
-
-         if not controlSelectionKeys(key,key_Left,key_Right,_pos,0,63) then
+         if not controlSelectionKeys(key_Left,key_Right,_pos,0,63) then
          begin
             noteKey:=pianoKeyScan(0);
             if noteKey<>255 then
@@ -35,7 +31,7 @@ begin
          notePos:=_pos mod 12;
 
          noteVal:=definedNoteTune[_pos];
-         if controlSelectionKeys(key,key_Up,key_Down,noteVal,0,255) then
+         if controlSelectionKeys(key_Up,key_Down,noteVal,0,255) then
             definedNoteTune[_pos]:=noteVal;
 
          updateNoteTune(noteOct);
@@ -43,7 +39,7 @@ begin
          screen2video();
       end;
       updatePianoVis();
-   until false;
+   until checkEscape;
    updateNoteTune(noteOct);
    SFX_Off();
    reset_pianoVis();

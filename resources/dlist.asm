@@ -37,11 +37,11 @@ dl_start
     dta DL_BLANK2
     dta DL_MODE_20x12T5
 
-    dta DL_BLANK2 + DL_DLI
-    :5 dta DL_MODE_20x12T5 + DL_DLI
+    dta DL_BLANK2; + DL_DLI
+    :5 dta DL_MODE_20x12T5; + DL_DLI
     :4 dta DL_MODE_20x12T5
 
-    dta DL_BLANK2
+    dta DL_BLANK2 + DL_DLI
     dta DL_MODE_20x12T5
     dta DL_BLANK2
     dta DL_MODE_20x12T5

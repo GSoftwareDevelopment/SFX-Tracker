@@ -56,44 +56,48 @@ procedure SFX_tick(); Assembler; Interrupt;
 asm
 xitvbl      = $e462
 sysvbv      = $e45c
-wsync			= $d40a;
+wsync			= $d40a
+portb       = $d301
 
          phr
+
+.ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
+.ifdef MAIN.@DEFINES.ROMOFF
+			lda portb
+			pha
+			lda #$FE
+			sta portb
+.endif
+.endif
 
 			lda #$06
 			sta wsync
 			sta $D01a
 
-.ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
-.ifdef MAIN.@DEFINES.ROMOFF
-         dec $D301                           ; turn off ROM
-.endif
-.endif
-
          jsr INIT_SFXEngine.SFX_MAIN_TICK
-;        jsr INIT_SFXEngine+3
-
-.ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
-.ifdef MAIN.@DEFINES.ROMOFF
-         inc $D301                           ; turn on ROM
-.endif
-.endif
 
 			lda #$00
 			sta $D01a
 
+.ifdef MAIN.@DEFINES.SFX_SWITCH_ROM
+.ifdef MAIN.@DEFINES.ROMOFF
+			pla
+			sta portb
+.endif
+.endif
+
          plr
+         rti
          jmp xitvbl
-         rts
 end;
 
 procedure SFX_Start;
 begin
    INIT_SFXEngine();
    NMIEN:=%00000000;
-   GetIntVec(iVBL, oldVBL);
-   SetIntVec(iVBL, @SFX_tick);
-   NMIEN:=%01000000;
+   GetIntVec(iDLI, oldVBL);
+   SetIntVec(iDLI, @SFX_tick);
+   NMIEN:=%11000000;
 end;
 
 procedure SFX_ChannelOff; Assembler;
@@ -171,7 +175,7 @@ begin
    if oldVBL<>nil then
    begin
       NMIEN:=%00000000;
-      SetIntVec(iVBL, oldVBL);
+      SetIntVec(iDLI, oldVBL);
       NMIEN:=%01000000;
       oldVBL:=nil;
    end;

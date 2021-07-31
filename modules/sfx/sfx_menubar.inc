@@ -11,7 +11,7 @@ end;
 
 procedure SFXMenuBarChange();
 begin
-   if controlSelectionKeys(key,key_Left,Key_Right,currentSFX,0,maxSFXs-1) then
+   if controlSelectionKeys(key_Left,Key_Right,currentSFX,0,maxSFXs-1) then
    begin
       getSFXData(currentSFX);
       SFXDetermineLength();

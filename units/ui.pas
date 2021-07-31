@@ -60,6 +60,9 @@ var
    KEYREP:byte absolute $2da;
    CONSOL:byte absolute 53279;
    key:TKeys;
+//   ckey:TKeys;
+//   keySHIFT:boolean;
+//   keyCTRL:boolean;
    timer:byte absolute $14;
    keyClick:boolean = true;
 
@@ -69,8 +72,9 @@ var
 
 procedure Init_UI(resAddr:word);
 function keyPressed():boolean;
-function keyScan(key2Scan:byte; var keyDefs:byteArray; keysRange:byte):byte;
-function controlSelectionKeys(var keyIn:byte; decKey,incKey:byte; var value:byte; min,max:byte):boolean;
+function checkEscape:boolean;
+function keyScan(var keyDefs:byteArray; keysRange:byte):byte;
+function controlSelectionKeys(decKey,incKey:byte; var value:byte; min,max:byte):boolean;
 procedure moveCursor(ofs:shortint; winSize,overSize:byte; var curPos,curShift:byte);
 function inputText(x,y,width:byte; var s:string; colEdit,colOut:byte):boolean;
 function inputLongText(x,y,width:byte; maxLen:byte; var s:string; colEdit,colOut:byte):boolean;
@@ -95,9 +99,14 @@ function keyPressed:boolean;
 var i:byte;
 
 begin
+//	keyCTRL:=false; keySHIFT:=false;
    if kbcode<>255 then
    begin
-      key:=TKeys(kbcode); kbcode:=255;
+      key:=TKeys(kbcode);
+//      keyCTRL:=kbcode and $80=$80;
+//      keySHIFT:=kbcode and $40=$40;
+//      ckey:=TKeys(kbcode and $3f);
+      kbcode:=255;
       result:=true;
       if keyClick then
       begin
@@ -120,6 +129,11 @@ loop_wait
       result:=false;
 end;
 
+function checkEscape:boolean;
+begin
+	result:=(key=key_ESC) or (key=key_BackSpc); key:=TKeys($FF);
+end;
+
 function keyScan:byte;
 var
    keyOfs:byte;
@@ -127,18 +141,18 @@ var
 begin
    result:=255;
    for keyOfs:=0 to keysRange-1 do
-      if (keyDefs[keyOfs]=key2Scan) then
+      if (keyDefs[keyOfs]=key) then
          exit(keyOfs);
 end;
 
 function controlSelectionKeys:boolean;
 begin
-   if keyIn=decKey then
+   if key=decKey then
    begin
       if value>min then value:=value-1 else value:=max;
       exit(true);
    end;
-   if keyIn=incKey then
+   if key=incKey then
    begin
       if value<max then value:=value+1 else value:=min;
       exit(true);
@@ -264,7 +278,7 @@ begin
 
          if (ofs<maxLen) then
          begin
-            i:=keyScan(key,keys_alphaNum,keysRange_all);
+            i:=keyScan(keys_alphaNum,keysRange_all);
             if (i<>255) then
             begin
                move(buf[ofs],buf[ofs+1],len-ofs);
@@ -300,7 +314,7 @@ begin
    else
       conv2internalP2P(@s[1],@screen[scrOfs],width);
    __scrOfs:=vadr[y]+x; colorHLine(width,colOut);
-   kbcode:=255;
+   key:=TKeys($FF);
 end;
 
 function inputText:boolean;
@@ -391,7 +405,7 @@ begin
    repeat
       if keyPressed then
       begin
-         controlSelectionKeys(key,pckey,ncKey,currentOpt,0,opts);
+         controlSelectionKeys(pckey,ncKey,currentOpt,0,opts);
          case key of
             key_ESC, key_BackSpc: begin result:=false; break; end;
             key_RETURN: begin result:=true; break; end;
@@ -401,6 +415,7 @@ begin
          screen2video();
       end;
    until false;
+   key:=TKeys($FF);
 end;
 
 function listChoice:shortint;
@@ -479,6 +494,7 @@ begin
          updateList();
       end;
    until false;
+   key:=TKeys($FF);
 end;
 
 function messageBox:shortint;

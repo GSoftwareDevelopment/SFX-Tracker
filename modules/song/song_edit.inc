@@ -103,8 +103,8 @@ begin
    repeat
       if keyPressed then
       begin
-         if controlSelectionKeys(key,key_LEFT,key_RIGHT,SONGChn,0,maxCols) or
-            controlEditKeys(key,SONG_winHeight,SONG_maxLength,SONGPos,SONGShift,key_Up,key_Down) then
+         if controlSelectionKeys(key_LEFT,key_RIGHT,SONGChn,0,maxCols) or
+            controlEditKeys(SONG_winHeight,SONG_maxLength,SONGPos,SONGShift,key_Up,key_Down) then
          begin
             calcPos();
          end;
@@ -112,7 +112,6 @@ begin
          if key=138 (* CTRL+P *) then SONG_Play(SONGRow);
 
          case key of
-            key_ESC, key_BackSpc: break;
             key_SPACE: begin
                if isRowOnOrder then
                   clearRow()
@@ -145,7 +144,7 @@ begin
                               end;
          end;
 
-         value:=keyScan(key,keys_alphaNum,keysRange_decNum);
+         value:=keyScan(keys_alphaNum,keysRange_decNum);
          if (value<>255) then
             if inputValue(x,y,2,value,0,maxTABs-1,0,0) then
                storeInSONGTab(value);
@@ -153,7 +152,7 @@ begin
          //
 			updateScreen();
       end;
-   until false;
+   until checkEscape;
    reset_pianoVis();
    updateSONG(true);
 end;
