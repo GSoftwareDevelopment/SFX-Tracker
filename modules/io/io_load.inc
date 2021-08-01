@@ -37,7 +37,7 @@ var
    begin
       if getByte(noteTabId) then exit; // read ID
       if (mode=LOAD_NOTE_DEF) and (destId<255) then noteTabId:=destId;
-      if noteTabId>3 then begin IOErr:=error_badFileFormat; exit; end;
+      if noteTabId>3 then begin IOErr:=error_badFileFormat+error_indexOutOfRange; exit; end;
 //    putValue(17,11,noteTabId,3,0); // debug
 
       getBlock(IOBuf,NOTETABnameLength+64);           // read data

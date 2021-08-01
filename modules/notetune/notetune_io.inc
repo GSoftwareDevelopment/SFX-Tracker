@@ -7,7 +7,10 @@ end;
 procedure NoteTune_load();
 begin
    if IOPrompt(otherFile) then
+   begin
       LoadData(otherFile,LOAD_NOTE_DEF,noteSetId);
+      if IOErr<>3 then IOError();
+   end;
 end;
 
 procedure NoteTune_save();
