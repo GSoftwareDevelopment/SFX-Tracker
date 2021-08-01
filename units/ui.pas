@@ -56,6 +56,7 @@ const
 
 var
    KBCODE:byte absolute 764;
+   SSFLAG:byte absolute $2FF;
    KRPDEL:byte absolute $2d9;
    KEYREP:byte absolute $2da;
    CONSOL:byte absolute 53279;
@@ -93,13 +94,17 @@ uses gr2;
 procedure Init_UI;
 begin
    resptr:=pointer(resAddr);
+   SSFLAG:=0;
 end;
 
 function keyPressed:boolean;
 var i:byte;
 
 begin
-//	keyCTRL:=false; keySHIFT:=false;
+	if SSFLAG<>0 then
+	begin
+		SSFLAG:=0; kbcode:=159; // CONTROL+1
+	end;
    if kbcode<>255 then
    begin
       key:=TKeys(kbcode);

@@ -80,3 +80,5 @@ msg_SFX_FastKey_Assigned
 					dta 220,d'FAST KEY _ > SFX# __',255,255
 msg_SFX_FastKey_Cleared
 					dta 220,d'FAST KEY _ - CLEARED',255,255
+msg_TAB_StepChange
+					dta 222,d'STEP CHANGE TO _',255,255

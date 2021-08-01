@@ -3,6 +3,7 @@
 procedure TABEditLoop();
 var
    _pos,i,cTAB:byte;
+   okey:TKeys;
    nSFX:shortint;
 	editState:boolean;
 
@@ -52,6 +53,26 @@ var
 			updateTABSFX();
 		end;
 		key:=TKeys(255); // clear keyboard state; prevent to play/write note (under key 2,3,5,6,7,9,0) in TAB
+	end;
+
+	procedure checkTABStepKeys();
+	begin
+		if key and $80=$80 then
+		begin
+			okey:=key; key:=TKeys(key and $3f);
+			i:=keyScan(keys_alphaNum,keysRange_decNum);
+			if (i<>255) then
+			begin
+				if i=0 then
+					TABStep:=0
+				else
+					inc(TABStep,i);
+				if TABStep>32 then TABStep:=0;
+				drawError(msg_TAB_StepChange);
+				__scrOfs:=237; putValue(TABStep,2,0);
+			end;
+			key:=okey;
+		end;
 	end;
 
 begin
@@ -116,10 +137,12 @@ begin
 					end;
 					key_SPACE: begin					// clear row (put blank entry)
 						TABputIn(TABFn_blank_param,TABFn_blank);
-						moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
+						moveCursor(TABStep,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 					end;
 					key_RETURN: if TABEntryEdit then break;	// call TAB functions list
 				end;
+
+				checkTABStepKeys();
 			end;
 
 			i:=pianoKeyScan(0);
@@ -128,7 +151,7 @@ begin
 				if editState then
 				begin// write note in TAB
 					TABputIn(i,currentSFX);
-					moveCursor(1,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
+					moveCursor(TABStep,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);
 				end;
 			end;
 

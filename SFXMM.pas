@@ -51,6 +51,7 @@ var
    currentSFX:byte;
    currentOct:byte;
    currentTAB:byte;
+	TABStep:byte = 1;
 
    SONG_Beat:byte;
 

@@ -30,9 +30,9 @@ var okey:TKeys;
 begin
    if controlSelectionKeys(key_SHIFT_TAB,key_TAB,currentOct,0,3) then
       updatePiano();
-   okey:=key; key:=key and $3f;
+//   okey:=key; key:=key and $3f;
    result:=keyScan(keys_notes,34);
-   key:=okey;
+//   key:=okey;
    if result<>255 then
    begin
       if SFXPtr[currentSFX]=$FFFF then

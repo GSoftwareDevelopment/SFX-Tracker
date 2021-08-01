@@ -17,6 +17,7 @@ begin
    // Set defaults
    SONGChn:=0; SONGPos:=0; SONGShift:=0;
    currentSFX:=0; currentTAB:=0;
+   TABStep:=1;
    currentOct:=defaultPianoOctave;
    SONG_Beat:=defaultSongBeat;
    SONG_tempo:=defaultSongTempo;
