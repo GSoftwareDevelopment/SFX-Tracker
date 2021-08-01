@@ -140,7 +140,7 @@ begin
             key_SHIFT_RETURN: if not isRowOnOrder then
                               begin
 											value:=SONGData[SONGAdr];
-                                 if value<63 then editTAB(value);
+                                 if value<maxTABs then editTAB(value);
                               end;
          end;
 
