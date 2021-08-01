@@ -163,8 +163,8 @@ menu_song_edit
 
 menu_IO
                dta  0,d'<',255               ; back to main menu
-               dta  2,d'LOAD',255            ; load - SFX/TAB/SONG
-               dta  7,d'SAVE',255            ; save - SFX/TAB/SONG
+               dta  2,d'SAVE',255            ; save - SFX/TAB/SONG
+               dta  7,d'LOAD',255            ; load - SFX/TAB/SONG
                dta 12,d'NEW',255             ;
                dta 16,d'QUIT',255            ; quit to dos
                dta 255

@@ -11,8 +11,8 @@ begin
    begin
       case section of
          0: exit;
-         1: IOLoad();
-         2: IOSave();
+         1: IOSave();
+         2: IOLoad();
          3: IONew();
          4: IOQuit();
       end;
