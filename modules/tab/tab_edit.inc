@@ -5,7 +5,6 @@ var
    _pos,i,cTAB:byte;
    okey:TKeys;
    nSFX:shortint;
-	editState:boolean;
 
 	procedure TABputIn(_note,_fn:byte);
 	begin
@@ -37,7 +36,7 @@ var
    procedure drawCursor();
    begin
       __scrOfs:=vadr[2+cursorPos]+winXStart;
-      if editState then
+      if TABStep>0 then
 			colorHLine(16,3)
 		else
 			colorHLine(16,1);
@@ -62,7 +61,7 @@ var
 	begin
 		if key and $80=$80 then
 		begin
-			if key=190 (* CTRL+S *) then
+			if key=149 (* CTRL+B *) then
 			begin
 				v:=TABStep;
 				putMultiText(msg_TAB_StepPrompt,0);
@@ -91,7 +90,7 @@ var
 
 begin
    reset_pianoVis();
-   cTAB:=currentTAB; editState:=true;
+   cTAB:=currentTAB;
    drawCursor();
    repeat
       if keyPressed then
@@ -118,11 +117,6 @@ begin
 
          case key of
 				key_SPACE: SFX_ChannelOff(0); // turn off SFX
-            key_CAPS: begin
-                         editState:=not editState;
-                         saveIfModified();
-                         TABDetermineLength();
-                      end;
             key_CTRL_RETURN:begin			// list of SFXs
                updateTABSFX();
                nSFX:=dataList(SFXPtr,currentSFX,maxSFXs,SFXNameLength);
@@ -138,7 +132,7 @@ begin
 
          controlEditKeys(TAB_winHeight,TAB_maxLength,cursorPos,cursorShift,key_Up,key_Down);
 
-			if editState then
+			if TABStep>0 then
 			begin
 				case key of
 					key_CTRL_INSERT: begin			// insert row in TAB
@@ -155,14 +149,14 @@ begin
 					end;
 					key_RETURN: if TABEntryEdit then break;	// call TAB functions list
 				end;
-
-				checkTABStepKeys();
 			end;
+
+			checkTABStepKeys();
 
 			i:=pianoKeyScan(0);
 			if i<>255 then
 			begin
-				if editState then
+				if TABStep>0 then
 				begin// write note in TAB
 					TABputIn(i,currentSFX);
 					moveCursor(TABStep,TAB_winHeight,TAB_maxLength,cursorPos,cursorShift);

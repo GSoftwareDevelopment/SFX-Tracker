@@ -170,6 +170,16 @@ Po prawej stronie paska menu SFX, widnieje obszar edycji. Znajdują się w nim:
 - `000` - aktualna pozycja kursora edycji
 - `128` - długości definicji SFXa
 
+### Skróty do SFXów
+
+Domyślnie ustawione są skróty do pierwszych dziesięciu SFXów. Są one dostępne z poziomu modułu TAB w trybie edycji pod kombinacją klawiszy **SHIFT+** cyfry od **0** do **9**.
+
+Istnieje możliwość redefinicji domyślnych SFXów.
+
+Aby tego dokonać, należy w SFXie (któremu chcemy utworzyć skrót)  nacisnąć kombinację klawiszy **SHIFT+** cyfry od **0** do **9**. Przy jego nazwie (po prawej stronie) będzie widniała cyfra. Jej obecność oznacza przypisanie .
+
+Ponowne naciśnięcie tych samych klawiszy, spowoduje dezaktywację skrótu. W tym przypadku cyfra przy nazwie, zniknie.
+
 
 
 ## Tryb edycji SFX
@@ -431,7 +441,26 @@ Klawisz **RETURN** otwiera menu **Funkcji TAB** opisane w następnej sekcji.
 
 Wyjście z edycji umożliwia klawisz **ESC**
 
+### Szybki wybór SFXa
 
+Kombinacją klawiszy SHIFT+cyfry od 0 do 9 można dokonać szybkiego wyboru SFXa. Przypisanie SFXów do tych klawiszy możliwe jest z poziomu modułu SFX.
+
+### Krok kursora w TABie
+
+Domyślnie kursor w trybie edycji TAB podczas wprowadzania nut, porusza się co jeden wiersz.
+
+Można zmienić to zachowanie na dwa sposoby:
+
+- korzystając z klawisza skrótu **CONTOL+B**, gdzie należy wprowadzić nową wartość kroku kursora z przedziału 1 do 32
+- używając kombinacji klawiszy **CONTROL+**  cyfry od **0** do **9**
+
+Drugiemu ze sposobów należy się wyjaśnienie, gdyż zasada działania nie jest oczywista.
+
+Użycie **CONTROL+0** spowoduje wyłączenie możliwości wprowadzania nut w TABie. Aby przywrócić tą możliwość należy użyć jednej z kombinacji **CONTROL+** cyfry od **1** do **9**, która ustawi krok na wybraną wartość (z cyfry)
+
+Jednak ponowne użycie kombinacji **CONTROL+** cyfry **1** do **9**, spowoduje <u>powiększenie</u> kroku kursora o wybraną wartość, nie jak by się można tego spodziewać, ustawienie kroku na wartość cyfry.
+
+Dzięki takiemu podejściu, możliwe jest szybkie zwiększenie kroku o wartość od 1 do 9 do górnej granicy, która wyności 32. Po przekroczeniu tej wartości, krok kursora ustawiany jest na 0.
 
 ## Odtwarzanie TABa
 
@@ -1548,11 +1577,10 @@ TO DO
 | *strzałki* LEWO/PRAWO           |                  | Wybór SFXa                                                   |
 | **SHIFT**+*cyfry* 0 *do* 9      |                  | Szybki wybór SFXa (o ile jest przypisany)                    |
 | **CONTROL**+RETURN              |                  | Lista SFXów                                                  |
-| **CONTROL**+0                   |                  | Ustawienie kroku na 0                                        |
+| **CONTROL**+0                   |                  | Ustawienie kroku na 0<br />Wyłączenie trybu wprowadzania     |
 | **CONTROL**+1 do 9              |                  | Zwiększenie kroku o wybraną liczbę                           |
-| **CONTROL**+S                   |                  | Wprowadzenie kroku                                           |
+| **CONTROL**+B                   |                  | Wprowadzenie wartości kroku                                  |
 | **CONTROL**+P                   |                  | Odtworzenie TABa od miejsca gdzie znajduuje się kursor       |
-| CAPS LOCK                       |                  | Wyłączenie trybu wprowadzania                                |
 | TAB<br />**SHIFT**+TAB          |                  | Zmiana bazowej oktawy                                        |
 |                                 |                  |                                                              |
 | **SONG tryb edycji**            |                  |                                                              |
