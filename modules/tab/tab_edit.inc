@@ -56,22 +56,36 @@ var
 	end;
 
 	procedure checkTABStepKeys();
+	var
+		v:smallint;
+
 	begin
 		if key and $80=$80 then
 		begin
-			okey:=key; key:=TKeys(key and $3f);
-			i:=keyScan(keys_alphaNum,keysRange_decNum);
-			if (i<>255) then
+			if key=190 (* CTRL+S *) then
 			begin
-				if i=0 then
-					TABStep:=0
-				else
-					inc(TABStep,i);
-				if TABStep>32 then TABStep:=0;
-				drawError(msg_TAB_StepChange);
-				__scrOfs:=237; putValue(TABStep,2,0);
+				v:=TABStep;
+				putMultiText(msg_TAB_StepPrompt,0);
+				if inputValue(winXStart+5,11,3,v,1,32,0,color_selected) then
+					TABStep:=byte(v);
+				clearStatusBar();
+			end
+			else
+			begin
+				okey:=key; key:=TKeys(key and $3f);
+				i:=keyScan(keys_alphaNum,keysRange_decNum);
+				if (i<>255) then
+				begin
+					if i=0 then
+						TABStep:=0
+					else
+						inc(TABStep,i);
+					if TABStep>32 then TABStep:=0;
+					drawError(msg_TAB_StepChange);
+					__scrOfs:=237; putValue(TABStep,2,0);
+				end;
+				key:=okey;
 			end;
-			key:=okey;
 		end;
 	end;
 

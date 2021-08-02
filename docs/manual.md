@@ -1511,3 +1511,60 @@ Opis formatu pliku z utworem stworzonym pod **SFX Music Maker** dla wersji RC2.
 # Podziękowania
 
 TO DO
+
+# DODATEK A - Skróty klawiszowe w programie SFX Music Maker
+
+| Klawisz/kombinacja              | Miejsce          | Funkcja                                                      |
+| ------------------------------- | ---------------- | ------------------------------------------------------------ |
+| **OGÓLNE**                      |                  |                                                              |
+| *strzałki*                      |                  | Sterowanie kursorem                                          |
+| **CONTROL**+*strzałki*          |                  | przy listach lub w trybie edycji - przeskok o rozmiar ekranu |
+| RETURN                          |                  | Akceptacja opcji                                             |
+| ESC *lub* BACKSPACE             |                  | Wyjście/Anulowanie                                           |
+|                                 |                  |                                                              |
+| **SFX**                         |                  |                                                              |
+| *strzałki* LEWO/PRAWO           | `#00`            | wybór SFXa                                                   |
+| RETURN                          | `#00`<br />`>>>` | lista SFXów<br />wejście w tryb edycji SFXa                  |
+| **SHIFT**+*cyfry* 0 *do* 9      |                  | Ustawienie lub skasowanie przypisania SFXa pod klawisz szybkiego wyboru |
+|                                 |                  |                                                              |
+| **SFX - tryb edycji**           |                  |                                                              |
+| RETURN                          |                  | Lista funkcji SFX                                            |
+| **CONTROL**+C                   |                  | skopiowanie definicji SFX do schowka                         |
+| **CONTROL**+V                   |                  | wklejenie zawartości schowka do aktualnej definicji          |
+| **CONTROL**+X                   |                  | skopiowanie definicji SFX do schowka i skasowanie aktualnego SFXa |
+| **SHIFT**+*strzałki* LEWO/PRAWO |                  | Zmiana aktualnie edytowanego SFXa                            |
+| **SHIFT**+cyfry 0 do 9          |                  | Ustawienie lub skasowanie przypisania SFXa pod klawisz szybkiego wyboru |
+|                                 |                  |                                                              |
+| **TAB**                         |                  |                                                              |
+| *strzałki* LEWO/PRAWO           | `#00`            | wybór TABa                                                   |
+| RETURN                          | `#00`<br />`>>>` | lista TABów<br />Wejście w tryb edycji TABa                  |
+|                                 |                  |                                                              |
+| **TAB - tryb edycji**           |                  |                                                              |
+| RETURN                          |                  | Lista funckji TAB                                            |
+| **CONTROL**+C                   |                  | skopiowanie definicji TAB do schowka                         |
+| **CONTROL**+V                   |                  | wklejenie zawartości schowka do aktualnej definicji          |
+| **CONTROL**+X                   |                  | skopiowanie definicji TAB do chowka i skasowanie aktualnego TABa |
+| **SHIFT**+*strzałki* LEWO/PRAWO |                  | Zmiana aktualnie edytowanego TABa                            |
+| *strzałki* LEWO/PRAWO           |                  | Wybór SFXa                                                   |
+| **SHIFT**+*cyfry* 0 *do* 9      |                  | Szybki wybór SFXa (o ile jest przypisany)                    |
+| **CONTROL**+RETURN              |                  | Lista SFXów                                                  |
+| **CONTROL**+0                   |                  | Ustawienie kroku na 0                                        |
+| **CONTROL**+1 do 9              |                  | Zwiększenie kroku o wybraną liczbę                           |
+| **CONTROL**+S                   |                  | Wprowadzenie kroku                                           |
+| **CONTROL**+P                   |                  | Odtworzenie TABa od miejsca gdzie znajduuje się kursor       |
+| CAPS LOCK                       |                  | Wyłączenie trybu wprowadzania                                |
+| TAB<br />**SHIFT**+TAB          |                  | Zmiana bazowej oktawy                                        |
+|                                 |                  |                                                              |
+| **SONG tryb edycji**            |                  |                                                              |
+| RETURN                          |                  | lista funkcji SONG                                           |
+| *cyfry* 0 *do* 9                |                  | Rozpoczęcie wprowadzania wartości                            |
+| **CONTROL**+RETURN              |                  | Lista TABów                                                  |
+| **SHIFT**+RETURN                |                  | Edycja TABa spod kursora                                     |
+| **CONTROL**+P                   |                  | Odtworzenie utworu od miejsca gdzie znajduje się kursor      |
+|                                 |                  |                                                              |
+| **Tryb pianina**                |                  |                                                              |
+| TAB<br />**SHIFT**+TAB          |                  | Zmiana bazowej oktawy                                        |
+| INVERS/LOGO                     |                  | Przełączenie pomiędzy trybem SINGLE/MULTI<br />*(tylko w module SFX)* |
+| **SHIFT**+*cyfry* 0 *to* 9      |                  | Szybki wybór SFXa<br />*(tylko w module TAB)*                |
+| *strzałki* LEWO/PRAWO           |                  | Wybór SFX<br />*(tylko w module SFX i TAB)*                  |
+

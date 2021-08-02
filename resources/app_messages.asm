@@ -82,3 +82,6 @@ msg_SFX_FastKey_Cleared
 					dta 220,d'FAST KEY _ - CLEARED',255,255
 msg_TAB_StepChange
 					dta 222,d'STEP CHANGE TO _',255,255
+msg_TAB_StepPrompt
+					dta 220,d'TAB STEP',255
+					dta 235,6,d'1_32',255,255

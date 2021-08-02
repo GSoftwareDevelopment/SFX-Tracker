@@ -183,28 +183,28 @@ begin
    else
       if (_pos<0) then
       begin
-         if (curPos=0) then
-         begin
+//         if (curPos=0) then
+//         begin
             _pos:=curShift+ofs;
             if (_pos>=0) then
                curShift:=_pos
             else
                curShift:=0
-         end;
-         curPos:=0;
+//         end;
+//         curPos:=0;
       end
       else
       if (_pos>winSize-1) then
       begin
-         if (curPos=winSize-1) then
-         begin
+//         if (curPos=winSize-1) then
+//         begin
             _pos:=curShift+ofs;
             if (_pos<=overSize-winSize) then
                curShift:=_pos
             else
                curShift:=overSize-winSize;
-         end;
-         curPos:=winSize-1;
+//         end;
+//         curPos:=winSize-1;
       end
       else
          curPos:=_pos

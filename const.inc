@@ -146,7 +146,7 @@ SFXLenY           = 10;
    base_menus                 = 0;
    base_strings               = 20;
    base_messages              = 36;
-   base_appdata               = 65;
+   base_appdata               = 66;
 
    menu_top                   = base_menus+0;
    menu_sfx                   = base_menus+1;
@@ -223,6 +223,7 @@ SFXLenY           = 10;
 	msg_SFX_FastKey_Assigned	= base_messages+26;
 	msg_SFX_FastKey_Cleared		= base_messages+27;
 	msg_TAB_StepChange			= base_messages+28;
+	msg_TAB_StepPrompt			= base_messages+29;
 
    app_logo                   = base_appdata+0;
    app_virtual_piano          = base_appdata+1;

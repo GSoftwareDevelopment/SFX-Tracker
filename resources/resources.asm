@@ -77,10 +77,11 @@ data_pointers_list
 	dta a(msg_mem_stats)       ;61
 	dta a(msg_SFX_FastKey_Assigned);62
 	dta a(msg_SFX_FastKey_Cleared) ;63
-	dta a(msg_TAB_StepChange); ;64
+	dta a(msg_TAB_StepChange)  ;64
+	dta a(msg_TAB_StepPrompt)  ;65
 
 ;app raw data
-	dta a(app_logo)				;65
+	dta a(app_logo)				;66
 	dta a(app_virtual_piano)	;
 
 	dta a(dl_start)				;
