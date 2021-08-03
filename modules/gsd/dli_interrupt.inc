@@ -49,10 +49,26 @@ storeRegY:
    lda _regA
 end;
 
+procedure switchDLIinDL();
+var
+	i:byte;
+	dlist:array[0..0] of byte absolute DLIST_ADDR;
+
+	procedure XOR_DLI();
+	begin
+		dlist[i]:=dlist[i] xor $80;
+	end;
+
+begin
+	for i:=6 to 11 do XOR_DLI();
+	i:=16; XOR_DLI();
+end;
+
 procedure DLIInit();
 begin
    SFX_End();
    NMIEN:=%00000000; // turn off DLI
+   switchDLIinDL();
    DLIThemeCnt:=0; // reset DLI counter
    getIntVec(iDLI, oldDLI);
    SetIntVec(iDLI, @DLI_theme);
@@ -62,6 +78,7 @@ end;
 procedure DLIDone();
 begin
    NMIEN:=%01000000; // turn off DLI
+	switchDLIinDL();
    setIntVec(iDLI, oldDLI);
    SFX_Start();
 end;

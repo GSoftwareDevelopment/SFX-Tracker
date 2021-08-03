@@ -139,4 +139,9 @@ begin
    clearModule();
    VBar(0,1,width_menuBar,10,0);
    menuBar(menu_sfx,width_menuBar,section,1,2);
+
+   getSFXData(currentSFX);
+   SFXDetermineLength();
+   updateSFXView();
+
 end;

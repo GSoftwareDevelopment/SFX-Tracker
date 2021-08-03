@@ -26,9 +26,6 @@ var
    end;
 
 begin
-   getSFXData(currentSFX);
-   SFXDetermineLength();
-   updateSFXView();
 
    update();
    modified:=false;
@@ -49,7 +46,7 @@ begin
          if section=0 then SFXMenuBarChange();
 
          case key of
-            key_RETURN: SFXSelectMenuBar(section);
+            key_RETURN: SFXSelectMenuBar();
          end;
 
          update();

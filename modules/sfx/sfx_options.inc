@@ -8,11 +8,7 @@ end;
 
 procedure setSFXName();
 begin
-   if (inputText(SFXNameX,SFXNumberY,SFXNameLength,SFXName,0,color_choice)) then
-   begin
-      storeSFXData(currentSFX);
-      modified:=false;
-   end;
+   modified:=inputText(SFXNameX,SFXNumberY,SFXNameLength,SFXName,0,color_choice);
 end;
 
 procedure setSFXModMode();
@@ -25,8 +21,8 @@ begin
       if (mod_mode<SFXMenuModType_Back) then
       begin
          SFXModMode[currentSFX]:=mod_mode;
-         SFXDetermineLength();
-         storeSFXData(currentSFX);
+//         SFXDetermineLength();
+//         storeSFXData(currentSFX);
       end;
 end;
 

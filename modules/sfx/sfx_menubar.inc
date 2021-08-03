@@ -22,27 +22,14 @@ end;
 
 {$i modules/sfx/sfx_piano.inc}
 
-procedure SFXSelectMenuBar(var section:byte);
+procedure SFXSelectMenuBar();
 begin
    case section of
       0: SFXList();
-      1: section:=3;
+      1: begin section:=3; SFXEditLoop(); end;
       2: SFX_Piano();
+      3..6: SFXEditLoop();
       7: SFX_Options(SFXMenuOption_Back);
-   end;
-
-   if (section>=3) and (section<=6) then
-   begin
-      repeat
-         section:=section and $f;
-			menuBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
-         case section of
-            3: SFXEditLoop(SFX_vol_dist,0);
-            4: SFXEditLoop(SFX_vol_dist,1);
-            5: SFXEditLoop(SFX_modulate,1);
-            6: SFXEditLoop(SFX_modulate,0);
-         end;
-      until section and $10=0;
    end;
 
    if modified then

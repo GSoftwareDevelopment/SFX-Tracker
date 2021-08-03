@@ -1,6 +1,5 @@
 {$i modules/sfx/sfx_entry_edit.inc}
-
-procedure SFXEditLoop(var tab:byteArray; nibble:byte);
+procedure SFXSectionEditLoop(var tab:byteArray; nibble:byte);
 var i,v,cSFX:byte;
    at:byte;
 
@@ -123,3 +122,17 @@ begin
    until checkEscape;
 end;
 
+procedure SFXEditLoop();
+begin
+
+	repeat
+		section:=section and $f;
+		menuBar(menu_sfx,width_menuBar,section,color_choice,color_selected);
+		case section of
+			3: SFXSectionEditLoop(SFX_vol_dist,0);
+			4: SFXSectionEditLoop(SFX_vol_dist,1);
+			5: SFXSectionEditLoop(SFX_modulate,1);
+			6: SFXSectionEditLoop(SFX_modulate,0);
+		end;
+	until section and $10=0;
+end;
