@@ -72,6 +72,8 @@ begin
 				SFXDetermineLength();
 			end;
 
+			if key=key_CONTROL+key_N then setSFXName();
+
 			i:=controlSFXShortcutKeys;
 			if i<>255 then begin
 				setShortcut2currentSFX(i);

@@ -11,8 +11,8 @@ var
 
 {$i modules/sfx/sfx_manage.inc}
 {$i modules/sfx/sfx_view.inc}
-{$i modules/sfx/sfx_edit.inc}
 {$i modules/sfx/sfx_options.inc}
+{$i modules/sfx/sfx_edit.inc}
 {$i modules/sfx/sfx_menubar.inc}
 
 procedure SFXLoop();
