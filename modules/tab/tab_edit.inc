@@ -13,7 +13,7 @@ var
 		modified:=true;
 	end;
 
-	procedure TABdblMove(ofsSrc,ofsDest:byte);
+	procedure dblMove(ofsSrc,ofsDest:byte);
 	var len:byte;
 
 	begin
@@ -136,11 +136,11 @@ begin
 			begin
 				case key of
 					key_CTRL_INSERT: begin			// insert row in TAB
-						TABdblMove(0,1);
+						dblMove(0,1);
 						TABputIn(TABFn_blank_param,TABFn_blank);
 					end;
 					key_CTRL_DELETE: begin			// delete row from TAB
-						TABdblMove(1,0);
+						dblMove(1,0);
 						_pos:=127; TABputIn(TABFn_blank_param,TABFn_blank);
 					end;
 					key_SPACE: begin					// clear row (put blank entry)
