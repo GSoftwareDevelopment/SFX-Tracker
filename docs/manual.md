@@ -1558,18 +1558,22 @@ TO DO
 |                                 |                  |                                                              |
 | **SFX - tryb edycji**           |                  |                                                              |
 | RETURN                          |                  | Lista funkcji SFX                                            |
+| **CONTROL**+INSERT              |                  | Wstawienie kolumny definicji w miejscu kursora               |
+| **CONTROL**+DELETE              |                  | Usunięcie kolumny definicji w miejscu kursor                 |
 | **CONTROL**+C                   |                  | skopiowanie definicji SFX do schowka                         |
 | **CONTROL**+V                   |                  | wklejenie zawartości schowka do aktualnej definicji          |
 | **CONTROL**+X                   |                  | skopiowanie definicji SFX do schowka i skasowanie aktualnego SFXa |
 | **SHIFT**+*strzałki* LEWO/PRAWO |                  | Zmiana aktualnie edytowanego SFXa                            |
 | **SHIFT**+cyfry 0 do 9          |                  | Ustawienie lub skasowanie przypisania SFXa pod klawisz szybkiego wyboru |
-|                                 |                  |                                                              |
+| **CONTROL**+N                   |                  | Wprowadzenie nazwy SFXa                                      |
 | **TAB**                         |                  |                                                              |
 | *strzałki* LEWO/PRAWO           | `#00`            | wybór TABa                                                   |
 | RETURN                          | `#00`<br />`>>>` | lista TABów<br />Wejście w tryb edycji TABa                  |
 |                                 |                  |                                                              |
 | **TAB - tryb edycji**           |                  |                                                              |
 | RETURN                          |                  | Lista funckji TAB                                            |
+| **CONTROL**+INSERT              |                  | Wstawienie wiersza w miejscu kursora                         |
+| **CONTROL**+DELETE              |                  | Usunięcie wiersza w miejscu kursora                          |
 | **CONTROL**+C                   |                  | skopiowanie definicji TAB do schowka                         |
 | **CONTROL**+V                   |                  | wklejenie zawartości schowka do aktualnej definicji          |
 | **CONTROL**+X                   |                  | skopiowanie definicji TAB do chowka i skasowanie aktualnego TABa |
@@ -1580,6 +1584,7 @@ TO DO
 | **CONTROL**+0                   |                  | Ustawienie kroku na 0<br />Wyłączenie trybu wprowadzania     |
 | **CONTROL**+1 do 9              |                  | Zwiększenie kroku o wybraną liczbę                           |
 | **CONTROL**+B                   |                  | Wprowadzenie wartości kroku                                  |
+| **CONTROL**+N                   |                  | Wprowadzenie nazwy TABa                                      |
 | **CONTROL**+P                   |                  | Odtworzenie TABa od miejsca gdzie znajduuje się kursor       |
 | TAB<br />**SHIFT**+TAB          |                  | Zmiana bazowej oktawy                                        |
 |                                 |                  |                                                              |
@@ -1587,6 +1592,8 @@ TO DO
 | RETURN                          |                  | lista funkcji SONG                                           |
 | *cyfry* 0 *do* 9                |                  | Rozpoczęcie wprowadzania wartości                            |
 | **CONTROL**+RETURN              |                  | Lista TABów                                                  |
+| CONTROL+INSERT                  |                  | Wstawienie wiersza w miejscu kursora                         |
+| CONTROL+DELETE                  |                  | Usunięcie wiersza w miejscu kursora                          |
 | **SHIFT**+RETURN                |                  | Edycja TABa spod kursora                                     |
 | **CONTROL**+P                   |                  | Odtworzenie utworu od miejsca gdzie znajduje się kursor      |
 |                                 |                  |                                                              |
