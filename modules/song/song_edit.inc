@@ -109,7 +109,7 @@ begin
             calcPos();
          end;
 
-         if key=138 (* CTRL+P *) then SONG_Play(SONGRow);
+         if key=key_CONTROL+key_P then SONG_Play(SONGRow);
 
          case key of
             key_SPACE: begin

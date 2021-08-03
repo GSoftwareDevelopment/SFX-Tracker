@@ -45,6 +45,48 @@ type
 );
 
 const
+	key_SHIFT			= 64;
+	key_CONTROL			= 128;
+
+   key_0	=50;
+   key_1	=31;
+   key_2	=30;
+   key_3	=26;
+   key_4	=24;
+   key_5	=29;
+   key_6	=27;
+   key_7	=51;
+   key_8	=53;
+   key_9	=48;
+
+   key_A	=63;
+   key_B =21;
+   key_C	=18;
+   key_D	=58;
+   key_E	=42;
+   key_F	=56;
+   key_G	=61;
+   key_H	=57;
+   key_I	=13;
+   key_J	=1;
+   key_K	=5;
+   key_L	=0;
+   key_M	=37;
+   key_N	=35;
+   key_O	=8;
+   key_P	=10;
+   key_Q	=47;
+   key_R	=40;
+   key_S	=62;
+   key_T	=45;
+   key_U	=11;
+   key_V	=16;
+   key_W	=46;
+   key_X	=22;
+   key_Y	=43;
+   key_Z	=23;
+
+const
    color_white       = 0;
    color_choice      = 1;
    color_background  = 2;

@@ -108,12 +108,12 @@ begin
             TABDetermineLength();
          end;
 
-			if key=138 (* CTRL+P *) then
+			if key=key_CONTROL+key_P then
 			begin
 				saveIfModified();
 				TAB_Play(_pos); // (_pos shl 1);
 			end;
-
+			if key=key_CONTROL+key_N then setTABName();
 
          case key of
 				key_SPACE: SFX_ChannelOff(0); // turn off SFX

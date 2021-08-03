@@ -2,6 +2,7 @@ procedure setTABName();
 begin
    if (inputText(SFXNameX,SFXNumberY,TABNameLength,TABName,0,color_choice)) then
    begin
+		TABDetermineLength();
       storeTABData(currentTAB);
       modified:=false;
    end;
