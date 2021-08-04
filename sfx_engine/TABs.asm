@@ -37,6 +37,10 @@ fetch_TAB_row
 
 next_player_tick
          iny
+			bne store_TAB_offset
+			lda #$80
+			sta SFX_CHANNELS_ADDR+_tabOfs,x
+			jmp end_player_tick
 
 store_TAB_offset
          tya

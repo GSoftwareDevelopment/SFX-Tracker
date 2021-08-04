@@ -14,7 +14,7 @@ TABFn_TAB_END
 
 play_TAB_again
          ldy #0                              ; set TAB offset to begin
-         jmp fetch_TAB_row
+         jmp fetch_TAB_pointer+2
 
 check_TABFn_REPEAT
          cmp #$C0                               ; check REPEAT function
