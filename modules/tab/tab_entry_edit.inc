@@ -16,8 +16,9 @@ var _note,_fnsfx,_pos:byte;
       v:smallint;
 
    begin
+		color:=0;
       putMultiText(msg_TAB_JumpToPrompt,0);
-      __scrOfs:=237; putValue(_pos-1,3,0);
+      __scrOfs:=237; putValue(_pos-1,3);
       v:=jumpPos;
       if (_fnsfx<>TABFn_jump) then v:=0;
       if inputValue(winXStart+8,2+cursorPos,3,v,0,_pos-1,0,color_selected) then

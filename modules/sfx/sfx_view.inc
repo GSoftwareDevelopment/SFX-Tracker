@@ -101,7 +101,7 @@ begin
 
       if (pos>=SFXLen) then
       begin
-         __scrOfs:=40+winXStart+i; colorVLine(9,2);
+         __scrOfs:=40+winXStart+i; color:=$80; colorVLine(9);
       end;
       //
       pos:=pos+1;
@@ -109,21 +109,21 @@ begin
    end;
 
 	// show SFX number
-   __scrOfs:=21; putValue(currentSFX,2,1);
-	strVal2Mem(pointer(word(resptr[menu_sfx])+2),currentSFX,2,0);
+	color:=$00; strVal2Mem(pointer(word(resptr[menu_sfx])+2),currentSFX,2);
+   __scrOfs:=21; color:=$40; putValue(currentSFX,2);
 
 	// show SFX name
    fillchar(@moduleBar[4],16,$40);
-   __scrOfs:=24; putASCIIText(SFXName,color_choice);
+   __scrOfs:=24; putASCIIText(SFXName);
 
 	i:=SFXshortcutExist(255,currentSFX);
 	if i<>255 then moduleBar[19]:=$50+i;
 
 	// show edit status
 	clearStatusBar();
-	__scrOfs:=233; putValue(cursorShift+cursorPos,3,0);
+	__scrOfs:=233; color:=0; putValue(cursorShift+cursorPos,3);
 	putChar($0f); // /
-	putValue(sfxLen,3,0);
+	putValue(sfxLen,3);
 
    i:=1+(MOD_Mode*5);
    move(pointer(word(resptr[menu_sfx_mode])+i),@screen[220],3);

@@ -105,7 +105,7 @@ end;
 procedure IOError();
 begin
    drawError(msg_IO_Error);
-   __scrOfs:=234; putValue(IOErr,3,0);
+   __scrOfs:=234; color:=0; putValue(IOErr,3);
    flashError();
 end;
 

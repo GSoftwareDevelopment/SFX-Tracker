@@ -3,6 +3,7 @@ var _SONGRow,oSONGOfs:byte;
 
 begin
    SFX_PlaySONG(startPos);
+   clearStatusBar();
    reset_pianoVis(); keyClick:=false;
    PLYtm:=timer; PLYstate:=2; oSongOfs:=255;
    repeat

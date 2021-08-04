@@ -5,16 +5,18 @@ end;
 
 procedure updateTABInfo();
 begin
-   __scrOfs:=21; putValue(currentTAB,2,1);
-	strVal2Mem(pointer(word(resptr[menu_tabs])+2),currentTAB,2,0);
+	__scrOfs:=21; color:=$40; putValue(currentTAB,2);
+	color:=$00; strVal2Mem(pointer(word(resptr[menu_tabs])+2),currentTAB,2);
 
    fillchar(@screen[24],8,0);
-   __scrOfs:=24; putASCIIText(TABName,1);
-   __scrOfs:=20; colorHLine(13,1);
+   color:=$40;
+   __scrOfs:=24; putASCIIText(TABName);
+   __scrOfs:=20; colorHLine(13);
 
-   putValue(TABLen,3,0);
+	color:=$00;
+   putValue(TABLen,3);
    putChar($0f);
-   putValue(TABRealLen,3,0);
+   putValue(TABRealLen,3);
 end;
 
 procedure updateTABSFX();
@@ -32,7 +34,7 @@ begin
 
    __scrOfs:=220;
    putChar($03);
-   putValue(currentSFX,2,0);
+	color:=0; putValue(currentSFX,2);
    putChar($1a);
    updatePiano();
 end;
@@ -59,12 +61,13 @@ begin
    __scrOfs:=44;
    for i:=2 to 10 do
    begin
-      putValue(_nxt,3,2); inc(__scrOfs,2);
+      color:=$80; putValue(_nxt,3); inc(__scrOfs,2);
 
+		color:=0;
       _fnsfx:=TAB_fnSFX[pos]; _note:=TAB_notes[pos];
       if (_fnsfx=TABFn_end) and (_note=TABFn_end_param) then
       begin
-			cmd2scr(33,6); // ENDTAB;
+			cmd2scr(33,6); // ENDTAB
          inc(__scrOfs,2);
       end
       else
@@ -88,7 +91,7 @@ begin
                inc(__scrOfs);
 
                // SFX#
-               putValue(_fnsfx,2,0);
+               putValue(_fnsfx,2);
                inc(__scrOfs,2);
             end;
          end
@@ -96,9 +99,9 @@ begin
             if (_fnsfx and $c0=$40) then
             begin // frequency value
                _fnsfx:=_fnsfx and $3f;
-               putValue(_note,3,0);
+               putValue(_note,3);
                putChar($0f); // '/'
-               putValue(_fnsfx,2,0);
+               putValue(_fnsfx,2);
                __scrOfs:=__scrOfs+2;
             end
             else // function
@@ -116,33 +119,34 @@ begin
                   if (_fnsfx and $3f>0) then
                   begin // repeat
                      ch:=(_fnsfx-128); // repeat times is value from 1 to 9
-                     putValue(ch,2,0);
+                     putValue(ch,2);
                      putChar($1e);
-                     putValue(_note,3,0); // note gives position
+                     putValue(_note,3); // note gives position
                      inc(__scrOfs,2);
                   end;
             end;
 
+
+      realPos:=TAB_RealPos[pos];
+      if realPos<>$ffff then
+         putValue(realPos,3)
+		else
+			inc(__scrOfs,3);
+
       if (pos>=TABLen) then
-         ch:=2
+         color:=$80
       else
       begin
          if showPos and (SONG_Beat>1) then
          begin
-            if _beat=0 then ch:=2 else ch:=0;
+            if _beat=0 then color:=$80 else color:=0;
             _beat:=_beat+1; if _beat=SONG_Beat then _beat:=0;
          end
          else
-            ch:=0;
+            color:=0;
       end;
 
-      realPos:=TAB_RealPos[pos];
-      if realPos<>$ffff then
-         putValue(RealPos,3,2)
-		else
-			inc(__scrOfs,3);
-
-      dec(__scrOfs,13); colorHLine(13,ch);
+      dec(__scrOfs,13); colorHLine(13);
 
       inc(pos);
       inc(__scrOfs,4);

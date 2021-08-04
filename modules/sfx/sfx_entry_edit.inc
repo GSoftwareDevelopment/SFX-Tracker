@@ -22,11 +22,12 @@ var
 		else
 			if a>max then v:=a-minusBase else v:=a;
 
+		color:=0;
 		putMultiText(msg_SFX_ValuePrompt,0);
 
 		__scrOfs:=232; if (min<0) then putChar($0d) (* - *) else putChar($00); (* + *)
-		putValue(abs(min),3,0);
-		__scrOfs:=237; putValue(max,3,0);
+		putValue(abs(min),3);
+		__scrOfs:=237; putValue(max,3);
 
 		if inputValue(4,11,4,v,min,max,0,0) then
 		begin

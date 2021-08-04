@@ -265,10 +265,11 @@ var
    begin
 		__scrOfs:=scrOfs;
       move(@buf[shiftX],@screen[scrOfs],width);
+      setColor(colEdit);
       if width<20 then
-         colorHLine(width+1,colEdit)
+         colorHLine(width+1)
       else
-         colorHLine(width,colEdit)
+         colorHLine(width)
    end;
 
 	procedure drawCursor();
@@ -360,7 +361,7 @@ begin
    end
    else
       conv2internalP2P(@s[1],@screen[scrOfs],width);
-   __scrOfs:=vadr[y]+x; colorHLine(width,colOut);
+   __scrOfs:=vadr[y]+x; setColor(colOut); colorHLine(width);
    key:=TKeys($FF);
 end;
 
@@ -473,7 +474,7 @@ var
 
    procedure drawCursor();
    begin
-		setPos(x,y+listPos); colorHLine(width+2*byte(showCount),3);
+		setPos(x,y+listPos); color:=$c0; colorHLine(width+2*byte(showCount));
    end;
 
    procedure updateList();
@@ -482,18 +483,18 @@ var
    begin
 		n:=listShift;
       ofs:=n*width;
-      setPos(x,y);
+      setPos(x,y); color:=$40;
       for i:=0 to height-1 do
       begin
 			if showCount then
 			begin
-				putValue(n,2,1);
+				putValue(n,2);
 				screen[__scrOfs]:=$40;
 			end;
 
 			move(@listData[ofs],@screen[__scrOfs],width);
 			inc(ofs,width); inc(n);
-			colorHLine(width,1);
+			colorHLine(width);
 			if showCount then
 				inc(__scrOfs,18-width)
 			else

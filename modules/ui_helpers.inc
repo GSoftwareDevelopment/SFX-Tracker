@@ -7,7 +7,7 @@ begin
    begin
       PLYtm:=timer;
       PLYstate:=2-PLYstate;
-      __scrOfs:=60; colorHLine(4,1+PLYstate);
+      __scrOfs:=60; setColor(1+PLYstate); colorHLine(4);
    end;
 end;
 
@@ -43,8 +43,8 @@ procedure uncolorWorkarea();
 var i:byte;
 
 begin
-	__scrOfs:=20;
-   i:=10; while i>0 do begin colorHLine(20,0); dec(i); end;
+	__scrOfs:=20; color:=0;
+   i:=10; while i>0 do begin colorHLine(20); dec(i); end;
 end;
 
 procedure clearTopMenu();
@@ -54,7 +54,7 @@ end;
 
 procedure clearWorkarea();
 begin
-   __scrOfs:=44; box(16,9,0);
+   __scrOfs:=44; color:=0; box(16,9);
 end;
 
 procedure clearStatusBar();
@@ -74,7 +74,7 @@ end;
 
 procedure setWorkarea();
 begin
-   __scrOfs:=40; box(20,9,$40);
+   __scrOfs:=40; color:=$40; box(20,9);
 end;
 
 procedure showAppSplash();
@@ -96,7 +96,8 @@ begin
       begin
          flashTM:=timer;
          flashState:=not flashState;
-         __scrOfs:=220; colorHLine(20,3*byte(flashState));
+         setColor(3*byte(flashState));
+         __scrOfs:=220; colorHLine(20);
          screen2video();
       end;
    until kbcode<>255; kbcode:=255;
@@ -189,16 +190,17 @@ var
 
 begin
 	nSFX:=SFX_shortcut[SFXKey];
+	color:=0;
 	if nSFX<>255 then
 	begin
 		drawError(msg_SFX_FastKey_Assigned);
-		__scrOfs:=238; putValue(nSFX,2,0);
+		__scrOfs:=238; putValue(nSFX,2);
 	end
 	else
 	begin
 		drawError(msg_SFX_FastKey_Cleared);
 	end;
-	__scrOfs:=229; putValue(SFXKey,1,0);
+	__scrOfs:=229; putValue(SFXKey,1);
 	screen2video();
 end;
 

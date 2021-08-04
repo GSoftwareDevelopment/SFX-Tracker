@@ -15,6 +15,7 @@ var
    VCOUNT:byte absolute $d40b;
    PFCols:array[0..4] of byte absolute 708;
    CHBAS:byte absolute 756;
+	color:byte = 0;
 
 	__scrOfs:byte;
 
@@ -24,16 +25,17 @@ procedure conv2Internal(var s:string);
 procedure conv2internalP2P(src,dest:pointer; len:byte);
 
 procedure setPos(x,y:byte);
+procedure setColor(nCol:byte);
 procedure putChar(ch:byte);
-procedure colorHLine(width,color:byte);
-procedure colorVLine(height,color:byte);
-procedure box(width,height,cCol:byte);
-procedure putText(var s:string; color:byte);
-procedure putNText(strptr:pointer; color:byte);
-procedure putASCIIText(var s:string; color:byte);
-procedure strVal2Mem(_dest:pointer; value:smallint; zeros,color:byte);
-procedure putValue(value:smallint; zeros,color:byte);
-procedure putHexValue(value:byte; color:byte);
+procedure colorHLine(width:byte);
+procedure colorVLine(height:byte);
+procedure box(width,height:byte);
+procedure putText(var s:string);
+procedure putNText(strptr:pointer);
+procedure putASCIIText(var s:string);
+procedure strVal2Mem(_dest:pointer; value:smallint; zeros:byte);
+procedure putValue(value:smallint; zeros:byte);
+procedure putHexValue(value:byte);
 procedure wait4screen();
 procedure screen2video();
 
@@ -85,35 +87,40 @@ begin
 	__scrOfs:=vadr[y]+x;
 end;
 
+procedure setColor(nCol:byte);
+begin
+	color:=colMask[nCol];
+end;
+
 procedure putChar(ch:byte);
 begin
 	screen[__scrOfs]:=ch; inc(__scrOfs);
 end;
 
-procedure _colorSet(steps,step,col:byte);
+procedure _colorSet(steps,step:byte);
 begin
    while steps>0 do
    begin
-      screen[__scrOfs]:=(screen[__scrOfs] and $3f) or col;
+      screen[__scrOfs]:=(screen[__scrOfs] and $3f) or color;
       inc(__scrOfs,step); dec(steps);
    end;
 end;
 
 procedure colorHLine;
 begin
-   _colorSet(width,1,colMask[color]);
+   _colorSet(width,1);
 end;
 
 procedure colorVLine;
 begin
-   _colorSet(height,20,colMask[color]);
+   _colorSet(height,20);
 end;
 
 procedure box;
 begin
    while height>0 do
    begin
-      fillchar(@screen[__scrOfs],width,cCol);
+      fillchar(@screen[__scrOfs],width,color);
       inc(__scrOfs,20); dec(height);
    end;
 end;
@@ -136,7 +143,7 @@ var
    i:byte;
 
 begin
-   i:=1; color:=colMask[color];
+   i:=1;// color:=colMask[color];
    while i<=length(s) do
    begin
       screen[__scrofs]:=byte(s[i]) or color;
@@ -149,7 +156,7 @@ var
    i:byte;
 
 begin
-   i:=1; color:=colMask[color];
+   i:=1;// color:=colMask[color];
    while i<=length(s) do
    begin
       screen[__scrofs]:=(byte(s[i])-32) or color;
@@ -164,7 +171,7 @@ var
 
 begin
    ns:=strptr;
-   i:=0; color:=colMask[color];
+   i:=0;// color:=colMask[color];
    while ns[i]<>255 do
    begin
       screen[__scrofs]:=ns[i] or color;
@@ -172,7 +179,7 @@ begin
    end;
 end;
 
-procedure strVal2Mem(_dest:pointer; value:smallint; zeros,color:byte);
+procedure strVal2Mem(_dest:pointer; value:smallint; zeros:byte);
 var
    ptr,a,v:byte;
    dest:array[0..0] of byte;
@@ -192,7 +199,7 @@ var
 
 begin
    dest:=_dest;
-   ptr:=0; color:=colMask[color]+$10;
+   ptr:=0; inc(color,$10); // color:=colMask[color]+$10;
    base:=500; step:=100; digit();
    if (zeros>=3) then begin dest[ptr]:=color+a; ptr:=ptr+1; end;
 
@@ -201,12 +208,13 @@ begin
 
    base:=5; step:=1; digit();
    if (zeros>=1) then dest[ptr]:=color+a;
+   dec(color,$10);
 end;
 
 procedure putValue;
 begin
 //   setPos(x,y);
-   strVal2Mem(@screen[__scrOfs],value,zeros,color);
+   strVal2Mem(@screen[__scrOfs],value,zeros);
    inc(__scrOfs,zeros);
 End;
 
@@ -220,12 +228,12 @@ var
 			inc(v,$10)
 		else
 			inc(v,$17);
-		screen[__scrOfs]:=v;
+		screen[__scrOfs]:=v or color;
 		inc(__scrOfs);
 	end;
 
 begin
-   color:=colMask[color];
+//   color:=colMask[color];
    v:=value shr 4; putHexChar();
    v:=value and $0f; putHexChar();
 end;

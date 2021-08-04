@@ -20,7 +20,7 @@ var i:byte;
          cursorShift:=0;
 
       updateTAB(true);
-      __scrOfs:=vadr[2+cursorPos]+winXStart; colorHLine(16,3);
+      __scrOfs:=vadr[2+cursorPos]+winXStart; color:=$c0; colorHLine(16);
    end;
 
 	procedure setShortcutSFX(SFXKey:byte);

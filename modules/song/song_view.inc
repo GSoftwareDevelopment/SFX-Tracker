@@ -7,11 +7,12 @@ begin
    addr:=TABPtr[nTAB];
    if addr=$FFFF then exit;
 
-	__scrOfs:=220; putChar($03); putValue(nTAB,2,0); putChar($1a);
+	color:=0;
+	__scrOfs:=220; putChar($03); putValue(nTAB,2); putChar($1a);
    conv2internalP2P(pointer(addr-TABNameLength),@statusBar[4],TABNameLength);
    getTABData(nTAB);
    TABDetermineLength();
-   __scrOfs:=237; putValue(TABRealLen,3,0);
+   __scrOfs:=237; putValue(TABRealLen,3);
 end;
 
 procedure updateSONG(indPos:boolean);
@@ -32,12 +33,13 @@ begin
    _pos:=SONG_Ofs shr 2;
    for i:=0 to 8 do
    begin
-      putValue(_line,2,2);
+      color:=$80; putValue(_line,2);
       inc(__scrOfs);
 
       order:=SONGData[songOfs];
       if order<chnOrder then
       begin
+			color:=0;
          chn:=0;
          if indPos then
          begin
@@ -48,7 +50,7 @@ begin
          repeat
             if order<maxTABs then
             begin
-               putValue(order,2,0); inc(__scrOfs);
+               putValue(order,2); inc(__scrOfs);
             end
             else
             begin
@@ -69,19 +71,19 @@ begin
          case Order of
             chnOrder_Tempo: begin
 						putDblChar($34,$1a); // T:
-                  putValue(SONGData[songOfs+1],2,0);
+                  putValue(SONGData[songOfs+1],2);
                   inc(__scrOfs,11);
                end;
             chnOrder_JumpTo: begin
 						putDblChar($2a,$1e); // J>
-                  putValue(SONGData[songOfs+1],2,0);
+                  putValue(SONGData[songOfs+1],2);
                   inc(__scrOfs,11);
                end;
             chnOrder_Repeat: begin
 						putDblChar($32,$1a); // R:
-                  putValue(SONGData[songOfs+1],2,0);
+                  putValue(SONGData[songOfs+1],2);
                   putChar($1e); // >
-                  putValue(SONGData[songOfs+2],2,0);
+                  putValue(SONGData[songOfs+2],2);
                   inc(__scrOfs,8);
                end;
             chnOrder_EndSong: begin
@@ -110,13 +112,13 @@ begin
 // T00 R00 00 00 00 00
 	__scrOfs:=220; // status bar offset;
 
-	putChar($34);
-   putHexValue(SONG_Tempo,0);
+	putChar($34); color:=0;
+   putHexValue(SONG_Tempo);
 	inc(__scrOfs);
 
    putChar($32);
    if SONG_RepCount>0 then
-      putHexValue(SONG_RepCount,0)
+      putHexValue(SONG_RepCount)
    else
 		putBlackValue();
 	inc(__scrOfs);
@@ -125,10 +127,7 @@ begin
    repeat
       pos:=channels[chn+_tabOfs];
       if pos<>$ff then
-      begin
-//         pos:=pos shr 1;
-         putHexValue(pos,0);
-      end
+         putHexValue(pos)
       else
 			putBlackValue();
 

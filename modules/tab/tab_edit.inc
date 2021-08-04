@@ -37,9 +37,10 @@ var
    begin
       __scrOfs:=vadr[2+cursorPos]+winXStart;
       if TABStep>0 then
-			colorHLine(16,3)
+			color:=$c0
 		else
-			colorHLine(16,1);
+			color:=$40;
+		colorHLine(16);
       screen2video();
    end;
 
@@ -81,7 +82,7 @@ var
 						inc(TABStep,i);
 					if TABStep>32 then TABStep:=0;
 					drawError(msg_TAB_StepChange);
-					__scrOfs:=237; putValue(TABStep,2,0);
+					__scrOfs:=237; color:=0; putValue(TABStep,2);
 				end;
 				key:=okey;
 			end;

@@ -94,7 +94,7 @@ var
 
    procedure updateListPage();
    begin
-      __scrOfs:=237; putValue(listPage+1,3,0);
+      __scrOfs:=237; color:=0; putValue(listPage+1,3);
    end;
 
 begin

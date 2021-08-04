@@ -16,11 +16,11 @@ var
 
 	procedure putVal();
 	begin
-		str(mem,s); dec(__scrOfs,length(s)); putASCIIText(s,0);
+		str(mem,s); dec(__scrOfs,length(s)); putASCIIText(s);
 	end;
 
 begin
-	clearModule();
+	clearModule(); color:=0;
 	putMultiText(msg_mem_stats,0);
 
 	calcMem(0,64); memSFX:=mem;

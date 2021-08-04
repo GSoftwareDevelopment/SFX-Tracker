@@ -39,8 +39,8 @@ begin
 			begin
 				setShortcut2currentSFX(i);
 // TIP: uncomment below lines to active status bar info about assigned fast key
-//				updateSFXView();
-//				SFXshortcutMessage(i);
+				updateSFXView();
+				SFXshortcutMessage(i);
 			end;
 
          if section=0 then SFXMenuBarChange();

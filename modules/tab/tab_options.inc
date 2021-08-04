@@ -22,7 +22,7 @@ end;
 
 procedure TAB_Options(defaultOpt:byte);
 begin
-   strVal2Mem(resptr[val_menu_beatStep],song_beat,2,0);
+   color:=0; strVal2Mem(resptr[val_menu_beatStep],song_beat,2);
    if optionsList(menu_tabs_options,width_menuOptions,TABMenuOptions,defaultOpt,key_Up,key_Down) then
       case defaultOpt of
          0: setTABName();

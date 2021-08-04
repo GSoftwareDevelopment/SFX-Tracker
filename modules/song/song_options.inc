@@ -19,7 +19,7 @@ end;
 
 procedure SONG_Options(defaultOpt:byte);
 begin
-   strVal2Mem(resptr[val_menu_tempo],SONG_Tempo,3,0);
+   color:=0; strVal2Mem(resptr[val_menu_tempo],SONG_Tempo,3);
    if optionsList(menu_SONG_options,width_menuOptions,SONGMenuOptions,defaultOpt,key_Up,key_Down) then
       case defaultOpt of
          0: setSONGName();

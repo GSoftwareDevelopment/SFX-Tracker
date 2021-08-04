@@ -24,7 +24,7 @@ var i,v,cSFX:byte;
 	begin
 		i:=winXStart+cursorPos;
 		__scrofs:=i+vadr[winYStart];
-		colorVLine(9,3);
+		color:=$c0; colorVLine(9);
 		__scrofs:=i+vadr[3+section];
 		if section>4 then inc(__scrofs,20);
 		i:=screen[__scrofs];
@@ -77,10 +77,10 @@ begin
 			if i<>255 then begin
 				setShortcut2currentSFX(i);
 // TIP: uncomment below lines to active status bar info about assigned fast key
-//				updateSFXView();
-//				SFXshortcutMessage(i);
-//				updateCursor();
-//				continue;
+				updateSFXView();
+				SFXshortcutMessage(i);
+				updateCursor();
+				continue;
 			end;
 
          case key of
