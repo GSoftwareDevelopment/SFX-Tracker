@@ -110,6 +110,7 @@ begin
          end;
 
          if key=key_CONTROL+key_P then SONG_Play(SONGRow);
+			if key=key_CONTROL+key_N then setSONGName();
 
          case key of
             key_SPACE: begin
