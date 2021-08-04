@@ -83,15 +83,20 @@ begin
 				continue;
 			end;
 
+         controlEditKeys(SFX_winWidth,SFX_maxLength,cursorPos,cursorShift,key_Left,key_Right);
+
+         at:=cursorShift+cursorPos;
+
          case key of
             key_RETURN: if SFXEntryEdit then break;
+            key_SPACE: SFXputBlank();
 				key_CTRL_INSERT: begin			// insert column in SFX
-					at:=cursorShift+cursorPos;
+//					at:=cursorShift+cursorPos;
 					dblMove(0,1);
 					SFXputBlank();
 				end;
 				key_CTRL_DELETE: begin			// delete column in SFX
-					at:=cursorShift+cursorPos;
+//					at:=cursorShift+cursorPos;
 					dblMove(1,0);
 					at:=127; SFXputBlank();
 				end;
@@ -100,9 +105,6 @@ begin
             key_CTRL_V: PasteClipboard(true);
          end;
 
-         controlEditKeys(SFX_winWidth,SFX_maxLength,cursorPos,cursorShift,key_Left,key_Right);
-
-         at:=cursorShift+cursorPos;
          v:=tab[at];
          if (nibble=1) then v:=v shr 4 else v:=v and $0f;
 
