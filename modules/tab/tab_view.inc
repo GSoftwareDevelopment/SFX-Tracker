@@ -32,9 +32,9 @@ begin
       tptr:=resptr[str_notDefined];
    conv2internalP2P(tptr,@statusBar[4],SFXNameLength);
 
-   __scrOfs:=220;
+   __scrOfs:=220; color:=0;
    putChar($03);
-	color:=0; putValue(currentSFX,2);
+	putValue(currentSFX,2);
    putChar($1a);
    updatePiano();
 end;

@@ -27,6 +27,7 @@ procedure conv2internalP2P(src,dest:pointer; len:byte);
 procedure setPos(x,y:byte);
 procedure setColor(nCol:byte);
 procedure putChar(ch:byte);
+procedure putCChar(ch:byte);
 procedure colorHLine(width:byte);
 procedure colorVLine(height:byte);
 procedure box(width,height:byte);
@@ -95,6 +96,11 @@ end;
 procedure putChar(ch:byte);
 begin
 	screen[__scrOfs]:=ch; inc(__scrOfs);
+end;
+
+procedure putCChar(ch:byte);
+begin
+	screen[__scrOfs]:=ch or color; inc(__scrOfs);
 end;
 
 procedure _colorSet(steps,step:byte);

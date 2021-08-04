@@ -25,7 +25,9 @@ begin
 end;
 
 function pianoKeyScan(playChn:byte):byte;
-var okey:TKeys;
+var
+	okey:TKeys;
+	__chn:byte;
 
 begin
    if controlSelectionKeys(key_SHIFT_TAB,key_TAB,currentOct,0,3) then
@@ -44,7 +46,12 @@ begin
       if result>16 then result:=result-5;
       result:=result+octShift[currentOct];
       if (result<64) and (playChn<>255) then
-         SFX_Note(playChn,result,currentSFX)
+      begin
+			__chn:=playChn*16;
+			channels[__chn+_tabOfs]:=$ff;
+			channels[__chn+_tabRep]:=$00;
+         SFX_Note(playChn,result,currentSFX);
+      end
       else
          exit(255);
    end;

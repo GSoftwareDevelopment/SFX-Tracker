@@ -22,9 +22,8 @@ var
 
 	procedure putDblChar(ch1,ch2:byte);
 	begin
-		screen[__scrOfs]:=ch1;
-		screen[__scrOfs+1]:=ch2;
-		inc(__scrOfs,3);
+		putChar(ch1); putChar(ch2);
+		inc(__scrOfs,1);
 	end;
 
 begin
@@ -35,11 +34,11 @@ begin
    begin
       color:=$80; putValue(_line,2);
       inc(__scrOfs);
+		color:=0;
 
       order:=SONGData[songOfs];
       if order<chnOrder then
       begin
-			color:=0;
          chn:=0;
          if indPos then
          begin
@@ -104,7 +103,7 @@ var
 
 	procedure putBlackValue();
 	begin
-		putChar($0d); putChar($0d);
+		putCChar($0d); putCChar($0d);
 	end;
 
 begin
@@ -126,6 +125,9 @@ begin
    chn:=$00;
    repeat
       pos:=channels[chn+_tabOfs];
+
+      if (chn shr 4)=SONGChn then color:=$c0 else color:=0;
+
       if pos<>$ff then
          putHexValue(pos)
       else
@@ -135,7 +137,8 @@ begin
          ch:=$09
       else
          ch:=$00;
-		putChar(ch);
+		putCChar(ch);
+
       inc(chn,$10);
    until chn=$40;
 end;

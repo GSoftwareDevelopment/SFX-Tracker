@@ -86,17 +86,16 @@ end;
 procedure flashError();
 var
    flashTM:byte;
-   flashState:boolean;
 
 begin
    screen2video();
-   kbcode:=255; flashState:=false; flashTM:=timer;
+   kbcode:=255; flashTM:=timer;
+   color:=0;
    repeat
       if (timer-flashTM>=$10) then
       begin
          flashTM:=timer;
-         flashState:=not flashState;
-         setColor(3*byte(flashState));
+         color:=$c0-color;
          __scrOfs:=220; colorHLine(20);
          screen2video();
       end;

@@ -19,8 +19,12 @@ begin
 
       if keyPressed then
       begin
-         pianoKeyScan(3);
+			controlSelectionKeys(key_CTRL_LEFT,key_CTRL_RIGHT,SONGChn,0,3);
+         if controlSelectionKeys(key_LEFT,key_RIGHT,currentSFX,0,maxSFXs-1) then
+            updateTABSFX();					// change the current SFX
+         pianoKeyScan(SONGChn);
       end;
+
       if (timer-ScreenTm)>0 then
       begin
 			updateSongStatus();
