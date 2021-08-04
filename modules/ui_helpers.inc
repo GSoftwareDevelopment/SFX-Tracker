@@ -123,6 +123,7 @@ end;
 procedure exit2DOS();
 begin
    SFX_End();
+   Cls(0); Opn(0,12,0,'E:');
    halt;
 end;
 

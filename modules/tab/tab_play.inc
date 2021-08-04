@@ -3,7 +3,7 @@ var i:byte;
 
    procedure updateTabView();
    begin
-      cursorPos:=channels[_tabOfs];// shr 1;
+      cursorPos:=channels[_tabOfs] and $7f;
       if (cursorPos>4) then
       begin
          if (cursorPos>TAB_maxLength-TAB_winHeight) then
