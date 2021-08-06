@@ -4,7 +4,7 @@ program SFXMM;
 
 {$DEFINE ROMOFF}
 
-uses SFX_API, sysutils, strings, gr2, ui, pmgraph,cio;
+uses SFX_API, sysutils, strings, gr2, ui, pmgraph, cio;
 {$I-}
 {$i types.inc}
 

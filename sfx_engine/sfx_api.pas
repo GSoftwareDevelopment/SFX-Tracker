@@ -70,13 +70,13 @@ portb       = $d301
 .endif
 .endif
 
-			lda #$06
+			lda 709
 			sta wsync
 			sta $D01a
 
          jsr INIT_SFXEngine.SFX_MAIN_TICK
 
-			lda #$00
+			lda 712
 			sta $D01a
 
 .ifdef MAIN.@DEFINES.SFX_SWITCH_ROM

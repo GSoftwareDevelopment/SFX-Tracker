@@ -3,11 +3,16 @@ procedure SFXSectionEditLoop(var tab:byteArray; nibble:byte);
 var i,v,cSFX:byte;
    at:byte;
 
+	procedure SFXputNOP();
+	begin
+		SFX_modulate[at]:=0;
+		modified:=true;
+	end;
+
 	procedure SFXputBlank();
 	begin
 		SFX_vol_dist[at]:=0;
-		SFX_modulate[at]:=0;
-		modified:=true;
+		SFXputNOP();
 	end;
 
 	procedure dblMove(ofsSrc,ofsDest:byte);
@@ -89,16 +94,16 @@ begin
 
          case key of
             key_RETURN: if SFXEntryEdit then break;
-            key_SPACE: SFXputBlank();
+            key_SPACE: SFXputNOP();
 				key_CTRL_INSERT: begin			// insert column in SFX
 //					at:=cursorShift+cursorPos;
 					dblMove(0,1);
 					SFXputBlank();
 				end;
 				key_CTRL_DELETE: begin			// delete column in SFX
-//					at:=cursorShift+cursorPos;
 					dblMove(1,0);
 					at:=127; SFXputBlank();
+					at:=cursorShift+cursorPos;
 				end;
             key_CTRL_X: Cut2Clipboard(true,SFXLen);
             key_CTRL_C: Copy2Clipboard(true,SFXLen);
