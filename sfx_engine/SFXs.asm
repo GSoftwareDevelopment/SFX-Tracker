@@ -58,11 +58,6 @@ continue_fetch
          lda SFX_CHANNELS_ADDR+_sfxPtrHi,x
          sta dataPtr+1
 
-			iny
-			lda (dataPtr),y
-			sta chnCtrl
-			dey
-
          lda SFX_CHANNELS_ADDR+_chnNote,x    ; get SFX note
          sta chnNote
 
@@ -111,5 +106,5 @@ next_SFX_Set
          ldy #SFX_OFF                        ; set SFX to not play
 
 SFX_Set_Offset
-         tya                                 ; tranfer current SFX offset to A register
+         tya                                 ; transfer current SFX offset to A register
          sta SFX_CHANNELS_ADDR+_chnOfs,x     ; store SFX offset in channel register

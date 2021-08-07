@@ -8,6 +8,11 @@
 ; ATTENTION! The Engine does not check the jump ranges - IT CAN CRASH!
 modulators
 
+			iny
+			lda (dataPtr),y
+			sta chnCtrl
+			dey
+
 			lda chnCtrl
 			and #%00010000          ; the first bit of distortion set
 			beq check_Mods          ; forces the DFD modulator to work

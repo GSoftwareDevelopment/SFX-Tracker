@@ -26,4 +26,4 @@ MFD_JumpTo
 MFD_setSFXofs
          asl @
          tay                     ; set value to SFX offset register
-         jmp MFD_mode            ; one more iteration
+         jmp modulators          ; one more iteration

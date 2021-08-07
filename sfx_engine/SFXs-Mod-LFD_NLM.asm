@@ -53,4 +53,4 @@ LFD_NLM_JumpTo
 LFD_NLM_setSFXofs
          asl @
          tay                     ; set value to SFX offset register
-         jmp LFD_NLM_mode        ; one more iteration
+         jmp modulators ;LFD_NLM_mode        ; one more iteration
