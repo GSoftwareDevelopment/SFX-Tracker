@@ -8,7 +8,6 @@ check_offset
          jmp next_channel                    ; $ff=no SFX
 
 fetch_SFX_data
-
          lda SFX_CHANNELS_ADDR+_chnMode,x    ; get SFX modulate type
          sta chnMode
 
@@ -59,6 +58,11 @@ continue_fetch
          lda SFX_CHANNELS_ADDR+_sfxPtrHi,x
          sta dataPtr+1
 
+			iny
+			lda (dataPtr),y
+			sta chnCtrl
+			dey
+
          lda SFX_CHANNELS_ADDR+_chnNote,x    ; get SFX note
          sta chnNote
 
@@ -82,20 +86,22 @@ setPokey
 .ifdef MAIN.@DEFINES.SFX_SYNCAUDIOOUT
          lda chnFreq
          sta AUDIOBUF,x
-         lda (dataPtr),y
+         lda chnCtrl
          sta AUDIOBUF+1,x
 .else
 ; get current frequency
          lda chnFreq
          sta audf,x                          ; store direct to POKEY register
 ; get current distortion & volume
-         lda (dataPtr),y                     ; get SFX distortion & volume definition
+;         lda (dataPtr),y                     ; get SFX distortion & volume definition
+			lda chnCtrl
          sta audc,x                          ; store direct to POKEY register
 .endif
 
          ldx _regTemp                        ; restore current channel offset
 
 .ifdef MAIN.@DEFINES.SFX_previewChannels
+;			lda chnCtrl
          sta SFX_CHANNELS_ADDR+_chnCtrl,x    ; store SFX distortion & volume in channel register
 .endif
 

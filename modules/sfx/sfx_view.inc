@@ -54,6 +54,9 @@ begin
       _v:=SFX_modulate[pos];
 
 		fnCh:=$00;
+		if v and 1=1 then
+			fnCh:=$03	// set freq/accent
+		else
 		case MOD_Mode of
 			0: begin // HFD
 					if _v=$80 then
@@ -85,7 +88,7 @@ begin
 				end;
       end;
 
-      if _v>0 then
+      if (_v>0) or (v and 1=1) then
       begin
 			_putChar(fnCh);
 

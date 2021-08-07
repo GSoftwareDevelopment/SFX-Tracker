@@ -1,5 +1,5 @@
 procedure SONG_Play(startPos:byte);
-var _SONGRow,oSONGOfs,__chnOfs,i,v:byte;
+var _SONGRow,oSONGOfs,__chnOfs,i,v,vs:byte;
 
 	procedure _putChar(ch:byte); register;
 	begin
@@ -25,14 +25,17 @@ var _SONGRow,oSONGOfs,__chnOfs,i,v:byte;
 
 	procedure updateVolumeBars();
 	begin
-		__chnOfs:=0;
+		__chnOfs:=0; vs:=0;
 		for i:=0 to 3 do
 		begin
 			__scrOfs:=150+i*3;
 			v:=channels[__chnOfs+_chnCtrl] and $0f;
 			VolumeBar();
+//			if v>vs then vs:=v;
 			inc(__chnOfs,$10);
 		end;
+//		v:=vs;
+//		__scrOfs:=146; VolumeBar();
 	end;
 
 begin

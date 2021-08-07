@@ -7,6 +7,20 @@
 ; Y Register - can be changed, if need do jump in SFX range
 ; ATTENTION! The Engine does not check the jump ranges - IT CAN CRASH!
 modulators
+
+			lda chnCtrl
+			and #%00010000          ; the first bit of distortion set
+			beq check_Mods          ; forces the DFD modulator to work
+
+			lda chnCtrl
+			and #%11101111
+			sta chnCtrl
+
+			lda (dataPtr),y
+			sta chnFreq
+			iny
+			jmp setPokey
+
 ; get SFX modulation mode
 ; SFX Mod Modes:
 ;  0 - HFD - High Freq. Div.     - relative modulation of the frequency divider in the range of +/- 127
@@ -19,7 +33,7 @@ modulators
 ;                                - SFX looping possible
 ;  3 - DSD - Direct Set Div.     - direct set of the frequency divider - without looping possible
 ;
-
+check_Mods
          lda chnMode
          bpl check_DFD_Mod                   ; check 7 bit
          jmp setPokey                        ; is set means no modulator mode (not supported by SFXMM)
@@ -34,6 +48,7 @@ check_DFD_Mod
 
 ;
 ; DFD - Direct Frequency Divider
+force_DFD_Mod
          lda (dataPtr),y                      ; get MOD/VAL as frequency divider
          jmp setChannelFreq
 

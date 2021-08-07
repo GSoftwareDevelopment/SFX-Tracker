@@ -25,7 +25,7 @@ begin
 end;
 
 procedure SFXDetermineLength();
-var v,len,_modMode:byte;
+var d,v,len,_modMode:byte;
 
 begin
    len:=0; _modMode:=SFXModMode[currentSFX];
@@ -33,8 +33,10 @@ begin
    if _modMode<3 then
    begin
       repeat
+			d:=SFX_vol_dist[len] and $10;
          v:=SFX_modulate[len];
          len:=len+1;
+         if d<>0 then continue;
          if ((_modMode=0) and (v=$80)) then break;
          if ((_modMode>0) and (v and $80=$80)) then break;
       until (len=SFX_maxLength);
