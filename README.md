@@ -6,6 +6,7 @@ A program created using the MAD Pascal and MAD Assembler cross-compiler for the 
 
 # PROGRAM COMPILATION
 
+TODO
 
 # RUN
 
@@ -24,10 +25,10 @@ Here is a great place to do it, so thank you:
 ### jhusak, mono, pin, makary, tebe, bocianu
 
 ## FOR INSPIRATION FOR FUNCTIONAL SOLUTIONS
-### marok, mono
+### marok, mono, tatqoo
 
 ## FOR ALL THE PROGRAM TESTING
-### marok, sun, pin,
+### marok, sun, pin, tatqoo
 
 ## FOR THE MENTAL SUPPORT :)
 ### prix, mono, tebe, kaz, 0xF
