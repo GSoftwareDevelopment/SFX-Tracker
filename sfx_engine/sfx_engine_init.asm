@@ -37,4 +37,7 @@ SFX_INIT_registers_loop
          cmp #$40
          bne SFX_INIT_registers_loop
 
+         lda #%00000000
+         sta audctl
+
          rts
