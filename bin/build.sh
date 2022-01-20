@@ -19,30 +19,18 @@ function break_link() {
 	error "Error in linking project image"
 }
 
-if [ ! -d $projectname ]; then
-	error "Project folder '$projectname' doesn\'t exist."
-fi
-
-if [ ! -d $dosdir ]; then
-	error "DOS directory doesn't exist."
-fi
-
-if [ ! -f $bsfile ]; then
-	error "Bootsector file doesn't exist."
-fi
+[ ! -d $projectname ] && error "Project folder '$projectname' doesn\'t exist."
+[ ! -d $dosdir ] && error "DOS directory doesn't exist."
+[ ! -f $bsfile ] &&	error "Bootsector file doesn't exist."
 
 echo "Creating '$projectname' image file..."
 atr $imagefile mkfs dos2.5 $bsfile
-if [ $? -ne 0 ]; then
-	break_link
-fi
+[ $? -ne 0 ] && break_link
 
 cd $dosdir
 echo "Copying DOS files to image..."
 atr ../$imagefile w *.*
-if [ $? -ne 0 ]; then
-	break_link
-fi
+[ $? -ne 0 ] && break_link
 cd ..
 
 cd $projectname
