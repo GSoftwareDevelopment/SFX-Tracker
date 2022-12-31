@@ -6,7 +6,7 @@ var
 
 begin
    IOOfs:=0;
-   push2IOBuf(section,5);
+   push2IOBuf(@section,5);
    push2IOBuf(@id,1);
 
    if (id<maxSFXs) then // only for SFX!

@@ -107,7 +107,7 @@ begin
          clearModuleBar();
          putMultiText(msg_IO_DirPrompt,0);
          selFile:=0;
-         selFile:=listChoice(0,2,width_fileList,9,selFile,listBuf,filesCount,false);
+         selFile:=listChoice(0,2,width_fileList,9,selFile,@listBuf,filesCount,false);
          if (selFile=-1) then
          begin
             result:=false; break;
