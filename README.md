@@ -49,6 +49,10 @@ Support it:
 
 Take action, don't sit idle. Show that you can and you want to be useful. Everyone knows something.
 
+# If you like this...
+
+[![ByMeCaffee](../../../GSoftwareDevelopment/raw/main/bmc.png)](https://www.buymeacoffee.com/PeBe)
+
 # LICENCE
 
 The MIT License (MIT)
